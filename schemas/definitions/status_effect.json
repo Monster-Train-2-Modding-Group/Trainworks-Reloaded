@@ -4,10 +4,12 @@
     "type": "object",
     "properties": {
         "status": {
-            "type": "string"
+            "$ref": "../definitions/status.json"
         },
         "count": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The number of stacks to apply."
         }
-    }
+    },
+    "required": ["status", "count"]
 }

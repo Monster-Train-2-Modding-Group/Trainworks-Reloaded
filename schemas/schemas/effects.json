@@ -88,17 +88,7 @@
                         "type": "array",
                         "description": "List of status effects to apply.",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "status": {
-                                    "type": "string",
-                                    "description": "Status effect identifier."
-                                },
-                                "count": {
-                                    "type": "integer",
-                                    "description": "Number of stacks to apply."
-                                }
-                            }
+                            "$ref": "../definitions/status_effect.json"
                         }
                     },
                     "param_str": {

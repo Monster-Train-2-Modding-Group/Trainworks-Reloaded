@@ -7,7 +7,8 @@
             "description": "A collection of all rewards in the game, defining their properties, costs, and behaviors.",
             "items": {
                 "required": [
-                    "id"
+                    "id",
+                    "type"
                 ],
                 "properties": {
                     "collect_cue": {
@@ -70,40 +71,41 @@
                 "dependencies": {
                     "type": {
                         "oneOf": [{
-                            "properties": {
-                                "type": {
-                                    "enum": [
-                                        "cardpool"
-                                    ]
-                                },
-                                "extensions": {
-                                    "type": "array",
-                                    "description": "Extensions for card pool rewards.",
-                                    "items": {
-                                        "properties": {
-                                            "cardpool": {
-                                                "type": "object",
-                                                "description": "Card pool reward specific properties.",
-                                                "properties": {
-                                                    "cardpool": {
-                                                        "type": "string",
-                                                        "description": "Reference to the card pool to offer."
-                                                    },
-                                                    "cost_overrides": {
-                                                        "type": "array",
-                                                        "description": "List of cost overrides for different rarities.",
-                                                        "items": {
-                                                            "properties": {
-                                                                "rarity": {
-                                                                    "$ref": "../definitions/rarity.json",
-                                                                    "description": "Rarity to override costs for."
-                                                                },
-                                                                "costs": {
-                                                                    "type": "array",
-                                                                    "description": "List of costs for this rarity.",
-                                                                    "items": {
-                                                                        "type": "integer",
-                                                                        "description": "Cost amount"
+                                "properties": {
+                                    "type": {
+                                        "enum": [
+                                            "cardpool"
+                                        ]
+                                    },
+                                    "extensions": {
+                                        "type": "array",
+                                        "description": "Extensions for card pool rewards.",
+                                        "items": {
+                                            "properties": {
+                                                "cardpool": {
+                                                    "type": "object",
+                                                    "description": "Card pool reward specific properties.",
+                                                    "properties": {
+                                                        "cardpool": {
+                                                            "type": "string",
+                                                            "description": "Reference to the card pool to offer."
+                                                        },
+                                                        "cost_overrides": {
+                                                            "type": "array",
+                                                            "description": "List of cost overrides for different rarities.",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "rarity": {
+                                                                        "$ref": "../definitions/rarity.json",
+                                                                        "description": "Rarity to override costs for."
+                                                                    },
+                                                                    "costs": {
+                                                                        "type": "array",
+                                                                        "description": "List of costs for this rarity.",
+                                                                        "items": {
+                                                                            "type": "integer",
+                                                                            "description": "Cost amount"
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -114,12 +116,190 @@
                                         }
                                     }
                                 }
+                            },
+                            {
+                                "properties": {
+                                    "type": {
+                                        "enum": [
+                                            "draft"
+                                        ]
+                                    },
+                                    "extensions": {
+                                        "type": "array",
+                                        "description": "Extensions for draft rewards.",
+                                        "items": {
+                                            "properties": {
+                                                "draft": {
+                                                    "type": "object",
+                                                    "description": "Draft reward specific properties.",
+                                                    "properties": {
+                                                        "draft_pool": {
+                                                            "type": "string",
+                                                            "description": "Reference to the card pool to draft from."
+                                                        },
+                                                        "class_type": {
+                                                            "$ref": "../definitions/class_type.json",
+                                                            "description": "The type of class for this draft reward."
+                                                        },
+                                                        "draft_options_count": {
+                                                            "type": "integer",
+                                                            "description": "Number of draft options to show.",
+                                                            "minimum": 1,
+                                                            "maximum": 3
+                                                        },
+                                                        "extra_copies": {
+                                                            "type": "integer",
+                                                            "description": "Number of extra copies to grant.",
+                                                            "minimum": 0
+                                                        },
+                                                        "disable_skip": {
+                                                            "type": "boolean",
+                                                            "description": "Whether to disable skipping this draft."
+                                                        },
+                                                        "ignore_relic_rarity_override": {
+                                                            "type": "boolean",
+                                                            "description": "Whether to ignore relic rarity overrides."
+                                                        },
+                                                        "use_run_rarity_floors": {
+                                                            "type": "boolean",
+                                                            "description": "Whether to use run-defined rarity floors."
+                                                        },
+                                                        "flatten_rarity_for_draft_rate": {
+                                                            "type": "boolean",
+                                                            "description": "Whether to flatten rarity rates for drafting."
+                                                        },
+                                                        "grant_single_card": {
+                                                            "type": "boolean",
+                                                            "description": "Whether to grant a single card instead of showing draft options."
+                                                        },
+                                                        "class_type_override": {
+                                                            "type": "boolean",
+                                                            "description": "Whether to override the class type."
+                                                        },
+                                                        "use_draft_ticket_override_values": {
+                                                            "type": "boolean",
+                                                            "description": "Whether to use custom draft ticket values."
+                                                        },
+                                                        "rarity_floor": {
+                                                            "$ref": "../definitions/rarity.json",
+                                                            "description": "Minimum rarity for cards in this draft."
+                                                        },
+                                                        "class_data_override": {
+                                                            "type": "string",
+                                                            "description": "Override class data for this draft."
+                                                        },
+                                                        "card_rarity_ticket_values": {
+                                                            "type": "array",
+                                                            "description": "Custom rarity ticket values for cards.",
+                                                            "items": {
+                                                                "$ref": "../definitions/rarity_ticket.json"
+                                                            }
+                                                        },
+                                                        "enhancer_rarity_ticket_values": {
+                                                            "type": "array",
+                                                            "description": "Custom rarity ticket values for enhancers.",
+                                                            "items": {
+                                                                "$ref": "../definitions/rarity_ticket.json"
+                                                            }
+                                                        },
+                                                        "relic_rarity_ticket_values": {
+                                                            "type": "array",
+                                                            "description": "Custom rarity ticket values for relics.",
+                                                            "items": {
+                                                                "$ref": "../definitions/rarity_ticket.json"
+                                                            }
+                                                        },
+                                                        "is_service_merchant_reward": {
+                                                            "type": "boolean",
+                                                            "description": "Whether this is a service merchant reward."
+                                                        },
+                                                        "merchant_service_index": {
+                                                            "type": "integer",
+                                                            "description": "Index of the merchant service for this reward.",
+                                                            "minimum": 0,
+                                                            "maximum": 3
+                                                        },
+                                                        "apply_trial_data_modifiers": {
+                                                            "type": "boolean",
+                                                            "description": "Whether to apply trial data modifiers to this reward."
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "draft_pool"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
-                        }]
+                        ]
                     }
                 },
                 "description": "A reward definition that specifies the properties and behaviors of a reward that can be offered to the player."
             }
         }
-    }
+    },
+    "examples": [{
+        "rewards": [{
+            "id": "example_cardpool_reward",
+            "type": "cardpool",
+            "titles": {
+                "english": "Choose a Card"
+            },
+            "descriptions": {
+                "english": "Select a card to add to your deck."
+            },
+            "extensions": [{
+                "cardpool": {
+                    "cardpool": "@MyCardPool",
+                    "cost_overrides": [{
+                        "rarity": "common",
+                        "costs": [0]
+                    }, {
+                        "rarity": "uncommon",
+                        "costs": [0, 0]
+                    }, {
+                        "rarity": "rare",
+                        "costs": [0, 0, 0]
+                    }]
+                }
+            }]
+        }, {
+            "id": "example_draft_reward",
+            "type": "draft",
+            "titles": {
+                "english": "Draft a Card"
+            },
+            "descriptions": {
+                "english": "Choose a card to add to your deck."
+            },
+            "extensions": [{
+                "draft": {
+                    "draft_pool": "@MyCardPool",
+                    "class_type": "main",
+                    "draft_options_count": 3,
+                    "extra_copies": 0,
+                    "disable_skip": false,
+                    "ignore_relic_rarity_override": false,
+                    "use_run_rarity_floors": true,
+                    "flatten_rarity_for_draft_rate": false,
+                    "grant_single_card": false,
+                    "class_type_override": false,
+                    "use_draft_ticket_override_values": true,
+                    "rarity_floor": "common",
+                    "card_rarity_ticket_values": [{
+                        "rarity": "common",
+                        "value": 10
+                    }, {
+                        "rarity": "uncommon",
+                        "value": 5
+                    }, {
+                        "rarity": "rare",
+                        "value": 1
+                    }]
+                }
+            }]
+        }]
+    }]
 }

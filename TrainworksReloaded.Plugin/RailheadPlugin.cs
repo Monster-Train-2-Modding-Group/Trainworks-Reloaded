@@ -439,12 +439,17 @@ namespace TrainworksReloaded.Plugin
                     pipeline.Run(x);
                 });
                 c.Collection.Register<IFactory<RewardData>>(
-                    [typeof(CardPoolRewardDataFactory)],
+                    [typeof(CardPoolRewardDataFactory), typeof(DraftRewardDataFactory)],
                     Lifestyle.Singleton
                 );
                 c.RegisterDecorator(
                     typeof(IDataFinalizer),
                     typeof(CardPoolRewardDataFinalizerDecorator),
+                    xs => xs.ImplementationType == typeof(RewardDataFinalizer)
+                );
+                c.RegisterDecorator(
+                    typeof(IDataFinalizer),
+                    typeof(DraftRewardDataFinalizerDecorator),
                     xs => xs.ImplementationType == typeof(RewardDataFinalizer)
                 );
 

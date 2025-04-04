@@ -21,6 +21,7 @@ namespace TrainworksReloaded.Base.Character
         private readonly IRegister<CharacterTriggerData> triggerRegister;
         private readonly IRegister<VfxAtLoc> vfxRegister;
         private readonly IRegister<StatusEffectData> statusRegister;
+        private readonly IRegister<CardData> cardRegister;
         private readonly FallbackDataProvider dataProvider;
 
         public CharacterDataFinalizer(
@@ -30,6 +31,7 @@ namespace TrainworksReloaded.Base.Character
             IRegister<CharacterTriggerData> triggerRegister,
             IRegister<VfxAtLoc> vfxRegister,
             IRegister<StatusEffectData> statusRegister,
+            IRegister<CardData> cardRegister,
             FallbackDataProvider dataProvider
         )
         {
@@ -39,6 +41,7 @@ namespace TrainworksReloaded.Base.Character
             this.triggerRegister = triggerRegister;
             this.vfxRegister = vfxRegister;
             this.statusRegister = statusRegister;
+            this.cardRegister = cardRegister;
             this.dataProvider = dataProvider;
         }
 
@@ -78,6 +81,13 @@ namespace TrainworksReloaded.Base.Character
                         .Field(typeof(CharacterData), "characterPrefabVariantRef")
                         .SetValue(data, gameObject);
                 }
+            }
+
+            //handle ability
+            var ability = configuration.GetSection("ability").ParseString() ?? "";
+            if (!ability.IsNullOrEmpty() && cardRegister.TryLookupId(ability.ToId(key, TemplateConstants.Card), out var abilityCard, out var _))
+            {
+                AccessTools.Field(typeof(CharacterData), "ability").SetValue(data, abilityCard);
             }
 
             //handle triggers

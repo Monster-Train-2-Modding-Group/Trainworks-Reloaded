@@ -1,0 +1,19 @@
+{
+    "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/class_type.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "description": "The type of class for a draft reward. Can be a single value or multiple values combined with | separator",
+    "oneOf": [{
+            "type": "string",
+            "enum": [
+                "none",
+                "main",
+                "subclass",
+                "nonclass"
+            ]
+        },
+        {
+            "type": "string",
+            "pattern": "^(main|subclass|nonclass)(\\|(main|subclass|nonclass))+$"
+        }
+    ]
+}
