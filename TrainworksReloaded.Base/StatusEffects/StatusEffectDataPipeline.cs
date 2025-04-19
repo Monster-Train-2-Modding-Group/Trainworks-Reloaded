@@ -19,12 +19,19 @@ namespace TrainworksReloaded.Base.StatusEffects
     {
         private readonly PluginAtlas atlas;
         private readonly IModLogger<StatusEffectDataPipeline> logger;
+        private readonly IRegister<ReplacementStringData> replacementTextRegister;
         private readonly IRegister<LocalizationTerm> termRegister;
 
-        public StatusEffectDataPipeline(PluginAtlas atlas, IModLogger<StatusEffectDataPipeline> logger, IRegister<LocalizationTerm> termRegister)
+        public StatusEffectDataPipeline(
+            PluginAtlas atlas,
+            IModLogger<StatusEffectDataPipeline> logger,
+            IRegister<ReplacementStringData> replacementTextRegister,
+            IRegister<LocalizationTerm> termRegister
+        )
         {
             this.atlas = atlas;
             this.logger = logger;
+            this.replacementTextRegister = replacementTextRegister;
             this.termRegister = termRegister;
         }
 
@@ -116,6 +123,20 @@ namespace TrainworksReloaded.Base.StatusEffects
             {
                 localizationNotificationTerm.Key = baseKey + "_NotificationText";
                 termRegister.Register(localizationNotificationTerm.Key, localizationNotificationTerm);
+            }
+
+            var localizationReplacementTerm = configuration.GetSection("replacement_texts").ParseLocalizationTerm();
+            if (localizationReplacementTerm != null)
+            {
+                var replacement_key = $"{key}_{id}";
+                var loc_key = $"ReplacementStringsData_replacement-{replacement_key}";
+                localizationReplacementTerm.Key = loc_key;
+                termRegister.Register(localizationReplacementTerm.Key, localizationReplacementTerm);
+
+                ReplacementStringData replacement = new();
+                AccessTools.Field(typeof(ReplacementStringData), "_keyword").SetValue(replacement, replacement_key);
+                AccessTools.Field(typeof(ReplacementStringData), "_replacement").SetValue(replacement, localizationReplacementTerm.Key);
+                replacementTextRegister.Register(replacement_key, replacement);
             }
             
             var appliedSFXName = "";
@@ -240,7 +261,7 @@ namespace TrainworksReloaded.Base.StatusEffects
             var paramFloat = 0f;
             AccessTools
                 .Field(typeof(StatusEffectData), "paramFloat")
-                .SetValue(data, configuration.GetSection("param_secondary_int").ParseFloat() ?? paramFloat);
+                .SetValue(data, configuration.GetSection("param_float").ParseFloat() ?? paramFloat);
 
             var allowSecondaryTooltipPlacement = false;
             AccessTools

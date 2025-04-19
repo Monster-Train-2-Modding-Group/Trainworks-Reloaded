@@ -125,7 +125,7 @@ namespace TrainworksReloaded.Base.Effect
             }
 
             // Status effects.
-            var statusEffectStackMultiplier = configuration.GetSection("status_effect_multipler").ParseString() ?? "";
+            var statusEffectStackMultiplier = configuration.GetSection("status_effect_multiplier").ParseString() ?? "";
             if (!statusEffectStackMultiplier.IsNullOrEmpty())
             {
                 var statusEffectId = statusEffectStackMultiplier.ToId(key, TemplateConstants.StatusEffect);

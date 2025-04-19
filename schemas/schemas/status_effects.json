@@ -63,8 +63,8 @@
                         "description": "Whether to exclude monster propagation."
                     },
                     "hidden": {
-                        "type": "string",
-                        "description": "Condition for hiding the status effect."
+                        "type": "boolean",
+                        "description": "Whether to hide the icon and tooltip of this status effect."
                     },
                     "icon": {
                         "type": "string",
@@ -162,6 +162,10 @@
                         "type": "string",
                         "description": "Reference to the VFX played when the status effect is removed."
                     },
+                    "replacement_texts": {
+                        "$ref": "../definitions/parse_term.json",
+                        "description": "If provided, creates a replacement text of [modguid_statusId] for use in tooltip text and descriptions. This should be the status effect name within a bold tag. (ex. <b>Rage</b>)."
+                    }
                     "scales_in_endless": {
                         "type": "boolean",
                         "description": "Whether the status effect scales in endless mode."

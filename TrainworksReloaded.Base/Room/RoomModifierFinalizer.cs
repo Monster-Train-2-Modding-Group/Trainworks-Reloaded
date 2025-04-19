@@ -99,7 +99,7 @@ namespace TrainworksReloaded.Base.Room
                     .SetValue(data, upgradeLookup);
             }
 
-            var trigered_vfx = configuration.GetSection("trigered_vfx").ParseString();
+            var trigered_vfx = configuration.GetSection("triggered_vfx").ParseString();
             if (
                 trigered_vfx != null
                 && vfxRegister.TryLookupId(

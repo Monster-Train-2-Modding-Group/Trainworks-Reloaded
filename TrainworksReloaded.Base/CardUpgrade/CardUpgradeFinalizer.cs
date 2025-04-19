@@ -236,7 +236,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                     .Field(typeof(CardUpgradeData), "upgradesToRemove")
                     .SetValue(data, upgradesToRemove);
 
-            var appliedVFX = configuration.GetSection("attack_vfx").ParseString() ?? "";
+            var appliedVFX = configuration.GetSection("applied_vfx").ParseString() ?? "";
             if (
                 vfxRegister.TryLookupId(
                     appliedVFX.ToId(key, TemplateConstants.Vfx),
@@ -250,7 +250,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                     .SetValue(data, applied_vfx);
             }
 
-            var removedVFX = configuration.GetSection("attack_vfx").ParseString() ?? "";
+            var removedVFX = configuration.GetSection("removed_vfx").ParseString() ?? "";
             if (
                 vfxRegister.TryLookupId(
                     removedVFX.ToId(key, TemplateConstants.Vfx),
@@ -264,7 +264,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                     .SetValue(data, removed_vfx);
             }
 
-            var persistentVFX = configuration.GetSection("attack_vfx").ParseString() ?? "";
+            var persistentVFX = configuration.GetSection("persistent_vfx").ParseString() ?? "";
             if (
                 vfxRegister.TryLookupId(
                     persistentVFX.ToId(key, TemplateConstants.Vfx),

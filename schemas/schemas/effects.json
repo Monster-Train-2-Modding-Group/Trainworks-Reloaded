@@ -84,7 +84,7 @@
                         "type": "integer",
                         "description": "Minimum integer value for the effect."
                     },
-                    "param_multipler": {
+                    "param_multiplier": {
                         "type": "number",
                         "description": "Multiplier parameter for the effect. Defaults to 1.0"
                     },
@@ -130,7 +130,7 @@
                             "type": "string"
                         }
                     },
-                    "status_effect_multipler": {
+                    "status_effect_multiplier": {
                         "type": "string",
                         "description": "Status effect multiplier parameter."
                     },
@@ -166,7 +166,7 @@
                         "$ref": "../definitions/team.json",
                         "description": "Team to target."
                     },
-                    "use_health_missing_multipler": {
+                    "use_health_missing_multiplier": {
                         "type": "boolean",
                         "description": "Whether to use missing health as a multiplier."
                     },
@@ -174,7 +174,7 @@
                         "type": "boolean",
                         "description": "Whether to use an integer range for parameters."
                     },
-                    "use_magic_power_multipler": {
+                    "use_magic_power_multiplier": {
                         "type": "boolean",
                         "description": "Whether to use magic power as a multiplier."
                     },

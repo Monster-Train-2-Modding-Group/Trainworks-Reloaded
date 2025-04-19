@@ -149,6 +149,12 @@ namespace TrainworksReloaded.Plugin.Patches
             localization.LoadData();
             logger.Log(LogLevel.Info, "Localization data loaded");
 
+            //Add replacement strings
+            logger.Log(LogLevel.Info, "Loading replacement strings...");
+            var replacementStringRegistry = container.GetInstance<ReplacementStringRegistry>();
+            replacementStringRegistry.LoadData();
+            logger.Log(LogLevel.Info, "Replacement strings loaded");
+
             //Run finalization steps to populate data that required all other data to be loaded first
             logger.Log(LogLevel.Info, "Running finalization steps...");
             var finalizer = container.GetInstance<Finalizer>();

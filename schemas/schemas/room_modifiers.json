@@ -144,7 +144,7 @@
                         "type": "string",
                         "description": "Reference to the room modifier's sprite."
                     },
-                    "trigered_vfx": {
+                    "triggered_vfx": {
                         "type": "string",
                         "description": "Reference to the VFX played when triggered."
                     },

@@ -1,0 +1,23 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/replacement_texts.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "localization_terms": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "Miscellaneous additional localizations for use in mods used for various effects traits etc.",
+      "items": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "Localization key. Note this value must be unique across all mods otherwise the two mods using the key won't be compatible."
+          },
+          "texts": {
+            "$ref": "../definitions/parse_term.json",
+            "description": "Localized text descriptions for this term."
+          }
+        }
+      }
+    }
+  }
+}

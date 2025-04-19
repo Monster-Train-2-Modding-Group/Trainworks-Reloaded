@@ -227,7 +227,7 @@ namespace TrainworksReloaded.Base.Effect
                 .Field(typeof(CardEffectData), "useHealthMissingStackMultiplier")
                 .SetValue(
                     data,
-                    configuration.GetSection("use_health_missing_multipler").ParseBool()
+                    configuration.GetSection("use_health_missing_multiplier").ParseBool()
                         ?? useHealthMissingStackMultiplier
                 );
 
@@ -236,7 +236,7 @@ namespace TrainworksReloaded.Base.Effect
                 .Field(typeof(CardEffectData), "useMagicPowerMultiplier")
                 .SetValue(
                     data,
-                    configuration.GetSection("use_magic_power_multipler").ParseBool()
+                    configuration.GetSection("use_magic_power_multiplier").ParseBool()
                         ?? useMagicPowerMultiplier
                 );
 

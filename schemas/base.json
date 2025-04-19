@@ -41,11 +41,17 @@
         "game_objects": {
             "$ref": "schemas/game_objects.json#/properties/game_objects"
         },
+        "localization_terms": {
+            "$ref": "schemas/localization_terms.json#/properties/localization_terms"
+        }
         "map_nodes": {
             "$ref": "schemas/map_nodes.json#/properties/map_nodes"
         },
         "rewards": {
             "$ref": "schemas/rewards.json#/properties/rewards"
+        },
+        "replacement_texts": {
+            "$ref": "schemas/replacement_texts.json#/properties/replacement_texts"
         },
         "room_modifiers": {
             "$ref": "schemas/room_modifiers.json#/properties/room_modifiers"

@@ -143,6 +143,37 @@ namespace TrainworksReloaded.Plugin
                     CustomLocalizationTermRegistry,
                     CustomLocalizationTermRegistry
                 >();
+                c.Register<
+                    IDataPipeline<IRegister<LocalizationTerm>, LocalizationTerm>,
+                    LocalizationTermPipeline
+                >();
+                c.RegisterInitializer<IRegister<LocalizationTerm>>(x =>
+                {
+                    var pipeline = c.GetInstance<
+                        IDataPipeline<IRegister<LocalizationTerm>, LocalizationTerm>
+                    >();
+                    pipeline.Run(x);
+                });
+
+
+                //Register Replacement Strings
+                c.RegisterSingleton<IRegister<ReplacementStringData>, ReplacementStringRegistry>();
+                c.RegisterSingleton<
+                    ReplacementStringRegistry,
+                    ReplacementStringRegistry
+                >();
+                c.Register<
+                    IDataPipeline<IRegister<ReplacementStringData>, ReplacementStringData>,
+                    ReplacementStringPipeline
+                >();
+                c.RegisterInitializer<IRegister<ReplacementStringData>>(x =>
+                {
+                    var pipeline = c.GetInstance<
+                        IDataPipeline<IRegister<ReplacementStringData>, ReplacementStringData>
+                    >();
+                    pipeline.Run(x);
+                });
+
 
                 c.RegisterConditional(
                     typeof(ICache<>),

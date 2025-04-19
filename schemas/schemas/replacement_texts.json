@@ -1,0 +1,23 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/replacement_texts.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "replacement_texts": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "A collection of all miscellaneous replacement texts for use in mods. To use, within a description use the text [modguid_key]. This is not needed for status effects which are auto added.",
+      "items": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "Key for the replacement text."
+          },
+          "texts": {
+            "$ref": "../definitions/parse_term.json",
+            "description": "Replacement text for this key."
+          }
+        }
+      }
+    }
+  }
+}

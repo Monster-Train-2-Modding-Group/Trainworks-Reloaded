@@ -249,7 +249,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             AccessTools.Field(typeof(CardUpgradeMaskData), "requiredCardTraits").SetValue(data, requiredTraits);
 
             List<string> excludedTraits = [];
-            foreach (var child in configuration.GetSection("required_traits").GetChildren())
+            foreach (var child in configuration.GetSection("excluded_traits").GetChildren())
             {
                 var effectType = ParseEffectType<CardTraitState>(child, key, atlas);
                 if (effectType != null)
