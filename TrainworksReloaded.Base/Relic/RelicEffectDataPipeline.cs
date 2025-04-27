@@ -123,8 +123,7 @@ namespace TrainworksReloaded.Base.Relic
 
             var paramInt2 = config.GetSection("param_int_2").ParseInt() ?? 0;
             AccessTools.Field(typeof(RelicEffectData), "paramInt2").SetValue(data, paramInt2);
-
-
+            
             // Handle float parameter
             var paramFloat = config.GetSection("param_float").ParseFloat() ?? 0;
             AccessTools.Field(typeof(RelicEffectData), "paramFloat").SetValue(data, paramFloat);
@@ -143,6 +142,8 @@ namespace TrainworksReloaded.Base.Relic
             var paramString = config.GetSection("param_string").ParseString() ?? "";
             AccessTools.Field(typeof(RelicEffectData), "paramString").SetValue(data, paramString);
 
+            var paramTrigger = config.GetSection("param_trigger").ParseString() ?? "";
+            AccessTools.Field(typeof(RelicEffectData), "paramTrigger").SetValue(data, paramTrigger);
 
             // Handle character subtype
             var characterSubtype = config.GetSection("character_subtype").ParseString() ?? "SubtypesData_None";
