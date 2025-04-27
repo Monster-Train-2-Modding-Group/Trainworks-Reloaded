@@ -61,6 +61,10 @@
                         "type": "string",
                         "description": "String parameter"
                     },
+                    "param_trigger": {
+                        "type": "string",
+                        "description": "String id of targetted trigger"
+                    },
                     "character_subtype": {
                         "type": "string",
                         "description": "Character subtype parameter"
