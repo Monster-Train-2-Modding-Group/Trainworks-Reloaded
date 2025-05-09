@@ -1,90 +1,93 @@
 {
-    "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/base.json",
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "properties": {
-        "relics": {
-            "$ref": "schemas/relics.json#/properties/relics"
-        },
-        "relic_effects": {
-            "$ref": "schemas/relic_effects.json#/properties/relic_effects"
-        },
-        "atlas_icons": {
-            "$ref": "schemas/atlas_icons.json#/properties/atlas_icons"
-        },
-        "card_pools": {
-            "$ref": "schemas/card_pools.json#/properties/card_pools"
-        },
-        "card_triggers": {
-            "$ref": "schemas/card_triggers.json#/properties/card_triggers"
-        },
-        "card_trigger_types": {
-            "$ref": "schemas/card_trigger_types.json#/properties/card_trigger_types"
-        },
-        "cards": {
-            "$ref": "schemas/cards.json#/properties/cards"
-        },
-        "character_triggers": {
-            "$ref": "schemas/character_triggers.json#/properties/character_triggers"
-        },
-        "character_trigger_types": {
-            "$ref": "schemas/character_trigger_types.json#/properties/character_trigger_types"
-        },
-        "characters": {
-            "$ref": "schemas/characters.json#/properties/characters"
-        },
-        "chatter": {
-            "$ref": "schemas/chatter.json#/properties/chatter"
-        },
-        "classes": {
-            "$ref": "schemas/classes.json#/properties/classes"
-        },
-        "effects": {
-            "$ref": "schemas/effects.json#/properties/effects"
-        },
-        "enhancer_pools": {
-            "$ref": "schemas/enhancer_pools.json#/properties/enhancer_pools"
-        },
-        "game_objects": {
-            "$ref": "schemas/game_objects.json#/properties/game_objects"
-        },
-        "localization_terms": {
-            "$ref": "schemas/localization_terms.json#/properties/localization_terms"
-        }
-        "map_nodes": {
-            "$ref": "schemas/map_nodes.json#/properties/map_nodes"
-        },
-        "relic_pools": {
-            "$ref": "schemas/relic_pools.json#/properties/relic_pools"
-        },
-        "replacement_texts": {
-            "$ref": "schemas/replacement_texts.json#/properties/replacement_texts"
-        },
-        "rewards": {
-            "$ref": "schemas/rewards.json#/properties/rewards"
-        },
-        "room_modifiers": {
-            "$ref": "schemas/room_modifiers.json#/properties/room_modifiers"
-        },
-        "sprites": {
-            "$ref": "schemas/sprites.json#/properties/sprites"
-        },
-        "status_effects": {
-            "$ref": "schemas/status_effects.json#/properties/status_effects"
-        },
-        "subtypes": {
-            "$ref": "schemas/subtypes.json#/properties/subtypes"
-        },
-        "traits": {
-            "$ref": "schemas/traits.json#/properties/traits"
-        },
-        "upgrade_masks": {
-            "$ref": "schemas/upgrade_masks.json#/properties/upgrade_masks"
-        },
-        "upgrades": {
-            "$ref": "schemas/upgrades.json#/properties/upgrades"
-        },
-        "vfxs": {
-            "$ref": "schemas/vfxs.json#/properties/vfxs"
-        }
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/base.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "asset_bundles": {
+      "$ref": "schemas/asset_bundles.json#/properties/asset_bundles"
+    },
+    "atlas_icons": {
+      "$ref": "schemas/atlas_icons.json#/properties/atlas_icons"
+    },
+    "card_pools": {
+      "$ref": "schemas/card_pools.json#/properties/card_pools"
+    },
+    "card_trigger_types": {
+      "$ref": "schemas/card_trigger_types.json#/properties/card_trigger_types"
+    },
+    "card_triggers": {
+      "$ref": "schemas/card_triggers.json#/properties/card_triggers"
+    },
+    "cards": {
+      "$ref": "schemas/cards.json#/properties/cards"
+    },
+    "character_trigger_types": {
+      "$ref": "schemas/character_trigger_types.json#/properties/character_trigger_types"
+    },
+    "character_triggers": {
+      "$ref": "schemas/character_triggers.json#/properties/character_triggers"
+    },
+    "characters": {
+      "$ref": "schemas/characters.json#/properties/characters"
+    },
+    "chatter": {
+      "$ref": "schemas/chatter.json#/properties/chatter"
+    },
+    "classes": {
+      "$ref": "schemas/classes.json#/properties/classes"
+    },
+    "effects": {
+      "$ref": "schemas/effects.json#/properties/effects"
+    },
+    "enhancer_pools": {
+      "$ref": "schemas/enhancer_pools.json#/properties/enhancer_pools"
+    },
+    "game_objects": {
+      "$ref": "schemas/game_objects.json#/properties/game_objects"
+    },
+    "localization_terms": {
+      "$ref": "schemas/localization_terms.json#/properties/localization_terms"
+    },
+    "map_nodes": {
+      "$ref": "schemas/map_nodes.json#/properties/map_nodes"
+    },
+    "relic_effects": {
+      "$ref": "schemas/relic_effects.json#/properties/relic_effects"
+    },
+    "relic_pools": {
+      "$ref": "schemas/relic_pools.json#/properties/relic_pools"
+    },
+    "relics": {
+      "$ref": "schemas/relics.json#/properties/relics"
+    },
+    "replacement_texts": {
+      "$ref": "schemas/replacement_texts.json#/properties/replacement_texts"
+    },
+    "rewards": {
+      "$ref": "schemas/rewards.json#/properties/rewards"
+    },
+    "room_modifiers": {
+      "$ref": "schemas/room_modifiers.json#/properties/room_modifiers"
+    },
+    "sprites": {
+      "$ref": "schemas/sprites.json#/properties/sprites"
+    },
+    "status_effects": {
+      "$ref": "schemas/status_effects.json#/properties/status_effects"
+    },
+    "subtypes": {
+      "$ref": "schemas/subtypes.json#/properties/subtypes"
+    },
+    "traits": {
+      "$ref": "schemas/traits.json#/properties/traits"
+    },
+    "upgrade_masks": {
+      "$ref": "schemas/upgrade_masks.json#/properties/upgrade_masks"
+    },
+    "upgrades": {
+      "$ref": "schemas/upgrades.json#/properties/upgrades"
+    },
+    "vfxs": {
+      "$ref": "schemas/vfxs.json#/properties/vfxs"
     }
+  }
 }

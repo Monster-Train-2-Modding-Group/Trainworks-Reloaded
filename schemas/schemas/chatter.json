@@ -30,7 +30,7 @@
           "female"
         ],
         "description": "Gender."
-      },
+      }
       "id": {
         "type": "string",
         "description": "Unique identifier for this chatter."

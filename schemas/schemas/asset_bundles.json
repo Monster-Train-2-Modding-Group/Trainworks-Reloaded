@@ -1,0 +1,26 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/asset_bundles.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "asset_bundles": {
+      "type": "array",
+      "description": "An array of asset bundles. AssetBundles are used for packing many game objects and assets together.",
+      "items": {
+        "required": [
+          "id",
+          "path"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the AssetBundle."
+          },
+          "path": {
+            "type": "string",
+            "description": "The path to the AssetBundle."
+          }
+        }
+      }
+    }
+  }
+}
