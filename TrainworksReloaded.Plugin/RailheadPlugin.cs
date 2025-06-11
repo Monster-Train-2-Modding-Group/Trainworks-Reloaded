@@ -139,6 +139,7 @@ namespace TrainworksReloaded.Plugin
                         typeof(CharacterChatterFinalizer),
                         typeof(RelicDataFinalizer),
                         typeof(RelicEffectDataFinalizer),
+                        typeof(RelicEffectConditionFinalizer),
                         typeof(GameObjectFinalizer),
                     ]
                 );
@@ -615,6 +616,20 @@ namespace TrainworksReloaded.Plugin
                 {
                     var pipeline = c.GetInstance<
                         IDataPipeline<IRegister<RelicEffectData>, RelicEffectData>
+                    >();
+                    pipeline.Run(x);
+                });
+
+                c.RegisterSingleton<IRegister<RelicEffectCondition>, RelicEffectConditionRegister>();
+                c.RegisterSingleton<RelicEffectConditionRegister, RelicEffectConditionRegister>();
+                c.Register<
+                    IDataPipeline<IRegister<RelicEffectCondition>, RelicEffectCondition>,
+                    RelicEffectConditionPipeline
+                >();
+                c.RegisterInitializer<IRegister<RelicEffectCondition>>(x =>
+                {
+                    var pipeline = c.GetInstance<
+                        IDataPipeline<IRegister<RelicEffectCondition>, RelicEffectCondition>
                     >();
                     pipeline.Run(x);
                 });

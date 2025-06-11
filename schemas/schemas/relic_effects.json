@@ -31,6 +31,13 @@
             },
             "description": "Array of card triggers"
           },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/reference.json"
+            },
+            "description": "Array of references to RelicEffectConditions."
+          },
           "param_card_type": {
             "$ref": "../definitions/card_type.json",
             "description": "Card type parameter",

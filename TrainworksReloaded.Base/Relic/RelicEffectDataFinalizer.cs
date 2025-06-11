@@ -29,6 +29,7 @@ namespace TrainworksReloaded.Base.Relic
         private readonly IRegister<RelicData> relicRegister;
         private readonly IRegister<CharacterTriggerData.Trigger> triggerEnumRegister;
         private readonly IRegister<EnhancerPool> enhancerPoolRegister;
+        private readonly IRegister<RelicEffectCondition> relicEffectConditionRegister;
 
         public RelicEffectDataFinalizer(
             IModLogger<RelicEffectDataFinalizer> logger,
@@ -48,7 +49,8 @@ namespace TrainworksReloaded.Base.Relic
             IRegister<VfxAtLoc> vfxRegister,
             IRegister<RelicData> relicRegister,
             IRegister<CharacterTriggerData.Trigger> triggerEnumRegister,
-            IRegister<EnhancerPool> enhancerPoolRegister
+            IRegister<EnhancerPool> enhancerPoolRegister,
+            IRegister<RelicEffectCondition> relicEffectConditionRegister
         )
         {
             this.logger = logger;
@@ -69,6 +71,7 @@ namespace TrainworksReloaded.Base.Relic
             this.relicRegister = relicRegister;
             this.triggerEnumRegister = triggerEnumRegister;
             this.enhancerPoolRegister = enhancerPoolRegister;
+            this.relicEffectConditionRegister = relicEffectConditionRegister;
         }
 
         public void FinalizeData()
@@ -379,6 +382,23 @@ namespace TrainworksReloaded.Base.Relic
             AccessTools
                 .Field(typeof(RelicEffectData), "additionalTooltips")
                 .SetValue(data, tooltips.ToArray());
+
+            var conditions = new List<RelicEffectCondition>();
+            var conditionReferences = configuration
+                .GetSection("conditions")
+                .GetChildren()
+                .Select(x => x.ParseReference())
+                .Where(x => x != null)
+                .Cast<ReferencedObject>();
+            foreach (var reference in conditionReferences)
+            {
+                var id = reference.ToId(key, TemplateConstants.RelicEffectCondition);
+                if (relicEffectConditionRegister.TryLookupName(id, out var lookup, out var _))
+                {
+                    conditions.Add(lookup);
+                }
+            }
+            AccessTools.Field(typeof(RelicEffectData), "effectConditions").SetValue(data, conditions);
         }
     }
 }

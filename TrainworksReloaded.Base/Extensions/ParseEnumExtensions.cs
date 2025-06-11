@@ -15,6 +15,7 @@ using static CharacterUI;
 using static MetagameSaveData;
 using static TooltipDesigner;
 using static VfxAtLoc;
+using static RelicEffectCondition;
 
 namespace TrainworksReloaded.Base.Extensions
 {
@@ -288,40 +289,57 @@ namespace TrainworksReloaded.Base.Extensions
             };
         }
 
+        private static CardTargetMode? DoParseCardTargetMode(string? val)
+        {
+            if (val == null)
+                return null;
+            return val.ToLower() switch
+            {
+                "none" => CardTargetMode.NONE,
+                "all" => CardTargetMode.All,
+                "single" => CardTargetMode.SingleTarget,
+                "targetless" => CardTargetMode.Targetless,
+                "other" => CardTargetMode.Other,
+                _ => null
+            };
+        }
+
         public static CardTargetMode? ParseCardTargetMode(this IConfigurationSection section)
         {
             var val = section.Value;
             if (string.IsNullOrEmpty(val))
             {
-                return null;
-            }
-            
-            val = val.ToLower();
-            var values = val.Split('|', StringSplitOptions.RemoveEmptyEntries)
-                           .Select(v => v.Trim())
-                           .ToList();
-
-            CardTargetMode result = CardTargetMode.All;
-            foreach (var value in values)
-            {
-                CardTargetMode? flag = value switch
-                {
-                    "none" => CardTargetMode.NONE,
-                    "all" => CardTargetMode.All,
-                    "single" => CardTargetMode.SingleTarget,
-                    "targetless" => CardTargetMode.Targetless,
-                    "other" => CardTargetMode.Other,
-                    _ => null
-                };
-
-                if (flag == null)
+                if (!section.GetChildren().Any())
                 {
                     return null;
                 }
-
-                result |= flag.Value;
+                CardTargetMode ret = CardTargetMode.All;
+                foreach (var child in section.GetChildren())
+                {
+                    var flag = DoParseCardTargetMode(child.Value);
+                    if (flag == null)
+                        return null;
+                    ret |= flag.Value;
+                }
+                return ret;
             }
-            return result;
+            else
+            {
+                var values = val.Split('|', StringSplitOptions.RemoveEmptyEntries)
+                               .Select(v => v.Trim())
+                               .ToList();
+
+                CardTargetMode result = CardTargetMode.All;
+                foreach (var value in values)
+                {
+                    var flag = DoParseCardTargetMode(value);
+                    if (flag == null)
+                        return null;
+                    result |= flag.Value;
+                }
+                return result;
+            }
+
         }
 
         public static object ParseCompareOperator(this IConfigurationSection section, string defaultVal = "and")
@@ -1116,6 +1134,60 @@ namespace TrainworksReloaded.Base.Extensions
                 return defaultValue;
             }
             return value.Value;
+        }
+
+        private static Comparator? DoParseComparator(string? val)
+        {
+            if (string.IsNullOrEmpty(val))
+                return null;
+            return val.ToLower() switch
+            {
+                "less_than" => Comparator.LessThan,
+                "greater_than" => Comparator.GreaterThan,
+                "equal" => Comparator.Equal,
+                _ => null
+            };
+        }
+
+        public static Comparator? ParseComparator(this IConfigurationSection section)
+        {
+            var val = section.Value;
+            if (string.IsNullOrEmpty(val))
+            {
+                if (!section.GetChildren().Any())
+                {
+                    return null;
+                }
+                Comparator? ret = 0;
+                foreach (var child in section.GetChildren())
+                {
+                    var flag = DoParseComparator(child.Value);
+                    if (flag == null)
+                    {
+                        return null;
+                    }
+                    ret |= flag.Value;
+                }
+                return ret;
+            }
+            else
+            {
+                var values = val.Split('|', StringSplitOptions.RemoveEmptyEntries)
+                               .Select(v => v.Trim())
+                               .ToList();
+
+                Comparator result = 0;
+                foreach (var value in values)
+                {
+                    Comparator? flag = DoParseComparator(value);
+                    if (flag == null)
+                    {
+                        return null;
+                    }
+                    result |= flag.Value;
+                }
+                return result;
+            }
         }
     }
 }

@@ -41,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "schemas", "schemas", "{7F34
 		schemas\schemas\map_nodes.json = schemas\schemas\map_nodes.json
 		schemas\schemas\relics.json = schemas\schemas\relics.json
 		schemas\schemas\relic_effects.json = schemas\schemas\relic_effects.json
+		schemas\schemas\relic_effect_conditions.json = schemas\schemas\relic_effect_conditions.json
 		schemas\schemas\relic_pools.json = schemas\schemas\relic_pools.json
 		schemas\schemas\replacement_texts.json = schemas\schemas\replacement_texts.json
 		schemas\schemas\rewards.json = schemas\schemas\rewards.json

@@ -137,15 +137,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 .Cast<CardType>().ToList();
             AccessTools.Field(typeof(CardUpgradeMaskData), "additionalCardTypes").SetValue(data, cardTypes);
 
-            CardTargetMode targetMode = CardTargetMode.All;
-            foreach (var child in configuration.GetSection("card_target_mode").GetChildren())
-            {
-                var parsedMode = child.ParseCardTargetMode();
-                if (parsedMode != null)
-                {
-                    targetMode |= parsedMode.Value;
-                }
-            }
+            CardTargetMode targetMode = configuration.GetSection("card_target_mode").ParseCardTargetMode() ?? CardTargetMode.All;
             AccessTools.Field(typeof(CardUpgradeMaskData), "cardTargetMode").SetValue(data, targetMode);
 
             var raritesRequired = configuration

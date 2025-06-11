@@ -1,0 +1,57 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/relic_effect_conditions.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "relic_effect_conditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "allow_multiple_triggers_per_duration": {
+            "type": "boolean",
+            "description": "Allow multiple triggers per duration that is defined by the entry duration. This can be used to limit a relic from triggerring more than X times per turn or per battle."
+          },
+          "param_card_type": {
+            "$ref": "../definitions/card_type_target.json",
+            "description": "Card type target parameter for reading tracked value statistics."
+          },
+          "param_comparator": {
+            "$ref": "../definitions/comparator.json",
+            "description": "Operator for excluded status effects.",
+            "default": [ "equal", "greater_than" ]
+          },
+          "param_entry_duration": {
+            "$ref": "../definitions/entry_duration.json",
+            "description": "Duration of the tracked value statistic to fetch"
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique identifier for this relic effect condition."
+          },
+          "param_int": {
+            "type": "integer",
+            "description": "Integer parameter for the relic effect condition."
+          },
+          "param_subtype": {
+            "$ref": "../definitions/subtype.json",
+            "description": "Subtype parameter.",
+            "default": "SubtypesData_None"
+          },
+          "param_tracked_value": {
+            "$ref": "../definitions/tracked_value_type.json",
+            "description": "The tracked variable statistic to get for the relic effect condition.",
+            "default": "subtype_in_deck"
+          },
+          "param_track_trigger_count": {
+            "type": "boolean",
+            "description": "Determines if we should use the total trigger count as the tracked value instead of using a value from CardStatistics. Use this to limit triggers to X per turn or per battle."
+          }
+        }
+      },
+      "description": "Array of relic effect definitions"
+    }
+  },
+  "type": "object"
+}

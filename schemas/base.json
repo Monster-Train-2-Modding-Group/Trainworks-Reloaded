@@ -50,6 +50,9 @@
     "map_nodes": {
       "$ref": "schemas/map_nodes.json#/properties/map_nodes"
     },
+    "relic_effect_conditions": {
+      "$ref": "schemas/relic_effect_conditions.json#/properties/relic_effect_conditions"
+    },
     "relic_effects": {
       "$ref": "schemas/relic_effects.json#/properties/relic_effects"
     },
