@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MonsterTrain2.Api" Version="0.3.18299144" />
+    <PackageReference Include="MonsterTrain2.Api" Version="1.0.18556407" />
     <PackageReference Include="UnityEngine.Modules" Version="2022.3.54" IncludeAssets="compile" />
     <PackageReference Include="BepInEx.Core" Version="5.4.21" />
   </ItemGroup>
