@@ -1,0 +1,18 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/trial_list.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "anyOf": [
+    {
+      "type": "string",
+      "enum": [
+        "T1Trials",
+        "T2Trials",
+        "T3Trials"
+      ]
+    },
+    {
+      "$ref": "../definitions/reference.json"
+    }
+  ],
+  "description": "List of trials that are shared among trials of the same set of rings."
+}

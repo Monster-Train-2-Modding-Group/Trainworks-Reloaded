@@ -1,0 +1,32 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/trial.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "anyOf": [
+    {
+      "type": "string",
+      "enum": [
+        "T1Draw",
+        "T1Ember",
+        "T1EnemyTitanskin",
+        "T1nvasion",
+        "T2ArtifactForEnemyMultistrike",
+        "T2ArtifactForHealOnAscend",
+        "T2Draw",
+        "T2Ember",
+        "T2EnemyTitanskin",
+        "T2FrontReanimation",
+        "T2Invasion",
+        "T2SpikeRocks",
+        "T3Ember",
+        "T3FrontReanimation",
+        "T3HealOnAscend",
+        "T3Invasion",
+        "T3SpikeRocks"
+      ]
+    },
+    {
+      "$ref": "../definitions/reference.json"
+    }
+  ],
+  "description": "Trials are optional challenges you take in the battle intro screen, they consist of a sin, along with a reward for completing the trial."
+}

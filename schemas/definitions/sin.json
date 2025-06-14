@@ -1,0 +1,51 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/sin.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "anyOf": [
+    {
+      "type": "string",
+      "enum": [
+        "BlightsInDeck_T1",
+        "BlightsInDeck_T2",
+        "Enemy_AddMultistrike",
+        "Enemy_Boss_Level3Push",
+        "Enemy_Boss_Level3Push_TitanTrial",
+        "Enemy_Boss_Level3Rage",
+        "Enemy_Boss_Level3Rage_TitanTrial",
+        "Enemy_Boss_Level3SiphonRage",
+        "Enemy_Boss_Level3SiphonRage_TitanTrial",
+        "Enemy_CorruptSeraph_AddMeleeWeaknessToUnit",
+        "Enemy_CorruptSeraph_AddMeleeWeaknessToUnit_TitanTrial",
+        "Enemy_CorruptSeraph_ApplyStatuses",
+        "Enemy_CorruptSeraph_ApplyStatuses_TitanTrial",
+        "Enemy_CorruptSeraph_BuffAllies",
+        "Enemy_CorruptSeraph_BuffAllies_TitanTrial",
+        "Enemy_EndlessScaling",
+        "Enemy_FrontReanimationT2",
+        "Enemy_FrontReanimationT3",
+        "Enemy_HealOnAscend",
+        "Enemy_LowerDraw",
+        "Enemy_LowerEmberT1",
+        "Enemy_LowerEmberT2",
+        "Enemy_LowerEmberT3",
+        "Enemy_SpawnHeroEaterFeedAtkHP",
+        "Enemy_SpawnHeroEaterFeedAtkHP_TitanTrial",
+        "Enemy_SpawnHeroEaterFeedDamageShield",
+        "Enemy_SpawnHeroEaterFeedDamageShield_TitanTrial",
+        "Enemy_SpawnHeroEaterFeedLifesteal",
+        "Enemy_SpawnHeroEaterFeedLifesteal_TitanTrial",
+        "Enemy_SpawnHordeT1",
+        "Enemy_SpawnHordeT2",
+        "Enemy_SpawnHordeT3",
+        "Enemy_SpawnSpikeRocksT2",
+        "Enemy_SpawnSpikeRocksT3",
+        "Enemy_TitanskinT1",
+        "Enemy_TitanskinT2"
+      ]
+    },
+    {
+      "$ref": "../definitions/reference.json"
+    }
+  ],
+  "description": "Sins are ehemy blessings given as part of a trial."
+}
