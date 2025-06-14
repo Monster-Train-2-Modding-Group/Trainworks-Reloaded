@@ -1,0 +1,131 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/rewards.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "scenarios": {
+      "type": "array",
+      "description": "A collection of all rewards in the game, defining their properties, costs, and behaviors.",
+      "items": {
+        "properties": {
+          "background": {
+            "$ref": "../definitions/background.json",
+            "description": "Reference to background data for the scenario."
+          },
+          "battle_track_name": {
+            "type": "string",
+            "description": "Music to play for the scenario."
+          },
+          "boss_icon": {
+            "$ref": "../definitions/reference.json",
+            "description": "Reference to a sprite for the boss icon."
+          },
+          "boss_portrait": {
+            "$ref": "../definitions/reference.json",
+            "description": "Reference to a sprite for the boss portrait."
+          },
+          "boss_spawn_sfx_cue": {
+            "type": "string",
+            "description": "Sound effect for the boss spawning."
+          },
+          "boss_variant": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/character.json"
+            },
+            "description": "Array of mini-boss characters for this scenario."
+          },
+          "descriptions": {
+            "$ref": "../definitions/parse_term.json",
+            "description": "Localization data for the scenario's description"
+          },
+          "difficulty": {
+            "type": "string",
+            "enum": [ "normal", "hard", "boss" ],
+            "description": "Difficulty of the scenario."
+          },
+          "displayed_enemies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [ "character"],
+              "properties": {
+                "character": {
+                  "$ref": "../definitions/character.json"
+                },
+                "offset": {
+                  "$ref": "../definitions/vec2.json",
+                  "default": {"x": 0.0, "y": 0.0}
+                }
+              }
+            },
+            "description": "Displayed characters with their offsets for the battle intro screen when this scenario starts."
+          },
+          "enemy_blessing": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/sin.json"
+            },
+            "description": "Array of references to sin type relics for enemy blessings."
+          },
+          "ftue_card_draws": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/card.json"
+            },
+            "description": "Array of references to cards to give if this is a FTUE (first time user experience) scenario."
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique identifier for this scenario."
+          },
+          "max_treasure_units": {
+            "type": "integer",
+            "description": "Maximum number of treasure units (collectors)."
+          },
+          "min_treasure_units": {
+            "type": "integer",
+            "description": "Minimum number of treasure units (collectors)."
+          },
+          "names": {
+            "$ref": "../definitions/parse_term.json",
+            "description": "Localization data for the scenario's name"
+          },
+          "override": {
+            "$ref": "../definitions/override_mode.json",
+            "description": "Override an existing scenario"
+          },
+          "prefab": {
+            "$ref": "../definitions/reference.json",
+            "description": "Reference to the map node prefab. Should be imported as Map Node Icon."
+          },
+          "spawn_pattern": {
+            "$ref": "../definitions/spawn_pattern.json",
+            "description": "Defines the waves of enemies and the flying boss character used."
+          },
+          "starting_energy": {
+            "type": "integer",
+            "description": "Starting ember for the scenario."
+          },
+          "titan_trial": {
+            "$ref": "../definitions/sin.json",
+            "description": "Reference to a sin type relic representing the titan trial for a flying boss."
+          },
+          "treasure_character_pool": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/character.json"
+            }
+          },
+          "trials": {
+            "$ref": "../definitions/trials.json",
+            "description": "Reference to a list of trials possible for this scenario."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    }
+  }
+}

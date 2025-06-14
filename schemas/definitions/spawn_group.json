@@ -1,0 +1,31 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/spawn_group.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "wave_messages": {
+      "$ref": "../definitions/parse_term.json"
+    },
+    "spawn_list": {
+      "type": "object",
+      "properties": {
+        "character": {
+          "$ref": "../definitions/character.json",
+          "description": "Character reference to spawn."
+        },
+        "required_covenant": {
+          "type": "integer",
+          "description": "Required covenant level."
+        },
+        "suppress_spawn": {
+          "type": "boolean",
+          "description": "If Required Covenant is set, Character wont spawn (nor in successive Covenant levels)."
+        },
+        "use_boss_character": {
+          "type": "boolean",
+          "description": "Use boss character."
+        }
+      }
+    }
+  }
+}
