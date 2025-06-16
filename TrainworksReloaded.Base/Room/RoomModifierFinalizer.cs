@@ -95,7 +95,7 @@ namespace TrainworksReloaded.Base.Room
             var upgradeReference = configuration.GetSection("param_upgrade").ParseReference();
             if (
                 upgradeReference != null
-                && upgradeDataRegister.TryLookupId(
+                && upgradeDataRegister.TryLookupName(
                     upgradeReference.ToId(key, TemplateConstants.Upgrade),
                     out var upgradeLookup,
                     out var _
