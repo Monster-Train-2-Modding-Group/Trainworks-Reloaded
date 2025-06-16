@@ -318,7 +318,7 @@ namespace TrainworksReloaded.Base.Character
             var relicReference = relicConfig.ParseReference();
             if (relicReference != null)
             {
-                relicRegister.TryLookupId(relicReference.ToId(key, TemplateConstants.RelicData), out var relic, out var _);
+                relicRegister.TryLookupName(relicReference.ToId(key, TemplateConstants.RelicData), out var relic, out var _);
                 AccessTools.Field(typeof(RelicEffectData), "enemyRelicData").SetValue(data, relic);
             }
             if (overrideMode == OverrideMode.Replace && relicReference == null && relicConfig.Exists())

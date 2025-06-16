@@ -212,7 +212,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             foreach (var removeUpgradeReference in upgradesToRemoveReferences)
             {
                 var id = removeUpgradeReference.ToId(key, TemplateConstants.Upgrade);
-                if (upgradeRegister.TryLookupId(id, out var upgrade, out var _))
+                if (upgradeRegister.TryLookupName(id, out var upgrade, out var _))
                 {
                     upgradesToRemove.Add(upgrade);
                 }

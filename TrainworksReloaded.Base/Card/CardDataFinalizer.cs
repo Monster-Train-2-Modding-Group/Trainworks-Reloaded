@@ -275,7 +275,7 @@ namespace TrainworksReloaded.Base.Card
             foreach (var upgradeReference in initialUpgradeReferences)
             {
                 var id = upgradeReference.ToId(key, TemplateConstants.Upgrade);
-                if (upgradeRegister.TryLookupId(id, out var upgrade, out var _))
+                if (upgradeRegister.TryLookupName(id, out var upgrade, out var _))
                 {
                     initialUpgrades.Add(upgrade);
                 }
