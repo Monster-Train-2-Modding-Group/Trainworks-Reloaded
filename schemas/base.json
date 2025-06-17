@@ -5,7 +5,7 @@
     "atlas_icons": {
       "$ref": "schemas/atlas_icons.json#/properties/atlas_icons"
     },
-    "additional_toolitps": {
+    "additional_tooltips": {
       "$ref": "schemas/additional_tooltips.json#/properties/additional_tooltips"
     }
     "card_pools": {
