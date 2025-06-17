@@ -7,7 +7,7 @@
     },
     "additional_tooltips": {
       "$ref": "schemas/additional_tooltips.json#/properties/additional_tooltips"
-    }
+    },
     "card_pools": {
       "$ref": "schemas/card_pools.json#/properties/card_pools"
     },
