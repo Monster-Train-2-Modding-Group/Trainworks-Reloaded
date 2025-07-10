@@ -83,5 +83,8 @@
     <Content Include="$(NuGetPackages)\newtonsoft.json\13.0.3\lib\netstandard2.0\*.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="$(NuGetPackages)\csvhelper\33.1.0\lib\netstandard2.1\*.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

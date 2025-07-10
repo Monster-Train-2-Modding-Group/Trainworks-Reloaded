@@ -253,6 +253,12 @@ namespace TrainworksReloaded.Base.Extensions
             // think it could be a null value even if defined as a string explicitly.
             string def = english ?? "";
 
+            var other_languages = section.GetSection("other_languages").GetChildren()
+                .Where(x => x.GetSection("language").Value != null)
+                .ToDictionary(
+                    x => x.GetSection("language").ParseString() ?? "",
+                    x => x.GetSection("translation").ParseLocalization() ?? def);
+
             return new LocalizationTerm()
             {
                 Key = key ?? "",
@@ -270,6 +276,7 @@ namespace TrainworksReloaded.Base.Extensions
                 ChineseTraditional = chinese_traditional ?? def,
                 Korean = korean ?? def,
                 Japanese = japanese ?? def,
+                OtherLanguages = other_languages
             };
         }
 

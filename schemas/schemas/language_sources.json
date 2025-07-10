@@ -1,0 +1,33 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/language_sources.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "language_sources": {
+      "type": "array",
+      "description": "Additional language sources along with the localization data for langauge. Only to be used to add an additional languages to the game.",
+      "items": {
+        "required": [
+          "language",
+          "csv_paths"
+        ],
+        "properties": {
+          "language": {
+            "minLength": 1,
+            "type": "string",
+            "description": "I2.Loc langauge id for language. Must not exist."
+          },
+          "csv_paths": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "minLength": 1,
+              "type": "string",
+              "description": "Path to the two csv files with the translations for keys for langauge id per language source (Should be 0_Default.csv, 1_Default.csv)."
+            }
+          }
+        }
+      }
+    }
+  }
+}
