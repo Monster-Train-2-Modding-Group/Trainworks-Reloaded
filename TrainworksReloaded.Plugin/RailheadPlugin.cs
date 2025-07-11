@@ -145,6 +145,20 @@ namespace TrainworksReloaded.Plugin
                 );
 
                 //Register Localization
+                c.RegisterSingleton<IRegister<Base.Localization.LanguageSource>, LanguageSourceRegister>();
+                c.RegisterSingleton<LanguageSourceRegister, LanguageSourceRegister>();
+                c.Register<
+                    IDataPipeline<IRegister<Base.Localization.LanguageSource>, Base.Localization.LanguageSource>,
+                    LanguageSourcePipeline
+                > ();
+                c.RegisterInitializer<IRegister<Base.Localization.LanguageSource>>(x =>
+                {
+                    var pipeline = c.GetInstance<
+                        IDataPipeline<IRegister<Base.Localization.LanguageSource>, Base.Localization.LanguageSource>
+                    >();
+                    pipeline.Run(x);
+                });
+
                 c.RegisterSingleton<IRegister<LocalizationTerm>, CustomLocalizationTermRegistry>();
                 c.RegisterSingleton<
                     CustomLocalizationTermRegistry,

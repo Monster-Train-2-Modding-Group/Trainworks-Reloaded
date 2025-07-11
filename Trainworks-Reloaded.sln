@@ -38,6 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "schemas", "schemas", "{7F34
 		schemas\schemas\enhancer_pools.json = schemas\schemas\enhancer_pools.json
 		schemas\schemas\game_objects.json = schemas\schemas\game_objects.json
 		schemas\schemas\localization_terms.json = schemas\schemas\localization_terms.json
+		schemas\schemas\language_sources.json = schemas\schemas\language_sources.json
 		schemas\schemas\map_nodes.json = schemas\schemas\map_nodes.json
 		schemas\schemas\relics.json = schemas\schemas\relics.json
 		schemas\schemas\relic_effects.json = schemas\schemas\relic_effects.json

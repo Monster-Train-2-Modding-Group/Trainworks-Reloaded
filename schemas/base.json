@@ -47,6 +47,9 @@
     "localization_terms": {
       "$ref": "schemas/localization_terms.json#/properties/localization_terms"
     },
+    "langauge_sources": {
+      "$ref": "schemas/language_sources.json#/properties/language_sources"
+    },
     "map_nodes": {
       "$ref": "schemas/map_nodes.json#/properties/map_nodes"
     },

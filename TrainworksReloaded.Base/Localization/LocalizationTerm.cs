@@ -1,4 +1,6 @@
-﻿namespace TrainworksReloaded.Base.Localization
+﻿using System.Collections.Generic;
+
+namespace TrainworksReloaded.Base.Localization
 {
     public class LocalizationTerm
     {
@@ -17,10 +19,11 @@
         public string ChineseTraditional { get; set; } = "";
         public string Korean { get; set; } = "";
         public string Japanese { get; set; } = "";
+        public Dictionary<string, string> OtherLanguages { get; set; } = [];
 
         public bool HasTranslation()
         {
-            return !(English == "" && French == "" && German == "" && Russian == "" && Portuguese == "" && Chinese == "" && Spanish == "" && ChineseTraditional == "" && Korean == "" && Japanese == "");
+            return !(English == "" && French == "" && German == "" && Russian == "" && Portuguese == "" && Chinese == "" && Spanish == "" && ChineseTraditional == "" && Korean == "" && Japanese == "" && OtherLanguages.Count == 0);
         }
     }
 }
