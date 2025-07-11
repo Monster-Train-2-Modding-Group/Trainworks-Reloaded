@@ -21,6 +21,7 @@ namespace TrainworksReloaded.Base.Localization
 
         public void Register(string key, LanguageSource item)
         {
+            logger.Log(LogLevel.Info, $"Adding Language {key}");
             this.Add(key, item);
         }
 
