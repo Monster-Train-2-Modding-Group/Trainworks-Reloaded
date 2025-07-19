@@ -179,7 +179,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 .Field(typeof(CardUpgradeData), "useUpgradeHighlightTextTags")
                 .SetValue(
                     data,
-                    configuration.GetSection("use_upgrade_hightlight_tags").ParseBool()
+                    configuration.GetSection("use_upgrade_highlight_tags").ParseBool()
                         ?? useUpgradeHighlightTextTags
                 );
 
