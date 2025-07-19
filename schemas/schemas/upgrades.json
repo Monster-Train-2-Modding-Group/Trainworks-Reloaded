@@ -157,9 +157,9 @@
               "$ref": "../definitions/reference.json"
             }
           },
-          "use_upgrade_hightlight_tags": {
+          "use_upgrade_highlight_tags": {
             "type": "boolean",
-            "description": "Whether to use upgrade highlight tags.",
+            "description": "Whether to use upgrade highlight tags for upgrade text.",
             "default": true
           },
           "x_cost_reduction": {
