@@ -171,10 +171,18 @@ namespace TrainworksReloaded.Plugin.Patches
             mapDelegator.MapBucketToData.Clear();
             logger.Log(LogLevel.Info, "Map data processing complete");
 
+            //Run finalization steps to populate data that requires all other data to be loaded first
+            logger.Log(LogLevel.Info, "Running finalization steps...");
+            var finalizer = container.GetInstance<Finalizer>();
+            finalizer.FinalizeData();
+
+
             //Load localization at this time
             logger.Log(LogLevel.Info, "Loading localization data...");
+            var languageSource = container.GetInstance<LanguageSourceRegister>();
+            languageSource.LoadData();
             var localization = container.GetInstance<CustomLocalizationTermRegistry>();
-            localization.LoadData();
+            localization.LoadData(languageSource.Keys.ToList());
             logger.Log(LogLevel.Info, "Localization data loaded");
 
             //Add replacement strings
@@ -183,10 +191,6 @@ namespace TrainworksReloaded.Plugin.Patches
             replacementStringRegistry.LoadData();
             logger.Log(LogLevel.Info, "Replacement strings loaded");
 
-            //Run finalization steps to populate data that required all other data to be loaded first
-            logger.Log(LogLevel.Info, "Running finalization steps...");
-            var finalizer = container.GetInstance<Finalizer>();
-            finalizer.FinalizeData();
             logger.Log(LogLevel.Info, "TrainworksReloaded initialization complete!");
         }
 

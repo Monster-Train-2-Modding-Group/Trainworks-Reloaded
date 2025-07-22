@@ -67,7 +67,7 @@
               }
             }
           },
-          "class_unloock_preview_texts": {
+          "class_unlock_preview_texts": {
             "type": "array",
             "uniqueItems": true,
             "description": "List of preview texts shown for this class if locked.",

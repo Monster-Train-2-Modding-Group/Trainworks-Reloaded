@@ -130,7 +130,7 @@ namespace TrainworksReloaded.Base.Trigger
                 var upgradeReference = child.GetSection("param_upgrade").ParseReference();
                 if (upgradeReference != null)
                 {
-                    upgradeRegister.TryLookupId(
+                    upgradeRegister.TryLookupName(
                         upgradeReference.ToId(key, TemplateConstants.Upgrade),
                         out var lookup,
                         out var _

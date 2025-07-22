@@ -59,7 +59,7 @@ namespace TrainworksReloaded.Base.Trait
             CardData? card = null;
             if (cardReference != null)
             {
-                cardRegister.TryLookupId(cardReference.ToId(key, TemplateConstants.Card), out card, out var _);
+                cardRegister.TryLookupName(cardReference.ToId(key, TemplateConstants.Card), out card, out var _);
             }
             AccessTools
                 .Field(typeof(CardTraitData), "paramCardData")
@@ -71,7 +71,7 @@ namespace TrainworksReloaded.Base.Trait
             if (cardUpgradeReference != null)
             {
                 var cardUpgradeId = cardUpgradeReference.ToId(key, TemplateConstants.Upgrade);
-                upgradeRegister.TryLookupId(cardUpgradeId, out cardUpgrade, out var _);
+                upgradeRegister.TryLookupName(cardUpgradeId, out cardUpgrade, out var _);
             }
             AccessTools
                 .Field(typeof(CardTraitData), "paramCardUpgradeData")

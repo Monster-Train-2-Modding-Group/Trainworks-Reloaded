@@ -318,7 +318,7 @@ namespace TrainworksReloaded.Base.Relic
 
             var relicReference = configuration.GetSection("param_relic").ParseReference();
             if (relicReference != null &&
-                relicRegister.TryLookupId(
+                relicRegister.TryLookupName(
                     relicReference.ToId(key, TemplateConstants.RelicData),
                     out var relic,
                     out var _
