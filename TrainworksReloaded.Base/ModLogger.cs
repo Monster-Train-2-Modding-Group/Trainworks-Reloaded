@@ -12,7 +12,8 @@ namespace TrainworksReloaded.Base
 
         public override string ToString()
         {
-            return $"{$"[{type.Name}]", -32} {data}";
+            var timestamp = DateTime.UtcNow.ToString("HH:mm:ss.ffffff");
+            return $"{$"[{timestamp}] [{type.Name}]", -32} {data}";
         }
     }
 
