@@ -8,6 +8,7 @@ using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
+using UnityEngine;
 
 namespace TrainworksReloaded.Base.Trials
 {
@@ -65,7 +66,7 @@ namespace TrainworksReloaded.Base.Trials
 
             var name = key.GetId(TemplateConstants.Trial, id);
 
-            var data = new TrialData();
+            var data = ScriptableObject.CreateInstance<TrialData>();
 
             data.name = name;
             var guid = guidProvider.GetGuidDeterministic(name);
