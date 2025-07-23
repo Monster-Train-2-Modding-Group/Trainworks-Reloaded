@@ -1,0 +1,40 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/trials.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "trials": {
+      "type": "array",
+      "description": "A collection of all trials in the game.",
+      "items": {
+        "properties": {
+          "sin": {
+            "$ref": "../definitions/sin.json",
+            "description": "Reference to sin data associated with the trial."
+          },
+          "rewards": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/reward.json"
+            }
+            "description": "Possible rewards for the trial."
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique identifier for this trial."
+          },
+          "pools": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/trial_list.json"
+            },
+            "description": "References to TrialDataLists to which to add this trial to."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    }
+  }
+}
