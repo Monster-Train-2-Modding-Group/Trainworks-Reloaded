@@ -33,5 +33,10 @@ namespace TrainworksReloaded.Base
         public const string Subtype = "Subtype";
         public const string AdditionalTooltip = "AdditionalTooltip";
         public const string RelicEffectCondition = "RelicEffectCondition";
+        public const string Scenario = "Scenario";
+        public const string Background = "Background";
+        public const string BossVariants = "BossVariants";
+        public const string TrialList = "TrialList";
+        public const string Trial = "Trial";
     }
 }
