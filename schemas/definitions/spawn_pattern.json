@@ -47,9 +47,17 @@
     "true_final_bosses": {
       "type": "array",
       "items": {
-        "$ref": "../definitions/character.json"
+        "type": "object",
+        "properties": {
+          "characters": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/character.json"
+            }
+          }
+        }
       },
-      "description": "Set of characters for the true final boss"
+      "description": "List of characters for the true final boss. Array of arrays because entropy has three separate character states linked together like divinity."
     }
   }
 }

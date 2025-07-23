@@ -19,11 +19,11 @@
         },
         "suppress_spawn": {
           "type": "boolean",
-          "description": "If Required Covenant is set, Character wont spawn (nor in successive Covenant levels)."
+          "description": "If Required Covenant is set, Character wont spawn (nor in successive Covenant levels). This is commonly used for covenant 10 to replace a normal enemy with it's chosen variant."
         },
         "use_boss_character": {
           "type": "boolean",
-          "description": "Use boss character."
+          "description": "Use boss character. Only used for minibosses"
         }
       }
     }

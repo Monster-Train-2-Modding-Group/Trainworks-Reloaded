@@ -234,6 +234,36 @@
                     }
                   }
                 }
+              },
+              {
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "battle_node_icon"
+                    ]
+                  },
+                  "extensions": {
+                    "type": "object",
+                    "description": "Extensions for battle node icon game objects.",
+                    "properties": {
+                      "map_node_icon": {
+                        "type": "object",
+                        "description": "Battle node icon specific properties.",
+                        "properties": {
+                          "completed_sprite": {
+                            "$ref": "../definitions/reference.json"
+                          },
+                          "inactive_sprite": {
+                            "$ref": "../definitions/reference.json"
+                          },
+                          "active_sprite": {
+                            "$ref": "../definitions/reference.json"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
             ]
           }

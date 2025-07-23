@@ -1,10 +1,10 @@
 {
-  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/rewards.json",
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/scenarios.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "properties": {
     "scenarios": {
       "type": "array",
-      "description": "A collection of all rewards in the game, defining their properties, costs, and behaviors.",
+      "description": "A collection of all scenarios in the game.",
       "items": {
         "properties": {
           "background": {
@@ -27,12 +27,9 @@
             "type": "string",
             "description": "Sound effect for the boss spawning."
           },
-          "boss_variant": {
-            "type": "array",
-            "items": {
-              "$ref": "../definitions/character.json"
-            },
-            "description": "Array of mini-boss characters for this scenario."
+          "boss_variants": {
+            "$ref": "../definitions/boss_variants.json",
+            "description": "Reference to BossVariantData. Doesn't need to be set unless you want a custom set of bosses in a non outer train boss scenario. This shouldn't be set if it is a outer train boss scenario."
           },
           "descriptions": {
             "$ref": "../definitions/parse_term.json",
@@ -47,20 +44,34 @@
             "type": "array",
             "items": {
               "type": "object",
-              "required": [ "character"],
+              "required": [ "character" ],
               "properties": {
                 "character": {
                   "$ref": "../definitions/character.json"
                 },
                 "offset": {
                   "$ref": "../definitions/vec2.json",
-                  "default": {"x": 0.0, "y": 0.0}
+                  "default": {
+                    "x": 0.0,
+                    "y": 0.0
+                  }
                 }
               }
             },
             "description": "Displayed characters with their offsets for the battle intro screen when this scenario starts."
           },
-          "enemy_blessing": {
+          "run_type": {
+            "$ref": "../definitions/run_type.json",
+            "description": "Type of run this bucket applies to.",
+            "default": "primary"
+          },
+          "distance": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 8,
+            "description": "Controls where the scenario could possibly be encountered. (Ring number - 1)."
+          },
+          "enemy_blessings": {
             "type": "array",
             "items": {
               "$ref": "../definitions/sin.json"
@@ -72,7 +83,7 @@
             "items": {
               "$ref": "../definitions/card.json"
             },
-            "description": "Array of references to cards to give if this is a FTUE (first time user experience) scenario."
+            "description": "Array of references to cards to give if this is a FTUE (first time user experience) scenario. (Not implemented)"
           },
           "id": {
             "type": "string",
@@ -97,7 +108,7 @@
           },
           "prefab": {
             "$ref": "../definitions/reference.json",
-            "description": "Reference to the map node prefab. Should be imported as Map Node Icon."
+            "description": "Reference to the map node prefab. Should be a GameObject of type battle_node_icon."
           },
           "spawn_pattern": {
             "$ref": "../definitions/spawn_pattern.json",
@@ -118,12 +129,12 @@
             }
           },
           "trials": {
-            "$ref": "../definitions/trials.json",
+            "$ref": "../definitions/trial_list.json",
             "description": "Reference to a list of trials possible for this scenario."
           }
         },
         "required": [
-          "id"
+          "id", "distance"
         ]
       }
     }

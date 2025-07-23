@@ -1,10 +1,18 @@
 {
-    "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/card_style.json",
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "type": "string",
-    "enum": [
-        "none",
-        "banished",
-        "pyreborne"
-    ]
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/card_style.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "string",
+  "enum": [
+    "none",
+    "banished",
+    "pyreborne",
+    "luna_coven",
+    "underlegion",
+    "lazarus_league",
+    "hellhorned",
+    "awoken",
+    "stygian_guard",
+    "umbra",
+    "melting_remnant"
+  ]
 }
