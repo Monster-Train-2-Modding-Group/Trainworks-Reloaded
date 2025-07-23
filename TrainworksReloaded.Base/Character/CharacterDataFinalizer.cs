@@ -12,6 +12,7 @@ using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.UI.Extensions;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.Character
@@ -64,24 +65,25 @@ namespace TrainworksReloaded.Base.Character
         {
             foreach (var definition in cache.GetCacheItems())
             {
-                FinalizeCharacterData(definition);
+                FinalizeCharacterData((definition as CharacterDataDefinition)!);
             }
             cache.Clear();
         }
 
-        public void FinalizeCharacterData(IDefinition<CharacterData> definition)
+        public void FinalizeCharacterData(CharacterDataDefinition definition)
         {
             var configuration = definition.Configuration;
             var data = definition.Data;
+            var copyData = definition.CopyData;
             var key = definition.Key;
-            var overrideMode = configuration.GetSection("override").ParseOverrideMode();
-            var newlyCreatedContent = overrideMode.IsCloning() || overrideMode.IsNewContent();
+            var overrideMode = definition.Override;
 
             logger.Log(LogLevel.Debug, $"Finalizing Character {data.name}...");
 
             //handle art
             // May not be set to null via override
             var characterArtReference = configuration.GetSection("character_art").ParseReference();
+            var assetReferencedGameObject = AccessTools.Field(typeof(CharacterData), "characterPrefabVariantRef").GetValue(copyData) as AssetReferenceGameObject;
             if (characterArtReference != null)
             {
                 if (
@@ -92,27 +94,29 @@ namespace TrainworksReloaded.Base.Character
                     )
                 )
                 {
-                    AccessTools
-                        .Field(typeof(CharacterData), "characterPrefabVariantRef")
-                        .SetValue(data, gameObject);
+                    assetReferencedGameObject = gameObject;
                 }
             }
+            AccessTools.Field(typeof(CharacterData), "characterPrefabVariantRef").SetValue(data, assetReferencedGameObject);
+
 
             //handle ability
             var abilityConfig = configuration.GetSection("ability");
+            AccessTools.Field(typeof(CharacterData), "unitAbility").SetValue(data, copyData.GetUnitAbilityCardData());
             var abilityReference = abilityConfig.ParseReference();
             if (abilityReference != null)
             {
                 cardRegister.TryLookupName(abilityReference.ToId(key, TemplateConstants.Card), out var abilityCard, out var _);
                 AccessTools.Field(typeof(CharacterData), "unitAbility").SetValue(data, abilityCard);
             }
-            if (overrideMode == OverrideMode.Replace && abilityReference == null &&  abilityConfig.Exists())
+            if (overrideMode == OverrideMode.Replace && abilityReference == null && abilityConfig.Exists())
             {
                 AccessTools.Field(typeof(CharacterData), "unitAbility").SetValue(data, null);
             }
 
             //handle equipment
             var graftedEquipmentConfig = configuration.GetSection("grafted_equipment");
+            AccessTools.Field(typeof(CharacterData), "graftedEquipment").SetValue(data, copyData.GetGraftedEquipment());
             var graftedEquipmentCardReference = graftedEquipmentConfig.ParseReference();
             if (graftedEquipmentCardReference != null)
             {
@@ -126,7 +130,8 @@ namespace TrainworksReloaded.Base.Character
 
             // Do not allow override to set to null. These need to be set to an empty VfxAtLoc
             var projectilePrefabId = configuration.GetSection("projectile_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
-            if (newlyCreatedContent || projectilePrefabId != null)
+            AccessTools.Field(typeof(CharacterData), "projectilePrefab").SetValue(data, copyData.GetProjectilePrefab());
+            if (overrideMode.IsNewContent() || projectilePrefabId != null)
             {
                 vfxRegister.TryLookupId(projectilePrefabId ?? "", out var projectile_vfx, out var _);
                 AccessTools
@@ -135,28 +140,32 @@ namespace TrainworksReloaded.Base.Character
             }
 
             var attackVFXId = configuration.GetSection("attack_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
-            if (newlyCreatedContent || attackVFXId != null)
+            AccessTools.Field(typeof(CharacterData), "attackVFX").SetValue(data, copyData.GetAttackVfx());
+            if (overrideMode.IsNewContent() || attackVFXId != null)
             {
                 vfxRegister.TryLookupId(attackVFXId ?? "", out var attack_vfx, out var _);
                 AccessTools.Field(typeof(CharacterData), "attackVFX").SetValue(data, attack_vfx);
             }
 
             var impactVFXId = configuration.GetSection("impact_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
-            if (newlyCreatedContent || impactVFXId != null)
+            AccessTools.Field(typeof(CharacterData), "impactVFX").SetValue(data, copyData.GetImpactVfx());
+            if (overrideMode.IsNewContent() || impactVFXId != null)
             {
                 vfxRegister.TryLookupId(impactVFXId ?? "", out var impact_vfx, out var _);
                 AccessTools.Field(typeof(CharacterData), "impactVFX").SetValue(data, impact_vfx);
             }
 
             var deathVFXId = configuration.GetSection("death_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
-            if (newlyCreatedContent || deathVFXId != null)
+            AccessTools.Field(typeof(CharacterData), "deathVFX").SetValue(data, copyData.GetDeathVfx());
+            if (overrideMode.IsNewContent() || deathVFXId != null)
             {
                 vfxRegister.TryLookupId(deathVFXId ?? "", out var death_vfx, out var _);
                 AccessTools.Field(typeof(CharacterData), "deathVFX").SetValue(data, death_vfx);
             }
 
             var bossSpellCastVFXId = configuration.GetDeprecatedSection("boss_cast_vfx", "boss_spell_cast_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
-            if (newlyCreatedContent || bossSpellCastVFXId != null)
+            AccessTools.Field(typeof(CharacterData), "bossSpellCastVFX").SetValue(data, copyData.GetBossSpellCastVfx());
+            if (overrideMode.IsNewContent() || bossSpellCastVFXId != null)
             {
                 vfxRegister.TryLookupId(bossSpellCastVFXId ?? "", out var boss_cast_vfx, out var _);
                 AccessTools
@@ -165,7 +174,8 @@ namespace TrainworksReloaded.Base.Character
             }
 
             var bossRoomSpellCastVFXId = configuration.GetSection("boss_room_cast_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
-            if (newlyCreatedContent || bossRoomSpellCastVFXId != null)
+            AccessTools.Field(typeof(CharacterData), "bossRoomSpellCastVFX").SetValue(data, copyData.GetBossRoomSpellCastVfx());
+            if (overrideMode.IsNewContent() || bossRoomSpellCastVFXId != null)
             {
                 vfxRegister.TryLookupId(bossRoomSpellCastVFXId ?? "", out var boss_room_cast_vfx, out var _);
                 AccessTools
@@ -174,7 +184,9 @@ namespace TrainworksReloaded.Base.Character
             }
 
             //handle triggers
-            var triggerDatas = data.GetTriggers().ToList() ?? [];
+            var triggerDatas = copyData.GetTriggers().ToList() ?? [];
+            if (copyData != data)
+                triggerDatas = [.. triggerDatas];
             var triggerConfig = configuration.GetSection("triggers");
             if (overrideMode == OverrideMode.Replace && triggerConfig.Exists())
             {
@@ -201,7 +213,9 @@ namespace TrainworksReloaded.Base.Character
             AccessTools.Field(typeof(CharacterData), "triggers").SetValue(data, triggerDatas);
 
             //status effect immunities
-            var statusEffectImmunities = data.GetStatusEffectImmunities()?.ToList() ?? [];
+            var statusEffectImmunities = copyData.GetStatusEffectImmunities()?.ToList() ?? [];
+            if (copyData != data)
+                statusEffectImmunities = [.. statusEffectImmunities];
             var statusImmunityConfig = configuration.GetSection("status_effect_immunities");
             if (overrideMode == OverrideMode.Replace && statusImmunityConfig.Exists())
             {
@@ -225,7 +239,9 @@ namespace TrainworksReloaded.Base.Character
                 .SetValue(data, statusEffectImmunities.ToArray());
 
             //status
-            var startingStatusEffects = data.GetStartingStatusEffects()?.ToList() ?? [];
+            var startingStatusEffects = copyData.GetStartingStatusEffects()?.ToList() ?? [];
+            if (copyData != data)
+                startingStatusEffects = [.. startingStatusEffects];
             var startingStatusEffectConfig = configuration.GetSection("starting_status_effects");
             if (overrideMode == OverrideMode.Replace && startingStatusEffectConfig.Exists())
             {
@@ -252,12 +268,13 @@ namespace TrainworksReloaded.Base.Character
 
             // TODO checkOverride is not honored, should allow merging the existing data.
             var chatterConfig = configuration.GetSection("chatter");
+            AccessTools.Field(typeof(CharacterData), "characterChatterData").SetValue(data, copyData.GetCharacterChatterData());
             var chatterReference = chatterConfig.ParseReference();
             if (chatterReference != null)
             {
                 if (overrideMode == OverrideMode.Append)
                 {
-                    logger.Log(LogLevel.Warning, $"Requested Append override mode for Character {definition.Id} key {definition.Key}, but this isn't supported for CharacterChatterData, replacing the chatter with whats given.");
+                    logger.Log(LogLevel.Warning, $"Requested Append override mode for Character {definition.Id} key {definition.Key}, but this isn't supported for CharacterChatterData, replacing the chatter with what is given.");
                 }
                 if (chatterRegister.TryLookupId(chatterReference.ToId(key, TemplateConstants.Chatter), out var lookup, out var _))
                 {
@@ -270,13 +287,13 @@ namespace TrainworksReloaded.Base.Character
             }
 
             //subtypes
-            var subtypes =
-                (List<string>)
-                    AccessTools.Field(typeof(CharacterData), "subtypeKeys").GetValue(data);
+            var subtypes = (List<string>) AccessTools.Field(typeof(CharacterData), "subtypeKeys").GetValue(copyData);
+            if (copyData != data)
+                subtypes = [.. subtypes];
             var subtypeConfig = configuration.GetSection("subtypes");
             if (overrideMode == OverrideMode.Replace && subtypeConfig.Exists())
             {
-                subtypes.Clear();
+                subtypes.Clear();  
             }
             var subtypeReferences = subtypeConfig
                 .GetChildren()
@@ -292,7 +309,9 @@ namespace TrainworksReloaded.Base.Character
             }
             AccessTools.Field(typeof(CharacterData), "subtypeKeys").SetValue(data, subtypes);
 
-            var roomModifiers = data.GetRoomModifiersData();
+            var roomModifiers = copyData.GetRoomModifiersData();
+            if (copyData != data)
+                roomModifiers = [.. roomModifiers];
             var roomModifierConfig = configuration.GetSection("room_modifiers");
             if (overrideMode == OverrideMode.Replace && roomModifierConfig.Exists())
             {
@@ -315,16 +334,19 @@ namespace TrainworksReloaded.Base.Character
                 .SetValue(data, roomModifiers);
 
             var relicConfig = configuration.GetDeprecatedSection("enemy_relic_data", "enemy_relic");
+            AccessTools.Field(typeof(CharacterData), "enemyRelicData").SetValue(data, copyData.GetEnemyRelicData());
             var relicReference = relicConfig.ParseReference();
             if (relicReference != null)
             {
-                relicRegister.TryLookupName(relicReference.ToId(key, TemplateConstants.RelicData), out var relic, out var _);
-                AccessTools.Field(typeof(RelicEffectData), "enemyRelicData").SetValue(data, relic);
+                relicRegister.TryLookupId(relicReference.ToId(key, TemplateConstants.RelicData), out var relic, out var _);
+                AccessTools.Field(typeof(CharacterData), "enemyRelicData").SetValue(data, relic);
             }
             if (overrideMode == OverrideMode.Replace && relicReference == null && relicConfig.Exists())
             {
-                AccessTools.Field(typeof(RelicEffectData), "enemyRelicData").SetValue(data, null);
+                AccessTools.Field(typeof(CharacterData), "enemyRelicData").SetValue(data, null);
             }
+
+            AccessTools.Field(typeof(CharacterData), "bossActionGroups").SetValue(data, copyData.GetBossActionData());
 
             AccessTools
                 .Field(typeof(CharacterData), "fallbackData")

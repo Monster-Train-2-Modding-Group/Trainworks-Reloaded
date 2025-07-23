@@ -78,7 +78,7 @@ namespace TrainworksReloaded.Base.Card
             var data = definition.Data;
             var key = definition.Key;
             var overrideMode = configuration.GetSection("override").ParseOverrideMode();
-            var newlyCreatedContent = overrideMode.IsCloning() || overrideMode.IsNewContent();
+            var newlyCreatedContent = overrideMode.IsNewContent();
 
             logger.Log(LogLevel.Debug, $"Finalizing Card {data.name}... ");
 

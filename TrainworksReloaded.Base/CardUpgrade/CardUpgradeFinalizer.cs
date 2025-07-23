@@ -75,7 +75,8 @@ namespace TrainworksReloaded.Base.CardUpgrade
             var data = definition.Data;
             var key = definition.Key;
             var overrideMode = configuration.GetSection("override").ParseOverrideMode();
-            var newlyCreatedContent = overrideMode.IsCloning() || overrideMode.IsNewContent();
+            var cloneId = configuration.GetSection("clone_id").Value;
+            var newlyCreatedContent = cloneId != null || overrideMode.IsNewContent();
 
             logger.Log(LogLevel.Debug, $"Finalizing Upgrade {data.name}...");
 

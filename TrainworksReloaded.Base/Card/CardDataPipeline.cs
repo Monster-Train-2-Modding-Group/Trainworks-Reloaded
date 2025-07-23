@@ -280,7 +280,7 @@ namespace TrainworksReloaded.Base.Card
                 );
 
             //register before filling in data using
-            var modded = overrideMode.IsCloning() || overrideMode.IsNewContent();
+            var modded = overrideMode.IsNewContent();
             if (modded)
                 service.Register(name, data);
 

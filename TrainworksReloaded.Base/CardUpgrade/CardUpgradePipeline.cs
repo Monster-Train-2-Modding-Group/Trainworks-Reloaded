@@ -89,7 +89,8 @@ namespace TrainworksReloaded.Base.CardUpgrade
             var descriptionKey = $"CardUpgrade_descriptionKey-{name}";
             var notificationKey = $"CardUpgrade_notificationKey-{name}";
             var overrideMode = configuration.GetSection("override").ParseOverrideMode();
-
+            
+            // TODO support cloning
             string guid;
             if (overrideMode.IsOverriding() && service.TryLookupName(id, out CardUpgradeData? data, out var _))
             {
@@ -310,7 +311,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 .Field(typeof(CardUpgradeData), "removeTraitUpgrades")
                 .SetValue(data, removeTraitUpgrades);
 
-            var modded = overrideMode.IsNewContent() || overrideMode.IsCloning();
+            var modded = overrideMode.IsNewContent();
             if (modded)
                 service.Register(name, data);
             return new CardUpgradeDefinition(key, data, configuration, modded);

@@ -21,7 +21,7 @@ namespace TrainworksReloaded.Base.Room
 
         public void Register(string key, RoomModifierData item)
         {
-            logger.Log(LogLevel.Debug, $"Register Trait ({key})");
+            logger.Log(LogLevel.Debug, $"Register Room Modifier ({key})");
             Add(key, item);
         }
 
