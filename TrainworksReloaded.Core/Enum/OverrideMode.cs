@@ -8,8 +8,7 @@ namespace TrainworksReloaded.Core.Enum
     {
         New,
         Replace,
-        Append,
-        Clone
+        Append
     }
 
     public static class OverrideModeExtensions
@@ -22,11 +21,6 @@ namespace TrainworksReloaded.Core.Enum
         public static bool IsOverriding(this OverrideMode overrideMode)
         {
             return overrideMode == OverrideMode.Replace || overrideMode == OverrideMode.Append;
-        }
-
-        public static bool IsCloning(this OverrideMode overrideMode)
-        {
-            return overrideMode == OverrideMode.Clone;
         }
     }
 }
