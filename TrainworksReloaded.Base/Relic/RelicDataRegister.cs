@@ -41,21 +41,27 @@ namespace TrainworksReloaded.Base.Relic
         public void Register(string key, RelicData item)
         {
             logger.Log(LogLevel.Info, $"Register Relic {key}... ");
+            var gamedata = SaveManager.Value.GetAllGameData();
             if (item is CollectableRelicData collectableRelic)
             {
-                var gamedata = SaveManager.Value.GetAllGameData();
                 var RelicDatas =
                     (List<CollectableRelicData>)
                         AccessTools.Field(typeof(AllGameData), "collectableRelicDatas").GetValue(gamedata);
                 RelicDatas.Add(collectableRelic);
             }
             else if (item is EnhancerData enhancerData)
-            {
-                var gamedata = SaveManager.Value.GetAllGameData();
+            {   
                 var enhancerDatas =
                     (List<EnhancerData>)
                         AccessTools.Field(typeof(AllGameData), "enhancerDatas").GetValue(gamedata);
                 enhancerDatas.Add(enhancerData);
+            }
+            else if (item is SinsData sinsData)
+            {
+                var sinsDatas =
+                    (List<SinsData>)
+                        AccessTools.Field(typeof(AllGameData), "sinsDatas").GetValue(gamedata);
+                sinsDatas.Add(sinsData);
             }
             Add(key, item);
         }
