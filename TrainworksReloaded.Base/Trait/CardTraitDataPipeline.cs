@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Microsoft.Extensions.Configuration;
-using SimpleInjector;
+using System.Collections.Generic;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Extensions;
@@ -132,7 +130,7 @@ namespace TrainworksReloaded.Base.Trait
                 AccessTools
                     .Field(typeof(CardTraitData), "paramDescription")
                     .SetValue(data, descriptionKey);
-            }    
+            }
 
             var paramInt = 0;
             AccessTools

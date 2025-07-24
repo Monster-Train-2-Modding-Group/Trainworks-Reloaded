@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TrainworksReloaded.Core.Enum
+﻿namespace TrainworksReloaded.Core.Enum
 {
     public enum OverrideMode
     {

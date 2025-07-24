@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace TrainworksReloaded.Base.Localization
 {
@@ -12,7 +10,7 @@ namespace TrainworksReloaded.Base.Localization
         public Dictionary<string, string>[] TranslationSources => translationSources;
 
         public LanguageSource(string language, Dictionary<string, string>[] translationSources)
-        { 
+        {
             this.language = language;
             this.translationSources = translationSources;
         }

@@ -1,13 +1,10 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
-using HarmonyLib;
-using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
-using static RimLight;
 
 namespace TrainworksReloaded.Base.Map
 {

@@ -1,12 +1,8 @@
 ﻿using HarmonyLib;
-using I2.Loc;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
-using static RotaryHeart.Lib.DataBaseExample;
 
 namespace TrainworksReloaded.Base.Localization
 {
@@ -43,7 +39,7 @@ namespace TrainworksReloaded.Base.Localization
                 return;
             }
             foreach (var replacement in this.Values)
-            {   
+            {
                 logger.Log(LogLevel.Debug, $"Adding Replacement ({replacement.Keyword}) -- ({replacement.ReplacementTextKey.LocalizeEnglish()})");
                 dict.Add(replacement.Keyword, replacement);
             }

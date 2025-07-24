@@ -1,11 +1,7 @@
-﻿using System;
+﻿using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using HarmonyLib;
-using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Base.Subtype;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
@@ -237,8 +233,8 @@ namespace TrainworksReloaded.Base.Effect
             if (filterReference != null)
             {
                 upgradeMaskRegister.TryLookupId(
-                    filterReference.ToId(key, TemplateConstants.UpgradeMask), 
-                    out var lookup, 
+                    filterReference.ToId(key, TemplateConstants.UpgradeMask),
+                    out var lookup,
                     out var _);
                 AccessTools.Field(typeof(CardEffectData), "paramCardFilter").SetValue(data, lookup);
             }

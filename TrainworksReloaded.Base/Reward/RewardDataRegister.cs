@@ -2,11 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine.UIElements;
 
 namespace TrainworksReloaded.Base.Reward
 {
@@ -47,7 +45,7 @@ namespace TrainworksReloaded.Base.Reward
                 _ => [],
             };
         }
-        
+
         public bool TryLookupIdentifier(string identifier, RegisterIdentifierType identifierType, [NotNullWhen(true)] out RewardData? lookup, [NotNullWhen(true)] out bool? IsModded)
         {
             lookup = null;

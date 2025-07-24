@@ -1,17 +1,8 @@
-﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Xml.Schema;
+﻿using System.Collections.Generic;
 using TMPro;
-using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.TextCore;
-using static UnityEngine.GraphicsBuffer;
 
 namespace TrainworksReloaded.Base.Prefab
 {
@@ -40,7 +31,7 @@ namespace TrainworksReloaded.Base.Prefab
             //
             // Padding to ensure that the edges of the other images aren't picked up.
             // The base game uses a gap of 6 pixels.
-            var atlas = new Texture2D(2,2);
+            var atlas = new Texture2D(2, 2);
             var rects = atlas.PackTextures(textures.ToArray(), padding: 6);
             var spriteAsset = ScriptableObject.CreateInstance<TMP_SpriteAsset>();
             spriteAsset.name = "Trainworks Sprite Atlas";

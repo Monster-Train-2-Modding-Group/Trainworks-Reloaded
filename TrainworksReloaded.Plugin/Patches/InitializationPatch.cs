@@ -1,18 +1,14 @@
-﻿using System.Linq;
-using System.Xml.Linq;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Malee;
 using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Base.Class;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Base.Map;
 using TrainworksReloaded.Base.Relic;
+using TrainworksReloaded.Base.Scenarios;
 using TrainworksReloaded.Core;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
-using TrainworksReloaded.Base.Prefab;
-using UnityEngine;
-using TrainworksReloaded.Base.Scenarios;
 
 namespace TrainworksReloaded.Plugin.Patches
 {
@@ -192,7 +188,7 @@ namespace TrainworksReloaded.Plugin.Patches
                     continue;
                 }
 
-                var distanceScenarios = (List<ScenarioData>) AccessTools.Field(typeof(NodeDistanceData), "battleDatas").GetValue(distanceData);
+                var distanceScenarios = (List<ScenarioData>)AccessTools.Field(typeof(NodeDistanceData), "battleDatas").GetValue(distanceData);
                 distanceScenarios.Add(scenario);
                 logger.Log(LogLevel.Info, $"Added scenario {scenario.name} to {distance} and run_type {runType} successfully.");
             }

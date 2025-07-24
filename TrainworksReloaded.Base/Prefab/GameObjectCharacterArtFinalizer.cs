@@ -1,13 +1,9 @@
-using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Core.Interfaces;
-using TrainworksReloaded.Core;
-using TrainworksReloaded.Base.Prefab;
-using TrainworksReloaded.Core.Extensions;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-using StateMechanic;
 using HarmonyLib;
 using Microsoft.Extensions.Configuration;
+using TrainworksReloaded.Base.Extensions;
+using TrainworksReloaded.Core.Extensions;
+using TrainworksReloaded.Core.Interfaces;
+using UnityEngine;
 
 namespace TrainworksReloaded.Base.Prefab
 {
@@ -144,7 +140,7 @@ namespace TrainworksReloaded.Base.Prefab
             // Get shader configuration from character_art section
             var shaderConfig = characterConfig.GetSection("shader");
             var shaderName = shaderConfig?.GetSection("name")?.Value ?? "Shader Graphs/CharacterShader2.0 Graph";
-            
+
             var characterShader = Shader.Find(shaderName);
             if (characterShader == null)
             {

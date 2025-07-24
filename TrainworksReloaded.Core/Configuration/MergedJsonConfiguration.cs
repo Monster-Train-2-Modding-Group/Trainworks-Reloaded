@@ -1,12 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 
 namespace TrainworksReloaded.Core.Configuration
 {
@@ -76,7 +70,7 @@ namespace TrainworksReloaded.Core.Configuration
             }
 
             var data = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
-            
+
             LoadNode(mergedJson, data, "");
 
             Data = data;

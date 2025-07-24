@@ -1,13 +1,8 @@
-﻿using System;
+﻿using HarmonyLib;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using HarmonyLib;
-using Microsoft.Extensions.Configuration;
-using TrainworksReloaded.Base.Character;
-using TrainworksReloaded.Base.Effect;
 using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Base.Prefab;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
@@ -128,7 +123,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             //handle card triggers
             var cardTriggerUpgrades = data.GetCardTriggerUpgrades();
             var cardTriggerConfig = configuration.GetSection("card_trigger_upgrades");
-            if (overrideMode == OverrideMode.Replace && cardTriggerConfig.Exists()) 
+            if (overrideMode == OverrideMode.Replace && cardTriggerConfig.Exists())
             {
                 cardTriggerUpgrades.Clear();
             }

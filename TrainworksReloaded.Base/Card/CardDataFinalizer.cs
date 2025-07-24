@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Prefab;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine;
 using UnityEngine.AddressableAssets;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
@@ -251,7 +249,7 @@ namespace TrainworksReloaded.Base.Card
                 .Where(x => x != null)
                 .Cast<ReferencedObject>();
             foreach (var triggerReference in cardTriggerReferences)
-            {   
+            {
                 var id = triggerReference.ToId(key, TemplateConstants.CardTrigger);
                 if (triggerEffectRegister.TryLookupId(id, out var trigger, out var _))
                 {
@@ -266,7 +264,7 @@ namespace TrainworksReloaded.Base.Card
             if (!(overrideMode == OverrideMode.Replace && initialUpgradesConfig.Exists()))
             {
                 initialUpgrades.AddRange(initialUpgradesRO);
-            }    
+            }
             var initialUpgradeReferences = initialUpgradesConfig
                 .GetChildren()
                 .Select(x => x.ParseReference())

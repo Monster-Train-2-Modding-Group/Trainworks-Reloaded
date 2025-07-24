@@ -1,7 +1,7 @@
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using HarmonyLib;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
 
@@ -50,7 +50,7 @@ namespace TrainworksReloaded.Base.Relic
                 RelicDatas.Add(collectableRelic);
             }
             else if (item is EnhancerData enhancerData)
-            {   
+            {
                 var enhancerDatas =
                     (List<EnhancerData>)
                         AccessTools.Field(typeof(AllGameData), "enhancerDatas").GetValue(gamedata);

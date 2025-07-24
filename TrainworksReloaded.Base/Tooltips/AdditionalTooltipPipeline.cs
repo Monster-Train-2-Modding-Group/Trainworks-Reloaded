@@ -1,18 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Xml.Linq;
-using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine;
-using UnityEngine.UI.Extensions;
-using UnityEngine.UIElements;
 
 namespace TrainworksReloaded.Base.Tooltips
 {
@@ -61,7 +53,7 @@ namespace TrainworksReloaded.Base.Tooltips
             {
                 string tooltipKey = $"AdditionalTooltipData_tooltipTitleKey-{name}";
                 if (titleKeyTerm.Key.IsNullOrEmpty())
-                    titleKeyTerm.Key =  tooltipKey;
+                    titleKeyTerm.Key = tooltipKey;
                 data.titleKey = titleKeyTerm.Key;
                 if (titleKeyTerm.HasTranslation())
                     termRegister.Register(titleKeyTerm.Key, titleKeyTerm);

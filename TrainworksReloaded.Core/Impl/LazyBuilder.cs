@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using SimpleInjector;
+using System.Reflection;
 using TrainworksReloaded.Core.Interfaces;
 
 namespace TrainworksReloaded.Core.Impl

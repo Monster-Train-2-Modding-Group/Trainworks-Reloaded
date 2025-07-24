@@ -1,7 +1,8 @@
 using Microsoft.Extensions.Configuration;
 using TrainworksReloaded.Core.Configuration;
 
-namespace TrainworksReloaded.Core.Extensions{
+namespace TrainworksReloaded.Core.Extensions
+{
     public static class ConfigurationExtensions
     {
         public static IConfigurationBuilder AddMergedJsonFile(

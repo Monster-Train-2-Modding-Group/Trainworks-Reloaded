@@ -2,14 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
-using HarmonyLib;
-using Malee;
-using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine;
-using static RotaryHeart.Lib.DataBaseExample;
 
 namespace TrainworksReloaded.Base.CardUpgrade
 {

@@ -12,9 +12,9 @@ using static CardEffectData;
 using static CardStatistics;
 using static CharacterUI;
 using static MetagameSaveData;
+using static RelicEffectCondition;
 using static TooltipDesigner;
 using static VfxAtLoc;
-using static RelicEffectCondition;
 
 namespace TrainworksReloaded.Base.Extensions
 {

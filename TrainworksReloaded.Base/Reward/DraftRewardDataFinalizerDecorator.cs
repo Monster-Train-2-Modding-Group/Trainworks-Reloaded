@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Linq;
 using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Base.Prefab;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine;
 
 namespace TrainworksReloaded.Base.Reward
 {
@@ -66,7 +63,7 @@ namespace TrainworksReloaded.Base.Reward
             if (draftConfiguration == null)
                 return;
 
-            logger.Log(LogLevel.Debug, 
+            logger.Log(LogLevel.Debug,
                 $"Finalizing Draft Reward Data {definition.Id.ToId(key, TemplateConstants.RewardData)}..."
             );
 

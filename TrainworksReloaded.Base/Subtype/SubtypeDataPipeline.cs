@@ -1,8 +1,5 @@
 ﻿using HarmonyLib;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Xml.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Extensions;
@@ -46,7 +43,7 @@ namespace TrainworksReloaded.Base.Subtype
                     var name = key.GetId(TemplateConstants.Subtype, id);
                     var nameKey = $"SubtytpesData_nameKey-{name}";
                     var subtypeData = new SubtypeData();
-                    
+
                     text.Key = nameKey;
                     termRegister.Add(nameKey, text);
 

@@ -1,10 +1,9 @@
+using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
-using TrainworksReloaded.Core.Interfaces;
 using TrainworksReloaded.Base.Extensions;
-using Microsoft.Extensions.Configuration;
 using TrainworksReloaded.Core.Extensions;
+using TrainworksReloaded.Core.Interfaces;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.Relic
@@ -97,7 +96,7 @@ namespace TrainworksReloaded.Base.Relic
             - CovenantData
             - RandomChampionPool
             - RoomData
-            */ 
+            */
             var configuration = definition.Configuration;
             var data = definition.Data;
             var key = definition.Key;
@@ -137,7 +136,7 @@ namespace TrainworksReloaded.Base.Relic
                .Cast<ReferencedObject>();
             foreach (var reference in cardEffectsReferences)
             {
-                
+
                 var id = reference.ToId(key, TemplateConstants.Effect);
                 if (cardEffectRegister.TryLookupId(id, out var cardEffect, out var _))
                 {
@@ -221,7 +220,7 @@ namespace TrainworksReloaded.Base.Relic
                .Where(x => x != null)
                .Cast<ReferencedObject>();
             foreach (var reference in triggerReferences)
-            {   
+            {
                 var id = reference.ToId(key, TemplateConstants.CharacterTrigger);
                 if (triggerRegister.TryLookupId(id, out var trigger, out var _))
                 {
@@ -267,7 +266,7 @@ namespace TrainworksReloaded.Base.Relic
             {
                 AccessTools.Field(typeof(RelicEffectData), "paramCardFilter").SetValue(data, cardFilter);
             }
-            
+
             //handle paramCardFilterSecondary
             var paramCardFilterSecondary = configuration.GetDeprecatedSection("param_card_filter_secondary", "param_card_filter_2").ParseReference();
             if (paramCardFilterSecondary != null && cardUpgradeMaskRegister.TryLookupId(paramCardFilterSecondary.ToId(key, TemplateConstants.UpgradeMask), out var cardFilterSecondary, out var _))
@@ -306,7 +305,7 @@ namespace TrainworksReloaded.Base.Relic
                 {
                     excludedSubtypes.Add(lookup.Key);
                 }
-               
+
             }
             AccessTools.Field(typeof(RelicEffectData), "paramExcludeCharacterSubtypes").SetValue(data, excludedSubtypes.ToArray());
 

@@ -1,9 +1,7 @@
-﻿using System.Reflection;
-using BepInEx;
+﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using I2.Loc;
-using Microsoft.Extensions.Configuration;
 using ShinyShoe.Logging;
 using SimpleInjector;
 using TrainworksReloaded.Base;
@@ -154,7 +152,7 @@ namespace TrainworksReloaded.Plugin
                 c.Register<
                     IDataPipeline<IRegister<Base.Localization.LanguageSource>, Base.Localization.LanguageSource>,
                     LanguageSourcePipeline
-                > ();
+                >();
                 c.RegisterInitializer<IRegister<Base.Localization.LanguageSource>>(x =>
                 {
                     var pipeline = c.GetInstance<
@@ -473,7 +471,7 @@ namespace TrainworksReloaded.Plugin
                 });
 
                 //Register Character Chatter
-                c.RegisterSingleton<IRegister<CharacterChatterData>, CharacterChatterRegister>(); 
+                c.RegisterSingleton<IRegister<CharacterChatterData>, CharacterChatterRegister>();
                 c.RegisterSingleton<CharacterChatterRegister, CharacterChatterRegister>();
                 c.Register<
                     IDataPipeline<IRegister<CharacterChatterData>, CharacterChatterData>,
@@ -599,7 +597,7 @@ namespace TrainworksReloaded.Plugin
                 });
                 c.Collection.Register<IFactory<RelicData>>(
                     [
-                        typeof(CollectableRelicDataFactory), 
+                        typeof(CollectableRelicDataFactory),
                         typeof(EnhancerDataFactory),
                         typeof(SinsDataFactory)
                     ],

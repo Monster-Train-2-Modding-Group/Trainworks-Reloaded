@@ -1,9 +1,6 @@
 ﻿using HarmonyLib;
-using StateMechanic;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
@@ -146,7 +143,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 .Cast<ReferencedObject>();
             foreach (var poolReference in disallowedPoolReferences)
             {
-                if (poolRegister.TryLookupId(poolReference.ToId(key, TemplateConstants.CardPool), out var lookup,out var _))
+                if (poolRegister.TryLookupId(poolReference.ToId(key, TemplateConstants.CardPool), out var lookup, out var _))
                 {
                     disallowedPools.Add(lookup);
                 }
@@ -167,7 +164,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 }
             }
             AccessTools.Field(typeof(CardUpgradeMaskData), "requiredCardUpgrades").SetValue(data, requiredUpgrades);
-            
+
             List<CardUpgradeData> excludedUpgrades = [];
             var excludedUpgradeReferences = configuration.GetSection("excluded_upgrade")
                 .GetChildren()
@@ -175,7 +172,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 .Where(x => x != null)
                 .Cast<ReferencedObject>();
             foreach (var upgradeReferences in excludedUpgradeReferences)
-            {   
+            {
                 if (upgradeRegister.TryLookupName(upgradeReferences.ToId(key, TemplateConstants.Upgrade), out var lookup, out var _))
                 {
                     excludedUpgrades.Add(lookup);

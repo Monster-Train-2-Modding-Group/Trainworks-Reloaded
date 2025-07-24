@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TrainworksReloaded.Core.Interfaces;
+﻿using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
 
 namespace TrainworksReloaded.Base.Reward

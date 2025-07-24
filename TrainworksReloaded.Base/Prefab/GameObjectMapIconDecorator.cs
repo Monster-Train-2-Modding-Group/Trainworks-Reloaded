@@ -1,14 +1,12 @@
-﻿using System;
+﻿using HarmonyLib;
+using ShinyShoe;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using HarmonyLib;
-using ShinyShoe;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
-using static MultiplayerEmoteDefinitionData;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.Prefab

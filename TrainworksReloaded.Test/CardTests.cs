@@ -2,14 +2,11 @@ using HarmonyLib;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using SimpleInjector;
-using TrainworksReloaded.Base;
 using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
-using TrainworksReloaded.Plugin;
-using UnityEngine;
 
 namespace TrainworksReloaded.Test
 {

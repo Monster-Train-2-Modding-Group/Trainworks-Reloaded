@@ -1,18 +1,13 @@
-﻿using System;
+﻿using HarmonyLib;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using HarmonyLib;
-using Microsoft.Extensions.Configuration;
-using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Prefab;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.UI.Extensions;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.Character
@@ -287,13 +282,13 @@ namespace TrainworksReloaded.Base.Character
             }
 
             //subtypes
-            var subtypes = (List<string>) AccessTools.Field(typeof(CharacterData), "subtypeKeys").GetValue(copyData);
+            var subtypes = (List<string>)AccessTools.Field(typeof(CharacterData), "subtypeKeys").GetValue(copyData);
             if (copyData != data)
                 subtypes = [.. subtypes];
             var subtypeConfig = configuration.GetSection("subtypes");
             if (overrideMode == OverrideMode.Replace && subtypeConfig.Exists())
             {
-                subtypes.Clear();  
+                subtypes.Clear();
             }
             var subtypeReferences = subtypeConfig
                 .GetChildren()

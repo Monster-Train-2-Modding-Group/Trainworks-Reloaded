@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using System.Reflection;
 
 namespace TrainworksReloaded.Core.Impl
 {

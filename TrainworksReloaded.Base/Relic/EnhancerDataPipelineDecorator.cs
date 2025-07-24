@@ -1,8 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
@@ -53,7 +52,7 @@ namespace TrainworksReloaded.Base.Relic
                 .FirstOrDefault();
             if (configuration == null)
                 return;
-                
+
             // Handle rarity
             var rarity = configuration.GetSection("rarity").ParseRarity() ?? CollectableRarity.Common;
             AccessTools.Field(typeof(EnhancerData), "rarity").SetValue(enhancer, rarity);
@@ -82,4 +81,4 @@ namespace TrainworksReloaded.Base.Relic
             }
         }
     }
-} 
+}

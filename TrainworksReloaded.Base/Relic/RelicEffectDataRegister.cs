@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using TrainworksReloaded.Core.Enum;
@@ -31,7 +30,7 @@ namespace TrainworksReloaded.Base.Relic
                 _ => [],
             };
         }
-        
+
         public bool TryLookupIdentifier(string identifier, RegisterIdentifierType identifierType, [NotNullWhen(true)] out RelicEffectData? lookup, [NotNullWhen(true)] out bool? IsModded)
         {
             lookup = null;

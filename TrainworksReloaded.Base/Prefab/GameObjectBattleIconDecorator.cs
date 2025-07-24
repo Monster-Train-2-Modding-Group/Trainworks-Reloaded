@@ -1,10 +1,9 @@
-﻿using System;
+﻿using HarmonyLib;
+using ShinyShoe;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
-using ShinyShoe;
 using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Base.Relic;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;

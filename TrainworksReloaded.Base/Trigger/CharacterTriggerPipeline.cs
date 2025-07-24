@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Microsoft.Extensions.Configuration;
-using TrainworksReloaded.Base.Effect;
+using System.Collections.Generic;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Extensions;
@@ -173,7 +170,7 @@ namespace TrainworksReloaded.Base.Trigger
                     configuration.GetSection("remove_on_relentless_change").ParseBool()
                         ?? removeOnRelentlessChange
                 );
-            
+
 
             service.Register(name, data);
             return new CharacterTriggerDefinition(key, data, configuration) { Id = id };

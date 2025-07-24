@@ -1,9 +1,6 @@
 ﻿using MonoMod.Utils;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using TrainworksReloaded.Base.Effect;
 using TrainworksReloaded.Base.Trigger;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;

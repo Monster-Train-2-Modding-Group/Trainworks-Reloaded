@@ -1,6 +1,6 @@
-﻿using System;
-using BepInEx.Logging;
+﻿using BepInEx.Logging;
 using ShinyShoe.Logging;
+using System;
 using TrainworksReloaded.Core.Interfaces;
 
 namespace TrainworksReloaded.Base
@@ -13,7 +13,7 @@ namespace TrainworksReloaded.Base
         public override string ToString()
         {
             var timestamp = DateTime.UtcNow.ToString("HH:mm:ss.ffffff");
-            return $"{$"[{timestamp}] [{type.Name}]", -32} {data}";
+            return $"{$"[{timestamp}] [{type.Name}]",-32} {data}";
         }
     }
 

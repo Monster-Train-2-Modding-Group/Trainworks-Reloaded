@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine;
 
 namespace TrainworksReloaded.Base.Relic
 {
@@ -198,7 +196,7 @@ namespace TrainworksReloaded.Base.Relic
             var cardRarityType = config.GetDeprecatedSection("card_rarity_type", "param_card_rarity_type").ParseRarity() ?? CollectableRarity.Common;
             AccessTools.Field(typeof(RelicEffectData), "paramCardRarityType").SetValue(data, cardRarityType);
 
-        
+
             //Handle cardTriggers
             var cardTriggers = config.GetSection("card_triggers").GetChildren()
                 .Select(x => x.ParseCardTriggerType())
@@ -220,7 +218,8 @@ namespace TrainworksReloaded.Base.Relic
             AccessTools.Field(typeof(RelicEffectData), "effectConditions").SetValue(data, relicEffectConditions);
 
             service.Register(name, data);
-            return new RelicEffectDataDefinition(key, data, config){
+            return new RelicEffectDataDefinition(key, data, config)
+            {
                 Id = effectId
             };
         }

@@ -1,13 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using SimpleInjector;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 namespace TrainworksReloaded.Base.Prefab
 {
