@@ -15,8 +15,8 @@
             "type": "array",
             "items": {
               "$ref": "../definitions/reward.json"
-            }
-            "description": "Possible rewards for the trial."
+            },
+            "description": "Possible rewards for the trial. Only one reward from thsi list is selected."
           },
           "id": {
             "type": "string",
