@@ -292,6 +292,14 @@ namespace TrainworksReloaded.Base.Extensions
                 "none" => ClassCardStyle.None,
                 "banished" => ClassCardStyle.Banished,
                 "pyreborne" => ClassCardStyle.Pyreborne,
+                "luna_coven" => ClassCardStyle.LunaCoven,
+                "underlegion" => ClassCardStyle.Underlegion,
+                "lazarus_league" => ClassCardStyle.LazarusLeague,
+                "hellhorned" => ClassCardStyle.Hellhorned,
+                "awoken" => ClassCardStyle.Awoken,
+                "stygian_guard" => ClassCardStyle.Stygian,
+                "umbra" => ClassCardStyle.Umbra,
+                "melting_remnant" => ClassCardStyle.Remnant,
                 _ => null,
             };
         }

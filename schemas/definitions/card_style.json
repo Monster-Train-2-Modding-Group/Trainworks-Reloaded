@@ -5,6 +5,14 @@
     "enum": [
         "none",
         "banished",
-        "pyreborne"
+        "pyreborne",
+        "luna_coven",
+        "underlegion",
+        "lazarus_league",
+        "hellhorned",
+        "awoken",
+        "stygian_guard",
+        "umbra",
+        "melting_remnant"
     ]
 }
