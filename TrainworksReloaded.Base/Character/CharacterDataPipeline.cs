@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Microsoft.Extensions.Configuration;
-using ShinyShoe;
-using SimpleInjector;
+using System;
+using System.Collections.Generic;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Enum;
@@ -12,7 +9,6 @@ using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace TrainworksReloaded.Base.Character
 {
@@ -89,25 +85,39 @@ namespace TrainworksReloaded.Base.Character
             var name = key.GetId(TemplateConstants.Character, id);
             var namekey = $"CharacterData_nameKey-{name}";
             var overrideMode = configuration.GetSection("override").ParseOverrideMode();
+            var cloneId = configuration.GetSection("clone_id").Value;
 
             string guid;
-            if (overrideMode.IsOverriding() && service.TryLookupName(id, out CharacterData? data, out var _))
+            CharacterData copyData;
+            CharacterData data;
+            if (cloneId != null)
+            {
+                logger.Log(LogLevel.Debug, $"Cloning Character {cloneId}...");
+                service.TryLookupName(cloneId, out var cloneData, out var _);
+                data = ScriptableObject.CreateInstance<CharacterData>();
+                data.name = name;
+                guid = guidProvider.GetGuidDeterministic(name).ToString();
+                copyData = cloneData ?? data;
+            }
+            else if (overrideMode.IsOverriding() && service.TryLookupName(id, out data!, out var _))
             {
                 logger.Log(LogLevel.Info, $"Overriding Character {id}...");
                 namekey = data.GetNameKey();
                 guid = data.GetID();
+                copyData = data;
             }
             else
             {
                 data = ScriptableObject.CreateInstance<CharacterData>();
                 data.name = name;
                 guid = guidProvider.GetGuidDeterministic(name).ToString();
+                copyData = data;
             }
-
             //handle id
             AccessTools.Field(typeof(CharacterData), "id").SetValue(data, guid);
 
             //handle names
+            AccessTools.Field(typeof(CharacterData), "nameKey").SetValue(data, copyData.GetNameKey());
             var localizationNameTerm = configuration.GetSection("names").ParseLocalizationTerm();
             if (localizationNameTerm != null)
             {
@@ -117,7 +127,7 @@ namespace TrainworksReloaded.Base.Character
             }
 
             //bools
-            var hideInLogbook = (bool)AccessTools.Field(typeof(CharacterData), "hideInLogbook").GetValue(data);
+            var hideInLogbook = copyData.GetHideInLogbook();
             AccessTools
                 .Field(typeof(CharacterData), "hideInLogbook")
                 .SetValue(
@@ -125,10 +135,7 @@ namespace TrainworksReloaded.Base.Character
                     configuration.GetSection("hide_in_logbook").ParseBool() ?? hideInLogbook
                 );
 
-            var blockVisualSizeIncrease = (bool)
-                    AccessTools
-                        .Field(typeof(CharacterData), "blockVisualSizeIncrease")
-                        .GetValue(data);
+            var blockVisualSizeIncrease = copyData.BlockVisualSizeIncrease();
             AccessTools
                 .Field(typeof(CharacterData), "blockVisualSizeIncrease")
                 .SetValue(
@@ -137,7 +144,7 @@ namespace TrainworksReloaded.Base.Character
                         ?? blockVisualSizeIncrease
                 );
 
-            var canBeHealed = (bool)AccessTools.Field(typeof(CharacterData), "canBeHealed").GetValue(data);
+            var canBeHealed = copyData.GetCanBeHealed();
             AccessTools
                 .Field(typeof(CharacterData), "canBeHealed")
                 .SetValue(
@@ -145,7 +152,7 @@ namespace TrainworksReloaded.Base.Character
                     configuration.GetSection("can_be_healed").ParseBool() ?? canBeHealed
                 );
 
-            var isOuterTrainBoss = (bool) AccessTools.Field(typeof(CharacterData), "isOuterTrainBoss").GetValue(data);
+            var isOuterTrainBoss = copyData.IsOuterTrainBoss();
             AccessTools
                 .Field(typeof(CharacterData), "isOuterTrainBoss")
                 .SetValue(
@@ -153,17 +160,17 @@ namespace TrainworksReloaded.Base.Character
                     configuration.GetSection("is_outer_train_boss").ParseBool() ?? isOuterTrainBoss
                 );
 
-            var isMiniboss = (bool)AccessTools.Field(typeof(CharacterData), "isMiniboss").GetValue(data);
+            var isMiniboss = copyData.IsMiniboss();
             AccessTools
                 .Field(typeof(CharacterData), "isMiniboss")
                 .SetValue(data, configuration.GetSection("is_mini_boss").ParseBool() ?? isMiniboss);
 
-            var canAttack = (bool)AccessTools.Field(typeof(CharacterData), "canAttack").GetValue(data);
+            var canAttack = copyData.GetCanAttack();
             AccessTools
                 .Field(typeof(CharacterData), "canAttack")
                 .SetValue(data, configuration.GetSection("can_attack").ParseBool() ?? canAttack);
 
-            var ascendsTrainAutomatically = (bool) AccessTools.Field(typeof(CharacterData), "ascendsTrainAutomatically").GetValue(data);
+            var ascendsTrainAutomatically = copyData.GetAscendsTrainAutomatically();
             AccessTools
                 .Field(typeof(CharacterData), "ascendsTrainAutomatically")
                 .SetValue(
@@ -172,7 +179,7 @@ namespace TrainworksReloaded.Base.Character
                         ?? ascendsTrainAutomatically
                 );
 
-            var loopsBetweenTrainFloors = (bool)AccessTools.Field(typeof(CharacterData), "loopsBetweenTrainFloors").GetValue(data);
+            var loopsBetweenTrainFloors = copyData.GetLoopsBetweenTrainFloors();
             AccessTools
                 .Field(typeof(CharacterData), "loopsBetweenTrainFloors")
                 .SetValue(
@@ -181,7 +188,7 @@ namespace TrainworksReloaded.Base.Character
                         ?? loopsBetweenTrainFloors
                 );
 
-            var attackTeleportsToDefender = (bool)AccessTools.Field(typeof(CharacterData), "attackTeleportsToDefender").GetValue(data);
+            var attackTeleportsToDefender = copyData.IsAttackTeleportsToDefender();
             AccessTools
                 .Field(typeof(CharacterData), "attackTeleportsToDefender")
                 .SetValue(
@@ -190,7 +197,7 @@ namespace TrainworksReloaded.Base.Character
                         ?? attackTeleportsToDefender
                 );
 
-            var deathSlidesBackwards = (bool)AccessTools.Field(typeof(CharacterData), "deathSlidesBackwards").GetValue(data);
+            var deathSlidesBackwards = copyData.IsDeathSlidesBackwards();
             AccessTools
                 .Field(typeof(CharacterData), "deathSlidesBackwards")
                 .SetValue(
@@ -199,7 +206,7 @@ namespace TrainworksReloaded.Base.Character
                         ?? deathSlidesBackwards
                 );
 
-            var chosenVariant = (bool)AccessTools.Field(typeof(CharacterData), "chosenVariant").GetValue(data);
+            var chosenVariant = copyData.IsChosenVariant();
             AccessTools
                 .Field(typeof(CharacterData), "chosenVariant")
                 .SetValue(
@@ -207,12 +214,12 @@ namespace TrainworksReloaded.Base.Character
                     configuration.GetSection("chosen_variant").ParseBool() ?? chosenVariant
                 );
 
-            var isPyreHeart = (bool)AccessTools.Field(typeof(CharacterData), "isPyreHeart").GetValue(data);
+            var isPyreHeart = copyData.IsPyreHeart();
             AccessTools
                 .Field(typeof(CharacterData), "isPyreHeart")
                 .SetValue(data, configuration.GetDeprecatedSection("is_pyre", "is_pyre_heart").ParseBool() ?? isPyreHeart);
 
-            var disableInDailyChallenges = (bool)AccessTools.Field(typeof(CharacterData), "disableInDailyChallenges").GetValue(data);
+            var disableInDailyChallenges = copyData.GetDisableInDailyChallenges();
             AccessTools
                 .Field(typeof(CharacterData), "disableInDailyChallenges")
                 .SetValue(
@@ -221,7 +228,7 @@ namespace TrainworksReloaded.Base.Character
                         ?? disableInDailyChallenges
                 );
 
-            var preventAbilitiesFromEquipment = (bool)AccessTools.Field(typeof(CharacterData), "preventAbilitiesFromEquipment").GetValue(data);
+            var preventAbilitiesFromEquipment = copyData.GetPreventAblitiesFromEquipment();
             AccessTools
                 .Field(typeof(CharacterData), "preventAbilitiesFromEquipment")
                 .SetValue(
@@ -231,17 +238,17 @@ namespace TrainworksReloaded.Base.Character
                 );
 
             //int
-            var size = (int)AccessTools.Field(typeof(CharacterData), "size").GetValue(data);
+            var size = copyData.GetSize();
             AccessTools
                 .Field(typeof(CharacterData), "size")
                 .SetValue(data, configuration.GetSection("size").ParseInt() ?? size);
 
-            var health = overrideMode.IsNewContent() ? 0 : (int)AccessTools.Field(typeof(CharacterData), "health").GetValue(data);
+            var health = overrideMode.IsNewContent() ? 0 : copyData.GetHealth();
             AccessTools
                 .Field(typeof(CharacterData), "health")
                 .SetValue(data, configuration.GetSection("health").ParseInt() ?? health);
 
-            var attackDamage = overrideMode.IsNewContent() ? 0 :  (int)AccessTools.Field(typeof(CharacterData), "attackDamage").GetValue(data);
+            var attackDamage = overrideMode.IsNewContent() ? 0 : copyData.GetAttackDamage();
             AccessTools
                 .Field(typeof(CharacterData), "attackDamage")
                 .SetValue(
@@ -249,7 +256,7 @@ namespace TrainworksReloaded.Base.Character
                     configuration.GetSection("attack_damage").ParseInt() ?? attackDamage
                 );
 
-            var equipmentLimit = (int)AccessTools.Field(typeof(CharacterData), "equipmentLimit").GetValue(data);
+            var equipmentLimit = copyData.GetEquipmentLimit();
             AccessTools
                 .Field(typeof(CharacterData), "equipmentLimit")
                 .SetValue(
@@ -258,7 +265,7 @@ namespace TrainworksReloaded.Base.Character
                 );
 
             //attack phase
-            var validBossAttackPhase = (BossState.AttackPhase) AccessTools.Field(typeof(CharacterData), "validBossAttackPhase").GetValue(data);
+            var validBossAttackPhase = copyData.GetValidBossAttackPhase();
             AccessTools
                 .Field(typeof(CharacterData), "validBossAttackPhase")
                 .SetValue(
@@ -268,8 +275,7 @@ namespace TrainworksReloaded.Base.Character
                 );
 
             //death type
-            var deathType = (CharacterDeathVFX.Type)
-                    AccessTools.Field(typeof(CharacterData), "deathType").GetValue(data);
+            var deathType = copyData.GetDeathType();
             AccessTools
                 .Field(typeof(CharacterData), "deathType")
                 .SetValue(
@@ -279,7 +285,7 @@ namespace TrainworksReloaded.Base.Character
 
             //death type
             var bossTitanAffinity = overrideMode.IsNewContent() ? TitanAffinity.None :
-                    AccessTools.Field(typeof(CharacterData), "bossTitanAffinity").GetValue(data);
+                    copyData.GetBossTitanAffinity();
             AccessTools
                 .Field(typeof(CharacterData), "bossTitanAffinity")
                 .SetValue(
@@ -289,8 +295,9 @@ namespace TrainworksReloaded.Base.Character
                 );
 
             //handle tooltips
-            var tooltips = (List<String>)
-                    AccessTools.Field(typeof(CharacterData), "characterLoreTooltipKeys").GetValue(data) ?? [];
+            var tooltips = (List<String>)copyData.GetCharacterLoreTooltipKeys() ?? [];
+            if (copyData != data)
+                tooltips = [.. tooltips];
             var loreTooltipsSection = configuration.GetDeprecatedSection("character_lore_tooltips", "lore_tooltips");
             if (overrideMode == OverrideMode.Replace && loreTooltipsSection.Exists())
             {
@@ -313,8 +320,7 @@ namespace TrainworksReloaded.Base.Character
             }
             AccessTools.Field(typeof(CharacterData), "characterLoreTooltipKeys").SetValue(data, tooltips);
 
-            var artistAttribution = overrideMode.IsNewContent() ? "" :
-                (string)AccessTools.Field(typeof(CharacterData), "artistAttribution").GetValue(data);
+            var artistAttribution = copyData.GetArtistAttribution();
             AccessTools
                 .Field(typeof(CharacterData), "artistAttribution")
                 .SetValue(
@@ -323,10 +329,7 @@ namespace TrainworksReloaded.Base.Character
                 );
 
             //endless baseline stats
-            var endlessBaselineStats = overrideMode.IsNewContent()
-                ? (EndlessBaselineStats)
-                    AccessTools.Field(typeof(CharacterData), "endlessBaselineStats").GetValue(data)
-                : new EndlessBaselineStats();
+            var endlessBaselineStats = copyData.GetEndlessBaselineStats();
             var endlessHealth = configuration
                 .GetSection("endless_stats")
                 .GetSection("health")
@@ -352,11 +355,11 @@ namespace TrainworksReloaded.Base.Character
                 .SetValue(data, endlessBaselineStats);
 
             //register before filling in data using
-            var modded = overrideMode.IsCloning() || overrideMode.IsNewContent();
+            var modded = cloneId != null || overrideMode.IsNewContent();
             if (modded)
                 service.Register(name, data);
 
-            return new CharacterDataDefinition(key, data, configuration, modded);
+            return new CharacterDataDefinition(key, data, copyData, configuration, overrideMode, modded);
         }
     }
 }

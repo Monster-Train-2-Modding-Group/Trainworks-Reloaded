@@ -1,12 +1,7 @@
 ﻿using HarmonyLib;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using TrainworksReloaded.Base.Card;
-using TrainworksReloaded.Base.Effect;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Extensions;
@@ -142,7 +137,7 @@ namespace TrainworksReloaded.Base.StatusEffects
                 AccessTools.Field(typeof(ReplacementStringData), "_replacement").SetValue(replacement, localizationReplacementTerm.Key);
                 replacementTextRegister.Register(replacement_key, replacement);
             }
-            
+
             var appliedSFXName = "";
             AccessTools
                 .Field(typeof(StatusEffectData), "appliedSFXName")

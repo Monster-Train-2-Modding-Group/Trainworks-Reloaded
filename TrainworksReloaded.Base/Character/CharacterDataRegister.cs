@@ -1,12 +1,10 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using HarmonyLib;
-using Malee;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine;
 
 namespace TrainworksReloaded.Base.Character
 {
@@ -45,7 +43,7 @@ namespace TrainworksReloaded.Base.Character
             CharacterDatas.Add(item);
             Add(key, item);
         }
-        
+
         public List<string> GetAllIdentifiers(RegisterIdentifierType identifierType)
         {
             return identifierType switch

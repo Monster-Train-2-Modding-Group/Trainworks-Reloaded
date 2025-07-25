@@ -10,12 +10,11 @@ using UnityEngine;
 using static BossState;
 using static CardEffectData;
 using static CardStatistics;
-using static CharacterTriggerData;
 using static CharacterUI;
 using static MetagameSaveData;
+using static RelicEffectCondition;
 using static TooltipDesigner;
 using static VfxAtLoc;
-using static RelicEffectCondition;
 
 namespace TrainworksReloaded.Base.Extensions
 {
@@ -34,7 +33,6 @@ namespace TrainworksReloaded.Base.Extensions
                 "true" => OverrideMode.Replace,
                 "replace" => OverrideMode.Replace,
                 "append" => OverrideMode.Append,
-                "clone" => OverrideMode.Clone,
                 _ => OverrideMode.New
             };
         }
@@ -292,6 +290,14 @@ namespace TrainworksReloaded.Base.Extensions
                 "none" => ClassCardStyle.None,
                 "banished" => ClassCardStyle.Banished,
                 "pyreborne" => ClassCardStyle.Pyreborne,
+                "luna_coven" => ClassCardStyle.LunaCoven,
+                "underlegion" => ClassCardStyle.Underlegion,
+                "lazarus_league" => ClassCardStyle.LazarusLeague,
+                "hellhorned" => ClassCardStyle.Hellhorned,
+                "awoken" => ClassCardStyle.Awoken,
+                "stygian_guard" => ClassCardStyle.Stygian,
+                "umbra" => ClassCardStyle.Umbra,
+                "melting_remnant" => ClassCardStyle.Remnant,
                 _ => null,
             };
         }
@@ -1141,6 +1147,38 @@ namespace TrainworksReloaded.Base.Extensions
                 return defaultValue;
             }
             return value.Value;
+        }
+
+        public static ScenarioDifficulty? ParseScenarioDifficulty(this IConfigurationSection section)
+        {
+            var val = section.Value?.ToLower();
+            if (string.IsNullOrEmpty(val))
+            {
+                return null;
+            }
+            return val switch
+            {
+                "normal" => ScenarioDifficulty.Normal,
+                "hard" => ScenarioDifficulty.Hard,
+                "boss" => ScenarioDifficulty.Boss,
+                _ => null
+            };
+        }
+
+        public static SpawnPatternData.BossType? ParseBossType(this IConfigurationSection section)
+        {
+            var val = section.Value?.ToLower();
+            if (string.IsNullOrEmpty(val))
+            {
+                return null;
+            }
+            return val switch
+            {
+                "none" => SpawnPatternData.BossType.None,
+                "outer_train_boss" => SpawnPatternData.BossType.OuterTrainBoss,
+                "true_final_boss" => SpawnPatternData.BossType.TrueFinalBoss,
+                _ => null
+            };
         }
 
         private static Comparator? DoParseComparator(string? val)

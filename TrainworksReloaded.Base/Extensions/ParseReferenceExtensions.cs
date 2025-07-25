@@ -1,9 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using ShinyShoe.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 namespace TrainworksReloaded.Base.Extensions
 {

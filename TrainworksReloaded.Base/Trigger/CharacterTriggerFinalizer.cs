@@ -1,11 +1,8 @@
-﻿using System;
+﻿using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using HarmonyLib;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Interfaces;
-using static RimLight;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.Trigger
@@ -45,7 +42,7 @@ namespace TrainworksReloaded.Base.Trigger
             var key = definition.Key;
             var data = definition.Data;
 
-            logger.Log(LogLevel.Debug, 
+            logger.Log(LogLevel.Debug,
                 $"Finalizing Character Trigger {key.GetId(TemplateConstants.CharacterTrigger, definition.Id)}..."
             );
 

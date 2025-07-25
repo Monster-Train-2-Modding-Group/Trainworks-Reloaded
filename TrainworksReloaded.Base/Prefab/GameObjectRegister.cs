@@ -2,24 +2,21 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Xml.Linq;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.ResourceManagement.ResourceProviders;
-using UnityEngine.ResourceManagement.ResourceProviders.Experimental;
-using UnityEngine.ResourceManagement.Util;
-using static RimLight;
 
 namespace TrainworksReloaded.Base.Prefab
 {
 
-    public class TransformOnStart : MonoBehaviour{
-        void Start(){
+    public class TransformOnStart : MonoBehaviour
+    {
+        void Start()
+        {
             this.transform.position = new Vector3(10000, 10000, 0);
         }
     }

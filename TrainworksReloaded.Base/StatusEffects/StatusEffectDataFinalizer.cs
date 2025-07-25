@@ -1,15 +1,8 @@
 ﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using TrainworksReloaded.Base.Character;
 using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Base.Prefab;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.StatusEffects

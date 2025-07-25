@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using HarmonyLib;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using static RimLight;
 
 namespace TrainworksReloaded.Base.Prefab
 {

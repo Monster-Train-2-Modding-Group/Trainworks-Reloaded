@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Microsoft.Extensions.Configuration;
-using SimpleInjector;
-using TrainworksReloaded.Base.Class;
+using System.Collections.Generic;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Enum;
@@ -233,7 +228,7 @@ namespace TrainworksReloaded.Base.Class
                 );
 
             //register before filling in data using
-            var modded = overrideMode.IsCloning() || overrideMode.IsNewContent();
+            var modded = overrideMode.IsNewContent();
             if (modded)
                 service.Register(name, data);
 

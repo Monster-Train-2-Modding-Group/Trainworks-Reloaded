@@ -1,9 +1,9 @@
-﻿using System;
+﻿using I2.Loc;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-using I2.Loc;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
 

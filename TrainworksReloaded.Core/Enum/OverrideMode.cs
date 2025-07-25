@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TrainworksReloaded.Core.Enum
+﻿namespace TrainworksReloaded.Core.Enum
 {
     public enum OverrideMode
     {
         New,
         Replace,
-        Append,
-        Clone
+        Append
     }
 
     public static class OverrideModeExtensions
@@ -22,11 +17,6 @@ namespace TrainworksReloaded.Core.Enum
         public static bool IsOverriding(this OverrideMode overrideMode)
         {
             return overrideMode == OverrideMode.Replace || overrideMode == OverrideMode.Append;
-        }
-
-        public static bool IsCloning(this OverrideMode overrideMode)
-        {
-            return overrideMode == OverrideMode.Clone;
         }
     }
 }

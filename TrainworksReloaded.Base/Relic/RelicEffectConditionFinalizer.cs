@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.Relic
@@ -42,7 +38,7 @@ namespace TrainworksReloaded.Base.Relic
             var key = definition.Key;
 
             logger.Log(LogLevel.Debug, $"Finalizing RelicEffectCondition {key} {definition.Id}...");
-            
+
             var subtypeReference = configuration.GetSection("param_subtype").ParseReference();
             if (subtypeReference != null)
             {
@@ -52,4 +48,4 @@ namespace TrainworksReloaded.Base.Relic
             }
         }
     }
-} 
+}

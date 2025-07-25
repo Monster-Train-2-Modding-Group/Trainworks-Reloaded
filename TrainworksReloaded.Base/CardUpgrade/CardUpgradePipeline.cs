@@ -1,10 +1,7 @@
-﻿using System;
+﻿using HarmonyLib;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
-using Microsoft.Extensions.Configuration;
-using SimpleInjector;
-using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Enum;
@@ -90,6 +87,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             var notificationKey = $"CardUpgrade_notificationKey-{name}";
             var overrideMode = configuration.GetSection("override").ParseOverrideMode();
 
+            // TODO support cloning
             string guid;
             if (overrideMode.IsOverriding() && service.TryLookupName(id, out CardUpgradeData? data, out var _))
             {
@@ -283,8 +281,8 @@ namespace TrainworksReloaded.Base.CardUpgrade
             if (overrideMode == OverrideMode.Replace && removeTraitUpgradeConfig.Exists())
             {
                 removeTraitUpgrades.Clear();
-            }    
-            var upgradeReferences = removeTraitUpgradeConfig 
+            }
+            var upgradeReferences = removeTraitUpgradeConfig
                 .GetChildren()
                 .Select(x => x.ParseReference())
                 .Where(x => x != null)
@@ -310,7 +308,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 .Field(typeof(CardUpgradeData), "removeTraitUpgrades")
                 .SetValue(data, removeTraitUpgrades);
 
-            var modded = overrideMode.IsNewContent() || overrideMode.IsCloning();
+            var modded = overrideMode.IsNewContent();
             if (modded)
                 service.Register(name, data);
             return new CardUpgradeDefinition(key, data, configuration, modded);

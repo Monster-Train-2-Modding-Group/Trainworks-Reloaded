@@ -1,10 +1,11 @@
 {
-    "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/game_object_type.json",
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "type": "string",
-    "enum": [
-        "card_art",
-        "map_node_icon",
-        "character_art"
-    ]
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/game_object_type.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "string",
+  "enum": [
+    "battle_node_icon",
+    "card_art",
+    "character_art",
+    "map_node_icon"
+  ]
 }

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
 using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Base.Prefab;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine;
 
 namespace TrainworksReloaded.Base.Reward
 {

@@ -1,12 +1,7 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using HarmonyLib;
 using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Base.Trigger;
-using TrainworksReloaded.Core;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
@@ -65,7 +60,7 @@ namespace TrainworksReloaded.Base.Enums
             var baseKey = "CharacterTrigger_" + definition.Id;
 
             var statusManager = StatusEffectManager.Instance;
-            var statusEffectsDisplayData = (StatusEffectsDisplayData) AccessTools
+            var statusEffectsDisplayData = (StatusEffectsDisplayData)AccessTools
                 .Field(typeof(StatusEffectManager), "displayData")
                 .GetValue(statusManager);
 
@@ -81,7 +76,7 @@ namespace TrainworksReloaded.Base.Enums
                 )
             )
             {
-                var triggerIcons = (StatusEffectsDisplayData.TriggerSpriteDict) AccessTools
+                var triggerIcons = (StatusEffectsDisplayData.TriggerSpriteDict)AccessTools
                     .Field(typeof(StatusEffectsDisplayData), "triggerIcons")
                     .GetValue(statusEffectsDisplayData);
                 triggerIcons[trigger] = lookup;
@@ -90,7 +85,7 @@ namespace TrainworksReloaded.Base.Enums
             var isStateModifier = configuration.GetSection("is_state_modifier").ParseBool() ?? false;
             if (isStateModifier)
             {
-                var triggers = (List<CharacterTriggerData.Trigger>) AccessTools
+                var triggers = (List<CharacterTriggerData.Trigger>)AccessTools
                     .Field(typeof(StatusEffectsDisplayData), "stateModifierTriggers")
                     .GetValue(statusEffectsDisplayData);
                 triggers.Add(trigger);
@@ -98,7 +93,7 @@ namespace TrainworksReloaded.Base.Enums
 
             if (configuration.GetSection("notifications").Value != null)
             {
-                var notificationDict = (StatusEffectsDisplayData.TriggersNotificationDict) AccessTools
+                var notificationDict = (StatusEffectsDisplayData.TriggersNotificationDict)AccessTools
                     .Field(typeof(StatusEffectsDisplayData), "triggerNotificationList")
                     .GetValue(statusEffectsDisplayData);
                 notificationDict[trigger] = new StatusEffectsDisplayData.LocalizedString
@@ -108,7 +103,7 @@ namespace TrainworksReloaded.Base.Enums
             var hidden = configuration.GetSection("hidden").ParseBool() ?? false;
             if (hidden)
             {
-                var hiddenTriggers = (List<CharacterTriggerData.Trigger>) AccessTools
+                var hiddenTriggers = (List<CharacterTriggerData.Trigger>)AccessTools
                     .Field(typeof(CharacterTriggerData), "TriggersHiddenInUI").GetValue(null);
                 hiddenTriggers?.Add(trigger);
             }
@@ -123,7 +118,7 @@ namespace TrainworksReloaded.Base.Enums
             if (disableInDeployment)
             {
                 var balanceData = SaveManager.Value.GetAllGameData().GetBalanceData();
-                var cardTriggers = (List<CharacterTriggerData.Trigger>) AccessTools
+                var cardTriggers = (List<CharacterTriggerData.Trigger>)AccessTools
                     .Field(typeof(BalanceData), "disallowedDeploymentPhaseCharacterTriggers").GetValue(balanceData);
                 cardTriggers.Add(trigger);
             }

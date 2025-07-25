@@ -1,7 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.Extensions.Configuration;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Extensions;

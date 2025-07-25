@@ -1,13 +1,8 @@
-﻿using System;
+﻿using HarmonyLib;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using HarmonyLib;
-using Microsoft.Extensions.Configuration;
-using TrainworksReloaded.Base.Character;
-using TrainworksReloaded.Base.Effect;
 using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Base.Prefab;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
@@ -75,7 +70,8 @@ namespace TrainworksReloaded.Base.CardUpgrade
             var data = definition.Data;
             var key = definition.Key;
             var overrideMode = configuration.GetSection("override").ParseOverrideMode();
-            var newlyCreatedContent = overrideMode.IsCloning() || overrideMode.IsNewContent();
+            var cloneId = configuration.GetSection("clone_id").Value;
+            var newlyCreatedContent = cloneId != null || overrideMode.IsNewContent();
 
             logger.Log(LogLevel.Debug, $"Finalizing Upgrade {data.name}...");
 
@@ -127,7 +123,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             //handle card triggers
             var cardTriggerUpgrades = data.GetCardTriggerUpgrades();
             var cardTriggerConfig = configuration.GetSection("card_trigger_upgrades");
-            if (overrideMode == OverrideMode.Replace && cardTriggerConfig.Exists()) 
+            if (overrideMode == OverrideMode.Replace && cardTriggerConfig.Exists())
             {
                 cardTriggerUpgrades.Clear();
             }

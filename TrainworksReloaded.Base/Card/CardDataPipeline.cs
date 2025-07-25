@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Microsoft.Extensions.Configuration;
 using ShinyShoe;
-using SimpleInjector;
+using System;
+using System.Collections.Generic;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace TrainworksReloaded.Base.Card
 {
@@ -148,7 +144,7 @@ namespace TrainworksReloaded.Base.Card
                 {
                     string tooltipKey = $"CardData_tooltipKey{tooltip_count}-{name}";
                     if (localizationTooltipTerm.Key.IsNullOrEmpty())
-                        localizationTooltipTerm.Key = tooltipKey;    
+                        localizationTooltipTerm.Key = tooltipKey;
                     tooltips.Add(tooltipKey);
                     if (localizationTooltipTerm.HasTranslation())
                         termRegister.Register(tooltipKey, localizationTooltipTerm);
@@ -252,7 +248,7 @@ namespace TrainworksReloaded.Base.Card
                 );
 
             var initialKeyboardTarget = overrideMode.IsNewContent() ? CardInitialKeyboardTarget.FrontFriendly :
-                 (CardInitialKeyboardTarget) AccessTools.Field(typeof(CardData), "initialKeyboardTarget").GetValue(data);
+                 (CardInitialKeyboardTarget)AccessTools.Field(typeof(CardData), "initialKeyboardTarget").GetValue(data);
             AccessTools
                 .Field(typeof(CardData), "initialKeyboardTarget")
                 .SetValue(
@@ -280,7 +276,7 @@ namespace TrainworksReloaded.Base.Card
                 );
 
             //register before filling in data using
-            var modded = overrideMode.IsCloning() || overrideMode.IsNewContent();
+            var modded = overrideMode.IsNewContent();
             if (modded)
                 service.Register(name, data);
 

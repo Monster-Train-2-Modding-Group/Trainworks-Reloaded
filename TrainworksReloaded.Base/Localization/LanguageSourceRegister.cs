@@ -1,10 +1,9 @@
-﻿using System;
+﻿using I2.Loc;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
 using System.Text;
-using I2.Loc;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
 
@@ -33,7 +32,7 @@ namespace TrainworksReloaded.Base.Localization
             LoadTranslations(1);
         }
 
-        private void LoadTranslations(int source_index) 
+        private void LoadTranslations(int source_index)
         {
             var builder = new StringBuilder();
             builder.AppendLine(

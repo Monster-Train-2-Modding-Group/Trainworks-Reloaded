@@ -32,7 +32,7 @@ namespace TrainworksReloaded.Base.Trait
                 _ => [],
             };
         }
-        
+
         public bool TryLookupIdentifier(string identifier, RegisterIdentifierType identifierType, [NotNullWhen(true)] out CardTraitData? lookup, [NotNullWhen(true)] out bool? IsModded)
         {
             lookup = null;

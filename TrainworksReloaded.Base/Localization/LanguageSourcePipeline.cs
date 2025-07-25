@@ -1,12 +1,11 @@
-﻿using System;
+﻿using CsvHelper;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
-using System.IO;
-using System.Linq;
-using CsvHelper;
-using System.Globalization;
 
 namespace TrainworksReloaded.Base.Localization
 {

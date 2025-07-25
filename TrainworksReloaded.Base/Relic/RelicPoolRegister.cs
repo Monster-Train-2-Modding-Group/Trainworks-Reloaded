@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using TrainworksReloaded.Base.CardUpgrade;
-using TrainworksReloaded.Core.Interfaces;
 using TrainworksReloaded.Core.Enum;
+using TrainworksReloaded.Core.Interfaces;
 
 namespace TrainworksReloaded.Base.Relic
 {

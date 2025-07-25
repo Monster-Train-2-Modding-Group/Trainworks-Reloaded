@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using HarmonyLib;
-using Malee;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine;
 
 namespace TrainworksReloaded.Base.Subtype
 {

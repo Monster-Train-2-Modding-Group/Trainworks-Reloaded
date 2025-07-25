@@ -1,9 +1,7 @@
-﻿using System.Reflection;
-using BepInEx;
+﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using I2.Loc;
-using Microsoft.Extensions.Configuration;
 using ShinyShoe.Logging;
 using SimpleInjector;
 using TrainworksReloaded.Base;
@@ -19,10 +17,12 @@ using TrainworksReloaded.Base.Prefab;
 using TrainworksReloaded.Base.Relic;
 using TrainworksReloaded.Base.Reward;
 using TrainworksReloaded.Base.Room;
+using TrainworksReloaded.Base.Scenarios;
 using TrainworksReloaded.Base.StatusEffects;
 using TrainworksReloaded.Base.Subtype;
 using TrainworksReloaded.Base.Tooltips;
 using TrainworksReloaded.Base.Trait;
+using TrainworksReloaded.Base.Trials;
 using TrainworksReloaded.Base.Trigger;
 using TrainworksReloaded.Core;
 using TrainworksReloaded.Core.Impl;
@@ -129,6 +129,8 @@ namespace TrainworksReloaded.Plugin
                         typeof(AtlasIconFinalizer),
                         typeof(RoomModifierFinalizer),
                         typeof(StatusEffectDataFinalizer),
+                        typeof(ScenarioDataFinalizer),
+                        typeof(TrialDataFinalizer),
                         typeof(MapNodeFinalizer),
                         typeof(RewardDataFinalizer),
                         typeof(CardPoolFinalizer),
@@ -150,7 +152,7 @@ namespace TrainworksReloaded.Plugin
                 c.Register<
                     IDataPipeline<IRegister<Base.Localization.LanguageSource>, Base.Localization.LanguageSource>,
                     LanguageSourcePipeline
-                > ();
+                >();
                 c.RegisterInitializer<IRegister<Base.Localization.LanguageSource>>(x =>
                 {
                     var pipeline = c.GetInstance<
@@ -264,6 +266,10 @@ namespace TrainworksReloaded.Plugin
                 c.RegisterDecorator<
                     IDataPipeline<IRegister<GameObject>, GameObject>,
                     GameObjectMapIconDecorator
+                >();
+                c.RegisterDecorator<
+                    IDataPipeline<IRegister<GameObject>, GameObject>,
+                    GameObjectBattleIconDecorator
                 >();
                 c.RegisterDecorator(
                     typeof(IDataFinalizer),
@@ -465,7 +471,7 @@ namespace TrainworksReloaded.Plugin
                 });
 
                 //Register Character Chatter
-                c.RegisterSingleton<IRegister<CharacterChatterData>, CharacterChatterRegister>(); 
+                c.RegisterSingleton<IRegister<CharacterChatterData>, CharacterChatterRegister>();
                 c.RegisterSingleton<CharacterChatterRegister, CharacterChatterRegister>();
                 c.Register<
                     IDataPipeline<IRegister<CharacterChatterData>, CharacterChatterData>,
@@ -590,7 +596,11 @@ namespace TrainworksReloaded.Plugin
                     pipeline.Run(x);
                 });
                 c.Collection.Register<IFactory<RelicData>>(
-                    [typeof(CollectableRelicDataFactory), typeof(EnhancerDataFactory)],
+                    [
+                        typeof(CollectableRelicDataFactory),
+                        typeof(EnhancerDataFactory),
+                        typeof(SinsDataFactory)
+                    ],
                     Lifestyle.Singleton
                 );
 
@@ -662,6 +672,49 @@ namespace TrainworksReloaded.Plugin
                     >();
                     pipeline.Run(x);
                 });
+
+                // Register Boss Variant Spawn Data Lists
+                c.RegisterSingleton<IRegister<BossVariantSpawnData>, BossVariantSpawnRegister>();
+                c.RegisterSingleton<BossVariantSpawnRegister, BossVariantSpawnRegister>();
+
+                //Register Scenarios
+                c.RegisterSingleton<IRegister<ScenarioData>, ScenarioRegister>();
+                c.RegisterSingleton<ScenarioRegister, ScenarioRegister>();
+                c.Register<
+                    IDataPipeline<IRegister<ScenarioData>, ScenarioData>,
+                    ScenarioPipeline
+                >();
+                c.RegisterInitializer<IRegister<ScenarioData>>(x =>
+                {
+                    var pipeline = c.GetInstance<
+                        IDataPipeline<IRegister<ScenarioData>, ScenarioData>
+                    >();
+                    pipeline.Run(x);
+                });
+                c.RegisterSingleton<ScenarioDelegator, ScenarioDelegator>();
+
+                //Register Trials
+                c.RegisterSingleton<IRegister<TrialData>, TrialDataRegister>();
+                c.RegisterSingleton<TrialDataRegister, TrialDataRegister>();
+                c.Register<
+                    IDataPipeline<IRegister<TrialData>, TrialData>,
+                    TrialDataPipeline
+                >();
+                c.RegisterInitializer<IRegister<TrialData>>(x =>
+                {
+                    var pipeline = c.GetInstance<
+                        IDataPipeline<IRegister<TrialData>, TrialData>
+                    >();
+                    pipeline.Run(x);
+                });
+
+                //Register TrialDataLists
+                c.RegisterSingleton<IRegister<TrialDataList>, TrialListRegister>();
+                c.RegisterSingleton<TrialListRegister, TrialListRegister>();
+
+                //Register Backgrounds
+                c.RegisterSingleton<IRegister<BackgroundData>, BackgroundRegister>();
+                c.RegisterSingleton<BackgroundRegister, BackgroundRegister>();
 
                 //Register Upgrade Data
                 c.RegisterSingleton<IRegister<CardUpgradeData>, CardUpgradeRegister>();

@@ -59,11 +59,11 @@
           },
           "exclude_hero_propagation": {
             "type": "boolean",
-            "description": "Whether to exclude hero propagation (ex. Dazed)."
+            "description": "Whether to exclude hero propagation. Set this to true if this is a positive status effect that may appear on enemy units to prevent them gaining buffs when Propagate cards are played."
           },
           "exclude_monster_propagation": {
             "type": "boolean",
-            "description": "Whether to exclude monster propagation."
+            "description": "Whether to exclude monster propagation. Set this to true if this is a negative status effect that may appear on friendly units to prent them from gaining debuffs when Propagage cards are played."
           },
           "hidden": {
             "type": "boolean",
@@ -81,7 +81,7 @@
           },
           "is_propagatable": {
             "type": "boolean",
-            "description": "Whether the status effect can propagate (friendly units increase buffs, enemy units increase debuffs).",
+            "description": "Whether the status effect can propagate via CardEffectAdjustAllStatusEffects. Persistent/Ability category status effects and Dazed have this set to false",
             "default": false
           },
           "is_stackable": {

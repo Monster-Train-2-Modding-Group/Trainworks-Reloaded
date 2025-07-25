@@ -1,13 +1,9 @@
-﻿using System;
+﻿using HarmonyLib;
+using Malee;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using HarmonyLib;
-using Malee;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine.UIElements;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.Relic

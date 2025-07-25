@@ -1,9 +1,6 @@
-﻿using System;
+﻿using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using HarmonyLib;
-using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
@@ -73,7 +70,7 @@ namespace TrainworksReloaded.Base.Room
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug, 
+            logger.Log(LogLevel.Debug,
                 $"Finalizing Room Modifier {definition.Id.ToId(key, "RoomModifier")}... "
             );
 

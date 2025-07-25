@@ -1,9 +1,6 @@
 ﻿using HarmonyLib;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Base.Room;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 
@@ -50,7 +47,7 @@ namespace TrainworksReloaded.Base.Trait
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug, 
+            logger.Log(LogLevel.Debug,
                 $"Finalizing Card Trait {definition.Id.ToId(key, TemplateConstants.Trait)}... "
             );
 

@@ -12,4 +12,4 @@ namespace TrainworksReloaded.Base.Relic
         public string Id { get; set; } = "";
         public bool IsModded => true;
     }
-} 
+}

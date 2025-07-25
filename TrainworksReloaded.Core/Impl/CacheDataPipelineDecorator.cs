@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using TrainworksReloaded.Core.Interfaces;
+﻿using TrainworksReloaded.Core.Interfaces;
 
 namespace TrainworksReloaded.Core.Impl
 {

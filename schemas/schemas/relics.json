@@ -22,6 +22,7 @@
             "enum": [
               "collectable",
               "enhancer",
+              "sin",
               null
             ],
             "description": "Type of relic."

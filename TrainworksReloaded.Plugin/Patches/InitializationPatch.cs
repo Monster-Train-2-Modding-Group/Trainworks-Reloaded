@@ -1,17 +1,14 @@
-﻿using System.Linq;
-using System.Xml.Linq;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Malee;
 using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Base.Class;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Base.Map;
 using TrainworksReloaded.Base.Relic;
+using TrainworksReloaded.Base.Scenarios;
 using TrainworksReloaded.Core;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
-using TrainworksReloaded.Base.Prefab;
-using UnityEngine;
 
 namespace TrainworksReloaded.Plugin.Patches
 {
@@ -80,7 +77,7 @@ namespace TrainworksReloaded.Plugin.Patches
             relicDelegator.RelicPoolToData.Clear();
             logger.Log(LogLevel.Info, "Relic pool processing complete");
 
-            logger.Log(LogLevel.Info, "Processing enhacer pools...");
+            logger.Log(LogLevel.Info, "Processing enhancer pools...");
             var enhancerDelegator = container.GetInstance<VanillaEnhancerPoolDelegator>();
             foreach (var poolName in enhancerDelegator.EnhancerPoolToData.Keys)
             {
@@ -169,13 +166,38 @@ namespace TrainworksReloaded.Plugin.Patches
                 }
             }
             mapDelegator.MapBucketToData.Clear();
+
+            var scenarioDelegator = container.GetInstance<ScenarioDelegator>();
+            foreach (var scenarioEntry in scenarioDelegator.Scenarios)
+            {
+                var distance = scenarioEntry.Distance;
+                var runType = scenarioEntry.RunType;
+                var scenario = scenarioEntry.Scenario;
+
+                var runData = runDataDictionary[runType];
+                if (runData == null)
+                {
+                    logger.Log(LogLevel.Warning, $"For scenario {scenario.name} could not find run type: {runType} valid runTypes are first_time, primary, and endless ignoring...");
+                    continue;
+                }
+
+                var distanceData = runData.GetDistanceData(distance);
+                if (distanceData == null)
+                {
+                    logger.Log(LogLevel.Warning, $"For scenario {scenario.name} could not find NodeDistanceData for distance: {distance} in run_type: {runType} ignoring...");
+                    continue;
+                }
+
+                var distanceScenarios = (List<ScenarioData>)AccessTools.Field(typeof(NodeDistanceData), "battleDatas").GetValue(distanceData);
+                distanceScenarios.Add(scenario);
+                logger.Log(LogLevel.Info, $"Added scenario {scenario.name} to {distance} and run_type {runType} successfully.");
+            }
             logger.Log(LogLevel.Info, "Map data processing complete");
 
             //Run finalization steps to populate data that requires all other data to be loaded first
             logger.Log(LogLevel.Info, "Running finalization steps...");
             var finalizer = container.GetInstance<Finalizer>();
             finalizer.FinalizeData();
-
 
             //Load localization at this time
             logger.Log(LogLevel.Info, "Loading localization data...");

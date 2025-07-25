@@ -1,17 +1,12 @@
-﻿using System;
+﻿using HarmonyLib;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
-using Microsoft.Extensions.Configuration;
-using SimpleInjector;
-using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace TrainworksReloaded.Base.CardUpgrade
 {

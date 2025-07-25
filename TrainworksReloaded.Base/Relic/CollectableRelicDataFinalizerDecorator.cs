@@ -1,11 +1,8 @@
-using System;
-using System.Linq;
 using HarmonyLib;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine;
-using static ShinyShoe.DLC;
 
 namespace TrainworksReloaded.Base.Relic
 {
@@ -68,4 +65,4 @@ namespace TrainworksReloaded.Base.Relic
             }
         }
     }
-} 
+}

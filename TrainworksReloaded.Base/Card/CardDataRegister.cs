@@ -1,9 +1,9 @@
-﻿using System;
+﻿using HarmonyLib;
+using Malee;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using HarmonyLib;
-using Malee;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
@@ -86,7 +86,8 @@ namespace TrainworksReloaded.Base.Card
             IsModded = null;
             foreach (var card in SaveManager.Value.GetAllGameData().GetAllCardData())
             {
-                switch (identifierType){
+                switch (identifierType)
+                {
                     case RegisterIdentifierType.ReadableID:
                         if (card.GetAssetKey().Equals(identifier, StringComparison.OrdinalIgnoreCase))
                         {

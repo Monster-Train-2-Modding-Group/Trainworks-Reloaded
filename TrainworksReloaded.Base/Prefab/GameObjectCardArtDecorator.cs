@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SimpleInjector;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;

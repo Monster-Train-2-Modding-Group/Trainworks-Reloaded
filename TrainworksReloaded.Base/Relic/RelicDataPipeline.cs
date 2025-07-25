@@ -1,14 +1,13 @@
+using HarmonyLib;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
+using System.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
-using HarmonyLib;
-using UnityEngine;
-using System.Linq;
 
 namespace TrainworksReloaded.Base.Relic
 {
@@ -156,7 +155,8 @@ namespace TrainworksReloaded.Base.Relic
             AccessTools.Field(typeof(RelicData), "relicLoreTooltipStyle").SetValue(data, loreStyle);
 
             service.Register(name, data);
-            return new RelicDataDefinition(key, data, config){
+            return new RelicDataDefinition(key, data, config)
+            {
                 Id = relicId
             };
         }

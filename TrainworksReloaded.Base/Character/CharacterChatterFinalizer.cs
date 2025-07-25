@@ -1,13 +1,8 @@
 ﻿using HarmonyLib;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Xml.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
-using TrainworksReloaded.Base.Prefab;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine.AddressableAssets;
 using static CharacterChatterData;
 
 namespace TrainworksReloaded.Base.Character
@@ -19,7 +14,7 @@ namespace TrainworksReloaded.Base.Character
         private readonly IRegister<CharacterTriggerData.Trigger> triggerEnumRegister;
         private readonly IRegister<CharacterChatterData> chatterRegister;
         private readonly IRegister<LocalizationTerm> termRegister;
-        
+
         public CharacterChatterFinalizer(
             IModLogger<CharacterChatterFinalizer> logger,
             ICache<IDefinition<CharacterChatterData>> cache,
@@ -92,7 +87,7 @@ namespace TrainworksReloaded.Base.Character
             if (chatterReference != null)
             {
                 if (chatterRegister.TryLookupId(chatterReference.ToId(key, TemplateConstants.Chatter), out var lookup, out var _))
-                { 
+                {
                     AccessTools.Field(typeof(CharacterChatterData), "baseData").SetValue(data, lookup);
                 }
             }

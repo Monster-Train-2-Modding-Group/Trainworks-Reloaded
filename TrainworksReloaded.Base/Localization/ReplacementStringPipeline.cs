@@ -1,9 +1,6 @@
 ﻿using HarmonyLib;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Base.Room;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;

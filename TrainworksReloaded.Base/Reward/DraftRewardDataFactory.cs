@@ -1,4 +1,3 @@
-using System;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
 
@@ -13,4 +12,4 @@ namespace TrainworksReloaded.Base.Reward
             return ScriptableObject.CreateInstance<DraftRewardData>();
         }
     }
-} 
+}

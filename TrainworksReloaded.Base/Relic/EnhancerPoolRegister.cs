@@ -1,11 +1,9 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using TrainworksReloaded.Base.CardUpgrade;
-using TrainworksReloaded.Core.Interfaces;
 using TrainworksReloaded.Core.Enum;
-using HarmonyLib;
+using TrainworksReloaded.Core.Interfaces;
 
 namespace TrainworksReloaded.Base.Relic
 {
@@ -70,7 +68,7 @@ namespace TrainworksReloaded.Base.Relic
                 PyreArtifactData? malickaPyre = allGameData.FindPyreArtifactData("68a9b977-3407-4128-bf35-245fd92f8e2b");
                 var effect = malickaPyre?.GetFirstRelicEffectData<RelicEffectAddStartingUpgradeToCardDrafts>();
                 return effect?.GetParamEnhancerPool();
-            }    
+            }
             else if (poolName == "DraftUpgradePool")
             {
                 CollectableRelicData? capriciousReflection = allGameData.FindCollectableRelicData("9e0e5d4e-6d16-43f1-8cd4-cc4c2b431afd");

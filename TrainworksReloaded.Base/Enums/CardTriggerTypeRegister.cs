@@ -1,14 +1,8 @@
-﻿using HarmonyLib;
-using MonoMod.Utils;
-using System;
+﻿using MonoMod.Utils;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using TrainworksReloaded.Base.Effect;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
-using static CharacterTriggerData;
-using static RimLight;
 
 namespace TrainworksReloaded.Base.Enums
 {

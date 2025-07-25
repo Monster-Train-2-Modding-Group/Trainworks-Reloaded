@@ -1,7 +1,6 @@
 using BepInEx.Logging;
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Xml.Linq;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
 

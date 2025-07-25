@@ -99,6 +99,10 @@
             "type": "boolean",
             "description": "Whether this is a chosen variant of the character. Setting this to true sets the chosen property in the shader."
           },
+          "clone_id": {
+            "type": "string",
+            "description": "Vanilla character asset name to clone. Cloning defaults all fields to the same value as the clone. If set override_mode should also be set, by default overriding a property will replace it."
+          },
           "death_slides_backwards": {
             "type": "boolean",
             "description": "Whether this character slides backward when dying.",

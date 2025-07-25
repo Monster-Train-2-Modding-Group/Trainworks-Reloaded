@@ -74,6 +74,9 @@
     "room_modifiers": {
       "$ref": "schemas/room_modifiers.json#/properties/room_modifiers"
     },
+    "scenarios": {
+      "$ref": "schemas/scenarios.json#/properties/scenarios"
+    },
     "sprites": {
       "$ref": "schemas/sprites.json#/properties/sprites"
     },

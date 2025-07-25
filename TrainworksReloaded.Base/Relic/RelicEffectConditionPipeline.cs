@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
+using HarmonyLib;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
-using HarmonyLib;
-using UnityEngine;
-using System.Linq;
 
 namespace TrainworksReloaded.Base.Relic
 {
@@ -104,7 +100,8 @@ namespace TrainworksReloaded.Base.Relic
 
 
             service.Register(name, data);
-            return new RelicEffectConditionDefinition(key, data, configuration){
+            return new RelicEffectConditionDefinition(key, data, configuration)
+            {
                 Id = internalID
             };
         }

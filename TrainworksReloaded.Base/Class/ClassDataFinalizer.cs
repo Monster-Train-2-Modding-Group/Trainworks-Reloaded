@@ -1,19 +1,13 @@
-﻿using System;
+﻿using HarmonyLib;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using HarmonyLib;
-using Microsoft.Extensions.Configuration;
-using TrainworksReloaded.Base.Card;
-using TrainworksReloaded.Base.CardUpgrade;
 using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Base.Relic;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
-using static Unity.Properties.TypeUtility;
 
 namespace TrainworksReloaded.Base.Class
 {
@@ -200,7 +194,7 @@ namespace TrainworksReloaded.Base.Class
                 AccessTools
                     .Field(typeof(ClassData), "randomDraftEnhancerPool")
                     .SetValue(data, null);
-            }    
+            }
 
             //handle champion data
             var champions = configuration.GetSection("champions").GetChildren().ToList();

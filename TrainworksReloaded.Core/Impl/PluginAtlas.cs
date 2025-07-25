@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace TrainworksReloaded.Core.Impl
+﻿namespace TrainworksReloaded.Core.Impl
 {
     public class PluginAtlas
     {

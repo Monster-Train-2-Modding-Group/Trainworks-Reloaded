@@ -1,19 +1,5 @@
-﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Xml.Schema;
-using TMPro;
-using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Core.Extensions;
+﻿using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Interfaces;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.TextCore;
-using static CharacterTriggerData;
-using static UnityEngine.GraphicsBuffer;
 
 namespace TrainworksReloaded.Base.Prefab
 {

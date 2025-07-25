@@ -1,7 +1,6 @@
-using System;
+using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
@@ -44,7 +43,7 @@ namespace TrainworksReloaded.Base.Relic
             var key = definition.Key;
 
             logger.Log(LogLevel.Debug, $"Finalizing Relic {data.name}...");
-            
+
             // Handle relic sprite
             var iconSprite = configuration.GetSection("icon").ParseReference();
             if (
@@ -90,4 +89,4 @@ namespace TrainworksReloaded.Base.Relic
             AccessTools.Field(typeof(RelicData), "effects").SetValue(data, relicEffects);
         }
     }
-} 
+}

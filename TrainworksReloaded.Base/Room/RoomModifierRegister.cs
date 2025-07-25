@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using TrainworksReloaded.Base.Trait;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
 
@@ -21,7 +18,7 @@ namespace TrainworksReloaded.Base.Room
 
         public void Register(string key, RoomModifierData item)
         {
-            logger.Log(LogLevel.Debug, $"Register Trait ({key})");
+            logger.Log(LogLevel.Debug, $"Register Room Modifier ({key})");
             Add(key, item);
         }
 
