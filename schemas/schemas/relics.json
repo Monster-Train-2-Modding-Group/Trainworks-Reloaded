@@ -199,6 +199,18 @@
                     }
                   }
                 }
+              },
+              {
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "sin"
+                    ]
+                  },
+                  "extensions": {
+                    "type": "array"
+                  }
+                }
               }
             ]
           }
