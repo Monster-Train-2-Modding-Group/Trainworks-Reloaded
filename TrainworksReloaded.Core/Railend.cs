@@ -44,6 +44,9 @@ namespace TrainworksReloaded.Core
         /// Do not run this function, it begins the initialization process.
         /// YOU WILL BREAK COMPATIBILITY.
         /// Let Trainworks run this!
+        /// 
+        /// If you need the container instance. Use Railend.ConfigurePostAction
+        /// and you will get passed the container instance which you can save at that point.
         /// </summary>
         /// <returns></returns>
         public static Container GetContainer()
