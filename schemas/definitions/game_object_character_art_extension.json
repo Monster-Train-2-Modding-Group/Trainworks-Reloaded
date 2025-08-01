@@ -1,0 +1,102 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/game_object_character_art_extension.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "extensions": {
+      "type": "object",
+      "description": "Extensions for character art game objects.",
+      "properties": {
+        "character_art": {
+          "type": "object",
+          "description": "Character art specific properties.",
+          "properties": {
+            "sprite": {
+              "$ref": "../definitions/reference.json",
+              "description": "Reference to the character art sprite."
+            },
+            "skeleton_animations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [ "animation", "skeleton" ],
+                "uniqueItems": true,
+                "properties": {
+                  "animation": {
+                    "$ref": "../definitions/anim.json",
+                    "description": "Animation associated with the skeleton data"
+                  },
+                  "skeleton": {
+                    "$ref": "../definitions/reference.json",
+                    "description": "Reference to a skeleton."
+                  }
+                }
+              }
+            },
+            "shader": {
+              "type": "object",
+              "description": "Shader and material properties for the character.",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "enum": [ "Standard", "Shiny Shoe/Character Shader" ],
+                  "description": "Name of the shader to use (e.g. 'Standard' or 'Shiny Shoe/Character Shader')",
+                  "default": "Shiny Shoe/Character Shader"
+                },
+                "color": {
+                  "$ref": "../definitions/color.json",
+                  "default": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                  },
+                  "description": "Color RGBA values (0-1)"
+                },
+                "tint": {
+                  "$ref": "../definitions/color.json",
+                  "default": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                  },
+                  "description": "Tint color RGBA values (0-1)"
+                }
+              }
+            },
+            "transform": {
+              "type": "object",
+              "description": "Transform properties for positioning and scaling the character.",
+              "properties": {
+                "position": {
+                  "$ref": "../definitions/vec3.json",
+                  "description": "Local position of the character",
+                  "default": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                },
+                "scale": {
+                  "$ref": "../definitions/vec3.json",
+                  "description": "Local scale of the character",
+                  "default": {
+                    "x": 1.0,
+                    "y": 1.0,
+                    "z": 1.0
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "type": {
+      "enum": [
+        "character_art"
+      ]
+    }
+  }
+}
