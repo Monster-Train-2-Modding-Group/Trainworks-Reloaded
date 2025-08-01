@@ -1,0 +1,42 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/skeletons.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "skeletons": {
+      "type": "array",
+      "description": "List of Skeleton Animations",
+      "items": {
+        "required": ["id"],
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Id of the skeleton animation."
+          },
+          "atlas_path": {
+            "type": "string",
+            "description": "The path to the altas. This file should have the extension .atlas or .atlas.txt."
+          },
+          "shader": {
+            "type": "string",
+            "enum": [ "Standard", "Shiny Shoe/Character Shader", "Shader Graphs/CharacterShader2.0 Graph" ],
+            "description": "Name of the shader to use.",
+            "default": "Shader Graphs/CharacterShader2.0 Graph"
+          },
+          "data_path": {
+            "type": "string",
+            "description": "The path to the skeleton data file. This file should have the extension .json or .skel."
+          },
+          "texture_paths": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            },
+            "description": "The path to each texture specified in the atlas file."
+          }
+        }
+      }
+    }
+  }
+}
