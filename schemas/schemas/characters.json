@@ -146,8 +146,10 @@
           },
           "equipment_limit": {
             "type": "integer",
-            "description": "Maximum number of equipment this character can have.",
-            "default": 1
+            "description": "Maximum number of equipment this character can have. (Note: This is not implemented in game so the value is not honored.)",
+            "default": 1,
+            "minimum": 0,
+            "maximum": 4
           },
           "grafted_equipment": {
             "$ref": "../definitions/card.json",
