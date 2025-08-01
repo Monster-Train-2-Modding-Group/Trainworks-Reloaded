@@ -1,0 +1,33 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/game_object_battle_node_extension.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "type": {
+      "enum": [
+        "battle_node_icon"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Extensions for battle node icon game objects.",
+      "properties": {
+        "battle_node_icon": {
+          "type": "object",
+          "description": "Battle node icon specific properties.",
+          "properties": {
+            "completed_sprite": {
+              "$ref": "../definitions/reference.json"
+            },
+            "inactive_sprite": {
+              "$ref": "../definitions/reference.json"
+            },
+            "active_sprite": {
+              "$ref": "../definitions/reference.json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
