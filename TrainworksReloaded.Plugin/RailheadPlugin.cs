@@ -4,6 +4,8 @@ using HarmonyLib;
 using I2.Loc;
 using ShinyShoe.Logging;
 using SimpleInjector;
+using Spine;
+using Spine.Unity;
 using TrainworksReloaded.Base;
 using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Base.CardUpgrade;
@@ -297,6 +299,17 @@ namespace TrainworksReloaded.Plugin
                     pipeline.Run(x);
                 });
 
+                //Register Skeletons
+                c.RegisterSingleton<IRegister<SkeletonDataAsset>, SkeletonDataRegister>();
+                c.RegisterSingleton<SkeletonDataRegister, SkeletonDataRegister>();
+                c.Register<IDataPipeline<IRegister<SkeletonDataAsset>, SkeletonDataAsset>, SkeletonDataPipeline>();
+                c.RegisterInitializer<IRegister<SkeletonDataAsset>>(x =>
+                {
+                    var pipeline = c.GetInstance<IDataPipeline<IRegister<SkeletonDataAsset>, SkeletonDataAsset>>();
+                    pipeline.Run(x);
+                });
+
+
                 //Register Custom Character Trigger Types.
                 c.RegisterSingleton<
                     IRegister<CharacterTriggerData.Trigger>,
@@ -486,6 +499,7 @@ namespace TrainworksReloaded.Plugin
                 });
 
                 //Register Class Data
+                c.RegisterSingleton<ClassSelectCharacterDisplayDelegator, ClassSelectCharacterDisplayDelegator>();
                 c.RegisterSingleton<IRegister<ClassData>, ClassDataRegister>();
                 c.RegisterSingleton<ClassDataRegister, ClassDataRegister>();
                 c.Register<IDataPipeline<IRegister<ClassData>, ClassData>, ClassDataPipeline>();
@@ -494,7 +508,7 @@ namespace TrainworksReloaded.Plugin
                     var pipeline = c.GetInstance<IDataPipeline<IRegister<ClassData>, ClassData>>();
                     pipeline.Run(x);
                 });
-
+                
                 //Register Effect Data
                 c.RegisterSingleton<IRegister<CardEffectData>, CardEffectDataRegister>();
                 c.RegisterSingleton<CardEffectDataRegister, CardEffectDataRegister>();
