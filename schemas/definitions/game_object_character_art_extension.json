@@ -13,7 +13,7 @@
           "properties": {
             "sprite": {
               "$ref": "../definitions/reference.json",
-              "description": "Reference to the character art sprite."
+              "description": "Reference to the character art sprite. This is used in silhouttes and the character if no skeleton animations are provided."
             },
             "skeleton_animations": {
               "type": "array",

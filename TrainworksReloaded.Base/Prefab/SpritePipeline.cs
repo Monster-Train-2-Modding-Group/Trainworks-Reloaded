@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using TrainworksReloaded.Base.Extensions;
+using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
@@ -10,6 +12,10 @@ namespace TrainworksReloaded.Base.Prefab
     public class SpritePipeline : IDataPipeline<IRegister<Sprite>, Sprite>
     {
         private readonly PluginAtlas atlas;
+        private static readonly HashSet<string> OLDER_MODS = [
+            "StewardClan.Plugin",
+            "SweetkinBackOnTrack.Plugin"
+        ];
 
         public SpritePipeline(PluginAtlas atlas)
         {
@@ -34,7 +40,22 @@ namespace TrainworksReloaded.Base.Prefab
                     {
                         continue;
                     }
+                    
                     var name = key.GetId("Sprite", id);
+
+                    var pixelsPerUnit = spriteConfig.GetSection("pixels_per_unit").ParseFloat() ?? GetPixelsPerUnit(key);
+                    var pivot = spriteConfig.GetSection("pivot").ParseVec2(0.5f, 0.5f);
+                    uint extrude = (uint)(spriteConfig.GetSection("extrude").ParseInt() ?? 0);
+                    var spriteMeshType = SpriteMeshType.FullRect;
+                    var spriteMeshValue = spriteConfig.GetSection("mesh_type").Value;
+                    if (spriteMeshValue == "full_rect")
+                    {
+                        spriteMeshType = SpriteMeshType.FullRect;
+                    }
+                    else if (spriteMeshValue == "tight")
+                    {
+                        spriteMeshType = SpriteMeshType.Tight;
+                    }
 
                     foreach (var directory in config.Value.AssetDirectories)
                     {
@@ -52,8 +73,10 @@ namespace TrainworksReloaded.Base.Prefab
                         var sprite = Sprite.Create(
                             texture2d,
                             new Rect(0, 0, texture2d.width, texture2d.height),
-                            new Vector2(0.5f, 0.5f),
-                            128f
+                            pivot,
+                            pixelsPerUnit,
+                            extrude,
+                            spriteMeshType
                         );
                         sprite.name = name;
                         service.Register(name, sprite);
@@ -68,6 +91,14 @@ namespace TrainworksReloaded.Base.Prefab
                 }
             }
             return definitions;
+        }
+
+        private float GetPixelsPerUnit(string mod_guid)
+        {
+            if (OLDER_MODS.Contains(mod_guid))
+                return 128;
+            else
+                return 100;
         }
     }
 }

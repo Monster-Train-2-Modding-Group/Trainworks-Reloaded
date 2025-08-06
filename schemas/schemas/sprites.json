@@ -19,6 +19,34 @@
           "path": {
             "type": "string",
             "description": "Path to the sprite image file. The path should be relative to the mod's assets directory."
+          },
+          "pivot": {
+            "$ref": "../definitions/vec2.json",
+            "description": "Pivot point of the sprite.",
+            "default": {
+              "x": 0.5,
+              "y": 0.5
+            }
+          },
+          "extrude": {
+            "type": "integer",
+            "default": 0,
+            "minimum": 0,
+            "description": "Sets the extrude parameter."
+          },
+          "mesh_type": {
+            "type": "string",
+            "enum": [
+              "full_rect",
+              "tight"
+            ],
+            "default": "full_rect",
+            "description": "Sprite mesh type."
+          },
+          "pixels_per_unit": {
+            "type": "number",
+            "description": "Pixels per unit.",
+            "default":  100.0
           }
         },
         "description": "A sprite definition that specifies the properties and image path of a sprite used in the game."

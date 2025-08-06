@@ -654,7 +654,7 @@ namespace TrainworksReloaded.Base.Extensions
                 "attack" => Anim.Attack,
                 "hit_react" => Anim.HitReact,
                 "idle_relentless" => Anim.Idle_Relentless,
-                "attack_spell" => Anim.Attack_Spell,
+                "spell" => Anim.Attack_Spell,
                 "death" => Anim.Death,
                 "talk" => Anim.Talk,
                 "hover" => Anim.Hover,
@@ -1233,6 +1233,21 @@ namespace TrainworksReloaded.Base.Extensions
                 }
                 return result;
             }
+        }
+
+        public static Vector2 ParseVec2(this IConfigurationSection section, float x = 0, float y = 0)
+        {
+            var xVal = section.GetSection("x").ParseFloat() ?? x;
+            var yVal = section.GetSection("y").ParseFloat() ?? y;
+            return new Vector2(xVal, yVal);
+        }
+
+        public static Vector3 ParseVec3(this IConfigurationSection section, float x = 0, float y = 0, float z = 0)
+        {
+            var xVal = section.GetSection("x").ParseFloat() ?? x;
+            var yVal = section.GetSection("y").ParseFloat() ?? y;
+            var zVal = section.GetSection("z").ParseFloat() ?? z;
+            return new Vector3(xVal, yVal, zVal);
         }
     }
 }

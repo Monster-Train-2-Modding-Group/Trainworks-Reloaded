@@ -51,6 +51,14 @@ namespace TrainworksReloaded.Base.Prefab
             {
                 CharacterUI.Anim.Death,
                 "Death"
+            },
+            {
+                CharacterUI.Anim.Talk,
+                "Talk"
+            },
+            {
+                CharacterUI.Anim.Hover,
+                "Hover"
             }
         };
 
@@ -214,6 +222,7 @@ namespace TrainworksReloaded.Base.Prefab
             }
 
             spriteRenderer.sprite = sprite;
+            spriteRenderer.enabled = true;
             quadDefault.gameObject.SetActive(false);
             characterUIMeshSpine.gameObject.SetActive(true);
             characterUIMeshSpine.Setup(sprite, -1f, name, out var _);
