@@ -1,9 +1,18 @@
 using HarmonyLib;
 using Microsoft.Extensions.Configuration;
+using ShinyShoe;
+using Spine;
+using Spine.Unity;
+using System;
+using System.Collections.Generic;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
+using static CharacterUI;
+using static MultiplayerEmoteDefinitionData;
+using static RotaryHeart.Lib.DataBaseExample;
 
 namespace TrainworksReloaded.Base.Prefab
 {
@@ -14,13 +23,51 @@ namespace TrainworksReloaded.Base.Prefab
         private readonly ICache<IDefinition<GameObject>> cache;
         private readonly FallbackDataProvider fallbackDataProvider;
         private readonly IRegister<Sprite> spriteRegister;
+        private readonly IRegister<SkeletonDataAsset> skeletonRegister;
         private readonly IDataFinalizer decoratee;
+
+        private static readonly Dictionary<CharacterUI.Anim, string> ANIM_NAMES = new()
+        {
+            {
+                CharacterUI.Anim.Idle,
+                "Idle"
+            },
+            {
+                CharacterUI.Anim.Attack,
+                "Attack"
+            },
+            {
+                CharacterUI.Anim.HitReact,
+                "HitReact"
+            },
+            {
+                CharacterUI.Anim.Idle_Relentless,
+                "Idle_Relentless"
+            },
+            {
+                CharacterUI.Anim.Attack_Spell,
+                "Spell"
+            },
+            {
+                CharacterUI.Anim.Death,
+                "Death"
+            },
+            {
+                CharacterUI.Anim.Talk,
+                "Talk"
+            },
+            {
+                CharacterUI.Anim.Hover,
+                "Hover"
+            }
+        };
 
         public GameObjectCharacterArtFinalizer(
             IModLogger<GameObjectCharacterArtFinalizer> logger,
             ICache<IDefinition<GameObject>> cache,
             FallbackDataProvider fallbackDataProvider,
             IRegister<Sprite> spriteRegister,
+            IRegister<SkeletonDataAsset> skeletonRegister,
             IDataFinalizer decoratee
         )
         {
@@ -28,6 +75,7 @@ namespace TrainworksReloaded.Base.Prefab
             this.cache = cache;
             this.fallbackDataProvider = fallbackDataProvider;
             this.spriteRegister = spriteRegister;
+            this.skeletonRegister = skeletonRegister;
             this.decoratee = decoratee;
         }
 
@@ -51,169 +99,156 @@ namespace TrainworksReloaded.Base.Prefab
                 .Configuration.GetSection("extensions")
                 .GetSection("character_art");
 
+            // Get Required Sprite
             var spriteVal = characterConfig.GetSection("sprite").ParseReference();
             if (spriteVal == null)
+            {
+                logger.Log(LogLevel.Warning, $"For GameObject with Id: {definition.Id} did not find a required field sprite for it.");
                 return;
+            }
 
             var id = spriteVal.ToId(definition.Key, TemplateConstants.Sprite);
             if (!spriteRegister.TryLookupId(id, out var sprite, out _))
+            {
                 return;
+            }
+                
+            // Get Optional Skeleton Animation configuration.
+            Dictionary<CharacterUI.Anim, SkeletonDataAsset> animations = [];
+            foreach (var animationConfig in characterConfig.GetSection("skeleton_animations").GetChildren())
+            {
+                var anim = animationConfig.GetSection("animation").ParseAnim();
+                var skeletonReference = animationConfig.GetSection("skeleton").ParseReference();
+                if (anim == null || skeletonReference == null)
+                {
+                    logger.Log(LogLevel.Warning, $"Skipping {definition.Key} {definition.Id} skeleton data animation: {anim} skeleton: {skeletonReference?.id}");
+                    continue;
+                }
+                var skeletonId = skeletonReference.ToId(definition.Key, TemplateConstants.SkeletonData);
+                if (!skeletonRegister.TryLookupId(skeletonId, out var skeleton, out _))
+                    continue;
 
+                animations.Add(anim.Value, skeleton);
+            }
+            bool usingAnimations = animations.Count > 0;
+
+            // Clone the Fallback Character fields onto our GameObject.
+            GameObject original = definition.Data;
             var fallbackData = fallbackDataProvider.FallbackData;
             var prefab = fallbackData.GetDefaultCharacterPrefab();
-            var characterPrefab = GameObject.Instantiate(prefab);
+            CopyFallbackPrefab(original, prefab);
 
-            var original = definition.Data;
-
-            foreach (var component in original.GetComponents<Component>())
+            if (usingAnimations)
             {
-                if (component is Transform) continue;
-                GameObject.Destroy(component);
-            }
-            original.transform.DestroyAllChildren();
-            original.layer = 0;
-            int childCount = characterPrefab.transform.childCount;
-            for (int i = childCount - 1; i >= 0; i--)
-            {
-                Transform child = characterPrefab.transform.GetChild(i);
-                child.SetParent(original.transform);
-            }
-            foreach (Component component in characterPrefab.GetComponents<Component>())
-            {
-                if (component is Transform) continue;
-
-                Component newComponent = original.AddComponent(component.GetType());
-                System.Type componentType = component.GetType();
-
-                foreach (var field in componentType.GetFields())
-                {
-                    if (field.IsLiteral)
-                        continue;
-
-                    field.SetValue(newComponent, field.GetValue(component));
-                }
-            }
-            GameObject.Destroy(characterPrefab);
-
-            var character_scale = original.transform.Find("CharacterScale");
-            if (character_scale == null)
-            {
-                logger.Log(LogLevel.Error, $"Failed to find CharacterScale component on prefab for {definition.Key}");
-                return;
-            }
-
-            var characterUIObject = character_scale.Find("CharacterUI");
-            if (characterUIObject == null)
-            {
-                logger.Log(LogLevel.Error, $"Failed to find CharacterUI component on CharacterScale for {definition.Key}");
-                return;
-            }
-
-            var quad_default = characterUIObject.Find("Quad_Default");
-            if (quad_default == null)
-            {
-                logger.Log(LogLevel.Error, $"Failed to find Quad_Default component on CharacterUI for {definition.Key}");
-                return;
-            }
-
-            var meshRenderer = quad_default.GetComponent<MeshRenderer>();
-            if (meshRenderer == null)
-            {
-                logger.Log(LogLevel.Error, $"Failed to find MeshRenderer component on Quad_Default for {definition.Key}");
-                return;
-            }
-
-            var unitAbilityUI = original.transform.Find("DetailsUIRoot/BottomAnchor/Stats/AbilityAndTriggersGroup/UnitAbilityUI");
-            if (unitAbilityUI == null)
-            {
-                logger.Log(LogLevel.Error, $"Failed to find UnitAbilityUI game object on prefab for {definition.Key}");
-                return;
-            }
-
-            var unitAbilityIconUI = unitAbilityUI.GetComponent<UnitAbilityIconUI>();
-            if (unitAbilityIconUI == null)
-            {
-                logger.Log(LogLevel.Error, $"Failed to find UnitAbilityIconUI game object on UnitAbilityUI game object for {definition.Key}");
-                return;
-            }
-
-            // Get shader configuration from character_art section
-            var shaderConfig = characterConfig.GetSection("shader");
-            var shaderName = shaderConfig?.GetSection("name")?.Value ?? "Shader Graphs/CharacterShader2.0 Graph";
-
-            var characterShader = Shader.Find(shaderName);
-            if (characterShader == null)
-            {
-                logger.Log(LogLevel.Error, $"Failed to find shader {shaderName} for {definition.Key}");
-                return;
-            }
-
-            var material = new Material(characterShader);
-
-            // Helper function to create Color from config section
-            Color GetColorFromSection(IConfigurationSection? section)
-            {
-                if (section == null) return new Color(1, 1, 1, 1);
-                return new Color(
-                    section.GetSection("r").ParseFloat() ?? 1f,
-                    section.GetSection("g").ParseFloat() ?? 1f,
-                    section.GetSection("b").ParseFloat() ?? 1f,
-                    section.GetSection("a").ParseFloat() ?? 1f
-                );
-            }
-
-            // Apply color properties if they exist on the material
-            void TrySetMaterialColor(string propertyName, Color color)
-            {
-                if (material.HasProperty(propertyName))
-                {
-                    material.SetColor(propertyName, color);
-                }
-            }
-
-            // Handle color configuration
-            var colorConfig = shaderConfig?.GetSection("color");
-            if (colorConfig != null)
-            {
-                TrySetMaterialColor("_Color", GetColorFromSection(colorConfig.GetSection("color")));
-                TrySetMaterialColor("_Tint", GetColorFromSection(colorConfig.GetSection("tint")));
+                CreateCharacterWithSkeletonAnimations(original, definition.Id, sprite, animations, characterConfig);
             }
             else
             {
-                var defaultColor = new Color(1, 1, 1, 1);
-                TrySetMaterialColor("_Color", defaultColor);
-                TrySetMaterialColor("_Tint", defaultColor);
+                CreateCharacterWithStaticSprite(original, definition.Id, sprite, characterConfig);
             }
+            PostCharacterAdjustments(original, sprite, characterConfig);
+        }
 
-            meshRenderer.material = material;
-
-            // Get required components
-            var spriteRenderer = characterUIObject.GetComponent<SpriteRenderer>();
-            var character_state = original.GetComponent<CharacterState>();
-            var characterUI = characterUIObject.GetComponent<CharacterUI>();
+        private void CreateCharacterWithStaticSprite(GameObject original, string name, Sprite sprite, IConfiguration configuration)
+        {   
+            var spriteRenderer = original.transform.Find("CharacterScale/CharacterUI")?.GetComponent<SpriteRenderer>();
+            var quadDefault = original.transform.Find("CharacterScale/CharacterUI/Quad_Default");
+            var meshRenderer = quadDefault?.GetComponent<MeshRenderer>();
+            var characterUIMesh = quadDefault?.GetComponent<CharacterUIMesh>();
+            var spineMeshesObject = original.transform.Find("CharacterScale/CharacterUI/SpineMeshes");
+            var characterUIMeshSpine = spineMeshesObject?.GetComponent<CharacterUIMeshSpine>();
 
             // Validate required components
-            if (spriteRenderer == null || character_state == null || characterUI == null)
+            if (spriteRenderer == null || meshRenderer == null || characterUIMesh == null || characterUIMeshSpine == null || spineMeshesObject == null)
             {
-                logger.Log(LogLevel.Error, $"Missing required components on prefab for {definition.Key}");
+                logger.Log(LogLevel.Error, $"Missing required components on prefab for {name}");
                 return;
+            }
+
+            // Destroy and deactivate the CharacterUIMeshSpine as its not needed.
+            GameObject.Destroy(characterUIMeshSpine);
+            spineMeshesObject.gameObject.SetActive(false);
+
+            characterUIMesh.Setup(sprite, -1f, name, out var _);
+            
+            // Setup mesh renderer.
+            var shaderConfig = configuration.GetSection("shader");
+            var shaderName = shaderConfig.GetSection("name").Value ?? "Shiny Shoe/Character Shader";
+            var characterShader = Shader.Find(shaderName);
+            if (characterShader == null)
+            {
+                logger.Log(LogLevel.Error, $"Failed to find shader {shaderName} for {name}");
+                return;
+            }
+            var material = new Material(characterShader);
+            // Required for Champion Screen. Otherwise the sprite is cut off.
+            material.SetFloat("_ClipBottomV", 0);
+            // Handle color configuration
+            var color = GetColorFromSection(shaderConfig.GetSection("color"));
+            TrySetMaterialColor(material, "_Color", color);
+            var tint = GetColorFromSection(shaderConfig.GetSection("tint"));
+            TrySetMaterialColor(material, "_Tint", tint);
+            meshRenderer.material = material;
+
+            spriteRenderer.sprite = sprite;
+            spriteRenderer.enabled = true;
+        }
+
+        private void CreateCharacterWithSkeletonAnimations(GameObject original, string name, Sprite sprite, Dictionary<Anim, SkeletonDataAsset> animations, IConfiguration configuration)
+        {
+            var spriteRenderer = original.transform.Find("CharacterScale/CharacterUI")?.GetComponent<SpriteRenderer>();
+            var quadDefault = original.transform.Find("CharacterScale/CharacterUI/Quad_Default");
+            var spineMeshesObject = original.transform.Find("CharacterScale/CharacterUI/SpineMeshes");
+            var characterUIMeshSpine = spineMeshesObject?.GetComponent<CharacterUIMeshSpine>();
+
+            // Validate required components
+            if (spriteRenderer == null || quadDefault == null || characterUIMeshSpine == null || spineMeshesObject == null)
+            {
+                logger.Log(LogLevel.Error, $"Missing required components on prefab for {name}");
+                return;
+            }
+
+            foreach (var anim_skeleton in animations)
+            {
+                var anim = anim_skeleton.Key;
+                var skeleton = anim_skeleton.Value;
+
+                SkeletonAnimation animation = SkeletonAnimation.NewSkeletonAnimationGameObject(skeleton);
+                animation.name = "Spine GameObject (" + skeleton.name + " " + anim.ToString() + ")";
+                animation.transform.SetParent(spineMeshesObject);
+                animation.gameObject.layer = LayerMask.NameToLayer("Character_Lights");
+                animation.transform.localPosition = Vector3.zero;
+                animation.AnimationState.SetAnimation(0, ANIM_NAMES[anim], true);
             }
 
             spriteRenderer.sprite = sprite;
             spriteRenderer.enabled = true;
-            AccessTools.Field(typeof(CharacterState), "sprite").SetValue(character_state, sprite);
-            AccessTools.Field(typeof(CharacterState), "charUI").SetValue(character_state, characterUI);
-            AccessTools.Field(typeof(UnitAbilityIconUI), "characterState").SetValue(unitAbilityIconUI, character_state);
+            quadDefault.gameObject.SetActive(false);
+            characterUIMeshSpine.gameObject.SetActive(true);
+            characterUIMeshSpine.Setup(sprite, -1f, name, out var _);
+        }
 
+        private void PostCharacterAdjustments(GameObject original, Sprite sprite, IConfiguration configuration)
+        {
+            var characterState = original.GetComponent<CharacterState>();
+            var characterUIObject = original.transform.Find("CharacterScale/CharacterUI");
+            var characterUI = original.transform.Find("CharacterScale/CharacterUI")?.GetComponent<CharacterUI>();
+            var unitAbilityIconUI = original.transform.Find("DetailsUIRoot/BottomAnchor/Stats/AbilityAndTriggersGroup/UnitAbilityUI")?.GetComponent<UnitAbilityIconUI>();
+
+            // Bypass calling CharacterState.InitialSetup
+            AccessTools.Field(typeof(CharacterState), "sprite").SetValue(characterState, sprite);
+            AccessTools.Field(typeof(CharacterState), "charUI").SetValue(characterState, characterUI);
+            AccessTools.Field(typeof(UnitAbilityIconUI), "characterState").SetValue(unitAbilityIconUI, characterState);
 
             // Get transform adjustments from configuration
-            var transformConfig = characterConfig.GetSection("transform");
+            var transformConfig = configuration.GetSection("transform");
             if (transformConfig != null)
             {
                 // Position adjustment
-                var positionX = transformConfig.GetSection("position").GetSection("x").ParseFloat();
-                var positionY = transformConfig.GetSection("position").GetSection("y").ParseFloat();
-                var positionZ = transformConfig.GetSection("position").GetSection("z").ParseFloat();
+                var positionConfig = transformConfig.GetSection("position");
+                var positionX = positionConfig.GetSection("x").ParseFloat();
+                var positionY = positionConfig.GetSection("y").ParseFloat();
+                var positionZ = positionConfig.GetSection("z").ParseFloat();
 
                 if (positionX.HasValue || positionY.HasValue || positionZ.HasValue)
                 {
@@ -239,6 +274,63 @@ namespace TrainworksReloaded.Base.Prefab
                         scaleZ ?? currentScale.z
                     );
                 }
+            }
+        }
+
+        private void CopyFallbackPrefab(GameObject original, GameObject prefab)
+        {
+            var characterPrefab = GameObject.Instantiate(prefab);
+
+            foreach (var component in original.GetComponents<Component>())
+            {
+                if (component is Transform) 
+                    continue;
+                GameObject.Destroy(component);
+            }
+            original.transform.DestroyAllChildren();
+            original.layer = 0;
+            int childCount = characterPrefab.transform.childCount;
+            for (int i = childCount - 1; i >= 0; i--)
+            {
+                Transform child = characterPrefab.transform.GetChild(i);
+                child.SetParent(original.transform);
+            }
+            foreach (Component component in characterPrefab.GetComponents<Component>())
+            {
+                if (component is Transform) 
+                    continue;
+
+                Component newComponent = original.AddComponent(component.GetType());
+                System.Type componentType = component.GetType();
+
+                foreach (var field in componentType.GetFields())
+                {
+                    if (field.IsLiteral)
+                        continue;
+
+                    field.SetValue(newComponent, field.GetValue(component));
+                }
+            }
+            GameObject.Destroy(characterPrefab);
+        }
+
+        // Helper function to create Color from config section
+        Color GetColorFromSection(IConfigurationSection section)
+        {
+            return new Color(
+                section.GetSection("r").ParseFloat() ?? 1f,
+                section.GetSection("g").ParseFloat() ?? 1f,
+                section.GetSection("b").ParseFloat() ?? 1f,
+                section.GetSection("a").ParseFloat() ?? 1f
+            );
+        }
+
+        // Apply color properties if they exist on the material
+        void TrySetMaterialColor(Material material, string propertyName, Color color)
+        {
+            if (material.HasProperty(propertyName))
+            {
+                material.SetColor(propertyName, color);
             }
         }
     }

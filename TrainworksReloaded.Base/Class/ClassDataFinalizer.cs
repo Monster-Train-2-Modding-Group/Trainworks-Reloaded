@@ -20,6 +20,8 @@ namespace TrainworksReloaded.Base.Class
         private readonly IRegister<RelicData> relicDataRegister;
         private readonly IRegister<CardUpgradeData> upgradeDataRegister;
         private readonly IRegister<EnhancerPool> enhancerPoolRegister;
+        private readonly IRegister<GameObject> gameObjectRegister;
+        private readonly ClassSelectCharacterDisplayDelegator characterDisplayDelegator;
 
         public ClassDataFinalizer(
             IModLogger<ClassDataFinalizer> logger,
@@ -28,7 +30,9 @@ namespace TrainworksReloaded.Base.Class
             IRegister<CardData> cardDataRegister,
             IRegister<RelicData> relicDataRegister,
             IRegister<CardUpgradeData> upgradeDataRegister,
-            IRegister<EnhancerPool> enhancerPoolRegister
+            IRegister<EnhancerPool> enhancerPoolRegister,
+            IRegister<GameObject> gameObjectRegister,
+            ClassSelectCharacterDisplayDelegator characterDisplayDelegator
         )
         {
             this.logger = logger;
@@ -38,6 +42,8 @@ namespace TrainworksReloaded.Base.Class
             this.relicDataRegister = relicDataRegister;
             this.upgradeDataRegister = upgradeDataRegister;
             this.enhancerPoolRegister = enhancerPoolRegister;
+            this.gameObjectRegister = gameObjectRegister;
+            this.characterDisplayDelegator = characterDisplayDelegator;
         }
 
         public void FinalizeData()
@@ -148,6 +154,22 @@ namespace TrainworksReloaded.Base.Class
                 }
             }
             AccessTools.Field(typeof(ClassData), "starterRelics").SetValue(data, starterRelics);
+
+            List<GameObject> characterDisplays = [];
+            var characterDisplayReferences = configuration.GetSection("class_select_character_displays")
+                .GetChildren()
+                .Select(x => x.ParseReference())
+                .Where(x => x != null)
+                .Cast<ReferencedObject>();
+            foreach (var reference in characterDisplayReferences)
+            {
+                var id = reference.ToId(key, TemplateConstants.GameObject);
+                if (gameObjectRegister.TryLookupId(id, out var gameObject, out var _))
+                {
+                    characterDisplays.Add(gameObject);
+                }
+            }
+            characterDisplayDelegator.Add(data.name, characterDisplays);
 
             //handle starter card upgrade
             var upgradeConfig = configuration.GetDeprecatedSection("starter_upgrade", "starter_card_upgrade");
@@ -336,6 +358,7 @@ namespace TrainworksReloaded.Base.Class
             }
 
             AccessTools.Field(typeof(ClassData), "champions").SetValue(data, championDatas);
+
         }
 
     }

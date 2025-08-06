@@ -18,6 +18,7 @@ namespace TrainworksReloaded.Plugin.Patches
         public static void Postfix(AssetLoadingData ____assetLoadingData)
         {
             var container = Railend.GetContainer();
+            RunSetupScreenPatches.container = container;
             // var gameObjectRegister = container.GetInstance<GameObjectRegister>();
             // gameObjectRegister.hiddenRoot.transform.position = new Vector3(10000, 10000, 0);
             var register = container.GetInstance<CardDataRegister>();

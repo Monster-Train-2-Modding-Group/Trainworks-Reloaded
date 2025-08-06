@@ -67,6 +67,13 @@
               }
             }
           },
+          "class_select_character_displays": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/reference.json"
+            },
+            "description": "References to Character Art GameObjects to display on the RunSetupScreen. This should be a scaled up version of each Champion in the clan. (Currently doesn't support modification of existing champions in the RunSetupScreen.)'"
+          },
           "class_unlock_preview_texts": {
             "type": "array",
             "uniqueItems": true,

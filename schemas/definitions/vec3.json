@@ -1,5 +1,5 @@
 {
-  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/vec2.json",
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/vec3.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
@@ -8,6 +8,10 @@
       "default": 0.0
     },
     "y": {
+      "type": "number",
+      "default": 0.0
+    },
+    "z": {
       "type": "number",
       "default": 0.0
     }

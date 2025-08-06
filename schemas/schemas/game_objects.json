@@ -17,7 +17,13 @@
             "description": "Unique identifier for this game object."
           },
           "type": {
-            "$ref": "../definitions/game_object_type.json",
+            "type": "string",
+            "enum": [
+              "battle_node_icon",
+              "card_art",
+              "character_art",
+              "map_node_icon"
+            ],
             "description": "Type of game object."
           }
         },
@@ -25,245 +31,16 @@
           "type": {
             "oneOf": [
               {
-                "properties": {
-                  "extensions": {
-                    "type": "object",
-                    "description": "Extensions for card art game objects.",
-                    "properties": {
-                      "card_art": {
-                        "type": "object",
-                        "description": "Card art specific properties.",
-                        "properties": {
-                          "sprite": {
-                            "$ref": "../definitions/reference.json",
-                            "description": "Reference to the card art sprite."
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "type": {
-                    "enum": [
-                      "card_art"
-                    ]
-                  }
-                }
+                "$ref": "../definitions/game_object_card_art_extension.json"
               },
               {
-                "properties": {
-                  "extensions": {
-                    "type": "object",
-                    "description": "Extensions for character art game objects.",
-                    "properties": {
-                      "character_art": {
-                        "type": "object",
-                        "description": "Character art specific properties.",
-                        "properties": {
-                          "sprite": {
-                            "$ref": "../definitions/reference.json",
-                            "description": "Reference to the character art sprite."
-                          },
-                          "shader": {
-                            "type": "object",
-                            "description": "Shader and material properties for the character.",
-                            "properties": {
-                              "name": {
-                                "type": "string",
-                                "enum": [ "Standard", "Shiny Shoe/Character Shader" ],
-                                "description": "Name of the shader to use (e.g. 'Standard' or 'Shiny Shoe/Character Shader')",
-                                "default": "Shiny Shoe/Character Shader"
-                              },
-                              "color": {
-                                "type": "object",
-                                "description": "Main color properties for the material",
-                                "properties": {
-                                  "color": {
-                                    "type": "object",
-                                    "description": "Main color RGBA values (0-1)",
-                                    "properties": {
-                                      "r": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "default": 1,
-                                        "description": "Red component"
-                                      },
-                                      "g": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "default": 1,
-                                        "description": "Green component"
-                                      },
-                                      "b": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "default": 1,
-                                        "description": "Blue component"
-                                      },
-                                      "a": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "default": 1,
-                                        "description": "Alpha component"
-                                      }
-                                    }
-                                  },
-                                  "tint": {
-                                    "type": "object",
-                                    "description": "Tint color RGBA values (0-1)",
-                                    "properties": {
-                                      "r": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "default": 1,
-                                        "description": "Red component"
-                                      },
-                                      "g": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "default": 1,
-                                        "description": "Green component"
-                                      },
-                                      "b": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "default": 1,
-                                        "description": "Blue component"
-                                      },
-                                      "a": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "default": 1,
-                                        "description": "Alpha component"
-                                      }
-                                    }
-                                  }
-                                }
-                              },
-                              "transform": {
-                                "type": "object",
-                                "description": "Transform properties for positioning and scaling the character.",
-                                "properties": {
-                                  "position": {
-                                    "type": "object",
-                                    "description": "Local position of the character",
-                                    "properties": {
-                                      "x": {
-                                        "type": "number",
-                                        "description": "X coordinate"
-                                      },
-                                      "y": {
-                                        "type": "number",
-                                        "description": "Y coordinate"
-                                      },
-                                      "z": {
-                                        "type": "number",
-                                        "description": "Z coordinate"
-                                      }
-                                    }
-                                  },
-                                  "scale": {
-                                    "type": "object",
-                                    "description": "Local scale of the character",
-                                    "properties": {
-                                      "x": {
-                                        "type": "number",
-                                        "description": "X scale factor"
-                                      },
-                                      "y": {
-                                        "type": "number",
-                                        "description": "Y scale factor"
-                                      },
-                                      "z": {
-                                        "type": "number",
-                                        "description": "Z scale factor"
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "type": {
-                    "enum": [
-                      "character_art"
-                    ]
-                  }
-                }
+                "$ref": "../definitions/game_object_character_art_extension.json"
               },
               {
-                "properties": {
-                  "type": {
-                    "enum": [
-                      "map_node_icon"
-                    ]
-                  },
-                  "extensions": {
-                    "type": "object",
-                    "description": "Extensions for map node icon game objects.",
-                    "properties": {
-                      "map_node_icon": {
-                        "type": "object",
-                        "description": "Map node icon specific properties.",
-                        "properties": {
-                          "disabled_sprite": {
-                            "$ref": "../definitions/reference.json",
-                            "description": "Reference to the disabled state sprite."
-                          },
-                          "enabled_sprite": {
-                            "$ref": "../definitions/reference.json",
-                            "description": "Reference to the enabled state sprite."
-                          },
-                          "frozen_sprite": {
-                            "$ref": "../definitions/reference.json",
-                            "description": "Reference to the frozen state sprite."
-                          },
-                          "visited_sprite_disabled": {
-                            "$ref": "../definitions/reference.json",
-                            "description": "Reference to the visited and disabled state sprite."
-                          },
-                          "visited_sprite_enabled": {
-                            "$ref": "../definitions/reference.json",
-                            "description": "Reference to the visited and enabled state sprite."
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "../definitions/game_object_map_node_extension.json"
               },
               {
-                "properties": {
-                  "type": {
-                    "enum": [
-                      "battle_node_icon"
-                    ]
-                  },
-                  "extensions": {
-                    "type": "object",
-                    "description": "Extensions for battle node icon game objects.",
-                    "properties": {
-                      "map_node_icon": {
-                        "type": "object",
-                        "description": "Battle node icon specific properties.",
-                        "properties": {
-                          "completed_sprite": {
-                            "$ref": "../definitions/reference.json"
-                          },
-                          "inactive_sprite": {
-                            "$ref": "../definitions/reference.json"
-                          },
-                          "active_sprite": {
-                            "$ref": "../definitions/reference.json"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+                "$ref": "../definitions/game_object_battle_node_extension.json"
               }
             ]
           }

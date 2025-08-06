@@ -34,5 +34,6 @@
         public const string BossVariants = "BossVariants";
         public const string TrialList = "TrialList";
         public const string Trial = "Trial";
+        public const string SkeletonData = "SkeletonData";
     }
 }
