@@ -77,6 +77,9 @@
     "scenarios": {
       "$ref": "schemas/scenarios.json#/properties/scenarios"
     },
+    "skeletons": {
+      "$ref": "schemas/skeletons.json#/properties/skeletons"
+    },
     "sprites": {
       "$ref": "schemas/sprites.json#/properties/sprites"
     },

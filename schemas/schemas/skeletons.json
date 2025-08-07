@@ -4,7 +4,7 @@
   "properties": {
     "skeletons": {
       "type": "array",
-      "description": "List of Skeleton Animations",
+      "description": "List of Skeleton Data Assets",
       "items": {
         "required": ["id"],
         "properties": {
