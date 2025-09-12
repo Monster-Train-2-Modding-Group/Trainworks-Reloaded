@@ -16,6 +16,7 @@
     },
     {
       "enum": [
+        "GrosMichelRelicEffectChanceToDestroySelf",
         "RelicEffectAddAlliedChampionToDeck",
         "RelicEffectAddAttackCardScaling",
         "RelicEffectAddBattleCardToHand",
@@ -23,6 +24,7 @@
         "RelicEffectAddBonusCardToCardDrafts",
         "RelicEffectAddCardBase",
         "RelicEffectAddCardSetStartOfRun",
+        "RelicEffectAddCardsNull",
         "RelicEffectAddCardsStartOfBattle",
         "RelicEffectAddCardsStartOfRun",
         "RelicEffectAddChampionCardToHand",
@@ -34,6 +36,7 @@
         "RelicEffectAddEquipmentLimit",
         "RelicEffectAddGoldOnExhaust",
         "RelicEffectAddGoldOnPurge",
+        "RelicEffectAddGoldOnPyreDamage",
         "RelicEffectAdditionalDrawPerCardType",
         "RelicEffectAddPermanentCorruptionStartOfCombat",
         "RelicEffectAddPostBattleReward",
@@ -77,7 +80,9 @@
         "RelicEffectAdjustMixAmount",
         "RelicEffectApplyCardUpgradeOnCardTraitAdded",
         "RelicEffectApplyCardUpgradeToHandEndOfTurn",
+        "RelicEffectApplyCardUpgradeToHandEndOfTurnOnMoon",
         "RelicEffectAutoselectTrainPath",
+        "RelicEffectBalatroBananaShake",
         "RelicEffectBumpOnTurnEnd",
         "RelicEffectCardDrawOnCardDraw",
         "RelicEffectCardDrawOnCardPlay",
@@ -86,6 +91,7 @@
         "RelicEffectCardDuplicator",
         "RelicEffectCardsFromHandToDeck",
         "RelicEffectCardUpgrade",
+        "RelicEffectChanceAddEffectAfterSpawn",
         "RelicEffectChanceAddEffectOnDamageCardPlayed",
         "RelicEffectChanceAddEffectOnSpawn",
         "RelicEffectChanceBackToFrontOnTrigger",
@@ -119,6 +125,7 @@
         "RelicEffectDisableRoomPreview",
         "RelicEffectDisableShards",
         "RelicEffectDisableTowerHealing",
+        "RelicEffectDisableUndo",
         "RelicEffectDisableUnitAbilities",
         "RelicEffectDrawCardAfterEachClanPlayed",
         "RelicEffectDrawCardAndGainEmberOnDrawType",
@@ -191,6 +198,7 @@
         "RelicEffectModifyFirstCardCostPerPile",
         "RelicEffectModifyFloorCapacityByTowerHealth",
         "RelicEffectModifyFrontInRoomCharacterMaxHealthEachTurn",
+        "RelicEffectModifyGoldEndOfBattle",
         "RelicEffectModifyMaxCorruption",
         "RelicEffectModifyMerchantAddGoods",
         "RelicEffectModifyMerchantAllCosts",
@@ -262,8 +270,7 @@
         "RelicEffectUnlockTrialSins",
         "RelicEffectUpgradeCardOnGain",
         "RelicEffectUpgradeCardOnPurchasingUpgrade",
-        "RelicEffectUpgradeMatchingCards",
-        null
+        "RelicEffectUpgradeMatchingCards"
       ]
     }
   ]
