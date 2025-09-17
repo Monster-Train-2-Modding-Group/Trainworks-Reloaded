@@ -266,14 +266,18 @@ namespace TrainworksReloaded.Base.Card
                         ?? canAbilityTargetOtherFloors
                 );
 
-            var artistAttribution = overrideMode.IsNewContent() ? "" :
-                (string)AccessTools.Field(typeof(CardData), "artistAttribution").GetValue(data);
+            var artistAttribution = overrideMode.IsNewContent() ? "" : data.GetArtistAttribution();
             AccessTools
                 .Field(typeof(CardData), "artistAttribution")
                 .SetValue(
                     data,
                     configuration.GetSection("artist").ParseString() ?? artistAttribution
                 );
+
+            RoomTargetPos targetPos = overrideMode.IsNewContent() ? RoomTargetPos.Center : data.GetRoomKeyboardDefaultTargetPos();
+            AccessTools
+                .Field(typeof(CardData), "roomKeyboardDefaultTargetPos")
+                .SetValue(data, configuration.GetSection("room_keyboard_default_target_pos").ParseRoomTargetPos() ?? targetPos);
 
             //register before filling in data using
             var modded = overrideMode.IsNewContent();

@@ -153,6 +153,18 @@
             "description": "The DLC this card belongs to.",
             "default": "none"
           },
+          "room_keyboard_default_target_pos": {
+            "type": "string",
+            "enum": [
+              "center",
+              "low",
+              "left",
+              "right",
+              "unknown"
+            ],
+            "description": "Room keyboard default target position.",
+            "default": "center"
+          },
           "shared_discovery_cards": {
             "type": "array",
             "description": "List of cards that are discovered together with this card.",

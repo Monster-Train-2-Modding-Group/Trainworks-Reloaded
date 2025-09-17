@@ -1235,6 +1235,24 @@ namespace TrainworksReloaded.Base.Extensions
             }
         }
 
+        public static RoomTargetPos? ParseRoomTargetPos(this IConfigurationSection section)
+        {
+            var val = section.Value?.ToLower();
+            if (string.IsNullOrEmpty(val))
+            {
+                return null;
+            }
+            return val switch
+            {
+                "center" => RoomTargetPos.Center,
+                "low" => RoomTargetPos.Low,
+                "left" => RoomTargetPos.Left,
+                "right" => RoomTargetPos.Right,
+                "unknown" => RoomTargetPos.Unknown,
+                _ => null
+            };
+        }
+
         public static Vector2 ParseVec2(this IConfigurationSection section, float x = 0, float y = 0)
         {
             var xVal = section.GetSection("x").ParseFloat() ?? x;
