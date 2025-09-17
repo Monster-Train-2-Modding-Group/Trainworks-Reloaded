@@ -176,6 +176,13 @@
             "type": "boolean",
             "description": "Whether to suppress Pyre room focus when applying this effect."
           },
+          "target_character_excluded_subtypes": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/subtype.json"
+            },
+            "description": "List of subtypes that will be filtered out from list of targets, it is ignored if target_subtype is specified as its use is the opposite of target_subtype."
+          },
           "target_card_selection_mode": {
             "$ref": "../definitions/card_selection_mode.json",
             "description": "Used in CardEffectRecursion to choose how cards from target_mode are selected.",
