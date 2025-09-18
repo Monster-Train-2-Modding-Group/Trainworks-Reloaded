@@ -223,56 +223,60 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 );
 
             //int
-            var bonusDamage = (int)AccessTools.Field(typeof(CardUpgradeData), "bonusDamage").GetValue(data);
             AccessTools
                 .Field(typeof(CardUpgradeData), "bonusDamage")
-                .SetValue(data, configuration.GetSection("bonus_damage").ParseInt() ?? bonusDamage);
+                .SetValue(data, configuration.GetSection("bonus_damage").ParseInt() ?? data.GetBonusDamage());
 
-            var bonusHP = (int)AccessTools.Field(typeof(CardUpgradeData), "bonusHP").GetValue(data);
             AccessTools
                 .Field(typeof(CardUpgradeData), "bonusHP")
-                .SetValue(data, configuration.GetSection("bonus_hp").ParseInt() ?? bonusHP);
+                .SetValue(data, configuration.GetSection("bonus_hp").ParseInt() ?? data.GetBonusHP());
 
-            var costReduction = (int)AccessTools.Field(typeof(CardUpgradeData), "costReduction").GetValue(data);
+            AccessTools
+                .Field(typeof(CardUpgradeData), "unhealedBonusHP")
+                .SetValue(data, configuration.GetSection("bonus_unhealed_hp").ParseInt() ?? data.GetUnhealedBonusHP());
+
             AccessTools
                 .Field(typeof(CardUpgradeData), "costReduction")
                 .SetValue(
                     data,
-                    configuration.GetSection("cost_reduction").ParseInt() ?? costReduction
+                    configuration.GetSection("cost_reduction").ParseInt() ?? data.GetCostReduction()
                 );
 
-            var xCostReduction = (int)AccessTools.Field(typeof(CardUpgradeData), "xCostReduction").GetValue(data);
             AccessTools
                 .Field(typeof(CardUpgradeData), "xCostReduction")
                 .SetValue(
                     data,
-                    configuration.GetSection("x_cost_reduction").ParseInt() ?? xCostReduction
+                    configuration.GetSection("x_cost_reduction").ParseInt() ?? data.GetXCostReduction()
                 );
 
-            var bonusHeal = (int)AccessTools.Field(typeof(CardUpgradeData), "bonusHeal").GetValue(data);
             AccessTools
                 .Field(typeof(CardUpgradeData), "bonusHeal")
-                .SetValue(data, configuration.GetSection("bonus_heal").ParseInt() ?? bonusHeal);
+                .SetValue(data, configuration.GetSection("bonus_heal").ParseInt() ?? data.GetBonusHeal());
 
-            var bonusSize = (int)AccessTools.Field(typeof(CardUpgradeData), "bonusSize").GetValue(data);
             AccessTools
                 .Field(typeof(CardUpgradeData), "bonusSize")
-                .SetValue(data, configuration.GetSection("bonus_size").ParseInt() ?? bonusSize);
+                .SetValue(data, configuration.GetSection("bonus_size").ParseInt() ?? data.GetBonusSize());
 
-            var bonusEquipment = (int)AccessTools.Field(typeof(CardUpgradeData), "bonusEquipment").GetValue(data);
             AccessTools
                 .Field(typeof(CardUpgradeData), "bonusEquipment")
                 .SetValue(
                     data,
-                    configuration.GetSection("bonus_equipment").ParseInt() ?? bonusEquipment
+                    configuration.GetSection("bonus_equipment").ParseInt() ?? data.GetBonusEquipment()
                 );
 
-            var excludeFromClones = (bool)AccessTools.Field(typeof(CardUpgradeData), "excludeFromClones").GetValue(data);
+            //bool
             AccessTools
                 .Field(typeof(CardUpgradeData), "excludeFromClones")
                 .SetValue(
                     data,
-                    configuration.GetSection("exclude_from_clones").ParseBool() ?? excludeFromClones
+                    configuration.GetSection("exclude_from_clones").ParseBool() ?? data.GetExcludeFromClones()
+                );
+
+            AccessTools
+                .Field(typeof(CardUpgradeData), "upgradeWillBeScaledByNonMagicPowerTrait")
+                .SetValue(
+                    data,
+                    configuration.GetSection("upgrade_will_be_scaled_by_non_magic_power_trait").ParseBool() ?? data.GetUpgradeWillBeScaledByNonMagicPowerTrait()
                 );
 
             //List<String>

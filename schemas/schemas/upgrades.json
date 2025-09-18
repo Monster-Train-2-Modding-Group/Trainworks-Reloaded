@@ -34,15 +34,19 @@
           },
           "bonus_heal": {
             "type": "integer",
-            "description": "Amount of bonus healing to add."
+            "description": "Amount of bonus healing to add for spell cards."
           },
           "bonus_hp": {
             "type": "integer",
-            "description": "Amount of bonus HP to add."
+            "description": "Amount of bonus maximum HP to add."
           },
           "bonus_size": {
             "type": "integer",
             "description": "Amount of bonus size to add."
+          },
+          "bonus_unhealed_hp": {
+            "type": "integer",
+            "description": "Amount of bonus unhealed maximum hp to add."
           },
           "card_trigger_upgrades": {
             "type": "array",
@@ -161,6 +165,10 @@
             "type": "boolean",
             "description": "Whether to use upgrade highlight tags for upgrade text.",
             "default": true
+          },
+          "upgrade_will_be_scaled_by_non_magic_power_trait": {
+            "type": "boolean",
+            "description": "Only used by Sacrificial Resurrection / Prism Retrieval. This field was added for a bugfix, set to true if this upgrade is intended for units and has its attack damage dynamically generated. This prevents the upgrade from being reset when the unit with the upgrade gets reformed."
           },
           "x_cost_reduction": {
             "type": "integer",
