@@ -59,6 +59,10 @@
             "description": "List of effects that occur when this trigger is activated."
           }
         },
+        "trigger_keyword_tooltip_suppressed": {
+          "type": "boolean",
+          "description": "Rarely used. Supresses the tooltip for the trigger type. Currently used by Fecundity's OnCast trigger."
+        },
         "required": [
           "id"
         ],

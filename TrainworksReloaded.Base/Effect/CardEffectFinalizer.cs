@@ -277,15 +277,14 @@ namespace TrainworksReloaded.Base.Effect
                 .Field(typeof(CardEffectData), "targetCharacterSubtype")
                 .SetValue(data, targetCharacterSubtype);
 
-
             var excludedSubtypeReferences = configuration.GetSection("target_character_excluded_subtypes")
                 .GetChildren()
                 .Select(x => x.ParseReference())
                 .Where(x => x != null)
                 .Cast<ReferencedObject>();
-           List<string> excludedSubtypes = [];
-           foreach (var subtypeReference in excludedSubtypeReferences)
-           {
+            List<string> excludedSubtypes = [];
+            foreach (var subtypeReference in excludedSubtypeReferences)
+            {
                 var subtypeId = subtypeReference.ToId(key, TemplateConstants.Subtype);
                 if (subtypeRegister.TryLookupId(subtypeId, out var subtype, out var _))
                 {
