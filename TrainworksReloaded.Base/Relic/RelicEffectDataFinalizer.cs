@@ -120,7 +120,7 @@ namespace TrainworksReloaded.Base.Relic
                     {
                         statusId = statusEffectData.GetStatusId(),
                         count = child?.GetSection("count").ParseInt() ?? 0,
-                        fromPermanentUpgrade = child.GetSection("from_permanent_upgrade").ParseBool() ?? false
+                        fromPermanentUpgrade = child?.GetSection("from_permanent_upgrade").ParseBool() ?? false
                     });
                 }
             }
