@@ -594,6 +594,8 @@ namespace TrainworksReloaded.Base.Extensions
                 "strongest_all_rooms" => TargetMode.StrongestAllRooms,
                 "last_equipped_character" => TargetMode.LastEquippedCharacter,
                 "last_sacrificed_character" => TargetMode.LastSacrificedCharacter,
+                "strongest_last_targeted_characters" => TargetMode.StrongestLastTargetedCharacters,
+                "strongest_last_targeted_characters_room" => TargetMode.StrongestLastTargetedCharactersRoom,
                 _ => null,
             };
         }
