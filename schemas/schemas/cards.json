@@ -138,7 +138,7 @@
           },
           "pools": {
             "type": "array",
-            "description": "List of card pools this card can appear in.",
+            "description": "List of card pools this card can appear in. Optimally, for efficiency, you should only list Vanilla Card Pools here rather than your Custom Card Pools. This field can't be overriden or replaced, instead you must modify the CardPool manually via code.",
             "items": {
               "$ref": "../definitions/card_pool.json"
             }

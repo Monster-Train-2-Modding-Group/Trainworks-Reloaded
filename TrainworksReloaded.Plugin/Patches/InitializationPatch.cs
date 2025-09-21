@@ -21,37 +21,16 @@ namespace TrainworksReloaded.Plugin.Patches
             RunSetupScreenPatches.container = container;
             // var gameObjectRegister = container.GetInstance<GameObjectRegister>();
             // gameObjectRegister.hiddenRoot.transform.position = new Vector3(10000, 10000, 0);
-            var register = container.GetInstance<CardDataRegister>();
+
             var logger = container.GetInstance<IModLogger<InitializationPatch>>();
+
+            var cardPoolRegister = container.GetInstance<CardPoolRegister>();
+            cardPoolRegister.PreloadAllVanillaCardPools(____assetLoadingData.AllGameData);
 
             logger.Log(LogLevel.Info, "Starting TrainworksReloaded initialization...");
 
-            //add data to the existing main pools
-            var delegator = container.GetInstance<VanillaCardPoolDelegator>();
-            logger.Log(LogLevel.Info, "Processing card pools...");
-            foreach (
-                var cardpool in ____assetLoadingData.CardPoolsAll.Union(
-                    ____assetLoadingData.CardPoolsAlwaysLoad
-                )
-            )
-            {
-                if (cardpool != null && delegator.CardPoolToData.ContainsKey(cardpool.name))
-                {
-                    var cardsToAdd = delegator.CardPoolToData[cardpool.name];
-                    var dataList =
-                        (ReorderableArray<CardData>)
-                            AccessTools.Field(typeof(CardPool), "cardDataList").GetValue(cardpool);
-                    foreach (var card in cardsToAdd)
-                    {
-                        dataList.Add(card);
-                    }
-                    logger.Log(LogLevel.Debug, $"Added {cardsToAdd.Count} cards to pool: {cardpool.name}");
-                }
-            }
-            delegator.CardPoolToData.Clear(); //save memory
             //we add custom card pool so that the card data is loaded, even if it doesn't exist in any pool.
-            ____assetLoadingData.CardPoolsAll.Add(register.CustomCardPool);
-            logger.Log(LogLevel.Info, "Card pool processing complete");
+            ____assetLoadingData.CardPoolsAll.Add(container.GetInstance<CardDataRegister>().CustomCardPool);
 
             //add relic data to megapool
             var relicDelegator = container.GetInstance<VanillaRelicPoolDelegator>();

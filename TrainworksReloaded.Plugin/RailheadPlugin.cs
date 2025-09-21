@@ -13,6 +13,7 @@ using TrainworksReloaded.Base.Character;
 using TrainworksReloaded.Base.Class;
 using TrainworksReloaded.Base.Effect;
 using TrainworksReloaded.Base.Enums;
+using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Base.Map;
 using TrainworksReloaded.Base.Prefab;
@@ -402,11 +403,6 @@ namespace TrainworksReloaded.Plugin
                     var pipeline = c.GetInstance<IDataPipeline<IRegister<CardData>, CardData>>();
                     pipeline.Run(x);
                 });
-                c.RegisterSingleton<VanillaCardPoolDelegator>();
-                c.RegisterDecorator<
-                    IDataPipeline<IRegister<CardData>, CardData>,
-                    PoolingCardDataPipelineDecorator
-                >();
 
                 //Register Card Pool
                 c.RegisterSingleton<IRegister<CardPool>, CardPoolRegister>(); //a place to register and access custom card data
@@ -775,6 +771,14 @@ namespace TrainworksReloaded.Plugin
             harmony.PatchAll();
 
             Logger.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded!");
+        }
+
+        // For debugging only
+        private static object? DEBUG_GetInstance(string typeName)
+        {
+            var type = typeof(VfxRegister).Assembly.FindTypeByClassName(typeName);
+            if (type == null) return null;
+            return Container.Value.GetInstance(type);
         }
     }
 }

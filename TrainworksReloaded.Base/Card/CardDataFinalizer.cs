@@ -1,7 +1,9 @@
 ﻿using HarmonyLib;
+using Malee;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Prefab;
 using TrainworksReloaded.Core.Enum;
@@ -18,6 +20,7 @@ namespace TrainworksReloaded.Base.Card
         private readonly ICache<IDefinition<CardData>> cache;
         private readonly IRegister<ClassData> classRegister;
         private readonly IRegister<CardData> cardRegister;
+        private readonly IRegister<CardPool> cardPoolRegister;
         private readonly IRegister<CardTraitData> traitRegister;
         private readonly IRegister<CardEffectData> effectRegister;
         private readonly IRegister<AssetReferenceGameObject> assetReferenceRegister;
@@ -27,11 +30,14 @@ namespace TrainworksReloaded.Base.Card
         private readonly IRegister<VfxAtLoc> vfxRegister;
         private readonly FallbackDataProvider fallbackDataProvider;
 
+        private readonly FieldInfo CardPoolCardDataListField = AccessTools.Field(typeof(CardPool), "cardDataList");
+
         public CardDataFinalizer(
             IModLogger<CardDataFinalizer> logger,
             ICache<IDefinition<CardData>> cache,
             IRegister<ClassData> classRegister,
             IRegister<CardData> cardRegister,
+            IRegister<CardPool> cardPoolRegister,
             IRegister<CardTraitData> traitRegister,
             IRegister<CardEffectData> effectRegister,
             IRegister<AssetReferenceGameObject> assetReferenceRegister,
@@ -46,6 +52,7 @@ namespace TrainworksReloaded.Base.Card
             this.cache = cache;
             this.classRegister = classRegister;
             this.cardRegister = cardRegister;
+            this.cardPoolRegister = cardPoolRegister;
             this.traitRegister = traitRegister;
             this.effectRegister = effectRegister;
             this.assetReferenceRegister = assetReferenceRegister;
@@ -316,6 +323,21 @@ namespace TrainworksReloaded.Base.Card
             {
                 vfxRegister.TryLookupId(specialEdgeVFXId ?? "", out var specialEdgeVfx, out var _);
                 AccessTools.Field(typeof(CardData), "specialEdgeVFX").SetValue(data, specialEdgeVfx);
+            }
+
+            var poolReferences = configuration.GetSection("pools")
+                .GetChildren()
+                .Select(x => x.ParseReference())
+                .Where(x => x != null)
+                .Cast<ReferencedObject>();
+            foreach (var poolReference in poolReferences)
+            {
+                var id = poolReference.ToId(key, TemplateConstants.CardPool);
+                if (cardPoolRegister.TryLookupId(id, out var pool, out var _))
+                {
+                    var cardDataList = CardPoolCardDataListField.GetValue(pool) as ReorderableArray<CardData>;
+                    cardDataList?.Add(data);
+                }
             }
 
             AccessTools
