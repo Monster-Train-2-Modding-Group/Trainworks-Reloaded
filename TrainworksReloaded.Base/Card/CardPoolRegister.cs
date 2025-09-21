@@ -82,7 +82,7 @@ namespace TrainworksReloaded.Base.Card
             {
                 if (cardPool == null) 
                     return;
-                logger.Log(LogLevel.Error, $"Found Vanilla CardPool {cardPool.name}");
+                logger.Log(LogLevel.Debug, $"Found Vanilla CardPool {cardPool.name}");
                 VanillaCardPools.Add(cardPool.name, cardPool);
             }
 
