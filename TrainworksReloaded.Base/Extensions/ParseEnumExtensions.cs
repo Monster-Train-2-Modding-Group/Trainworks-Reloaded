@@ -498,7 +498,7 @@ namespace TrainworksReloaded.Base.Extensions
                 "blight" => CardTypeTarget.Blight,
                 "junk" => CardTypeTarget.Junk,
                 "equipment" => CardTypeTarget.Equipment,
-                "train_room_attachment" => CardTypeTarget.TrainRoomAttachment,
+                "room" => CardTypeTarget.TrainRoomAttachment,
                 _ => null,
             };
         }
