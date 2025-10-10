@@ -1,6 +1,7 @@
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
+using TrainworksReloaded.Base.Enums;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
@@ -29,6 +30,7 @@ namespace TrainworksReloaded.Base.Relic
         private readonly IRegister<CharacterTriggerData.Trigger> triggerEnumRegister;
         private readonly IRegister<EnhancerPool> enhancerPoolRegister;
         private readonly IRegister<RelicEffectCondition> relicEffectConditionRegister;
+        private readonly IRegister<TargetMode> targetModeRegister;
 
         public RelicEffectDataFinalizer(
             IModLogger<RelicEffectDataFinalizer> logger,
@@ -49,7 +51,8 @@ namespace TrainworksReloaded.Base.Relic
             IRegister<RelicData> relicRegister,
             IRegister<CharacterTriggerData.Trigger> triggerEnumRegister,
             IRegister<EnhancerPool> enhancerPoolRegister,
-            IRegister<RelicEffectCondition> relicEffectConditionRegister
+            IRegister<RelicEffectCondition> relicEffectConditionRegister,
+            IRegister<TargetMode> targetModeRegister
         )
         {
             this.logger = logger;
@@ -71,6 +74,7 @@ namespace TrainworksReloaded.Base.Relic
             this.triggerEnumRegister = triggerEnumRegister;
             this.enhancerPoolRegister = enhancerPoolRegister;
             this.relicEffectConditionRegister = relicEffectConditionRegister;
+            this.targetModeRegister = targetModeRegister;
         }
 
         public void FinalizeData()
@@ -362,6 +366,17 @@ namespace TrainworksReloaded.Base.Relic
                         .Field(typeof(RelicEffectData), "paramEnhancerPool")
                         .SetValue(data, enhancerPool);
                 }
+            }
+
+            var targetModeReference = configuration.GetSection("target_mode").ParseReference();
+            if (targetModeReference != null)
+            {
+                targetModeRegister.TryLookupId(
+                    targetModeReference.ToId(key, TemplateConstants.TargetModeEnum),
+                    out var lookup,
+                    out var _
+                    );
+                AccessTools.Field(typeof(RelicEffectData), "paramTargetMode").SetValue(data, lookup);
             }
 
             var tooltips = new List<AdditionalTooltipData>();

@@ -2,6 +2,7 @@ using HarmonyLib;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
+using TrainworksReloaded.Base.Enums;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Extensions;
@@ -155,10 +156,6 @@ namespace TrainworksReloaded.Base.Relic
 
             var paramBool3 = config.GetSection("param_bool_3").ParseBool() ?? false;
             AccessTools.Field(typeof(RelicEffectData), "paramBool3").SetValue(data, paramBool3);
-
-            // Handle target mode
-            var targetMode = config.GetSection("target_mode").ParseTargetMode() ?? TargetMode.Room;
-            AccessTools.Field(typeof(RelicEffectData), "paramTargetMode").SetValue(data, targetMode);
 
             // Handle card type
             var cardType = config.GetDeprecatedSection("card_type", "param_card_type").ParseCardType() ?? CardType.Spell;

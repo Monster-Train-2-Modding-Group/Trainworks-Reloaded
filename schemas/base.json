@@ -89,6 +89,9 @@
     "subtypes": {
       "$ref": "schemas/subtypes.json#/properties/subtypes"
     },
+    "target_modes": {
+      "$ref": "schemas/target_modes.json#/properties/target_modes"
+    },
     "traits": {
       "$ref": "schemas/traits.json#/properties/traits"
     },

@@ -19,6 +19,7 @@ namespace TrainworksReloaded.Base.Effect
         private readonly IRegister<CardUpgradeMaskData> upgradeMaskRegister;
         private readonly IRegister<CardPool> cardPoolRegister;
         private readonly IRegister<SubtypeData> subtypeRegister;
+        private readonly IRegister<TargetMode> targetModeRegister;
         private readonly IRegister<VfxAtLoc> vfxRegister;
         private readonly ICache<IDefinition<CardEffectData>> cache;
 
@@ -32,6 +33,7 @@ namespace TrainworksReloaded.Base.Effect
             IRegister<CharacterTriggerData.Trigger> triggerEnumRegister,
             IRegister<CardPool> cardPoolRegister,
             IRegister<SubtypeData> subtypeRegister,
+            IRegister<TargetMode> targetModeRegister,
             IRegister<VfxAtLoc> vfxRegister,
             ICache<IDefinition<CardEffectData>> cache
         )
@@ -45,6 +47,7 @@ namespace TrainworksReloaded.Base.Effect
             this.upgradeMaskRegister = upgradeMaskRegister;
             this.cardPoolRegister = cardPoolRegister;
             this.subtypeRegister = subtypeRegister;
+            this.targetModeRegister = targetModeRegister;
             this.vfxRegister = vfxRegister;
             this.cache = cache;
         }
@@ -222,10 +225,6 @@ namespace TrainworksReloaded.Base.Effect
                     paramTrigger = triggerFound;
                 }
             }
-            else
-            {
-
-            }
             AccessTools
                 .Field(typeof(CardEffectData), "paramTrigger")
                 .SetValue(data, paramTrigger);
@@ -259,6 +258,17 @@ namespace TrainworksReloaded.Base.Effect
                     out var _
                     );
                 AccessTools.Field(typeof(CardEffectData), "paramCardPool").SetValue(data, lookup);
+            }
+
+            var targetModeReference = configuration.GetSection("target_mode").ParseReference();
+            if (targetModeReference != null) 
+            {
+                targetModeRegister.TryLookupId(
+                    targetModeReference.ToId(key, TemplateConstants.TargetModeEnum),
+                    out var lookup,
+                    out var _
+                    );
+                AccessTools.Field(typeof(CardEffectData), "targetMode").SetValue(data, lookup);
             }
 
             var targetCharacterSubtype = "SubtypesData_None";

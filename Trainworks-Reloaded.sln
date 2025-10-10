@@ -52,6 +52,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "schemas", "schemas", "{7F34
 		schemas\schemas\sprites.json = schemas\schemas\sprites.json
 		schemas\schemas\status_effects.json = schemas\schemas\status_effects.json
 		schemas\schemas\subtypes.json = schemas\schemas\subtypes.json
+		schemas\schemas\target_modes.json = schemas\schemas\target_modes.json
 		schemas\schemas\traits.json = schemas\schemas\traits.json
 		schemas\schemas\trials.json = schemas\schemas\trials.json
 		schemas\schemas\upgrades.json = schemas\schemas\upgrades.json

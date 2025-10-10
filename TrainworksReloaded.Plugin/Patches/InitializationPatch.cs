@@ -1,7 +1,9 @@
 ﻿using HarmonyLib;
 using Malee;
+using SimpleInjector;
 using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Base.Class;
+using TrainworksReloaded.Base.Enums;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Base.Map;
 using TrainworksReloaded.Base.Relic;
@@ -18,7 +20,7 @@ namespace TrainworksReloaded.Plugin.Patches
         public static void Postfix(AssetLoadingData ____assetLoadingData)
         {
             var container = Railend.GetContainer();
-            RunSetupScreenPatches.container = container;
+            InitializePatches(container);
             // var gameObjectRegister = container.GetInstance<GameObjectRegister>();
             // gameObjectRegister.hiddenRoot.transform.position = new Vector3(10000, 10000, 0);
 
@@ -196,5 +198,9 @@ namespace TrainworksReloaded.Plugin.Patches
             logger.Log(LogLevel.Info, "TrainworksReloaded initialization complete!");
         }
 
+        private static void InitializePatches(Container container)
+        {
+            RunSetupScreenPatches.container = container;
+        }
     }
 }

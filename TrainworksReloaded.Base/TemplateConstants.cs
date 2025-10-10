@@ -22,6 +22,7 @@
         public const string StatusEffect = "StatusEffect";
         public const string CardTriggerEnum = "TriggerEnum";
         public const string CharacterTriggerEnum = "CTriggerEnum";
+        public const string TargetModeEnum = "TargetModeEnum";
         public const string RelicData = "RelicData";
         public const string RelicEffectData = "RelicEffectData";
         public const string Character = "Character";
