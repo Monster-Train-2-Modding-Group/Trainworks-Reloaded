@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Base.Interfaces;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
@@ -20,7 +19,6 @@ namespace TrainworksReloaded.Base.Enums
         public TargetModePipeline(PluginAtlas atlas)
         {
             this.atlas = atlas;
-            this.logger = logger;
         }
 
         public List<IDefinition<TargetMode>> Run(IRegister<TargetMode> service)
