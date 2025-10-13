@@ -189,7 +189,7 @@
             "default": "choose_to_hand"
           },
           "target_card_type": {
-            "$ref": "../definitions/card_type_target.json",
+            "$ref": "../definitions/card_type.json",
             "description": "Type of card to target.",
             "default": "spell"
           },

@@ -13,7 +13,7 @@
       "items": {
         "properties": {
           "name": {
-            "$ref": "../definitions/boss_action_behaviour.json",
+            "$ref": "../definitions/boss_action_behavior.json",
             "description": "Name of class implementing IBossActionBehaviour specifying which floor the flying boss moves to."
           },
           "tooltip": {
@@ -40,4 +40,5 @@
       }
     }
   }
+
 }
