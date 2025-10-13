@@ -350,6 +350,21 @@ namespace TrainworksReloaded.Plugin
                     pipeline.Run(x);
                 });
 
+                //Register Custom TargetModes.
+                c.RegisterSingleton<IRegister<TargetMode>, TargetModeRegister>();
+                c.RegisterSingleton<TargetModeRegister, TargetModeRegister>();
+                c.Register<
+                    IDataPipeline<IRegister<TargetMode>, TargetMode>,
+                    TargetModePipeline
+                >(); //a data pipeline to run as soon as register is needed
+                c.RegisterInitializer<IRegister<TargetMode>>(x =>
+                {
+                    var pipeline = c.GetInstance<
+                        IDataPipeline<IRegister<TargetMode>, TargetMode>
+                    >();
+                    pipeline.Run(x);
+                });
+
                 //Register Subtypes
                 c.RegisterSingleton<IRegister<SubtypeData>, SubtypeDataRegister>();
                 c.RegisterSingleton<SubtypeDataRegister, SubtypeDataRegister>();
