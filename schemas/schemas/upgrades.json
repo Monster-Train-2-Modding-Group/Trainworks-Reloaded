@@ -46,7 +46,7 @@
           },
           "bonus_unhealed_hp": {
             "type": "integer",
-            "description": "Amount of bonus unhealed maximum hp to add."
+            "description": "Amount of bonus unhealed maximum hp to add. Don't use this unless its used for a room. If this is present on a spell/unit that applies an upgrade the unfilled max hp will fall off on death."
           },
           "card_trigger_upgrades": {
             "type": "array",
