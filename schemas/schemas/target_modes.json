@@ -1,0 +1,24 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/target_modes.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "target_modes": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "A collection of target modes declarations. Note there is a limit to how many target modes can exist across all mods, only create one if absolutely necessary.",
+      "required": ["id"],
+      "items": {
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique identifier for this TargetMode."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    }
+  }
+}

@@ -284,15 +284,6 @@ namespace TrainworksReloaded.Base.Effect
                     configuration.GetSection("param_multiplier").ParseFloat() ?? paramMultiplier
                 );
 
-            //target mode
-            var targetMode = TargetMode.Room;
-            AccessTools
-                .Field(typeof(CardEffectData), "targetMode")
-                .SetValue(
-                    data,
-                    configuration.GetSection("target_mode").ParseTargetMode() ?? targetMode
-                );
-
             //health filter
             var targetModeHealthFilter = CardEffectData.HealthFilter.Both;
             AccessTools

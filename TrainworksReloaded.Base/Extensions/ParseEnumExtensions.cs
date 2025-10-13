@@ -498,6 +498,7 @@ namespace TrainworksReloaded.Base.Extensions
                 "blight" => CardTypeTarget.Blight,
                 "junk" => CardTypeTarget.Junk,
                 "equipment" => CardTypeTarget.Equipment,
+                "train_room_attachment" => CardTypeTarget.TrainRoomAttachment,
                 "room" => CardTypeTarget.TrainRoomAttachment,
                 _ => null,
             };
@@ -554,52 +555,6 @@ namespace TrainworksReloaded.Base.Extensions
                 _ => null,
             };
         }
-
-        public static TargetMode? ParseTargetMode(this IConfigurationSection section)
-        {
-            var val = section.Value;
-            if (string.IsNullOrEmpty(val))
-            {
-                return null;
-            }
-
-            return val.ToLower() switch
-            {
-                "room" => TargetMode.Room,
-                "random_in_room" => TargetMode.RandomInRoom,
-                "front_in_room" => TargetMode.FrontInRoom,
-                "room_heal_targets" => TargetMode.RoomHealTargets,
-                "self" => TargetMode.Self,
-                "last_attacked_character" => TargetMode.LastAttackedCharacter,
-                "front_with_status" => TargetMode.FrontWithStatus,
-                "tower" => TargetMode.Tower,
-                "back_in_room" => TargetMode.BackInRoom,
-                "drop_target_character" => TargetMode.DropTargetCharacter,
-                "draw_pile" => TargetMode.DrawPile,
-                "discard" => TargetMode.Discard,
-                "exhaust" => TargetMode.Exhaust,
-                "eaten" => TargetMode.Eaten,
-                "weakest" => TargetMode.Weakest,
-                "last_attacker_character" => TargetMode.LastAttackerCharacter,
-                "hand" => TargetMode.Hand,
-                "last_drawn_card" => TargetMode.LastDrawnCard,
-                "last_feeder_character" => TargetMode.LastFeederCharacter,
-                "pyre" => TargetMode.Pyre,
-                "last_targeted_characters" => TargetMode.LastTargetedCharacters,
-                "last_damaged_characters" => TargetMode.LastDamagedCharacters,
-                "last_spawned_morsel" => TargetMode.LastSpawnedMorsel,
-                "front_in_all_rooms" => TargetMode.FrontInAllRooms,
-                "front_in_room_and_room_above" => TargetMode.FrontInRoomAndRoomAbove,
-                "weakest_all_rooms" => TargetMode.WeakestAllRooms,
-                "strongest_all_rooms" => TargetMode.StrongestAllRooms,
-                "last_equipped_character" => TargetMode.LastEquippedCharacter,
-                "last_sacrificed_character" => TargetMode.LastSacrificedCharacter,
-                "strongest_last_targeted_characters" => TargetMode.StrongestLastTargetedCharacters,
-                "strongest_last_targeted_characters_room" => TargetMode.StrongestLastTargetedCharactersRoom,
-                _ => null,
-            };
-        }
-
         public static CardEffectData.HealthFilter? ParseHealthFilter(
             this IConfigurationSection section
         )
