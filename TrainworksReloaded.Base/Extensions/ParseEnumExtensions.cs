@@ -278,30 +278,6 @@ namespace TrainworksReloaded.Base.Extensions
             };
         }
 
-        public static ClassCardStyle? ParseCardStyle(this IConfigurationSection section)
-        {
-            var val = section.Value;
-            if (string.IsNullOrEmpty(val))
-            {
-                return null;
-            }
-            return val.ToLower() switch
-            {
-                "none" => ClassCardStyle.None,
-                "banished" => ClassCardStyle.Banished,
-                "pyreborne" => ClassCardStyle.Pyreborne,
-                "luna_coven" => ClassCardStyle.LunaCoven,
-                "underlegion" => ClassCardStyle.Underlegion,
-                "lazarus_league" => ClassCardStyle.LazarusLeague,
-                "hellhorned" => ClassCardStyle.Hellhorned,
-                "awoken" => ClassCardStyle.Awoken,
-                "stygian_guard" => ClassCardStyle.Stygian,
-                "umbra" => ClassCardStyle.Umbra,
-                "melting_remnant" => ClassCardStyle.Remnant,
-                _ => null,
-            };
-        }
-
         private static CardTargetMode? DoParseCardTargetMode(string? val)
         {
             if (val == null)
@@ -418,65 +394,6 @@ namespace TrainworksReloaded.Base.Extensions
                     TrackedValue.RoomCapacityIncreasedAfterCrewUnlocked,
                 "defeat_tfb_with_all_class_combos_at_max_covenant" =>
                     TrackedValue.DefeatTfbWithAllClassCombosAtMaxCovenant,
-                _ => null,
-            };
-        }
-
-        public static CardStatistics.TrackedValueType? ParseTrackedValueType(
-            this IConfigurationSection section
-        )
-        {
-            var val = section.Value;
-            if (string.IsNullOrEmpty(val))
-            {
-                return null;
-            }
-            return val.ToLower() switch
-            {
-                "subtype_in_deck" => TrackedValueType.SubtypeInDeck,
-                "subtype_in_discard_pile" => TrackedValueType.SubtypeInDiscardPile,
-                "subtype_in_exhaust_pile" => TrackedValueType.SubtypeInExhaustPile,
-                "subtype_in_draw_pile" => TrackedValueType.SubtypeInDrawPile,
-                "subtype_in_eaten_pile" => TrackedValueType.SubtypeInEatenPile,
-                "type_in_deck" => TrackedValueType.TypeInDeck,
-                "type_in_discard_pile" => TrackedValueType.TypeInDiscardPile,
-                "type_in_exhaust_pile" => TrackedValueType.TypeInExhaustPile,
-                "type_in_draw_pile" => TrackedValueType.TypeInDrawPile,
-                "type_in_eaten_pile" => TrackedValueType.TypeInEatenPile,
-                "played_cost" => TrackedValueType.PlayedCost,
-                "unmodified_played_cost" => TrackedValueType.UnmodifiedPlayedCost,
-                "heroes_killed" => TrackedValueType.HeroesKilled,
-                "spawned_monster_deaths" => TrackedValueType.SpawnedMonsterDeaths,
-                "times_discarded" => TrackedValueType.TimesDiscarded,
-                "times_played" => TrackedValueType.TimesPlayed,
-                "times_drawn" => TrackedValueType.TimesDrawn,
-                "times_exhausted" => TrackedValueType.TimesExhausted,
-                "last_sacrificed_monster_stats" => TrackedValueType.LastSacrificedMonsterStats,
-                "any_hero_killed" => TrackedValueType.AnyHeroKilled,
-                "any_monster_death" => TrackedValueType.AnyMonsterDeath,
-                "any_monster_spawned" => TrackedValueType.AnyMonsterSpawned,
-                "any_discarded" => TrackedValueType.AnyDiscarded,
-                "any_card_played" => TrackedValueType.AnyCardPlayed,
-                "any_card_drawn" => TrackedValueType.AnyCardDrawn,
-                "any_exhausted" => TrackedValueType.AnyExhausted,
-                "any_character" => TrackedValueType.AnyCharacter,
-                "any_monster_spawned_top_floor" => TrackedValueType.AnyMonsterSpawnedTopFloor,
-                "monster_subtype_played" => TrackedValueType.MonsterSubtypePlayed,
-                "status_effect_count_in_target_room" =>
-                    TrackedValueType.StatusEffectCountInTargetRoom,
-                "corruption_in_target_room" => TrackedValueType.CorruptionInTargetRoom,
-                "turn_count" => TrackedValueType.TurnCount,
-                "dragons_hoard_amount" => TrackedValueType.DragonsHoardAmount,
-                "moon_phase" => TrackedValueType.MoonPhase,
-                "magic_power_in_target_room" => TrackedValueType.MagicPowerInTargetRoom,
-                "gold" => TrackedValueType.Gold,
-                "status_effect_count_on_last_ability_activator" =>
-                    TrackedValueType.StatusEffectCountOnLastAbilityActivator,
-                "pyre_heart_resurrection" => TrackedValueType.PyreHeartResurrection,
-                "num_specific_cards_in_deck" => TrackedValueType.NumSpecificCardsInDeck,
-                "any_status_effect_stacks_added" => TrackedValueType.AnyStatusEffectStacksAdded,
-                "any_status_effect_stacks_removed" => TrackedValueType.AnyStatusEffectStacksRemoved,
-                "last_attack_damage_dealt" => TrackedValueType.LastAttackDamageDealt,
                 _ => null,
             };
         }
@@ -914,53 +831,6 @@ namespace TrainworksReloaded.Base.Extensions
             {
                 "default" => StatusEffectData.VFXDisplayType.Default,
                 "last_stack" => StatusEffectData.VFXDisplayType.LastStack,
-                _ => null
-            };
-        }
-
-        public static StatusEffectData.TriggerStage? ParseTriggerStage(this IConfigurationSection section)
-        {
-            var val = section.Value;
-            if (string.IsNullOrEmpty(val))
-            {
-                return null;
-            }
-            val = val.ToLower();
-            return val switch
-            {
-                "none" => StatusEffectData.TriggerStage.None,
-                "on_combat_turn_inert" => StatusEffectData.TriggerStage.OnCombatTurnInert,
-                "on_pre_movement" => StatusEffectData.TriggerStage.OnPreMovement,
-                "on_pre_attacked" => StatusEffectData.TriggerStage.OnPreAttacked,
-                "on_attacked" => StatusEffectData.TriggerStage.OnAttacked,
-                "on_pre_attacking" => StatusEffectData.TriggerStage.OnPreAttacking,
-                "on_post_combat_regen" => StatusEffectData.TriggerStage.OnPostCombatRegen,
-                "on_post_combat_poison" => StatusEffectData.TriggerStage.OnPostCombatPoison,
-                "on_ambush" => StatusEffectData.TriggerStage.OnAmbush,
-                "on_relentless" => StatusEffectData.TriggerStage.OnRelentless,
-                "on_multistrike" => StatusEffectData.TriggerStage.OnMultistrike,
-                "on_attract_damage" => StatusEffectData.TriggerStage.OnAttractDamage,
-                "on_combat_turn_dazed" => StatusEffectData.TriggerStage.OnCombatTurnDazed,
-                "on_post_room_combat" => StatusEffectData.TriggerStage.OnPostRoomCombat,
-                "on_attack_target_mode_requested" => StatusEffectData.TriggerStage.OnAttackTargetModeRequested,
-                "on_monster_team_turn_begin" => StatusEffectData.TriggerStage.OnMonsterTeamTurnBegin,
-                "on_death" => StatusEffectData.TriggerStage.OnDeath,
-                "on_post_attacking" => StatusEffectData.TriggerStage.OnPostAttacking,
-                "on_pre_character_trigger" => StatusEffectData.TriggerStage.OnPreCharacterTrigger,
-                "on_pre_attacked_spell_shield" => StatusEffectData.TriggerStage.OnPreAttackedSpellShield,
-                "on_pre_attacked_damage_shield" => StatusEffectData.TriggerStage.OnPreAttackedDamageShield,
-                "on_combat_turn_spark" => StatusEffectData.TriggerStage.OnCombatTurnSpark,
-                "on_pre_attacked_armor" => StatusEffectData.TriggerStage.OnPreAttackedArmor,
-                "on_pre_attacked_fragile" => StatusEffectData.TriggerStage.OnPreAttackedFragile,
-                "on_pre_eaten" => StatusEffectData.TriggerStage.OnPreEaten,
-                "on_post_eaten" => StatusEffectData.TriggerStage.OnPostEaten,
-                "on_almost_post_room_combat" => StatusEffectData.TriggerStage.OnAlmostPostRoomCombat,
-                "on_healed" => StatusEffectData.TriggerStage.OnHealed,
-                "on_pre_flat_damage_increase" => StatusEffectData.TriggerStage.OnPreFlatDamageIncrease,
-                "on_hit" => StatusEffectData.TriggerStage.OnHit,
-                "on_post_spawn" => StatusEffectData.TriggerStage.OnPostSpawn,
-                "on_pre_attacked_life_link" => StatusEffectData.TriggerStage.OnPreAttackedLifeLink,
-                "on_pre_attacked_titan_skin" => StatusEffectData.TriggerStage.OnPreAttackedTitanSkin,
                 _ => null
             };
         }

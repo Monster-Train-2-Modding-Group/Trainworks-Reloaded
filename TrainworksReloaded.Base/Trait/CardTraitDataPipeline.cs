@@ -90,15 +90,6 @@ namespace TrainworksReloaded.Base.Trait
                 .Field(typeof(CardTraitData), "traitStateName")
                 .SetValue(data, fullyQualifiedName);
 
-            var paramTrackedValue = CardStatistics.TrackedValueType.SubtypeInDeck;
-            AccessTools
-                .Field(typeof(CardTraitData), "paramTrackedValue")
-                .SetValue(
-                    data,
-                    configuration.GetDeprecatedSection("track_type", "param_tracked_value").ParseTrackedValueType()
-                        ?? paramTrackedValue
-                );
-
             var paramCardType = CardStatistics.CardTypeTarget.Any;
             AccessTools
                 .Field(typeof(CardTraitData), "paramCardType")

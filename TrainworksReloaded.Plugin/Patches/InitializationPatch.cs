@@ -201,6 +201,7 @@ namespace TrainworksReloaded.Plugin.Patches
         private static void InitializePatches(Container container)
         {
             RunSetupScreenPatches.container = container;
+            ClassCardStylePatch.delegator = container.GetInstance<ClassCardStyleDelegator>();
         }
     }
 }

@@ -146,6 +146,7 @@ namespace TrainworksReloaded.Plugin
                         typeof(RelicEffectDataFinalizer),
                         typeof(RelicEffectConditionFinalizer),
                         typeof(GameObjectFinalizer),
+                        typeof(ClassCardStyleFinalizer),
                     ]
                 );
 
@@ -361,6 +362,52 @@ namespace TrainworksReloaded.Plugin
                 {
                     var pipeline = c.GetInstance<
                         IDataPipeline<IRegister<TargetMode>, TargetMode>
+                    >();
+                    pipeline.Run(x);
+                });
+
+                //Register Custom StatusEffectData.TriggerStage
+                c.RegisterSingleton<IRegister<StatusEffectData.TriggerStage>, StatusEffectTriggerStageRegister>();
+                c.RegisterSingleton<StatusEffectTriggerStageRegister, StatusEffectTriggerStageRegister>();
+                c.Register<
+                    IDataPipeline<IRegister<StatusEffectData.TriggerStage>, StatusEffectData.TriggerStage>,
+                    StatusEffectTriggerStagePipeline
+                >(); //a data pipeline to run as soon as register is needed
+                c.RegisterInitializer<IRegister<StatusEffectData.TriggerStage>>(x =>
+                {
+                    var pipeline = c.GetInstance<
+                        IDataPipeline<IRegister<StatusEffectData.TriggerStage>, StatusEffectData.TriggerStage>
+                    >();
+                    pipeline.Run(x);
+                });
+
+                //Register Custom CardStatistics.TrackedValueTypes
+                c.RegisterSingleton<IRegister<CardStatistics.TrackedValueType>, TrackedValueTypeRegister>();
+                c.RegisterSingleton<TrackedValueTypeRegister, TrackedValueTypeRegister>();
+                c.Register<
+                    IDataPipeline<IRegister<CardStatistics.TrackedValueType>, CardStatistics.TrackedValueType>,
+                    TrackedValueTypePipeline
+                >(); //a data pipeline to run as soon as register is needed
+                c.RegisterInitializer<IRegister<CardStatistics.TrackedValueType>>(x =>
+                {
+                    var pipeline = c.GetInstance<
+                        IDataPipeline<IRegister<CardStatistics.TrackedValueType>, CardStatistics.TrackedValueType>
+                    >();
+                    pipeline.Run(x);
+                });
+
+                //Register Custom ClassCardStyles
+                c.RegisterSingleton<ClassCardStyleDelegator, ClassCardStyleDelegator>();
+                c.RegisterSingleton<IRegister<ClassCardStyle>, ClassCardStyleRegister>();
+                c.RegisterSingleton<ClassCardStyleRegister, ClassCardStyleRegister>();
+                c.Register<
+                    IDataPipeline<IRegister<ClassCardStyle>, ClassCardStyle>,
+                    ClassCardStylePipeline
+                >(); //a data pipeline to run as soon as register is needed
+                c.RegisterInitializer<IRegister<ClassCardStyle>>(x =>
+                {
+                    var pipeline = c.GetInstance<
+                        IDataPipeline<IRegister<ClassCardStyle>, ClassCardStyle>
                     >();
                     pipeline.Run(x);
                 });

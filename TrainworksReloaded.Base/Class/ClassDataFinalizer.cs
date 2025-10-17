@@ -21,6 +21,7 @@ namespace TrainworksReloaded.Base.Class
         private readonly IRegister<CardUpgradeData> upgradeDataRegister;
         private readonly IRegister<EnhancerPool> enhancerPoolRegister;
         private readonly IRegister<GameObject> gameObjectRegister;
+        private readonly IRegister<ClassCardStyle> classCardStyleRegister;
         private readonly ClassSelectCharacterDisplayDelegator characterDisplayDelegator;
 
         public ClassDataFinalizer(
@@ -32,6 +33,7 @@ namespace TrainworksReloaded.Base.Class
             IRegister<CardUpgradeData> upgradeDataRegister,
             IRegister<EnhancerPool> enhancerPoolRegister,
             IRegister<GameObject> gameObjectRegister,
+            IRegister<ClassCardStyle> classCardStyleRegister,
             ClassSelectCharacterDisplayDelegator characterDisplayDelegator
         )
         {
@@ -43,6 +45,7 @@ namespace TrainworksReloaded.Base.Class
             this.upgradeDataRegister = upgradeDataRegister;
             this.enhancerPoolRegister = enhancerPoolRegister;
             this.gameObjectRegister = gameObjectRegister;
+            this.classCardStyleRegister = classCardStyleRegister;
             this.characterDisplayDelegator = characterDisplayDelegator;
         }
 
@@ -132,6 +135,19 @@ namespace TrainworksReloaded.Base.Class
             {
                 AccessTools.Field(iconSetType, "silhouette").SetValue(iconSet, lookup4);
             }
+
+            //card style
+            var cardStyleReference = configuration.GetSection("card_style").ParseReference();
+            if (cardStyleReference != null)
+            {
+                classCardStyleRegister.TryLookupId(
+                    cardStyleReference.ToId(key, TemplateConstants.ClassCardStyle),
+                    out var cardStyle,
+                    out var _
+                    );
+                AccessTools.Field(typeof(ClassData), "cardStyle").SetValue(data, cardStyle);
+            }
+            
 
             //handle starter relics
             var starterRelics = data.GetStarterRelics() ?? [];

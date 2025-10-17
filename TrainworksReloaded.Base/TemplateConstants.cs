@@ -36,5 +36,8 @@
         public const string TrialList = "TrialList";
         public const string Trial = "Trial";
         public const string SkeletonData = "SkeletonData";
+        public const string StatusEffectTriggerStageEnum = "StatusEffectTriggerStage";
+        public const string ClassCardStyle = "ClassCardStyle";
+        public const string TrackedValueTypeEnum = "TrackedValueTypeEnum";
     }
 }

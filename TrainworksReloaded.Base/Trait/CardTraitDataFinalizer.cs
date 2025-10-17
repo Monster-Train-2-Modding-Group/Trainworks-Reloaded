@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System.Collections.Generic;
+using TrainworksReloaded.Base.Enums;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
@@ -14,6 +15,7 @@ namespace TrainworksReloaded.Base.Trait
         private readonly IRegister<CardData> cardRegister;
         private readonly IRegister<StatusEffectData> statusRegister;
         private readonly IRegister<SubtypeData> subtypeRegister;
+        private readonly IRegister<CardStatistics.TrackedValueType> trackedValueTypeRegister;
 
         public CardTraitDataFinalizer(
             IModLogger<CardTraitDataFinalizer> logger,
@@ -21,7 +23,8 @@ namespace TrainworksReloaded.Base.Trait
             IRegister<CardUpgradeData> upgradeRegister,
             IRegister<CardData> cardRegister,
             IRegister<StatusEffectData> statusRegister,
-            IRegister<SubtypeData> subtypeRegister
+            IRegister<SubtypeData> subtypeRegister,
+            IRegister<CardStatistics.TrackedValueType> trackedValueTypeRegister
         )
         {
             this.logger = logger;
@@ -30,6 +33,7 @@ namespace TrainworksReloaded.Base.Trait
             this.cardRegister = cardRegister;
             this.statusRegister = statusRegister;
             this.subtypeRegister = subtypeRegister;
+            this.trackedValueTypeRegister = trackedValueTypeRegister;
         }
 
         public void FinalizeData()
@@ -112,6 +116,15 @@ namespace TrainworksReloaded.Base.Trait
             AccessTools
                 .Field(typeof(CardTraitData), "paramSubtype")
                 .SetValue(data, paramSubtype);
+
+
+            var trackedValueReference = configuration.GetSection("param_tracked_value").ParseReference();
+            if (trackedValueReference != null)
+            {
+                var id = trackedValueReference.ToId(key, TemplateConstants.TrackedValueTypeEnum);
+                trackedValueTypeRegister.TryLookupId(id, out var lookup, out var _);
+                AccessTools.Field(typeof(CardTraitData), "paramTrackedValue").SetValue(data, lookup);
+            }
         }
     }
 }

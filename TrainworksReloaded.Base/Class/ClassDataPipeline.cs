@@ -114,16 +114,16 @@ namespace TrainworksReloaded.Base.Class
             }
 
             //handle desc
-            var localizationDesriptionTerm = configuration
+            var localizationDescriptionTerm = configuration
                 .GetSection("descriptions")
                 .ParseLocalizationTerm();
-            if (localizationDesriptionTerm != null)
+            if (localizationDescriptionTerm != null)
             {
                 AccessTools
                     .Field(typeof(ClassData), "descriptionLoc")
                     .SetValue(data, descriptionKey);
-                localizationDesriptionTerm.Key = descriptionKey;
-                termRegister.Register(descriptionKey, localizationDesriptionTerm);
+                localizationDescriptionTerm.Key = descriptionKey;
+                termRegister.Register(descriptionKey, localizationDescriptionTerm);
             }
 
             //handle desc
@@ -217,15 +217,6 @@ namespace TrainworksReloaded.Base.Class
                 termRegister.Register(val.Key, val);
                 classUnlockPreviewTexts.Add(val.Key);
             }
-
-            //card style
-            var cardStyle = data.GetCardStyle();
-            AccessTools
-                .Field(typeof(ClassData), "cardStyle")
-                .SetValue(
-                    data,
-                    configuration.GetSection("card_style").ParseCardStyle() ?? cardStyle
-                );
 
             //register before filling in data using
             var modded = overrideMode.IsNewContent();

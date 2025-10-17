@@ -158,20 +158,6 @@ namespace TrainworksReloaded.Base.StatusEffects
                 .Field(typeof(StatusEffectData), "vfxDisplayType")
                 .SetValue(data, configuration.GetSection("vfx_display_type").ParseVFXDisplayType() ?? vfxDisplayType);
 
-            var triggerStage = StatusEffectData.TriggerStage.None;
-            AccessTools
-                .Field(typeof(StatusEffectData), "triggerStage")
-                .SetValue(data, configuration.GetSection("trigger_stage").ParseTriggerStage() ?? triggerStage);
-
-            var additionalTriggerStages = configuration
-                .GetSection("additional_trigger_stages")
-                .GetChildren()
-                .Select(xs => xs.ParseTriggerStage() ?? StatusEffectData.TriggerStage.None)
-                .ToList();
-            AccessTools
-                .Field(typeof(StatusEffectData), "additionalTriggerStages")
-                .SetValue(data, additionalTriggerStages);
-
             var hidden = false;
             AccessTools
                 .Field(typeof(StatusEffectData), "hidden")

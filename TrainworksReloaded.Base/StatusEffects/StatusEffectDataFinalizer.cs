@@ -13,13 +13,15 @@ namespace TrainworksReloaded.Base.StatusEffects
         private readonly ICache<IDefinition<StatusEffectData>> cache;
         private readonly IRegister<VfxAtLoc> vfxRegister;
         private readonly IRegister<Sprite> spriteRegister;
+        private readonly IRegister<StatusEffectData.TriggerStage> triggerStageRegister;
 
-        public StatusEffectDataFinalizer(IModLogger<StatusEffectDataFinalizer> logger, ICache<IDefinition<StatusEffectData>> cache, IRegister<VfxAtLoc> vfxRegister, IRegister<Sprite> spriteRegister)
+        public StatusEffectDataFinalizer(IModLogger<StatusEffectDataFinalizer> logger, ICache<IDefinition<StatusEffectData>> cache, IRegister<VfxAtLoc> vfxRegister, IRegister<Sprite> spriteRegister, IRegister<StatusEffectData.TriggerStage> triggerStageRegister)
         {
             this.logger = logger;
             this.cache = cache;
             this.vfxRegister = vfxRegister;
             this.spriteRegister = spriteRegister;
+            this.triggerStageRegister = triggerStageRegister;
         }
 
         public void FinalizeData()
@@ -144,6 +146,29 @@ namespace TrainworksReloaded.Base.StatusEffects
             if (vfxRegister.TryLookupId(affectedVFX, out var affected_vfx, out var _))
             {
                 AccessTools.Field(typeof(StatusEffectData), "affectedVFX").SetValue(data, affected_vfx);
+            }
+
+            var triggerStage = configuration.GetSection("trigger_stage").ParseReference();
+            if (triggerStage != null)
+            {
+                triggerStageRegister.TryLookupId(
+                                    triggerStage.ToId(key, TemplateConstants.StatusEffectTriggerStageEnum),
+                                    out var stage, out var _);
+                AccessTools.Field(typeof(StatusEffectData), "triggerStage").SetValue(data, stage);
+            }
+
+            var triggerStageList = data.GetAdditionalTriggerStages();
+            var additionalTriggerStages = configuration
+                .GetSection("additional_trigger_stages")
+                .GetChildren()
+                .Where(x => x != null)
+                .Cast<ReferencedObject>();
+            foreach (var additionalTriggerStage in additionalTriggerStages)
+            {
+                triggerStageRegister.TryLookupId(
+                                    additionalTriggerStage.ToId(key, TemplateConstants.StatusEffectTriggerStageEnum),
+                                    out var stage, out var _);
+                triggerStageList.Add(stage);
             }
         }
     }

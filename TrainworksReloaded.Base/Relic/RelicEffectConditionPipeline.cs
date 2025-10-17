@@ -66,11 +66,6 @@ namespace TrainworksReloaded.Base.Relic
             var name = key.GetId(TemplateConstants.RelicEffectCondition, internalID);
             var data = new RelicEffectCondition();
 
-            var paramTrackedValue = CardStatistics.TrackedValueType.SubtypeInDeck;
-            AccessTools
-                .Field(typeof(RelicEffectCondition), "paramTrackedValue")
-                .SetValue(data, configuration.GetSection("param_tracked_value").ParseTrackedValueType() ?? paramTrackedValue);
-
             var paramCardType = CardStatistics.CardTypeTarget.Any;
             AccessTools
                 .Field(typeof(RelicEffectCondition), "paramCardType")

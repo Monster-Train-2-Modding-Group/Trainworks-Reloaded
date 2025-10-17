@@ -1,4 +1,5 @@
 using HarmonyLib;
+using TrainworksReloaded.Base.Enums;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
@@ -10,16 +11,19 @@ namespace TrainworksReloaded.Base.Relic
         private readonly IModLogger<RelicEffectConditionFinalizer> logger;
         private readonly ICache<IDefinition<RelicEffectCondition>> cache;
         private readonly IRegister<SubtypeData> subtypeRegister;
+        private readonly IRegister<CardStatistics.TrackedValueType> trackedValueTypeRegister;
 
         public RelicEffectConditionFinalizer(
             IModLogger<RelicEffectConditionFinalizer> logger,
             ICache<IDefinition<RelicEffectCondition>> cache,
-            IRegister<SubtypeData> register
+            IRegister<SubtypeData> register,
+            IRegister<CardStatistics.TrackedValueType> trackedValueTypeRegister
         )
         {
             this.logger = logger;
             this.cache = cache;
             this.subtypeRegister = register;
+            this.trackedValueTypeRegister = trackedValueTypeRegister;
         }
 
         public void FinalizeData()
@@ -45,6 +49,14 @@ namespace TrainworksReloaded.Base.Relic
                 var id = subtypeReference.ToId(key, TemplateConstants.Subtype);
                 subtypeRegister.TryLookupId(id, out var lookup, out var _);
                 AccessTools.Field(typeof(RelicEffectCondition), "paramSubtype").SetValue(data, lookup?.Key);
+            }
+
+            var trackedValueReference = configuration.GetSection("param_tracked_value").ParseReference();
+            if (trackedValueReference != null)
+            {
+                var id = trackedValueReference.ToId(key, TemplateConstants.TrackedValueTypeEnum);
+                trackedValueTypeRegister.TryLookupId(id, out var lookup, out var _);
+                AccessTools.Field(typeof(RelicEffectCondition), "paramTrackedValue").SetValue(data, lookup);
             }
         }
     }

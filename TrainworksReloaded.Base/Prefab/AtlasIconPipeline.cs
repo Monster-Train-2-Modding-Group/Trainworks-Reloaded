@@ -48,7 +48,7 @@ namespace TrainworksReloaded.Base.Prefab
                         var fullpath = Path.Combine(directory, path);
                         if (!File.Exists(fullpath))
                         {
-                            logger.Log(LogLevel.Warning, $"Could not load asset at path: {fullpath}. Atlas icon will not exist.");
+                            logger.Log(LogLevel.Warning, $"Could not find asset at path: {fullpath}. Atlas icon will not exist.");
                             continue;
                         }
                         var data = File.ReadAllBytes(fullpath);
