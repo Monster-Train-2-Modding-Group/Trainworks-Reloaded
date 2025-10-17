@@ -70,7 +70,7 @@ namespace TrainworksReloaded.Base.Enums
             if (
                 sprite != null
                 && spriteRegister.TryLookupId(
-                    sprite.ToId(key, "Sprite"),
+                    sprite.ToId(key, TemplateConstants.Sprite),
                     out var lookup,
                     out var _
                 )
