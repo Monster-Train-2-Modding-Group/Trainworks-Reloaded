@@ -12,14 +12,16 @@ namespace TrainworksReloaded.Base.Prefab
     public class SpritePipeline : IDataPipeline<IRegister<Sprite>, Sprite>
     {
         private readonly PluginAtlas atlas;
+        private readonly IModLogger<SpritePipeline> logger;
         private static readonly HashSet<string> OLDER_MODS = [
             "StewardClan.Plugin",
             "SweetkinBackOnTrack.Plugin"
         ];
 
-        public SpritePipeline(PluginAtlas atlas)
+        public SpritePipeline(PluginAtlas atlas, IModLogger<SpritePipeline> logger)
         {
             this.atlas = atlas;
+            this.logger = logger;
         }
 
         public List<IDefinition<Sprite>> Run(IRegister<Sprite> service)
@@ -62,12 +64,14 @@ namespace TrainworksReloaded.Base.Prefab
                         var fullpath = Path.Combine(directory, path);
                         if (!File.Exists(fullpath))
                         {
+                            logger.Log(LogLevel.Warning, $"Could not find asset at path: {fullpath}. Sprite will not exist.");
                             continue;
                         }
                         var data = File.ReadAllBytes(fullpath);
                         var texture2d = new Texture2D(2, 2, TextureFormat.RGBA32, false);
                         if (!texture2d.LoadImage(data))
                         {
+                            logger.Log(LogLevel.Warning, $"Could not load image at path: {fullpath}. Sprite will not exist.");
                             continue;
                         }
                         var sprite = Sprite.Create(

@@ -7,9 +7,16 @@ using UnityEngine;
 
 namespace TrainworksReloaded.Base.Prefab
 {
-    public class AtlasIconPipeline(PluginAtlas atlas) : IDataPipeline<IRegister<Texture2D>, Texture2D>
+    public class AtlasIconPipeline : IDataPipeline<IRegister<Texture2D>, Texture2D>
     {
-        private readonly PluginAtlas atlas = atlas;
+        private readonly PluginAtlas atlas;
+        private readonly IModLogger<SpritePipeline> logger;
+
+        public AtlasIconPipeline(PluginAtlas atlas, IModLogger<SpritePipeline> logger)
+        {
+            this.atlas = atlas;
+            this.logger = logger;
+        }
 
         public List<IDefinition<Texture2D>> Run(IRegister<Texture2D> service)
         {
@@ -41,12 +48,14 @@ namespace TrainworksReloaded.Base.Prefab
                         var fullpath = Path.Combine(directory, path);
                         if (!File.Exists(fullpath))
                         {
+                            logger.Log(LogLevel.Warning, $"Could not load asset at path: {fullpath}. Atlas icon will not exist.");
                             continue;
                         }
                         var data = File.ReadAllBytes(fullpath);
                         var texture2d = new Texture2D(2, 2);
                         if (!texture2d.LoadImage(data))
                         {
+                            logger.Log(LogLevel.Warning, $"Could not load image at path: {fullpath}. Atlas icon will not exist.");
                             continue;
                         }
                         texture2d.name = name;
