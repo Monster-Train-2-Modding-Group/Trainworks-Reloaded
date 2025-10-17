@@ -1,0 +1,24 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/status_effect_trigger_stages.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "status_effect_trigger_stages": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "A collection of trigger stage declarations for status effects. Note there is a limit to how many trigger stages can exist across all mods, only create one if absolutely necessary.",
+      "required": [ "id" ],
+      "items": {
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique identifier for this TriggerStage."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    }
+  }
+}

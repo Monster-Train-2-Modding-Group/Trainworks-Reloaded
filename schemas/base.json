@@ -35,6 +35,9 @@
     "classes": {
       "$ref": "schemas/classes.json#/properties/classes"
     },
+    "class_card_styles": {
+      "$ref": "schemas/class_card_styles.json#/properties/class_card_styles"
+    },
     "effects": {
       "$ref": "schemas/effects.json#/properties/effects"
     },
@@ -86,11 +89,17 @@
     "status_effects": {
       "$ref": "schemas/status_effects.json#/properties/status_effects"
     },
+    "status_effect_trigger_stages": {
+      "$ref": "schemas/status_effect_trigger_stages.json#/properties/status_effect_trigger_stages"
+    },
     "subtypes": {
       "$ref": "schemas/subtypes.json#/properties/subtypes"
     },
     "target_modes": {
       "$ref": "schemas/target_modes.json#/properties/target_modes"
+    },
+    "tracked_value_types": {
+      "$ref": "schemas/tracked_value_types.json#/properties/tracked_value_types"
     },
     "traits": {
       "$ref": "schemas/traits.json#/properties/traits"

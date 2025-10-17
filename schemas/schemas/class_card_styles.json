@@ -1,0 +1,40 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/class_card_styles.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "class_card_styles": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "A collection of ClassCardStyles declarations and sprite associations.",
+      "required": [ "id" ],
+      "items": {
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique identifier for this ClassCardStyle."
+          },
+          "equipment_card_frame_sprite": {
+            "$ref": "../definitions/reference.json",
+            "description": "From section sprites, must reference the id of a sprite (sized 504x588) used for the border for a Equipment card, square border (same as room)."
+          },
+          "room_card_frame_sprite": {
+            "$ref": "../definitions/reference.json",
+            "description": "From section sprites, must reference the id of a sprite (sized 504x588) used for the border for a Room card, square border (same as equipment)."
+          },
+          "spell_card_frame_sprite": {
+            "$ref": "../definitions/reference.json",
+            "description": "From section sprites, must reference the id of a sprite (sized 504x588) used for the border for a Spell card, hexagonal border."
+          },
+          "unit_card_frame_sprite": {
+            "$ref": "../definitions/reference.json",
+            "description": "From section sprites, must reference the id of a sprite (sized 504x588) used for the border for a Unit card, pointed top border."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    }
+  }
+}
