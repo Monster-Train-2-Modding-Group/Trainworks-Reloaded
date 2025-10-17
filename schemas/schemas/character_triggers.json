@@ -50,7 +50,7 @@
           },
           "suppress_notifications": {
             "type": "boolean",
-            "description": "Whether to suppress the trigger's default notification text when this trigger activates."
+            "description": "Whether to suppress the trigger's default notification text when this trigger activates. This also prevents the camera from scrolling to the room when the trigger fires."
           },
           "additional_text_on_trigger": {
             "$ref": "../definitions/parse_term.json",

@@ -61,7 +61,7 @@
           },
           "descriptions": {
             "$ref": "../definitions/parse_term.json",
-            "description": "Localized text describing this upgrade."
+            "description": "Localized text describing this upgrade. Only used for enhancers when applied to a card. This can also be set if show_description_on_cards is set."
           },
           "does_not_replace_ability": {
             "type": "boolean",
@@ -134,7 +134,7 @@
           },
           "show_description_on_cards": {
             "type": "boolean",
-            "description": "Whether to show the upgrade's description on cards."
+            "description": "Whether to show the upgrade's description on cards. If set then descriptions must be provided."
           },
           "status_effect_upgrades": {
             "type": "array",
@@ -145,7 +145,7 @@
           },
           "titles": {
             "$ref": "../definitions/parse_term.json",
-            "description": "Localized text for this upgrade's title."
+            "description": "Localized text for this upgrade's title. Only used for Champion Upgrades."
           },
           "trait_upgrades": {
             "type": "array",
