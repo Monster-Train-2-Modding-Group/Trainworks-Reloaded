@@ -1,6 +1,7 @@
 using BepInEx.Logging;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Xml.Linq;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
 
@@ -26,7 +27,7 @@ namespace TrainworksReloaded.Base.Extensions
             bool ret = register.TryLookupIdentifier(name, RegisterIdentifierType.ReadableID, out lookup, out IsModded);
             if (!ret)
             {
-                Logger.LogWarning($"Could not find identifier in {register.GetType().Name} with id (name) {name}. Some data may not be present on {typeof(T).Name}");
+                Logger.LogWarning($"Could not find identifier of type {typeof(T).Name} with id (name) {name}.");
                 Logger.LogDebug($"{Environment.StackTrace}");
             }
             return ret;
@@ -48,7 +49,7 @@ namespace TrainworksReloaded.Base.Extensions
             bool ret = register.TryLookupIdentifier(id, RegisterIdentifierType.GUID, out lookup, out IsModded);
             if (!ret)
             {
-                Logger.LogWarning($"Could not find identifier in {register.GetType().Name} with id (guid) {id}. Some data may not be present on {typeof(T).Name}");
+                Logger.LogWarning($"Could not find identifier of type {typeof(T).Name} with id (guid) {id}.");
                 Logger.LogDebug($"{Environment.StackTrace}");
             }
             return ret;
