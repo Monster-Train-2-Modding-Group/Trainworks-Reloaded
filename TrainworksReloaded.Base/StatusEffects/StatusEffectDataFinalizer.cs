@@ -161,6 +161,7 @@ namespace TrainworksReloaded.Base.StatusEffects
             var additionalTriggerStages = configuration
                 .GetSection("additional_trigger_stages")
                 .GetChildren()
+                .Select(x => x.ParseReference())
                 .Where(x => x != null)
                 .Cast<ReferencedObject>();
             foreach (var additionalTriggerStage in additionalTriggerStages)
@@ -173,3 +174,4 @@ namespace TrainworksReloaded.Base.StatusEffects
         }
     }
 }
+
