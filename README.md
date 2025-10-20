@@ -1,5 +1,9 @@
 # Trainworks-Reloaded
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Monster-Train-2-Modding-Group_Trainworks-Reloaded&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Monster-Train-2-Modding-Group_Trainworks-Reloaded)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Monster-Train-2-Modding-Group_Trainworks-Reloaded&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=Monster-Train-2-Modding-Group_Trainworks-Reloaded)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Monster-Train-2-Modding-Group_Trainworks-Reloaded&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Monster-Train-2-Modding-Group_Trainworks-Reloaded)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Monster-Train-2-Modding-Group_Trainworks-Reloaded&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Monster-Train-2-Modding-Group_Trainworks-Reloaded)
 
 Modding Framework for Monster Train 2
 
