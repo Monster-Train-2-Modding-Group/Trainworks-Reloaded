@@ -8,11 +8,13 @@ namespace TrainworksReloaded.Base.Extensions
         {
             public string id;
             public string? mod_reference;
+            public IConfigurationSection context;
 
-            public ReferencedObject(string id, string? mod_reference)
+            public ReferencedObject(string id, string? mod_reference, IConfigurationSection context)
             {
                 this.id = id;
                 this.mod_reference = mod_reference;
+                this.context = context;
             }
 
             public string ToId(string defaultKey, string template)
@@ -29,7 +31,7 @@ namespace TrainworksReloaded.Base.Extensions
 
             if (id.IsNullOrEmpty() || id == "null")
                 return null;
-            return new ReferencedObject(id!, mod_reference);
+            return new ReferencedObject(id!, mod_reference, section);
         }
     }
 }

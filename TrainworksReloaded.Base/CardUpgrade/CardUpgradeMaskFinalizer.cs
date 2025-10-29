@@ -52,7 +52,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug, $"Finalizing Upgrade Mask {data.name}...");
+            logger.Log(LogLevel.Info, $"Finalizing Upgrade Mask {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             List<ClassData> requiredClasses = [];
             var classReferences = configuration.GetSection("required_class")
@@ -62,7 +62,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 .Cast<ReferencedObject>();
             foreach (var reference in classReferences)
             {
-                if (classRegister.TryLookupName(reference.ToId(key, TemplateConstants.Class), out var lookup, out var _))
+                if (classRegister.TryLookupName(reference.ToId(key, TemplateConstants.Class), out var lookup, out var _, reference.context))
                 {
                     requiredClasses.Add(lookup);
                 }
@@ -77,7 +77,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 .Cast<ReferencedObject>();
             foreach (var reference in excludedClassReferences)
             {
-                if (classRegister.TryLookupName(reference.ToId(key, TemplateConstants.Class), out var lookup, out var _))
+                if (classRegister.TryLookupName(reference.ToId(key, TemplateConstants.Class), out var lookup, out var _, reference.context))
                 {
                     excludedClasses.Add(lookup);
                 }
@@ -91,7 +91,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 if (statusReference == null)
                     continue;
                 var statusEffectId = statusReference.ToId(key, TemplateConstants.StatusEffect);
-                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _))
+                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _, statusReference.context))
                 {
                     requiredStatus.Add(new StatusEffectStackData
                     {
@@ -110,7 +110,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 if (statusReference == null)
                     continue;
                 var statusEffectId = statusReference.ToId(key, TemplateConstants.StatusEffect);
-                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _))
+                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _, statusReference.context))
                 {
                     excludedStatus.Add(new StatusEffectStackData
                     {
@@ -130,7 +130,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 .Cast<ReferencedObject>();
             foreach (var poolReference in allowedPoolReferences)
             {
-                if (poolRegister.TryLookupId(poolReference.ToId(key, TemplateConstants.CardPool), out var lookup, out var _))
+                if (poolRegister.TryLookupId(poolReference.ToId(key, TemplateConstants.CardPool), out var lookup, out var _, poolReference.context))
                 {
                     allowedPools.Add(lookup);
                 }
@@ -145,7 +145,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 .Cast<ReferencedObject>();
             foreach (var poolReference in disallowedPoolReferences)
             {
-                if (poolRegister.TryLookupId(poolReference.ToId(key, TemplateConstants.CardPool), out var lookup, out var _))
+                if (poolRegister.TryLookupId(poolReference.ToId(key, TemplateConstants.CardPool), out var lookup, out var _, poolReference.context))
                 {
                     disallowedPools.Add(lookup);
                 }
@@ -160,7 +160,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 .Cast<ReferencedObject>();
             foreach (var upgradeReference in requiredUpgradeReferences)
             {
-                if (upgradeRegister.TryLookupName(upgradeReference.ToId(key, TemplateConstants.Upgrade), out var lookup, out var _))
+                if (upgradeRegister.TryLookupName(upgradeReference.ToId(key, TemplateConstants.Upgrade), out var lookup, out var _, upgradeReference.context))
                 {
                     requiredUpgrades.Add(lookup);
                 }
@@ -175,7 +175,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 .Cast<ReferencedObject>();
             foreach (var upgradeReferences in excludedUpgradeReferences)
             {
-                if (upgradeRegister.TryLookupName(upgradeReferences.ToId(key, TemplateConstants.Upgrade), out var lookup, out var _))
+                if (upgradeRegister.TryLookupName(upgradeReferences.ToId(key, TemplateConstants.Upgrade), out var lookup, out var _, upgradeReferences.context))
                 {
                     excludedUpgrades.Add(lookup);
                 }
@@ -190,7 +190,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 .Cast<ReferencedObject>();
             foreach (var subtypeReference in requiredSubtypesReferences)
             {
-                if (subtypeRegister.TryLookupId(subtypeReference.ToId(key, TemplateConstants.Subtype), out var lookup, out var _))
+                if (subtypeRegister.TryLookupId(subtypeReference.ToId(key, TemplateConstants.Subtype), out var lookup, out var _, subtypeReference.context))
                 {
                     subtypesRequired.Add(lookup.Key);
                 }
@@ -205,7 +205,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 .Cast<ReferencedObject>();
             foreach (var subtypeReference in excludedSubtypesReferences)
             {
-                if (subtypeRegister.TryLookupId(subtypeReference.ToId(key, TemplateConstants.Subtype), out var lookup, out var _))
+                if (subtypeRegister.TryLookupId(subtypeReference.ToId(key, TemplateConstants.Subtype), out var lookup, out var _, subtypeReference.context))
                 {
                     subtypesExcluded.Add(lookup.Key);
                 }

@@ -73,7 +73,8 @@ namespace TrainworksReloaded.Base.Effect
                 && cardRegister.TryLookupName(
                     cardReference.ToId(key, TemplateConstants.Card),
                     out var cardData,
-                    out var _
+                    out var _,
+                    cardReference.context
                 )
             )
             {
@@ -88,7 +89,8 @@ namespace TrainworksReloaded.Base.Effect
                 && characterDataRegister.TryLookupName(
                     characterReference.ToId(key, TemplateConstants.Character),
                     out var characterData,
-                    out var _
+                    out var _,
+                    characterReference.context
                 )
             )
             {
@@ -103,7 +105,8 @@ namespace TrainworksReloaded.Base.Effect
                 && characterDataRegister.TryLookupName(
                     characterReference2.ToId(key, TemplateConstants.Character),
                     out var characterData2,
-                    out var _
+                    out var _,
+                    characterReference2.context
                 )
             )
             {
@@ -120,13 +123,14 @@ namespace TrainworksReloaded.Base.Effect
                 .Select(x => x.ParseReference())
                 .Where(x => x != null)
                 .Cast<ReferencedObject>();
-            foreach (var characterDataConfig in characterReferences)
+            foreach (var characterPoolReference in characterReferences)
             {
                 if (
                     characterDataRegister.TryLookupName(
-                        characterDataConfig.ToId(key, TemplateConstants.Character),
+                        characterPoolReference.ToId(key, TemplateConstants.Character),
                         out var character,
-                        out var _
+                        out var _,
+                        characterPoolReference.context
                     )
                 )
                 {
@@ -144,7 +148,8 @@ namespace TrainworksReloaded.Base.Effect
                 && cardUpgradeRegister.TryLookupName(
                     upgradeReference.ToId(key, TemplateConstants.Upgrade),
                     out var upgradeData,
-                    out var _
+                    out var _,
+                    upgradeReference.context
                 )
             )
             {
@@ -159,7 +164,7 @@ namespace TrainworksReloaded.Base.Effect
             if (statusEffectStackMultiplierReference != null)
             {
                 var statusEffectId = statusEffectStackMultiplierReference.ToId(key, TemplateConstants.StatusEffect);
-                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _))
+                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _, statusEffectStackMultiplierReference.context))
                 {
                     statusEffectStackMultiplier = statusEffectData.GetStatusId();
                 }
@@ -179,7 +184,7 @@ namespace TrainworksReloaded.Base.Effect
             foreach (var statusReference in targetModeStatusEffectsFilterReferences)
             {
                 var statusEffectId = statusReference.ToId(key, TemplateConstants.StatusEffect);
-                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _))
+                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _, statusReference.context))
                 {
                     targetModeStatusEffectsFilter.Add(statusEffectData.GetStatusId());
                 }
@@ -195,7 +200,7 @@ namespace TrainworksReloaded.Base.Effect
                 if (statusReference == null)
                     continue;
                 var statusEffectId = statusReference.ToId(key, TemplateConstants.StatusEffect);
-                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _))
+                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _, statusReference.context))
                 {
                     paramStatusEffects.Add(new StatusEffectStackData
                     {
@@ -218,7 +223,8 @@ namespace TrainworksReloaded.Base.Effect
                     triggerEnumRegister.TryLookupId(
                         triggerReference.ToId(key, TemplateConstants.CharacterTriggerEnum),
                         out var triggerFound,
-                        out var _
+                        out var _,
+                        triggerReference.context
                     )
                 )
                 {
@@ -235,7 +241,7 @@ namespace TrainworksReloaded.Base.Effect
                 upgradeMaskRegister.TryLookupId(
                     filterReference.ToId(key, TemplateConstants.UpgradeMask),
                     out var lookup,
-                    out var _);
+                    out var _, filterReference.context);
                 AccessTools.Field(typeof(CardEffectData), "paramCardFilter").SetValue(data, lookup);
             }
 
@@ -245,7 +251,7 @@ namespace TrainworksReloaded.Base.Effect
                 upgradeMaskRegister.TryLookupId(
                     filter2Reference.ToId(key, TemplateConstants.UpgradeMask),
                     out var lookup,
-                    out var _);
+                    out var _, filter2Reference.context);
                 AccessTools.Field(typeof(CardEffectData), "paramCardFilterSecondary").SetValue(data, lookup);
             }
 
@@ -255,8 +261,8 @@ namespace TrainworksReloaded.Base.Effect
                 cardPoolRegister.TryLookupId(
                     poolReference.ToId(key, TemplateConstants.CardPool),
                     out var lookup,
-                    out var _
-                    );
+                    out var _,
+                    poolReference.context);
                 AccessTools.Field(typeof(CardEffectData), "paramCardPool").SetValue(data, lookup);
             }
 
@@ -266,8 +272,8 @@ namespace TrainworksReloaded.Base.Effect
                 targetModeRegister.TryLookupId(
                     targetModeReference.ToId(key, TemplateConstants.TargetModeEnum),
                     out var lookup,
-                    out var _
-                    );
+                    out var _,
+                    targetModeReference.context);
                 AccessTools.Field(typeof(CardEffectData), "targetMode").SetValue(data, lookup);
             }
 
@@ -278,8 +284,8 @@ namespace TrainworksReloaded.Base.Effect
                 if (subtypeRegister.TryLookupId(
                     targetCharacterSubtypeReference.ToId(key, TemplateConstants.Subtype),
                     out var lookup,
-                    out var _
-                ))
+                    out var _,
+                    targetCharacterSubtypeReference.context))
                 {
                     targetCharacterSubtype = lookup.Key;
                 }
@@ -297,7 +303,7 @@ namespace TrainworksReloaded.Base.Effect
             foreach (var subtypeReference in excludedSubtypeReferences)
             {
                 var subtypeId = subtypeReference.ToId(key, TemplateConstants.Subtype);
-                if (subtypeRegister.TryLookupId(subtypeId, out var subtype, out var _))
+                if (subtypeRegister.TryLookupId(subtypeId, out var subtype, out var _, subtypeReference.context))
                 {
                     excludedSubtypes.Add(subtype.Key);
                 }
@@ -313,8 +319,8 @@ namespace TrainworksReloaded.Base.Effect
                 if (subtypeRegister.TryLookupId(
                     paramSubtypeReference.ToId(key, TemplateConstants.Subtype),
                     out var lookup,
-                    out var _
-                ))
+                    out var _,
+                    paramSubtypeReference.context))
                 {
                     paramSubtype = lookup.Key;
                 }
@@ -333,7 +339,7 @@ namespace TrainworksReloaded.Base.Effect
             foreach (var reference in tooltipReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.AdditionalTooltip);
-                if (tooltipRegister.TryLookupName(id, out var tooltip, out var _))
+                if (tooltipRegister.TryLookupName(id, out var tooltip, out var _, reference.context))
                 {
                     tooltips.Add(tooltip);
                 }
@@ -342,14 +348,16 @@ namespace TrainworksReloaded.Base.Effect
                 .Field(typeof(CardEffectData), "additionalTooltips")
                 .SetValue(data, tooltips.ToArray());
 
-            var appliedToSelfVFXId = configuration.GetSection("applied_to_self_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx) ?? "";
-            if (vfxRegister.TryLookupId(appliedToSelfVFXId, out var appliedToSelfVFX, out var _))
+            var appliedToSelfVFXReference = configuration.GetSection("applied_to_self_vfx").ParseReference();
+            var appliedToSelfVFXId = appliedToSelfVFXReference?.ToId(key, TemplateConstants.Vfx) ?? "";
+            if (vfxRegister.TryLookupId(appliedToSelfVFXId, out var appliedToSelfVFX, out var _, appliedToSelfVFXReference?.context))
             {
                 AccessTools.Field(typeof(CardEffectData), "appliedToSelfVFX").SetValue(data, appliedToSelfVFX);
             }
 
-            var appliedVFXId = configuration.GetSection("applied_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx) ?? "";
-            if (vfxRegister.TryLookupId(appliedVFXId, out var appliedVFX, out var _))
+            var appliedVFXReference = configuration.GetSection("applied_vfx").ParseReference();
+            var appliedVFXId = appliedVFXReference?.ToId(key, TemplateConstants.Vfx) ?? "";
+            if (vfxRegister.TryLookupId(appliedVFXId, out var appliedVFX, out var _, appliedVFXReference?.context))
             {
                 AccessTools.Field(typeof(CardEffectData), "appliedVFX").SetValue(data, appliedVFX);
             }

@@ -42,7 +42,7 @@ namespace TrainworksReloaded.Base.Relic
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug, $"Finalizing Relic {data.name}...");
+            logger.Log(LogLevel.Info, $"Finalizing Relic {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             // Handle relic sprite
             var iconSprite = configuration.GetSection("icon").ParseReference();
@@ -51,7 +51,8 @@ namespace TrainworksReloaded.Base.Relic
                 && spriteRegister.TryLookupId(
                     iconSprite.ToId(key, TemplateConstants.Sprite),
                     out var spriteLookup,
-                    out var _
+                    out var _,
+                    iconSprite.context
                 )
             )
             {
@@ -65,7 +66,8 @@ namespace TrainworksReloaded.Base.Relic
                 && spriteRegister.TryLookupId(
                     iconSmallSprite.ToId(key, TemplateConstants.Sprite),
                     out var activatedSpriteLookup,
-                    out var _
+                    out var _,
+                    iconSprite?.context
                 )
             )
             {
@@ -81,7 +83,7 @@ namespace TrainworksReloaded.Base.Relic
                 .Cast<ReferencedObject>();
             foreach (var reference in relicEffectsReferences)
             {
-                if (relicEffectRegister.TryLookupId(reference.ToId(key, TemplateConstants.RelicEffectData), out var relicEffectLookup, out var _))
+                if (relicEffectRegister.TryLookupId(reference.ToId(key, TemplateConstants.RelicEffectData), out var relicEffectLookup, out var _, reference.context))
                 {
                     relicEffects.Add(relicEffectLookup);
                 }

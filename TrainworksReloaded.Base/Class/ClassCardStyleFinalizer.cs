@@ -44,7 +44,7 @@ namespace TrainworksReloaded.Base.Class
             var classCardStyle = definition.Data;
             var id = definition.Id;
 
-            logger.Log(LogLevel.Debug, $"Finalizing ClassCardStyle {key.GetId(TemplateConstants.ClassCardStyle, definition.Id)}...");
+            logger.Log(LogLevel.Info, $"Finalizing ClassCardStyle {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             Dictionary<CardType, Sprite> sprites = [];
 
@@ -53,7 +53,7 @@ namespace TrainworksReloaded.Base.Class
                 var reference = configuration.GetSection(field).ParseReference();
                 if (reference != null)
                 {
-                    if (spriteRegister.TryLookupId(reference.ToId(key, TemplateConstants.Sprite), out var lookup, out var _))
+                    if (spriteRegister.TryLookupId(reference.ToId(key, TemplateConstants.Sprite), out var lookup, out var _, reference.context))
                     {
                         sprites.Add(type, lookup);
                     }

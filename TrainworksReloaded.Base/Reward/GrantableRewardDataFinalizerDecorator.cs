@@ -56,8 +56,8 @@ namespace TrainworksReloaded.Base.Reward
             if (draftConfiguration == null)
                 return;
 
-            logger.Log(LogLevel.Debug,
-                $"Finalizing Grantable Reward Data {definition.Id.ToId(key, TemplateConstants.RewardData)}..."
+            logger.Log(LogLevel.Info,
+                $"Finalizing Grantable Reward Data {definition.Key} {definition.Id} path: {configuration.GetPath()}..."
             );
 
             // Set GrantableRewardData fields

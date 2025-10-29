@@ -40,7 +40,7 @@ namespace TrainworksReloaded.Base.Relic
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug, $"Finalizing Enhancer Pool {data.name}... ");
+            logger.Log(LogLevel.Info, $"Finalizing Enhancer Pool {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             var enhancerDatas = new List<EnhancerData>();
             var enhancerReferences = configuration.GetSection("enhancers")
@@ -51,7 +51,7 @@ namespace TrainworksReloaded.Base.Relic
             foreach (var reference in enhancerReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.RelicData);
-                if (relicRegister.TryLookupName(id, out var relic, out var _))
+                if (relicRegister.TryLookupName(id, out var relic, out var _, reference.context))
                 {
                     if (relic is EnhancerData enhancer)
                     {

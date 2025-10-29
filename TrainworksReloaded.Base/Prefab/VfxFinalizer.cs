@@ -34,26 +34,28 @@ namespace TrainworksReloaded.Base.Prefab
             var key = definition.Key;
             var data = definition.Data;
 
-            var vfxLeft = configuration.GetSection("vfx_left").Value;
+            var vfxLeft = configuration.GetSection("vfx_left").ParseReference();
             if (
                 vfxLeft != null
                 && assetReferenceRegister.TryLookupId(
-                    vfxLeft.ToId(key, "GameObject"),
+                    vfxLeft.ToId(key,  TemplateConstants.GameObject),
                     out var vfxLeftData,
-                    out var _
+                    out var _,
+                    vfxLeft.context
                 )
             )
             {
                 AccessTools.Field(typeof(VfxAtLoc), "vfxPrefabRefLeft").SetValue(data, vfxLeftData);
             }
 
-            var vfxRight = configuration.GetSection("vfx_left").Value;
+            var vfxRight = configuration.GetSection("vfx_left").ParseReference();
             if (
                 vfxRight != null
                 && assetReferenceRegister.TryLookupId(
-                    vfxRight.ToId(key, "GameObject"),
+                    vfxRight.ToId(key, TemplateConstants.GameObject),
                     out var vfxRightData,
-                    out var _
+                    out var _,
+                    vfxRight.context
                 )
             )
             {

@@ -42,8 +42,8 @@ namespace TrainworksReloaded.Base.Reward
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug,
-                $"Finalizing Reward Data {definition.Id.ToId(key, TemplateConstants.RewardData)}..."
+            logger.Log(LogLevel.Info,
+                $"Finalizing Reward Data {definition.Key} {definition.Id} path: {configuration.GetPath()}..."
             );
 
             var sprite = configuration.GetSection("sprite").ParseReference();
@@ -52,7 +52,8 @@ namespace TrainworksReloaded.Base.Reward
                 && spriteRegister.TryLookupId(
                     sprite.ToId(key, TemplateConstants.Sprite),
                     out var spriteLookup,
-                    out var _
+                    out var _,
+                    sprite.context
                 )
             )
             {

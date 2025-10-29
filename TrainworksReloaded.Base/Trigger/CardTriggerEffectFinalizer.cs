@@ -50,8 +50,8 @@ namespace TrainworksReloaded.Base.Trigger
             var key = definition.Key;
             var data = definition.Data;
 
-            logger.Log(LogLevel.Debug,
-                $"Finalizing Card Trigger {key.GetId(TemplateConstants.CardTrigger, definition.Id)}... "
+            logger.Log(LogLevel.Info,
+                $"Finalizing Card Trigger {definition.Key} {definition.Id} path: {configuration.GetPath()}..."
             );
 
             //handle trigger
@@ -63,7 +63,8 @@ namespace TrainworksReloaded.Base.Trigger
                     triggerEnumRegister.TryLookupId(
                         triggerReference.ToId(key, TemplateConstants.CardTriggerEnum),
                         out var triggerFound,
-                        out var _
+                        out var _,
+                        triggerReference.context
                     )
                 )
                 {
@@ -131,7 +132,8 @@ namespace TrainworksReloaded.Base.Trigger
                     upgradeRegister.TryLookupName(
                         upgradeReference.ToId(key, TemplateConstants.Upgrade),
                         out var lookup,
-                        out var _
+                        out var _,
+                        upgradeReference.context
                     );
                     triggerData.paramUpgrade = lookup;
                 }
@@ -151,7 +153,7 @@ namespace TrainworksReloaded.Base.Trigger
             foreach (var reference in effectReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.Effect);
-                if (effectRegister.TryLookupId(id, out var lookup, out var _))
+                if (effectRegister.TryLookupId(id, out var lookup, out var _, reference.context))
                 {
                     effects.Add(lookup);
                 }

@@ -52,7 +52,7 @@ namespace TrainworksReloaded.Base.Map
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug, $"Finalizing Map Node Data {definition.Id.ToId(key, TemplateConstants.MapNode)}...");
+            logger.Log(LogLevel.Info, $"Finalizing Map Node Data {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             var sprite = configuration.GetSection("map_icon").ParseReference();
             if (
@@ -60,7 +60,8 @@ namespace TrainworksReloaded.Base.Map
                 && spriteRegister.TryLookupId(
                     sprite.ToId(key, TemplateConstants.Sprite),
                     out var spriteLookup,
-                    out var _
+                    out var _,
+                    sprite.context
                 )
             )
             {
@@ -73,7 +74,8 @@ namespace TrainworksReloaded.Base.Map
                 && spriteRegister.TryLookupId(
                     sprite2.ToId(key, TemplateConstants.Sprite),
                     out var spriteLookup2,
-                    out var _
+                    out var _,
+                    sprite2.context
                 )
             )
             {
@@ -86,7 +88,8 @@ namespace TrainworksReloaded.Base.Map
                 && gameObjectRegister.TryLookupId(
                     gameobject.ToId(key, TemplateConstants.GameObject),
                     out var objectLookup,
-                    out var _
+                    out var _,
+                    gameobject.context
                 )
             )
             {
@@ -105,7 +108,8 @@ namespace TrainworksReloaded.Base.Map
                 if (mapNodeRegister.TryLookupId(
                         reference.ToId(key, TemplateConstants.MapNode),
                         out var mapLookup,
-                        out var _
+                        out var _,
+                        reference.context
                     )
                 )
                 {
@@ -124,7 +128,8 @@ namespace TrainworksReloaded.Base.Map
                 if (mapNodeRegister.TryLookupName(
                         mapPoolReference.ToId(key, TemplateConstants.MapNode),
                         out var mapLookup,
-                        out var _
+                        out var _,
+                        mapPoolReference.context
                     )
                     // MapNodeBucketContainer is handled much later in Intialization steps.
                     && mapLookup is RandomMapDataContainer mapContainer

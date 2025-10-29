@@ -38,14 +38,14 @@ namespace TrainworksReloaded.Base.Prefab
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug, $"Finalizing AdditionalTooltipData {key} {definition.Id}...");
+            logger.Log(LogLevel.Info, $"Finalizing AdditionalTooltipData {key} {definition.Id} path: {configuration.GetPath()}...");
 
             data.isTriggerTooltip = false;
             var triggerReference = configuration.GetSection("trigger").ParseReference();
             if (triggerReference != null)
             {
                 var triggerId = triggerReference.ToId(key, TemplateConstants.CharacterTriggerEnum);
-                if (triggerEnumRegister.TryLookupId(triggerId, out var triggerFound, out var _))
+                if (triggerEnumRegister.TryLookupId(triggerId, out var triggerFound, out var _, triggerReference.context))
                 {
                     data.isTriggerTooltip = true;
                     data.trigger = triggerFound;
@@ -57,7 +57,7 @@ namespace TrainworksReloaded.Base.Prefab
             if (statusReference != null)
             {
                 var statusEffectId = statusReference.ToId(key, TemplateConstants.StatusEffect);
-                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _))
+                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _, statusReference.context))
                 {
                     data.isStatusTooltip = true;
                     data.statusId = statusEffectData.GetStatusId();

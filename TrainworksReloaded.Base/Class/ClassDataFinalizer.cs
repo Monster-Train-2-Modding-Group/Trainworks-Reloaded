@@ -22,7 +22,7 @@ namespace TrainworksReloaded.Base.Class
         private readonly IRegister<EnhancerPool> enhancerPoolRegister;
         private readonly IRegister<GameObject> gameObjectRegister;
         private readonly IRegister<ClassCardStyle> classCardStyleRegister;
-        private readonly ClassSelectCharacterDisplayDelegator characterDisplayDelegator;
+        private readonly ClassAssetsDelegator classAssetsDelegator;
 
         public ClassDataFinalizer(
             IModLogger<ClassDataFinalizer> logger,
@@ -34,7 +34,7 @@ namespace TrainworksReloaded.Base.Class
             IRegister<EnhancerPool> enhancerPoolRegister,
             IRegister<GameObject> gameObjectRegister,
             IRegister<ClassCardStyle> classCardStyleRegister,
-            ClassSelectCharacterDisplayDelegator characterDisplayDelegator
+            ClassAssetsDelegator classAssetsDelegator
         )
         {
             this.logger = logger;
@@ -46,7 +46,7 @@ namespace TrainworksReloaded.Base.Class
             this.enhancerPoolRegister = enhancerPoolRegister;
             this.gameObjectRegister = gameObjectRegister;
             this.classCardStyleRegister = classCardStyleRegister;
-            this.characterDisplayDelegator = characterDisplayDelegator;
+            this.classAssetsDelegator = classAssetsDelegator;
         }
 
         public void FinalizeData()
@@ -70,7 +70,22 @@ namespace TrainworksReloaded.Base.Class
             var key = definition.Key;
             var overrideMode = configuration.GetSection("override").ParseOverrideMode();
 
-            logger.Log(LogLevel.Debug, $"Finalizing Clan {data.name}...");
+            logger.Log(LogLevel.Info, $"Finalizing Clan {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
+
+
+            var cardDraftIcon = configuration.GetSection("card_draft_icon").ParseReference();
+            if (
+                cardDraftIcon != null
+                && spriteRegister.TryLookupName(
+                    cardDraftIcon.ToId(key, TemplateConstants.Sprite),
+                    out var cardDraftSprite,
+                    out var _,
+                    cardDraftIcon.context
+                )
+            )
+            {
+                classAssetsDelegator.Add(data.name, cardDraftSprite);
+            }
 
             var iconSet = AccessTools.Field(typeof(ClassData), "icons").GetValue(data);
             var iconSetType = typeof(ClassData).GetNestedType(
@@ -90,7 +105,8 @@ namespace TrainworksReloaded.Base.Class
                 && spriteRegister.TryLookupName(
                     smallIcon.ToId(key, TemplateConstants.Sprite),
                     out var lookup,
-                    out var _
+                    out var _,
+                    smallIcon.context
                 )
             )
             {
@@ -103,7 +119,8 @@ namespace TrainworksReloaded.Base.Class
                 && spriteRegister.TryLookupName(
                     mediumIcon.ToId(key, TemplateConstants.Sprite),
                     out var lookup2,
-                    out var _
+                    out var _,
+                    mediumIcon.context
                 )
             )
             {
@@ -116,7 +133,8 @@ namespace TrainworksReloaded.Base.Class
                 && spriteRegister.TryLookupName(
                     largeIcon.ToId(key, TemplateConstants.Sprite),
                     out var lookup3,
-                    out var _
+                    out var _,
+                    largeIcon.context
                 )
             )
             {
@@ -129,7 +147,8 @@ namespace TrainworksReloaded.Base.Class
                 && spriteRegister.TryLookupName(
                     silhouette.ToId(key, TemplateConstants.Sprite),
                     out var lookup4,
-                    out var _
+                    out var _,
+                    silhouette.context
                 )
             )
             {
@@ -143,8 +162,8 @@ namespace TrainworksReloaded.Base.Class
                 classCardStyleRegister.TryLookupId(
                     cardStyleReference.ToId(key, TemplateConstants.ClassCardStyle),
                     out var cardStyle,
-                    out var _
-                    );
+                    out var _,
+                    cardStyleReference.context);
                 AccessTools.Field(typeof(ClassData), "cardStyle").SetValue(data, cardStyle);
             }
             
@@ -164,7 +183,7 @@ namespace TrainworksReloaded.Base.Class
             foreach (var reference in relicReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.RelicData);
-                if (relicDataRegister.TryLookupName(id, out var relicData, out var _))
+                if (relicDataRegister.TryLookupName(id, out var relicData, out var _, reference.context))
                 {
                     starterRelics.Add(relicData);
                 }
@@ -180,12 +199,12 @@ namespace TrainworksReloaded.Base.Class
             foreach (var reference in characterDisplayReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.GameObject);
-                if (gameObjectRegister.TryLookupId(id, out var gameObject, out var _))
+                if (gameObjectRegister.TryLookupId(id, out var gameObject, out var _, reference.context))
                 {
                     characterDisplays.Add(gameObject);
                 }
             }
-            characterDisplayDelegator.Add(data.name, characterDisplays);
+            classAssetsDelegator.Add(data.name, characterDisplays);
 
             //handle starter card upgrade
             var upgradeConfig = configuration.GetDeprecatedSection("starter_upgrade", "starter_card_upgrade");
@@ -195,7 +214,8 @@ namespace TrainworksReloaded.Base.Class
                 && upgradeDataRegister.TryLookupName(
                     starterUpgradeReference.ToId(key, TemplateConstants.Upgrade),
                     out var upgradeData,
-                    out var _
+                    out var _,
+                    starterUpgradeReference.context
                 )
             )
             {
@@ -218,7 +238,8 @@ namespace TrainworksReloaded.Base.Class
                     enhancerPoolRegister.TryLookupId(
                         enhancerPoolReference.ToId(key, TemplateConstants.EnhancerPool),
                         out var enhancerPool,
-                        out var _
+                        out var _,
+                        enhancerPoolReference.context
                     )
                 )
                 {
@@ -261,7 +282,8 @@ namespace TrainworksReloaded.Base.Class
                     && cardDataRegister.TryLookupName(
                         championCardData.ToId(key, TemplateConstants.Card),
                         out var championCard,
-                        out var _
+                        out var _,
+                        championCardData.context
                     )
                 )
                 {
@@ -274,7 +296,8 @@ namespace TrainworksReloaded.Base.Class
                     && cardDataRegister.TryLookupName(
                         starterCardData.ToId(key, TemplateConstants.Card),
                         out var starterCard,
-                        out var _
+                        out var _,
+                        starterCardData.context
                     )
                 )
                 {
@@ -288,7 +311,8 @@ namespace TrainworksReloaded.Base.Class
                     && spriteRegister.TryLookupName(
                         championIcon.ToId(key, TemplateConstants.Sprite),
                         out var icon1,
-                        out var _
+                        out var _,
+                        championIcon.context
                     )
                 )
                 {
@@ -301,7 +325,8 @@ namespace TrainworksReloaded.Base.Class
                     && spriteRegister.TryLookupName(
                         championLockedIcon.ToId(key, TemplateConstants.Sprite),
                         out var icon2,
-                        out var _
+                        out var _,
+                        championLockedIcon.context
                     )
                 )
                 {
@@ -314,7 +339,8 @@ namespace TrainworksReloaded.Base.Class
                     && spriteRegister.TryLookupName(
                         championPortrait.ToId(key, TemplateConstants.Sprite),
                         out var icon3,
-                        out var _
+                        out var _,
+                        championPortrait.context
                     )
                 )
                 {
@@ -356,7 +382,8 @@ namespace TrainworksReloaded.Base.Class
                         if (upgradeDataRegister.TryLookupName(
                                 upgradeReference.ToId(key, TemplateConstants.Upgrade),
                                 out var upgradeObj,
-                                out var _
+                                out var _,
+                                upgradeReference.context
                             )
                         )
                         {

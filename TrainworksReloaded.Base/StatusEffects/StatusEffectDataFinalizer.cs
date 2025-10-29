@@ -39,7 +39,7 @@ namespace TrainworksReloaded.Base.StatusEffects
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug, $"Finalizing StatusEffect {data.GetStatusId()}... ");
+            logger.Log(LogLevel.Info, $"Finalizing StatusEffect {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             var icon = configuration.GetSection("icon").ParseReference();
             if (
@@ -47,15 +47,16 @@ namespace TrainworksReloaded.Base.StatusEffects
                 && spriteRegister.TryLookupId(
                     icon.ToId(key, TemplateConstants.Sprite),
                     out var lookup,
-                    out var _
+                    out var _,
+                    icon.context
                 )
             )
             {
                 AccessTools.Field(typeof(StatusEffectData), "icon").SetValue(data, lookup);
             }
 
-            var addedVFX = configuration.GetSection("added_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx) ?? "";
-            if (vfxRegister.TryLookupId(addedVFX, out var added_vfx, out var _))
+            var addedVFX = configuration.GetSection("added_vfx").ParseReference();
+            if (vfxRegister.TryLookupId(addedVFX?.ToId(key, TemplateConstants.Vfx) ?? "", out var added_vfx, out var _, addedVFX?.context))
             {
                 AccessTools.Field(typeof(StatusEffectData), "addedVFX").SetValue(data, added_vfx);
             }
@@ -69,15 +70,15 @@ namespace TrainworksReloaded.Base.StatusEffects
                .Cast<ReferencedObject>();
             foreach (var reference in addedVfxReferences)
             {
-                if (vfxRegister.TryLookupId(reference.ToId(key, TemplateConstants.Vfx), out var vfx, out var _))
+                if (vfxRegister.TryLookupId(reference.ToId(key, TemplateConstants.Vfx), out var vfx, out var _, reference.context))
                 {
                     moreAddedVFXList.Add(vfx);
                 }
             }
             AccessTools.Field(typeof(StatusEffectData), "moreAddedVFX").SetValue(data, moreAddedVFX);
 
-            var persistentVFX = configuration.GetSection("persistent_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx) ?? "";
-            if (vfxRegister.TryLookupId(persistentVFX, out var persistent_vfx, out var _))
+            var persistentVFX = configuration.GetSection("persistent_vfx").ParseReference();
+            if (vfxRegister.TryLookupId(persistentVFX?.ToId(key, TemplateConstants.Vfx) ?? "", out var persistent_vfx, out var _, persistentVFX?.context))
             {
                 AccessTools.Field(typeof(StatusEffectData), "persistentVFX").SetValue(data, persistent_vfx);
             }
@@ -91,15 +92,15 @@ namespace TrainworksReloaded.Base.StatusEffects
                .Cast<ReferencedObject>();
             foreach (var reference in persistentVfxReferences)
             {
-                if (vfxRegister.TryLookupId(reference.ToId(key, TemplateConstants.Vfx), out var vfx, out var _))
+                if (vfxRegister.TryLookupId(reference.ToId(key, TemplateConstants.Vfx), out var vfx, out var _, reference.context))
                 {
                     morePersistentVFXList.Add(vfx);
                 }
             }
             AccessTools.Field(typeof(StatusEffectData), "morePersistentVFX").SetValue(data, morePersistentVFX);
 
-            var triggeredVFX = configuration.GetSection("triggered_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx) ?? "";
-            if (vfxRegister.TryLookupId(triggeredVFX, out var triggered_vfx, out var _))
+            var triggeredVFX = configuration.GetSection("triggered_vfx").ParseReference();
+            if (vfxRegister.TryLookupId(triggeredVFX?.ToId(key, TemplateConstants.Vfx) ?? "", out var triggered_vfx, out var _, triggeredVFX?.context))
             {
                 AccessTools.Field(typeof(StatusEffectData), "triggeredVFX").SetValue(data, triggered_vfx);
             }
@@ -113,15 +114,15 @@ namespace TrainworksReloaded.Base.StatusEffects
                .Cast<ReferencedObject>();
             foreach (var reference in triggeredVfxReferences)
             {
-                if (vfxRegister.TryLookupId(reference.ToId(key, TemplateConstants.Vfx), out var vfx, out var _))
+                if (vfxRegister.TryLookupId(reference.ToId(key, TemplateConstants.Vfx), out var vfx, out var _, reference.context))
                 {
                     moreTriggeredVFXList.Add(vfx);
                 }
             }
             AccessTools.Field(typeof(StatusEffectData), "moreTriggeredVFX").SetValue(data, moreTriggeredVFX);
 
-            var removedVFX = configuration.GetSection("removed_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx) ?? "";
-            if (vfxRegister.TryLookupId(removedVFX, out var removed_vfx, out var _))
+            var removedVFX = configuration.GetSection("removed_vfx").ParseReference();
+            if (vfxRegister.TryLookupId(removedVFX?.ToId(key, TemplateConstants.Vfx) ?? "", out var removed_vfx, out var _, removedVFX?.context))
             {
                 AccessTools.Field(typeof(StatusEffectData), "removedVFX").SetValue(data, removed_vfx);
             }
@@ -135,15 +136,15 @@ namespace TrainworksReloaded.Base.StatusEffects
                .Cast<ReferencedObject>();
             foreach (var reference in removedVfxReferences)
             {
-                if (vfxRegister.TryLookupId(reference.ToId(key, TemplateConstants.Vfx), out var vfx, out var _))
+                if (vfxRegister.TryLookupId(reference.ToId(key, TemplateConstants.Vfx), out var vfx, out var _, reference.context))
                 {
                     moreRemovedVFXList.Add(vfx);
                 }
             }
             AccessTools.Field(typeof(StatusEffectData), "moreRemovedVFX").SetValue(data, moreRemovedVFX);
 
-            var affectedVFX = configuration.GetSection("affected_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx) ?? "";
-            if (vfxRegister.TryLookupId(affectedVFX, out var affected_vfx, out var _))
+            var affectedVFXReference = configuration.GetSection("affected_vfx").ParseReference();
+            if (vfxRegister.TryLookupId(affectedVFXReference?.ToId(key, TemplateConstants.Vfx) ?? "", out var affected_vfx, out var _, affectedVFXReference?.context))
             {
                 AccessTools.Field(typeof(StatusEffectData), "affectedVFX").SetValue(data, affected_vfx);
             }
@@ -153,7 +154,7 @@ namespace TrainworksReloaded.Base.StatusEffects
             {
                 triggerStageRegister.TryLookupId(
                                     triggerStage.ToId(key, TemplateConstants.StatusEffectTriggerStageEnum),
-                                    out var stage, out var _);
+                                    out var stage, out var _, triggerStage.context);
                 AccessTools.Field(typeof(StatusEffectData), "triggerStage").SetValue(data, stage);
             }
 
@@ -168,7 +169,7 @@ namespace TrainworksReloaded.Base.StatusEffects
             {
                 triggerStageRegister.TryLookupId(
                                     additionalTriggerStage.ToId(key, TemplateConstants.StatusEffectTriggerStageEnum),
-                                    out var stage, out var _);
+                                    out var stage, out var _, additionalTriggerStage.context);
                 triggerStageList.Add(stage);
             }
         }

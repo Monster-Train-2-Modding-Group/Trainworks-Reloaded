@@ -8,6 +8,10 @@
       "description": "A collection of all character classes in the game, defining their properties, champions, and visual elements.",
       "items": {
         "properties": {
+          "card_draft_icon": {
+            "$ref": "../definitions/reference.json",
+            "description": "Reference to the clans card draft sprite used in the Victory UI. Image sized 71x84."
+          },
           "card_style": {
             "$ref": "../definitions/card_style.json",
             "description": "The visual style applied to cards of this class."
@@ -44,7 +48,7 @@
                     "minLength": 1,
                     "items": {
                       "$ref": "../definitions/card_upgrade.json",
-                      "description": "Reference to an upgrade's unique identifier. These upgrades should have titles set for the name of the upgrade."
+                      "description": "Reference to an upgrade's unique identifier. These upgrades should have property 'titles' set for the name of the upgrade."
                     }
                   }
                 },
@@ -104,19 +108,19 @@
             "properties": {
               "small": {
                 "$ref": "../definitions/reference.json",
-                "description": "Reference to the small icon sprite."
+                "description": "Reference to the small icon sprite. This is sized 48x48."
               },
               "medium": {
                 "$ref": "../definitions/reference.json",
-                "description": "Reference to the medium icon sprite."
+                "description": "Reference to the medium icon sprite. This is used in artifact page in the logbook. Despite being named medium it is sized 128x128."
               },
               "large": {
                 "$ref": "../definitions/reference.json",
-                "description": "Reference to the large icon sprite."
+                "description": "Reference to the large icon sprite. This is sized 92x92."
               },
               "silhouette": {
                 "$ref": "../definitions/reference.json",
-                "description": "Reference to the silhouette icon sprite."
+                "description": "Reference to the silhouette icon sprite. This is an all white image sized 72x72."
               }
             }
           },

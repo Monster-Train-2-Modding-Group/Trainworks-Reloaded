@@ -85,16 +85,17 @@ namespace TrainworksReloaded.Base.Card
             var overrideMode = configuration.GetSection("override").ParseOverrideMode();
             var newlyCreatedContent = overrideMode.IsNewContent();
 
-            logger.Log(LogLevel.Debug, $"Finalizing Card {data.name}... ");
+            logger.Log(LogLevel.Info, $"Finalizing Card {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             //handle linked class
-            var classfield = configuration.GetSection("class").ParseString();
+            var classfield = configuration.GetSection("class").ParseReference();
             if (
                 classfield != null
                 && classRegister.TryLookupName(
                     classfield.ToId(key, TemplateConstants.Class),
                     out var lookup,
-                    out var _
+                    out var _,
+                    classfield.context
                 )
             )
             {
@@ -119,7 +120,8 @@ namespace TrainworksReloaded.Base.Card
                     cardRegister.TryLookupName(
                         cardReference.ToId(key, TemplateConstants.Card),
                         out var card,
-                        out var _
+                        out var _,
+                        cardReference.context
                     )
                 )
                 {
@@ -148,7 +150,8 @@ namespace TrainworksReloaded.Base.Card
                     cardRegister.TryLookupName(
                         cardReference.ToId(key, TemplateConstants.Card),
                         out var card,
-                        out var _
+                        out var _,
+                        cardReference.context
                     )
                 )
                 {
@@ -164,7 +167,7 @@ namespace TrainworksReloaded.Base.Card
             var MasteryCardRef = MasteryCardConfig.ParseReference();
             if (MasteryCardRef != null)
             {
-                cardRegister.TryLookupName(MasteryCardRef.ToId(key, TemplateConstants.Card), out var MasteryCard, out var _);
+                cardRegister.TryLookupName(MasteryCardRef.ToId(key, TemplateConstants.Card), out var MasteryCard, out var _, MasteryCardRef.context);
                 AccessTools
                     .Field(typeof(CardData), "linkedMasteryCard")
                     .SetValue(data, MasteryCard);
@@ -184,7 +187,8 @@ namespace TrainworksReloaded.Base.Card
                     assetReferenceRegister.TryLookupId(
                         cardArtReference.ToId(key, TemplateConstants.GameObject),
                         out var gameObject,
-                        out var _
+                        out var _,
+                        cardArtReference.context
                     )
                 )
                 {
@@ -217,7 +221,7 @@ namespace TrainworksReloaded.Base.Card
             foreach (var traitReference in cardTraitReferences)
             {
                 var id = traitReference.ToId(key, TemplateConstants.Trait);
-                if (traitRegister.TryLookupId(id, out var trait, out var _))
+                if (traitRegister.TryLookupId(id, out var trait, out var _, traitReference.context))
                 {
                     cardTraitDatas.Add(trait);
                 }
@@ -237,7 +241,7 @@ namespace TrainworksReloaded.Base.Card
                 .Cast<ReferencedObject>();
             foreach (var effectReference in cardEffectDatasReferences)
             {
-                if (effectRegister.TryLookupId(effectReference.ToId(key, TemplateConstants.Effect), out var effect, out var _))
+                if (effectRegister.TryLookupId(effectReference.ToId(key, TemplateConstants.Effect), out var effect, out var _, effectReference.context))
                 {
                     cardEffectDatas.Add(effect);
                 }
@@ -258,7 +262,7 @@ namespace TrainworksReloaded.Base.Card
             foreach (var triggerReference in cardTriggerReferences)
             {
                 var id = triggerReference.ToId(key, TemplateConstants.CardTrigger);
-                if (triggerEffectRegister.TryLookupId(id, out var trigger, out var _))
+                if (triggerEffectRegister.TryLookupId(id, out var trigger, out var _, triggerReference.context))
                 {
                     cardTriggers.Add(trigger);
                 }
@@ -280,7 +284,7 @@ namespace TrainworksReloaded.Base.Card
             foreach (var upgradeReference in initialUpgradeReferences)
             {
                 var id = upgradeReference.ToId(key, TemplateConstants.Upgrade);
-                if (upgradeRegister.TryLookupName(id, out var upgrade, out var _))
+                if (upgradeRegister.TryLookupName(id, out var upgrade, out var _, upgradeReference.context))
                 {
                     initialUpgrades.Add(upgrade);
                 }
@@ -303,7 +307,7 @@ namespace TrainworksReloaded.Base.Card
             foreach (var characterTriggerReference in effectTriggerReferences)
             {
                 var id = characterTriggerReference.ToId(key, TemplateConstants.CharacterTrigger);
-                if (triggerDataRegister.TryLookupId(id, out var trigger, out var _))
+                if (triggerDataRegister.TryLookupId(id, out var trigger, out var _, characterTriggerReference.context))
                 {
                     effectTriggers.Add(trigger);
                 }
@@ -311,17 +315,19 @@ namespace TrainworksReloaded.Base.Card
             AccessTools.Field(typeof(CardData), "effectTriggers").SetValue(data, effectTriggers);
 
             // Do not allow the vfx to be set to null. As they are soft required. If not set then they are set to a Default VFX. Setting to null will crash the game.
-            var offCooldownVFXId = configuration.GetDeprecatedSection("vfx", "off_cooldown_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
-            if (newlyCreatedContent || offCooldownVFXId != null)
+            var offCooldownVFXReference = configuration.GetDeprecatedSection("vfx", "off_cooldown_vfx").ParseReference();
+            if (newlyCreatedContent || offCooldownVFXReference != null)
             {
-                vfxRegister.TryLookupId(offCooldownVFXId ?? "", out var offCooldownVfx, out var _);
+                var id = offCooldownVFXReference?.ToId(key, TemplateConstants.Vfx) ?? "";
+                vfxRegister.TryLookupId(id, out var offCooldownVfx, out var _, offCooldownVFXReference?.context);
                 AccessTools.Field(typeof(CardData), "offCooldownVFX").SetValue(data, offCooldownVfx);
             }
 
-            var specialEdgeVFXId = configuration.GetSection("special_edge_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
-            if (newlyCreatedContent || specialEdgeVFXId != null)
+            var specialEdgeVFXReference = configuration.GetSection("special_edge_vfx").ParseReference();
+            if (newlyCreatedContent || specialEdgeVFXReference != null)
             {
-                vfxRegister.TryLookupId(specialEdgeVFXId ?? "", out var specialEdgeVfx, out var _);
+                var id = specialEdgeVFXReference?.ToId(key, TemplateConstants.Vfx) ?? "";
+                vfxRegister.TryLookupId(id, out var specialEdgeVfx, out var _, offCooldownVFXReference?.context);
                 AccessTools.Field(typeof(CardData), "specialEdgeVFX").SetValue(data, specialEdgeVfx);
             }
 
@@ -333,7 +339,7 @@ namespace TrainworksReloaded.Base.Card
             foreach (var poolReference in poolReferences)
             {
                 var id = poolReference.ToId(key, TemplateConstants.CardPool);
-                if (cardPoolRegister.TryLookupId(id, out var pool, out var _))
+                if (cardPoolRegister.TryLookupId(id, out var pool, out var _, poolReference.context))
                 {
                     var cardDataList = CardPoolCardDataListField.GetValue(pool) as ReorderableArray<CardData>;
                     cardDataList?.Add(data);

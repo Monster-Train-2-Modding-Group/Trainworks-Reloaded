@@ -46,7 +46,7 @@ namespace TrainworksReloaded.Base.Character
             var key = definition.Key;
             var name = data.name;
 
-            logger.Log(LogLevel.Debug, $"Finalizing Character Chatter {data.name}...");
+            logger.Log(LogLevel.Info, $"Finalizing Character Chatter {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             int i = 0;
             List<TriggerChatterExpressionData> triggerExpressions = [];
@@ -60,7 +60,8 @@ namespace TrainworksReloaded.Base.Character
                         triggerEnumRegister.TryLookupId(
                             triggerReference.ToId(key, TemplateConstants.CharacterTriggerEnum),
                             out var triggerFound,
-                            out var _
+                            out var _,
+                            triggerReference.context
                         )
                     )
                     {
@@ -86,7 +87,7 @@ namespace TrainworksReloaded.Base.Character
             var chatterReference = configuration.GetSection("base_chatter").ParseReference();
             if (chatterReference != null)
             {
-                if (chatterRegister.TryLookupId(chatterReference.ToId(key, TemplateConstants.Chatter), out var lookup, out var _))
+                if (chatterRegister.TryLookupId(chatterReference.ToId(key, TemplateConstants.Chatter), out var lookup, out var _, chatterReference.context))
                 {
                     AccessTools.Field(typeof(CharacterChatterData), "baseData").SetValue(data, lookup);
                 }

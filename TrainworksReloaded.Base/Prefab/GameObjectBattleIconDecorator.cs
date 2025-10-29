@@ -168,16 +168,17 @@ namespace TrainworksReloaded.Base.Prefab
             }
         }
 
-        public GameObject? GetIconSprite(string key, ReferencedObject? spriteStr, string name)
+        public GameObject? GetIconSprite(string key, ReferencedObject? spriteRef, string name)
         {
-            if (spriteStr == null)
+            if (spriteRef == null)
                 return null;
 
             if (
                 !spriteRegister.TryLookupId(
-                    spriteStr.ToId(key, TemplateConstants.Sprite),
+                    spriteRef.ToId(key, TemplateConstants.Sprite),
                     out var sprite,
-                    out _
+                    out _,
+                    spriteRef.context
                 )
             )
             {

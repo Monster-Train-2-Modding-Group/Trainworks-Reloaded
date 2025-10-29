@@ -89,7 +89,7 @@
           },
           "is_unique": {
             "type": "boolean",
-            "description": "Whether this upgrade is unique."
+            "description": "Whether this upgrade is unique. Not commonly used. If the upgrade is specified for the effects of RelicEffectAddTrigger, then you should set this to true to prevent the upgrade from being applied multiple times."
           },
           "notifications": {
             "$ref": "../definitions/parse_term.json",

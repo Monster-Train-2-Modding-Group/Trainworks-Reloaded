@@ -42,8 +42,8 @@ namespace TrainworksReloaded.Base.Trigger
             var key = definition.Key;
             var data = definition.Data;
 
-            logger.Log(LogLevel.Debug,
-                $"Finalizing Character Trigger {key.GetId(TemplateConstants.CharacterTrigger, definition.Id)}..."
+            logger.Log(LogLevel.Info,
+                $"Finalizing Character Trigger {definition.Key} {definition.Id} path: {configuration.GetPath()}..."
             );
 
             //handle trigger
@@ -55,7 +55,8 @@ namespace TrainworksReloaded.Base.Trigger
                     triggerEnumRegister.TryLookupId(
                         triggerReference.ToId(key, TemplateConstants.CharacterTriggerEnum),
                         out var triggerFound,
-                        out var _
+                        out var _,
+                        triggerReference.context
                     )
                 )
                 {
@@ -80,7 +81,8 @@ namespace TrainworksReloaded.Base.Trigger
                     effectRegister.TryLookupId(
                         reference.ToId(key, TemplateConstants.Effect),
                         out var effect,
-                        out var _
+                        out var _,
+                        reference.context
                     )
                 )
                 {

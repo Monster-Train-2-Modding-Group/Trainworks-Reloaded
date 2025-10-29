@@ -26,7 +26,7 @@ namespace TrainworksReloaded.Plugin.Patches
 
             var classRegister = container.GetInstance<ClassDataRegister>();
             var gameObjectRegister = container.GetInstance<GameObjectRegister>();
-            var characterDisplayDelegator = container.GetInstance<ClassSelectCharacterDisplayDelegator>();
+            var characterDisplayDelegator = container.GetInstance<ClassAssetsDelegator>();
             var randomMain = ___characterDisplayRoot.transform.Find("Random main");
             int i = randomMain.GetSiblingIndex();
 

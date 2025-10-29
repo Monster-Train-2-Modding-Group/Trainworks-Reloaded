@@ -51,8 +51,8 @@ namespace TrainworksReloaded.Base.Trait
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug,
-                $"Finalizing Card Trait {definition.Id.ToId(key, TemplateConstants.Trait)}... "
+            logger.Log(LogLevel.Info,
+                $"Finalizing Card Trait {definition.Key} {definition.Id} path: {configuration.GetPath()}..."
             );
 
             // Card
@@ -60,7 +60,7 @@ namespace TrainworksReloaded.Base.Trait
             CardData? card = null;
             if (cardReference != null)
             {
-                cardRegister.TryLookupName(cardReference.ToId(key, TemplateConstants.Card), out card, out var _);
+                cardRegister.TryLookupName(cardReference.ToId(key, TemplateConstants.Card), out card, out var _, cardReference.context);
             }
             AccessTools
                 .Field(typeof(CardTraitData), "paramCardData")
@@ -72,7 +72,7 @@ namespace TrainworksReloaded.Base.Trait
             if (cardUpgradeReference != null)
             {
                 var cardUpgradeId = cardUpgradeReference.ToId(key, TemplateConstants.Upgrade);
-                upgradeRegister.TryLookupName(cardUpgradeId, out cardUpgrade, out var _);
+                upgradeRegister.TryLookupName(cardUpgradeId, out cardUpgrade, out var _, cardUpgradeReference.context);
             }
             AccessTools
                 .Field(typeof(CardTraitData), "paramCardUpgradeData")
@@ -86,7 +86,7 @@ namespace TrainworksReloaded.Base.Trait
                 if (statusReference == null)
                     continue;
                 var statusEffectId = statusReference.ToId(key, TemplateConstants.StatusEffect);
-                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _))
+                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _, statusReference.context))
                 {
                     paramStatusEffects.Add(new StatusEffectStackData
                     {
@@ -107,7 +107,8 @@ namespace TrainworksReloaded.Base.Trait
                 if (subtypeRegister.TryLookupId(
                     paramSubtypeReference.ToId(key, TemplateConstants.Subtype),
                     out var lookup,
-                    out var _
+                    out var _,
+                    paramSubtypeReference.context
                 ))
                 {
                     paramSubtype = lookup.Key;
@@ -122,7 +123,7 @@ namespace TrainworksReloaded.Base.Trait
             if (trackedValueReference != null)
             {
                 var id = trackedValueReference.ToId(key, TemplateConstants.TrackedValueTypeEnum);
-                trackedValueTypeRegister.TryLookupId(id, out var lookup, out var _);
+                trackedValueTypeRegister.TryLookupId(id, out var lookup, out var _, trackedValueReference.context);
                 AccessTools.Field(typeof(CardTraitData), "paramTrackedValue").SetValue(data, lookup);
             }
         }

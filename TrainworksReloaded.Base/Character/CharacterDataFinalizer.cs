@@ -73,7 +73,7 @@ namespace TrainworksReloaded.Base.Character
             var key = definition.Key;
             var overrideMode = definition.Override;
 
-            logger.Log(LogLevel.Debug, $"Finalizing Character {data.name}...");
+            logger.Log(LogLevel.Info, $"Finalizing Character {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             //handle art
             // May not be set to null via override
@@ -85,7 +85,8 @@ namespace TrainworksReloaded.Base.Character
                     assetReferenceRegister.TryLookupId(
                         characterArtReference.ToId(key, TemplateConstants.GameObject),
                         out var gameObject,
-                        out var _
+                        out var _,
+                        characterArtReference.context
                     )
                 )
                 {
@@ -101,7 +102,7 @@ namespace TrainworksReloaded.Base.Character
             var abilityReference = abilityConfig.ParseReference();
             if (abilityReference != null)
             {
-                cardRegister.TryLookupName(abilityReference.ToId(key, TemplateConstants.Card), out var abilityCard, out var _);
+                cardRegister.TryLookupName(abilityReference.ToId(key, TemplateConstants.Card), out var abilityCard, out var _, abilityReference.context);
                 AccessTools.Field(typeof(CharacterData), "unitAbility").SetValue(data, abilityCard);
             }
             if (overrideMode == OverrideMode.Replace && abilityReference == null && abilityConfig.Exists())
@@ -115,7 +116,7 @@ namespace TrainworksReloaded.Base.Character
             var graftedEquipmentCardReference = graftedEquipmentConfig.ParseReference();
             if (graftedEquipmentCardReference != null)
             {
-                cardRegister.TryLookupName(graftedEquipmentCardReference.ToId(key, TemplateConstants.Card), out var equipmentCard, out var _);
+                cardRegister.TryLookupName(graftedEquipmentCardReference.ToId(key, TemplateConstants.Card), out var equipmentCard, out var _, graftedEquipmentCardReference.context);
                 AccessTools.Field(typeof(CharacterData), "graftedEquipment").SetValue(data, equipmentCard);
             }
             if (overrideMode == OverrideMode.Replace && graftedEquipmentConfig.Exists() && graftedEquipmentCardReference == null)
@@ -124,55 +125,55 @@ namespace TrainworksReloaded.Base.Character
             }
 
             // Do not allow override to set to null. These need to be set to an empty VfxAtLoc
-            var projectilePrefabId = configuration.GetSection("projectile_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
+            var projectilePrefabReference = configuration.GetSection("projectile_vfx").ParseReference();
             AccessTools.Field(typeof(CharacterData), "projectilePrefab").SetValue(data, copyData.GetProjectilePrefab());
-            if (overrideMode.IsNewContent() || projectilePrefabId != null)
+            if (overrideMode.IsNewContent() || projectilePrefabReference != null)
             {
-                vfxRegister.TryLookupId(projectilePrefabId ?? "", out var projectile_vfx, out var _);
+                vfxRegister.TryLookupId(projectilePrefabReference?.ToId(key, TemplateConstants.Vfx) ?? "", out var projectile_vfx, out var _, projectilePrefabReference?.context);
                 AccessTools
                     .Field(typeof(CharacterData), "projectilePrefab")
                     .SetValue(data, projectile_vfx);
             }
 
-            var attackVFXId = configuration.GetSection("attack_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
+            var attackVFXReference = configuration.GetSection("attack_vfx").ParseReference();
             AccessTools.Field(typeof(CharacterData), "attackVFX").SetValue(data, copyData.GetAttackVfx());
-            if (overrideMode.IsNewContent() || attackVFXId != null)
+            if (overrideMode.IsNewContent() || attackVFXReference != null)
             {
-                vfxRegister.TryLookupId(attackVFXId ?? "", out var attack_vfx, out var _);
+                vfxRegister.TryLookupId(attackVFXReference?.ToId(key, TemplateConstants.Vfx) ?? "", out var attack_vfx, out var _, attackVFXReference?.context);
                 AccessTools.Field(typeof(CharacterData), "attackVFX").SetValue(data, attack_vfx);
             }
 
-            var impactVFXId = configuration.GetSection("impact_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
+            var impactVFXReference = configuration.GetSection("impact_vfx").ParseReference();
             AccessTools.Field(typeof(CharacterData), "impactVFX").SetValue(data, copyData.GetImpactVfx());
-            if (overrideMode.IsNewContent() || impactVFXId != null)
+            if (overrideMode.IsNewContent() || impactVFXReference != null)
             {
-                vfxRegister.TryLookupId(impactVFXId ?? "", out var impact_vfx, out var _);
+                vfxRegister.TryLookupId(impactVFXReference?.ToId(key, TemplateConstants.Vfx) ?? "", out var impact_vfx, out var _, impactVFXReference?.context);
                 AccessTools.Field(typeof(CharacterData), "impactVFX").SetValue(data, impact_vfx);
             }
 
-            var deathVFXId = configuration.GetSection("death_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
+            var deathVFXReference = configuration.GetSection("death_vfx").ParseReference();
             AccessTools.Field(typeof(CharacterData), "deathVFX").SetValue(data, copyData.GetDeathVfx());
-            if (overrideMode.IsNewContent() || deathVFXId != null)
+            if (overrideMode.IsNewContent() || deathVFXReference != null)
             {
-                vfxRegister.TryLookupId(deathVFXId ?? "", out var death_vfx, out var _);
+                vfxRegister.TryLookupId(deathVFXReference?.ToId(key, TemplateConstants.Vfx) ?? "", out var death_vfx, out var _, deathVFXReference?.context);
                 AccessTools.Field(typeof(CharacterData), "deathVFX").SetValue(data, death_vfx);
             }
 
-            var bossSpellCastVFXId = configuration.GetDeprecatedSection("boss_cast_vfx", "boss_spell_cast_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
+            var bossSpellCastVFXReference = configuration.GetDeprecatedSection("boss_cast_vfx", "boss_spell_cast_vfx").ParseReference();
             AccessTools.Field(typeof(CharacterData), "bossSpellCastVFX").SetValue(data, copyData.GetBossSpellCastVfx());
-            if (overrideMode.IsNewContent() || bossSpellCastVFXId != null)
+            if (overrideMode.IsNewContent() || bossSpellCastVFXReference != null)
             {
-                vfxRegister.TryLookupId(bossSpellCastVFXId ?? "", out var boss_cast_vfx, out var _);
+                vfxRegister.TryLookupId(bossSpellCastVFXReference?.ToId(key, TemplateConstants.Vfx) ?? "", out var boss_cast_vfx, out var _, bossSpellCastVFXReference?.context);
                 AccessTools
                     .Field(typeof(CharacterData), "bossSpellCastVFX")
                     .SetValue(data, boss_cast_vfx);
             }
 
-            var bossRoomSpellCastVFXId = configuration.GetSection("boss_room_cast_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
+            var bossRoomSpellCastVFXReference = configuration.GetSection("boss_room_cast_vfx").ParseReference();
             AccessTools.Field(typeof(CharacterData), "bossRoomSpellCastVFX").SetValue(data, copyData.GetBossRoomSpellCastVfx());
-            if (overrideMode.IsNewContent() || bossRoomSpellCastVFXId != null)
+            if (overrideMode.IsNewContent() || bossRoomSpellCastVFXReference != null)
             {
-                vfxRegister.TryLookupId(bossRoomSpellCastVFXId ?? "", out var boss_room_cast_vfx, out var _);
+                vfxRegister.TryLookupId(bossRoomSpellCastVFXReference?.ToId(key, TemplateConstants.Vfx) ?? "", out var boss_room_cast_vfx, out var _, bossRoomSpellCastVFXReference?.context);
                 AccessTools
                     .Field(typeof(CharacterData), "bossRoomSpellCastVFX")
                     .SetValue(data, boss_room_cast_vfx);
@@ -198,7 +199,8 @@ namespace TrainworksReloaded.Base.Character
                     triggerRegister.TryLookupId(
                         reference.ToId(key, TemplateConstants.CharacterTrigger),
                         out var trigger,
-                        out var _
+                        out var _,
+                        reference.context
                     )
                 )
                 {
@@ -224,7 +226,7 @@ namespace TrainworksReloaded.Base.Character
             foreach (var reference in statusImmunityReferences)
             {
                 var statusEffectId = reference.ToId(key, TemplateConstants.StatusEffect);
-                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _))
+                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _, reference.context))
                 {
                     statusEffectImmunities.Add(statusEffectData.GetStatusId());
                 }
@@ -248,7 +250,7 @@ namespace TrainworksReloaded.Base.Character
                 if (reference == null)
                     continue;
                 var statusEffectId = reference.ToId(key, TemplateConstants.StatusEffect);
-                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _))
+                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _, reference.context))
                 {
                     startingStatusEffects.Add(new StatusEffectStackData()
                     {
@@ -272,7 +274,7 @@ namespace TrainworksReloaded.Base.Character
                 {
                     logger.Log(LogLevel.Warning, $"Requested Append override mode for Character {definition.Id} key {definition.Key}, but this isn't supported for CharacterChatterData, replacing the chatter with what is given.");
                 }
-                if (chatterRegister.TryLookupId(chatterReference.ToId(key, TemplateConstants.Chatter), out var lookup, out var _))
+                if (chatterRegister.TryLookupId(chatterReference.ToId(key, TemplateConstants.Chatter), out var lookup, out var _, chatterReference.context))
                 {
                     AccessTools.Field(typeof(CharacterData), "characterChatterData").SetValue(data, lookup);
                 }
@@ -298,7 +300,7 @@ namespace TrainworksReloaded.Base.Character
                 .Cast<ReferencedObject>();
             foreach (var reference in subtypeReferences)
             {
-                if (subtypeRegister.TryLookupId(reference.ToId(key, TemplateConstants.Subtype), out var lookup, out var _))
+                if (subtypeRegister.TryLookupId(reference.ToId(key, TemplateConstants.Subtype), out var lookup, out var _, reference.context))
                 {
                     subtypes.Add(lookup.Key);
                 }
@@ -320,7 +322,7 @@ namespace TrainworksReloaded.Base.Character
                 .Cast<ReferencedObject>();
             foreach (var reference in roomModifierReferences)
             {
-                if (roomModifierRegister.TryLookupId(reference.ToId(key, TemplateConstants.RoomModifier), out var roomModifierData, out var _))
+                if (roomModifierRegister.TryLookupId(reference.ToId(key, TemplateConstants.RoomModifier), out var roomModifierData, out var _, reference.context))
                 {
                     roomModifiers.Add(roomModifierData);
                 }
@@ -334,7 +336,7 @@ namespace TrainworksReloaded.Base.Character
             var relicReference = relicConfig.ParseReference();
             if (relicReference != null)
             {
-                relicRegister.TryLookupId(relicReference.ToId(key, TemplateConstants.RelicData), out var relic, out var _);
+                relicRegister.TryLookupId(relicReference.ToId(key, TemplateConstants.RelicData), out var relic, out var _, relicReference.context);
                 AccessTools.Field(typeof(CharacterData), "enemyRelicData").SetValue(data, relic);
             }
             if (overrideMode == OverrideMode.Replace && relicReference == null && relicConfig.Exists())

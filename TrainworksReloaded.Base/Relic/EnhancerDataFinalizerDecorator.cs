@@ -55,11 +55,11 @@ namespace TrainworksReloaded.Base.Relic
             if (configuration == null)
                 return;
 
-            logger.Log(LogLevel.Debug, $"Finalizing Enhancer Data {relicId}...");
+            logger.Log(LogLevel.Info, $"Finalizing Enhancer Data {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             // Handle linked class
             var linkedClassReference = configuration.GetSection("class").ParseReference();
-            if (linkedClassReference != null && classRegister.TryLookupName(linkedClassReference.ToId(key, TemplateConstants.Class), out var linkedClass, out var _))
+            if (linkedClassReference != null && classRegister.TryLookupName(linkedClassReference.ToId(key, TemplateConstants.Class), out var linkedClass, out var _, linkedClassReference.context))
             {
                 AccessTools.Field(typeof(EnhancerData), "linkedClass").SetValue(enhancer, linkedClass);
             }

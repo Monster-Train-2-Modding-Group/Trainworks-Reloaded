@@ -63,8 +63,8 @@ namespace TrainworksReloaded.Base.Reward
             if (draftConfiguration == null)
                 return;
 
-            logger.Log(LogLevel.Debug,
-                $"Finalizing Draft Reward Data {definition.Id.ToId(key, TemplateConstants.RewardData)}..."
+            logger.Log(LogLevel.Info,
+                $"Finalizing Draft Reward Data {definition.Key} {definition.Id} path: {configuration.GetPath()}..."
             );
 
             // Set draft pool
@@ -74,7 +74,8 @@ namespace TrainworksReloaded.Base.Reward
                 && cardPoolRegister.TryLookupId(
                     draftPool.ToId(key, TemplateConstants.CardPool),
                     out var cardPoolData,
-                    out var _
+                    out var _,
+                    draftPool.context
                 )
             )
             {
@@ -131,7 +132,7 @@ namespace TrainworksReloaded.Base.Reward
 
             // Set class data override
             var classDataOverride = draftConfiguration.GetSection("class_data_override").ParseReference();
-            if (classDataOverride != null && classRegister.TryLookupName(classDataOverride.ToId(key, TemplateConstants.Class), out var classData, out var _))
+            if (classDataOverride != null && classRegister.TryLookupName(classDataOverride.ToId(key, TemplateConstants.Class), out var classData, out var _, classDataOverride.context))
             {
                 AccessTools.Field(typeof(DraftRewardData), "classDataOverride").SetValue(draftData, classData);
             }

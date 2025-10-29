@@ -557,7 +557,7 @@ namespace TrainworksReloaded.Plugin
                 });
 
                 //Register Class Data
-                c.RegisterSingleton<ClassSelectCharacterDisplayDelegator, ClassSelectCharacterDisplayDelegator>();
+                c.RegisterSingleton<ClassAssetsDelegator, ClassAssetsDelegator>();
                 c.RegisterSingleton<IRegister<ClassData>, ClassDataRegister>();
                 c.RegisterSingleton<ClassDataRegister, ClassDataRegister>();
                 c.Register<IDataPipeline<IRegister<ClassData>, ClassData>, ClassDataPipeline>();

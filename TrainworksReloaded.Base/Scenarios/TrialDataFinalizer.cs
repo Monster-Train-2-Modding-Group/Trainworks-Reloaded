@@ -38,13 +38,13 @@ namespace TrainworksReloaded.Base.Scenarios
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug, $"Finalizing Trial {data.name}...");
+            logger.Log(LogLevel.Info, $"Finalizing Trial {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             var sinReference = configuration.GetSection("sin").ParseReference();
             if (sinReference != null)
             {
                 var id = sinReference.ToId(key, TemplateConstants.RelicData);
-                relicRegister.TryLookupId(id, out var lookup, out var _);
+                relicRegister.TryLookupId(id, out var lookup, out var _, sinReference.context);
                 if (lookup is not SinsData)
                 {
                     logger.Log(LogLevel.Warning, $"Relic found is not a SinsData relic. Behavior may not be as expected.");
@@ -61,7 +61,7 @@ namespace TrainworksReloaded.Base.Scenarios
             foreach (var reference in rewardReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.RewardData);
-                rewardRegister.TryLookupName(id, out var lookup, out var _);
+                rewardRegister.TryLookupName(id, out var lookup, out var _, reference.context);
                 if (lookup != null)
                 {
                     rewardList.Add(lookup);
@@ -76,7 +76,7 @@ namespace TrainworksReloaded.Base.Scenarios
             foreach (var reference in trialListReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.TrialList);
-                trialListRegister.TryLookupId(id, out var lookup, out var _);
+                trialListRegister.TryLookupId(id, out var lookup, out var _, reference.context);
                 if (lookup != null)
                 {
                     var trialsArray = lookup.TrialsData ?? [];

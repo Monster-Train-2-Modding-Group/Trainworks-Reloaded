@@ -86,13 +86,13 @@ namespace TrainworksReloaded.Base.Scenarios
 
             var overrideMode = configuration.GetSection("override").ParseOverrideMode();
 
-            logger.Log(LogLevel.Debug, $"Finalizing Scenario {definition.Key} {definition.Id}...");
+            logger.Log(LogLevel.Info, $"Finalizing Scenario {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             var iconReference = configuration.GetSection("boss_icon").ParseReference();
             AccessTools.Field(typeof(ScenarioData), "bossIcon").SetValue(data, copyData.GetBossIcon());
             if (iconReference != null)
             {
-                spriteRegister.TryLookupId(iconReference.ToId(key, TemplateConstants.Sprite), out var lookup, out var _);
+                spriteRegister.TryLookupId(iconReference.ToId(key, TemplateConstants.Sprite), out var lookup, out var _, iconReference.context);
                 AccessTools.Field(typeof(ScenarioData), "bossIcon").SetValue(data, lookup);
             }
 
@@ -100,7 +100,7 @@ namespace TrainworksReloaded.Base.Scenarios
             AccessTools.Field(typeof(ScenarioData), "bossPortrait").SetValue(data, copyData.GetBossPortrait());
             if (portraitReference != null)
             {
-                spriteRegister.TryLookupId(portraitReference.ToId(key, TemplateConstants.Sprite), out var lookup, out var _);
+                spriteRegister.TryLookupId(portraitReference.ToId(key, TemplateConstants.Sprite), out var lookup, out var _, portraitReference.context);
                 AccessTools.Field(typeof(ScenarioData), "bossPortrait").SetValue(data, lookup);
             }
 
@@ -109,7 +109,7 @@ namespace TrainworksReloaded.Base.Scenarios
             if (titanTrialReference != null)
             {
                 var id = titanTrialReference.ToId(key, TemplateConstants.RelicData);
-                relicRegister.TryLookupId(id, out var lookup, out var _);
+                relicRegister.TryLookupId(id, out var lookup, out var _, titanTrialReference.context);
                 if (lookup is not SinsData)
                 {
                     logger.Log(LogLevel.Warning, $"Enemy blessing given {id} is not a SinsData. Behavior may not be correct.");
@@ -122,7 +122,7 @@ namespace TrainworksReloaded.Base.Scenarios
             if (overrideMode.IsNewContent() || backgroundReference != null)
             {
                 var id = backgroundReference?.ToId(key, TemplateConstants.Background) ?? "";
-                backgroundRegister.TryLookupId(id, out var lookup, out var _);
+                backgroundRegister.TryLookupId(id, out var lookup, out var _, backgroundReference?.context);
                 AccessTools.Field(typeof(ScenarioData), "backgroundData").SetValue(data, lookup);
             }
 
@@ -131,7 +131,7 @@ namespace TrainworksReloaded.Base.Scenarios
             if (trialsReference != null)
             {
                 var id = trialsReference.ToId(key, TemplateConstants.TrialList);
-                trialListRegister.TryLookupId(id, out var lookup, out var _);
+                trialListRegister.TryLookupId(id, out var lookup, out var _, trialsReference.context);
                 AccessTools.Field(typeof(ScenarioData), "trials").SetValue(data, lookup);
             }
 
@@ -151,7 +151,7 @@ namespace TrainworksReloaded.Base.Scenarios
             foreach (var child in displayedEnemiesConfig.GetChildren())
             {
                 var characterReference = child.GetSection("character").ParseReference();
-                if (characterReference == null || !characterRegister.TryLookupName(characterReference.ToId(key, TemplateConstants.Character), out var lookup, out var _))
+                if (characterReference == null || !characterRegister.TryLookupName(characterReference.ToId(key, TemplateConstants.Character), out var lookup, out var _, characterReference.context))
                 {
                     continue;
                 }
@@ -192,7 +192,8 @@ namespace TrainworksReloaded.Base.Scenarios
                     cardRegister.TryLookupName(
                         cardReference.ToId(key, TemplateConstants.Card),
                         out var card,
-                        out var _
+                        out var _,
+                        cardReference.context
                     )
                 )
                 {
@@ -207,7 +208,7 @@ namespace TrainworksReloaded.Base.Scenarios
             if (gameObjectReference != null)
             {
                 var id = gameObjectReference.ToId(key, TemplateConstants.GameObject);
-                gameObjectRegister.TryLookupId(id, out var objectLookup, out var _);
+                gameObjectRegister.TryLookupId(id, out var objectLookup, out var _, gameObjectReference.context);
                 AccessTools.Field(typeof(ScenarioData), "mapNodePrefab").SetValue(data, objectLookup);
             }
 
@@ -221,7 +222,7 @@ namespace TrainworksReloaded.Base.Scenarios
             if (bossVariantsReference != null)
             {
                 var id = bossVariantsReference.ToId(key, TemplateConstants.BossVariants);
-                bossVariantRegister.TryLookupName(id, out bossVariantSpawnData, out var _);
+                bossVariantRegister.TryLookupName(id, out bossVariantSpawnData, out var _, bossVariantsReference.context);
             }
             AccessTools.Field(typeof(ScenarioData), "bossVariant").SetValue(data, bossVariantSpawnData);
 
@@ -241,7 +242,7 @@ namespace TrainworksReloaded.Base.Scenarios
             foreach (var reference in enemyBlessingReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.RelicData);
-                if (relicRegister.TryLookupName(id, out var relic, out var _))
+                if (relicRegister.TryLookupName(id, out var relic, out var _, reference.context))
                 {
                     if (relic is not SinsData)
                     {
@@ -271,7 +272,8 @@ namespace TrainworksReloaded.Base.Scenarios
                     characterRegister.TryLookupName(
                         reference.ToId(key, TemplateConstants.Character),
                         out var character,
-                        out var _
+                        out var _,
+                        reference.context
                     )
                 )
                 {
@@ -295,7 +297,7 @@ namespace TrainworksReloaded.Base.Scenarios
             var bossCharacterReference = bossCharacterConfig.ParseReference();
             if (bossCharacterReference != null)
             {
-                characterRegister.TryLookupName(bossCharacterReference.ToId(key, TemplateConstants.Character), out var character, out var _);
+                characterRegister.TryLookupName(bossCharacterReference.ToId(key, TemplateConstants.Character), out var character, out var _, bossCharacterReference.context);
                 AccessTools.Field(typeof(SpawnPatternData), "bossCharacter").SetValue(data, character);
             }
 
@@ -306,7 +308,7 @@ namespace TrainworksReloaded.Base.Scenarios
             var hardBossCharacterReference = hardBossCharacterConfig.ParseReference();
             if (hardBossCharacterReference != null)
             {
-                characterRegister.TryLookupName(hardBossCharacterReference.ToId(key, TemplateConstants.Character), out var character, out var _);
+                characterRegister.TryLookupName(hardBossCharacterReference.ToId(key, TemplateConstants.Character), out var character, out var _, hardBossCharacterReference.context);
                 AccessTools.Field(typeof(SpawnPatternData), "hardBossCharacter").SetValue(data, character);
             }
 
@@ -412,7 +414,7 @@ namespace TrainworksReloaded.Base.Scenarios
                 var characterReference = characterSpawnConfig.GetSection("character").ParseReference();
                 if (characterReference != null)
                 {
-                    characterRegister.TryLookupName(characterReference.ToId(key, TemplateConstants.Character), out var lookup, out var _);
+                    characterRegister.TryLookupName(characterReference.ToId(key, TemplateConstants.Character), out var lookup, out var _, characterReference.context);
                     AccessTools.Field(typeof(CharacterDataContainer), "characterData").SetValue(characterContainer, lookup);
                 }
                 if (characterContainer.Character == null)
@@ -470,7 +472,7 @@ namespace TrainworksReloaded.Base.Scenarios
 
                     if (characterReference != null)
                     {
-                        characterRegister.TryLookupName(characterReference.ToId(key, TemplateConstants.Character), out characterFound, out var _);
+                        characterRegister.TryLookupName(characterReference.ToId(key, TemplateConstants.Character), out characterFound, out var _, characterReference.context);
                     }
 
                     if (j >= tfbData.characters.Count)

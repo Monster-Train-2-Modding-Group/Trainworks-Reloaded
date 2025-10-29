@@ -63,7 +63,7 @@ namespace TrainworksReloaded.Base.Map
             if (configuration == null)
                 return;
 
-            logger.Log(LogLevel.Debug, $"Finalizing Reward Node Data {definition.Data.name}...");
+            logger.Log(LogLevel.Info, $"Finalizing Reward Node Data {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             //class
             var required_class = configuration.GetDeprecatedSection("required_class", "class").ParseReference();
@@ -72,7 +72,8 @@ namespace TrainworksReloaded.Base.Map
                 && classDataRegister.TryLookupName(
                     required_class.ToId(key, TemplateConstants.Class),
                     out var classData,
-                    out var _
+                    out var _,
+                    required_class.context
                 )
             )
             {
@@ -93,7 +94,8 @@ namespace TrainworksReloaded.Base.Map
                 if (rewardDataRegister.TryLookupId(
                         reference.ToId(key, TemplateConstants.RewardData),
                         out var rewardData,
-                        out var _
+                        out var _,
+                        reference.context
                     )
                 )
                 {

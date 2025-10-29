@@ -70,8 +70,8 @@ namespace TrainworksReloaded.Base.Room
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug,
-                $"Finalizing Room Modifier {definition.Id.ToId(key, "RoomModifier")}... "
+            logger.Log(LogLevel.Info,
+                $"Finalizing Room Modifier {definition.Key} {definition.Id} path: {configuration.GetPath()}..."
             );
 
             var cardReference = configuration.GetSection("param_card").ParseReference();
@@ -80,7 +80,8 @@ namespace TrainworksReloaded.Base.Room
                 && cardDataRegister.TryLookupName(
                     cardReference.ToId(key, TemplateConstants.Card),
                     out var cardData,
-                    out var _
+                    out var _,
+                    cardReference.context
                 )
             )
             {
@@ -95,7 +96,8 @@ namespace TrainworksReloaded.Base.Room
                 && upgradeDataRegister.TryLookupName(
                     upgradeReference.ToId(key, TemplateConstants.Upgrade),
                     out var upgradeLookup,
-                    out var _
+                    out var _,
+                    upgradeReference.context
                 )
             )
             {
@@ -104,13 +106,14 @@ namespace TrainworksReloaded.Base.Room
                     .SetValue(data, upgradeLookup);
             }
 
-            var triggeredVFXId = configuration.GetSection("triggered_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
+            var triggeredVFXId = configuration.GetSection("triggered_vfx").ParseReference();
             if (
                 triggeredVFXId != null
                 && vfxRegister.TryLookupId(
-                    triggeredVFXId,
+                    triggeredVFXId?.ToId(key, TemplateConstants.Vfx) ?? "",
                     out var vfxLookup,
-                    out var _
+                    out var _,
+                    triggeredVFXId?.context
                 )
             )
             {
@@ -128,7 +131,7 @@ namespace TrainworksReloaded.Base.Room
             foreach (var reference in effectReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.Effect);
-                if (cardEffectDataRegister.TryLookupId(id, out var card, out var _))
+                if (cardEffectDataRegister.TryLookupId(id, out var card, out var _, reference.context))
                 {
                     cardEffectDatas.Add(card);
                 }
@@ -147,7 +150,7 @@ namespace TrainworksReloaded.Base.Room
                 if (statusReference == null)
                     continue;
                 var statusEffectId = statusReference.ToId(key, TemplateConstants.StatusEffect);
-                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _))
+                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _, statusReference.context))
                 {
                     paramStatusEffects.Add(new StatusEffectStackData()
                     {
@@ -170,7 +173,8 @@ namespace TrainworksReloaded.Base.Room
                     !triggerEnumRegister.TryLookupId(
                         triggerReference.ToId(key, TemplateConstants.CharacterTriggerEnum),
                         out var triggerFound,
-                        out var _
+                        out var _,
+                        triggerReference.context
                     )
                 )
                 {
@@ -188,7 +192,7 @@ namespace TrainworksReloaded.Base.Room
                 if (subtypeRegister.TryLookupId(
                     subtypeReference.ToId(key, TemplateConstants.Subtype),
                     out var lookup,
-                    out var _))
+                    out var _, subtypeReference.context))
                 {
                     paramSubtype = lookup.Key;
                 }
@@ -207,7 +211,7 @@ namespace TrainworksReloaded.Base.Room
             foreach (var reference in tooltipReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.AdditionalTooltip);
-                if (tooltipRegister.TryLookupName(id, out var tooltip, out var _))
+                if (tooltipRegister.TryLookupName(id, out var tooltip, out var _, reference.context))
                 {
                     tooltips.Add(tooltip);
                 }

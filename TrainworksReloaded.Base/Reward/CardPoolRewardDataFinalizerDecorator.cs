@@ -59,7 +59,7 @@ namespace TrainworksReloaded.Base.Reward
             if (configuration == null)
                 return;
 
-            logger.Log(LogLevel.Debug, $"Finalizing Card Pool Reward Data {definition.Id.ToId(key, TemplateConstants.RewardData)}...");
+            logger.Log(LogLevel.Info, $"Finalizing Card Pool Reward Data {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             //cardpool
             var cardpool = configuration.GetDeprecatedSection("cardpool", "card_pool").ParseReference();
@@ -68,7 +68,8 @@ namespace TrainworksReloaded.Base.Reward
                 && cardPoolRegister.TryLookupId(
                     cardpool.ToId(key, TemplateConstants.CardPool),
                     out var cardpoolData,
-                    out var _
+                    out var _,
+                    cardpool.context
                 )
             )
             {

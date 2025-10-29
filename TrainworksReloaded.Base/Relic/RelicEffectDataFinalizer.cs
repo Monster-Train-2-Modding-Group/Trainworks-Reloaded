@@ -105,7 +105,7 @@ namespace TrainworksReloaded.Base.Relic
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug, $"Finalizing RelicEffect {key} {definition.Id}... ");
+            logger.Log(LogLevel.Info, $"Finalizing RelicEffect {key} {definition.Id} path: {configuration.GetPath()}...");
 
             // Handle status effects
             var statusEffects = new List<StatusEffectStackData>();
@@ -118,7 +118,7 @@ namespace TrainworksReloaded.Base.Relic
                     continue;
                 }
                 var statusEffectId = statusReference.ToId(key, TemplateConstants.StatusEffect);
-                if (statusEffectRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _))
+                if (statusEffectRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _, statusReference.context))
                 {
                     statusEffects.Add(new StatusEffectStackData()
                     {
@@ -143,7 +143,7 @@ namespace TrainworksReloaded.Base.Relic
             {
 
                 var id = reference.ToId(key, TemplateConstants.Effect);
-                if (cardEffectRegister.TryLookupId(id, out var cardEffect, out var _))
+                if (cardEffectRegister.TryLookupId(id, out var cardEffect, out var _, reference.context))
                 {
                     cardEffects.Add(cardEffect);
                 }
@@ -155,7 +155,7 @@ namespace TrainworksReloaded.Base.Relic
 
             // Handle card pool
             var cardPoolReference = configuration.GetSection("param_card_pool").ParseReference();
-            if (cardPoolReference != null && cardPoolRegister.TryLookupId(cardPoolReference.ToId(key, TemplateConstants.CardPool), out var cardPool, out var _))
+            if (cardPoolReference != null && cardPoolRegister.TryLookupId(cardPoolReference.ToId(key, TemplateConstants.CardPool), out var cardPool, out var _, cardPoolReference.context))
             {
                 AccessTools.Field(typeof(RelicEffectData), "paramCardPool").SetValue(data, cardPool);
             }
@@ -170,7 +170,7 @@ namespace TrainworksReloaded.Base.Relic
             foreach (var reference in characterReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.Character);
-                if (characterRegister.TryLookupName(id, out var character, out var _))
+                if (characterRegister.TryLookupName(id, out var character, out var _, reference.context))
                 {
                     characters.Add(character);
                 }
@@ -187,7 +187,7 @@ namespace TrainworksReloaded.Base.Relic
             foreach (var reference in traitsReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.Trait);
-                if (traitRegister.TryLookupId(id, out var trait, out var _))
+                if (traitRegister.TryLookupId(id, out var trait, out var _, reference.context))
                 {
                     traits.Add(trait);
                 }
@@ -207,7 +207,7 @@ namespace TrainworksReloaded.Base.Relic
             foreach (var reference in excludedTraitsReference)
             {
                 var id = reference.ToId(key, TemplateConstants.Trait);
-                if (traitRegister.TryLookupId(id, out var trait, out var _))
+                if (traitRegister.TryLookupId(id, out var trait, out var _, reference.context))
                 {
                     excludedTraits.Add(trait);
                 }
@@ -227,7 +227,7 @@ namespace TrainworksReloaded.Base.Relic
             foreach (var reference in triggerReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.CharacterTrigger);
-                if (triggerRegister.TryLookupId(id, out var trigger, out var _))
+                if (triggerRegister.TryLookupId(id, out var trigger, out var _, reference.context))
                 {
                     triggers.Add(trigger);
                 }
@@ -239,42 +239,42 @@ namespace TrainworksReloaded.Base.Relic
 
             // Handle card data
             var cardReference = configuration.GetDeprecatedSection("param_card_data", "param_card").ParseReference();
-            if (cardReference != null && cardRegister.TryLookupId(cardReference.ToId(key, TemplateConstants.Card), out var cardData, out var _))
+            if (cardReference != null && cardRegister.TryLookupId(cardReference.ToId(key, TemplateConstants.Card), out var cardData, out var _, cardReference.context))
             {
                 AccessTools.Field(typeof(RelicEffectData), "paramCardData").SetValue(data, cardData);
             }
 
             // Handle card upgrade data
             var upgradeReference = configuration.GetSection("param_upgrade").ParseReference();
-            if (upgradeReference != null && upgradeRegister.TryLookupName(upgradeReference.ToId(key, TemplateConstants.Upgrade), out var cardUpgradeData, out var _))
+            if (upgradeReference != null && upgradeRegister.TryLookupName(upgradeReference.ToId(key, TemplateConstants.Upgrade), out var cardUpgradeData, out var _, upgradeReference.context))
             {
                 AccessTools.Field(typeof(RelicEffectData), "paramCardUpgradeData").SetValue(data, cardUpgradeData);
             }
 
             //handle paramReward 
             var rewardReference = configuration.GetSection("param_reward").ParseReference();
-            if (rewardReference != null && rewardRegister.TryLookupId(rewardReference.ToId(key, TemplateConstants.RewardData), out var reward, out var _))
+            if (rewardReference != null && rewardRegister.TryLookupId(rewardReference.ToId(key, TemplateConstants.RewardData), out var reward, out var _, rewardReference.context))
             {
                 AccessTools.Field(typeof(RelicEffectData), "paramReward").SetValue(data, reward);
             }
 
             //handle paramReward 2
             var rewardReference2 = configuration.GetSection("param_reward_2").ParseReference();
-            if (rewardReference2 != null && rewardRegister.TryLookupId(rewardReference2.ToId(key, TemplateConstants.RewardData), out var reward2, out var _))
+            if (rewardReference2 != null && rewardRegister.TryLookupId(rewardReference2.ToId(key, TemplateConstants.RewardData), out var reward2, out var _, rewardReference2.context))
             {
                 AccessTools.Field(typeof(RelicEffectData), "paramReward2").SetValue(data, reward2);
             }
 
             //handle paramCardFilter
             var paramCardFilter = configuration.GetSection("param_card_filter").ParseReference();
-            if (paramCardFilter != null && cardUpgradeMaskRegister.TryLookupId(paramCardFilter.ToId(key, TemplateConstants.UpgradeMask), out var cardFilter, out var _))
+            if (paramCardFilter != null && cardUpgradeMaskRegister.TryLookupId(paramCardFilter.ToId(key, TemplateConstants.UpgradeMask), out var cardFilter, out var _, paramCardFilter.context))
             {
                 AccessTools.Field(typeof(RelicEffectData), "paramCardFilter").SetValue(data, cardFilter);
             }
 
             //handle paramCardFilterSecondary
             var paramCardFilterSecondary = configuration.GetDeprecatedSection("param_card_filter_secondary", "param_card_filter_2").ParseReference();
-            if (paramCardFilterSecondary != null && cardUpgradeMaskRegister.TryLookupId(paramCardFilterSecondary.ToId(key, TemplateConstants.UpgradeMask), out var cardFilterSecondary, out var _))
+            if (paramCardFilterSecondary != null && cardUpgradeMaskRegister.TryLookupId(paramCardFilterSecondary.ToId(key, TemplateConstants.UpgradeMask), out var cardFilterSecondary, out var _, paramCardFilterSecondary.context))
             {
                 AccessTools.Field(typeof(RelicEffectData), "paramCardFilterSecondary").SetValue(data, cardFilterSecondary);
             }
@@ -287,7 +287,7 @@ namespace TrainworksReloaded.Base.Relic
                 if (subtypeRegister.TryLookupId(
                     characterSubtypeReference.ToId(key, TemplateConstants.Subtype),
                     out var lookup,
-                    out var _))
+                    out var _, characterSubtypeReference.context))
                 {
                     characterSubtype = lookup.Key;
                 }
@@ -306,7 +306,7 @@ namespace TrainworksReloaded.Base.Relic
                 if (subtypeRegister.TryLookupId(
                     reference.ToId(key, TemplateConstants.Subtype),
                     out var lookup,
-                    out var _))
+                    out var _, reference.context))
                 {
                     excludedSubtypes.Add(lookup.Key);
                 }
@@ -314,8 +314,8 @@ namespace TrainworksReloaded.Base.Relic
             }
             AccessTools.Field(typeof(RelicEffectData), "paramExcludeCharacterSubtypes").SetValue(data, excludedSubtypes.ToArray());
 
-            var appliedVFXId = configuration.GetSection("applied_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx) ?? "";
-            if (vfxRegister.TryLookupId(appliedVFXId, out var appliedVFX, out var _))
+            var appliedVFXReference = configuration.GetSection("applied_vfx").ParseReference();
+            if (vfxRegister.TryLookupId(appliedVFXReference?.ToId(key, TemplateConstants.Vfx) ?? "", out var appliedVFX, out var _, appliedVFXReference?.context))
             {
                 AccessTools.Field(typeof(RelicEffectData), "appliedVfx").SetValue(data, appliedVFX);
             }
@@ -325,7 +325,8 @@ namespace TrainworksReloaded.Base.Relic
                 relicRegister.TryLookupName(
                     relicReference.ToId(key, TemplateConstants.RelicData),
                     out var relic,
-                    out var _
+                    out var _,
+                    relicReference.context
                 )
             )
             {
@@ -340,7 +341,8 @@ namespace TrainworksReloaded.Base.Relic
                     triggerEnumRegister.TryLookupId(
                         triggerReference.ToId(key, TemplateConstants.CharacterTriggerEnum),
                         out var triggerFound,
-                        out var _
+                        out var _,
+                        triggerReference.context
                     )
                 )
                 {
@@ -358,7 +360,8 @@ namespace TrainworksReloaded.Base.Relic
                     enhancerPoolRegister.TryLookupId(
                         enhancerPoolReference.ToId(key, TemplateConstants.EnhancerPool),
                         out var enhancerPool,
-                        out var _
+                        out var _,
+                        enhancerPoolReference.context
                     )
                 )
                 {
@@ -374,8 +377,8 @@ namespace TrainworksReloaded.Base.Relic
                 targetModeRegister.TryLookupId(
                     targetModeReference.ToId(key, TemplateConstants.TargetModeEnum),
                     out var lookup,
-                    out var _
-                    );
+                    out var _,
+                    targetModeReference.context);
                 AccessTools.Field(typeof(RelicEffectData), "paramTargetMode").SetValue(data, lookup);
             }
 
@@ -389,7 +392,7 @@ namespace TrainworksReloaded.Base.Relic
             foreach (var reference in tooltipReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.AdditionalTooltip);
-                if (tooltipRegister.TryLookupName(id, out var tooltip, out var _))
+                if (tooltipRegister.TryLookupName(id, out var tooltip, out var _, reference.context))
                 {
                     tooltips.Add(tooltip);
                 }
@@ -408,7 +411,7 @@ namespace TrainworksReloaded.Base.Relic
             foreach (var reference in conditionReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.RelicEffectCondition);
-                if (relicEffectConditionRegister.TryLookupName(id, out var lookup, out var _))
+                if (relicEffectConditionRegister.TryLookupName(id, out var lookup, out var _, reference.context))
                 {
                     conditions.Add(lookup);
                 }

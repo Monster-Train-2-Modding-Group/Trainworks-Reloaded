@@ -52,7 +52,7 @@ namespace TrainworksReloaded.Base.Enums
             var trigger = definition.Data;
             var id = definition.Id;
 
-            logger.Log(LogLevel.Debug, $"Finalizing Card Trigger {key.GetId(TemplateConstants.CardTriggerEnum, definition.Id)}...");
+            logger.Log(LogLevel.Info, $"Finalizing Card Trigger {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             var baseKey = "CardTrigger_" + id;
 

@@ -41,13 +41,13 @@ namespace TrainworksReloaded.Base.Relic
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug, $"Finalizing RelicEffectCondition {key} {definition.Id}...");
+            logger.Log(LogLevel.Info, $"Finalizing RelicEffectCondition {key} {definition.Id} path: {configuration.GetPath()}...");
 
             var subtypeReference = configuration.GetSection("param_subtype").ParseReference();
             if (subtypeReference != null)
             {
                 var id = subtypeReference.ToId(key, TemplateConstants.Subtype);
-                subtypeRegister.TryLookupId(id, out var lookup, out var _);
+                subtypeRegister.TryLookupId(id, out var lookup, out var _, subtypeReference.context);
                 AccessTools.Field(typeof(RelicEffectCondition), "paramSubtype").SetValue(data, lookup?.Key);
             }
 
@@ -55,7 +55,7 @@ namespace TrainworksReloaded.Base.Relic
             if (trackedValueReference != null)
             {
                 var id = trackedValueReference.ToId(key, TemplateConstants.TrackedValueTypeEnum);
-                trackedValueTypeRegister.TryLookupId(id, out var lookup, out var _);
+                trackedValueTypeRegister.TryLookupId(id, out var lookup, out var _, trackedValueReference.context);
                 AccessTools.Field(typeof(RelicEffectCondition), "paramTrackedValue").SetValue(data, lookup);
             }
         }

@@ -55,7 +55,7 @@ namespace TrainworksReloaded.Base.Enums
             var key = definition.Key;
             var trigger = definition.Data;
 
-            logger.Log(LogLevel.Debug, $"Finalizing Character Trigger {key.GetId(TemplateConstants.CharacterTriggerEnum, definition.Id)}...");
+            logger.Log(LogLevel.Info, $"Finalizing Character Trigger {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             var baseKey = "CharacterTrigger_" + definition.Id;
 
@@ -66,13 +66,14 @@ namespace TrainworksReloaded.Base.Enums
 
             CharacterTriggerData.TriggerToLocalizationExpression[trigger] = baseKey;
 
-            var sprite = configuration.GetSection("sprite").ParseString();
+            var spriteReference = configuration.GetSection("sprite").ParseReference();
             if (
-                sprite != null
+                spriteReference != null
                 && spriteRegister.TryLookupId(
-                    sprite.ToId(key, TemplateConstants.Sprite),
+                    spriteReference.ToId(key, TemplateConstants.Sprite),
                     out var lookup,
-                    out var _
+                    out var _,
+                    spriteReference.context
                 )
             )
             {

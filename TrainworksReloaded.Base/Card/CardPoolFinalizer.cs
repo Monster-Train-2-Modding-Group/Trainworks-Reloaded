@@ -40,7 +40,7 @@ namespace TrainworksReloaded.Base.Card
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug, $"Finalizing Card Pool {data.name}... ");
+            logger.Log(LogLevel.Info, $"Finalizing Card Pool {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             //handle cards
             var cardDatas = new List<CardData>();
@@ -52,7 +52,7 @@ namespace TrainworksReloaded.Base.Card
             foreach (var reference in cardReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.Card);
-                if (cardRegister.TryLookupName(id, out var card, out var _))
+                if (cardRegister.TryLookupName(id, out var card, out var _, reference.context))
                 {
                     cardDatas.Add(card);
                 }

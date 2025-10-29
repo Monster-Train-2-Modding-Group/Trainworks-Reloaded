@@ -96,6 +96,7 @@ namespace TrainworksReloaded.Base.Prefab
             if (enabled_icon != null)
             {
                 enabled_icon.transform.SetParent(artRoot.transform);
+                var animator = enabled_icon.AddComponent<Animator>();
                 var rect = enabled_icon.GetComponent<RectTransform>();
                 if (rect != null)
                 {
@@ -174,11 +175,11 @@ namespace TrainworksReloaded.Base.Prefab
                 }
 
                 AccessTools
-                    .Field(typeof(MapNodeIcon), "iconSprite_Visited_Enabled")
+                    .Field(typeof(MapNodeIcon), "iconSprite_Disabled")
                     .SetValue(mapNodeIcon, disabled_sprite_icon);
             }
 
-            var frozen_sprite = mapConfig.GetSection("disabled_sprite").ParseReference();
+            var frozen_sprite = mapConfig.GetSection("frozen_sprite").ParseReference();
             var frozen_sprite_icon = GetIconSprite(definition.Key, frozen_sprite);
             if (frozen_sprite_icon != null)
             {
@@ -204,23 +205,24 @@ namespace TrainworksReloaded.Base.Prefab
                 .SetValue(mapNodeIcon, new ParticleSystem[0]);
         }
 
-        public GameObject? GetIconSprite(string key, ReferencedObject? spriteStr)
+        public GameObject? GetIconSprite(string key, ReferencedObject? spriteRef)
         {
-            if (spriteStr == null)
+            if (spriteRef == null)
                 return null;
 
             if (
                 !spriteRegister.TryLookupId(
-                    spriteStr.ToId(key, TemplateConstants.Sprite),
+                    spriteRef.ToId(key, TemplateConstants.Sprite),
                     out var sprite,
-                    out _
+                    out _,
+                    spriteRef.context
                 )
             )
             {
                 return null;
             }
 
-            var iconSprite = new GameObject { name = $"IconSprite_{spriteStr}" };
+            var iconSprite = new GameObject { name = $"IconSprite_{sprite.name}" };
             var rectTransform = iconSprite.AddComponent<RectTransform>();
 
             var canvasRenderer = iconSprite.AddComponent<CanvasRenderer>();

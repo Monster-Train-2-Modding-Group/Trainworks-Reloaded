@@ -45,7 +45,7 @@ namespace TrainworksReloaded.Base.Prefab
                 return;
 
             var id = spriteVal.ToId(definition.Key, TemplateConstants.Sprite);
-            if (!spriteRegister.TryLookupId(id, out var sprite, out _))
+            if (!spriteRegister.TryLookupId(id, out var sprite, out _, spriteVal.context))
                 return;
 
             var gameObject = definition.Data;

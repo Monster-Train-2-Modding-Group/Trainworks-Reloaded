@@ -108,7 +108,7 @@ namespace TrainworksReloaded.Base.Prefab
             }
 
             var id = spriteVal.ToId(definition.Key, TemplateConstants.Sprite);
-            if (!spriteRegister.TryLookupId(id, out var sprite, out _))
+            if (!spriteRegister.TryLookupId(id, out var sprite, out _, spriteVal.context))
             {
                 return;
             }
@@ -125,7 +125,7 @@ namespace TrainworksReloaded.Base.Prefab
                     continue;
                 }
                 var skeletonId = skeletonReference.ToId(definition.Key, TemplateConstants.SkeletonData);
-                if (!skeletonRegister.TryLookupId(skeletonId, out var skeleton, out _))
+                if (!skeletonRegister.TryLookupId(skeletonId, out var skeleton, out _, skeletonReference.context))
                     continue;
 
                 animations.Add(anim.Value, skeleton);

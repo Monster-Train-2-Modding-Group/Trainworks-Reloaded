@@ -73,7 +73,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             var cloneId = configuration.GetSection("clone_id").Value;
             var newlyCreatedContent = cloneId != null || overrideMode.IsNewContent();
 
-            logger.Log(LogLevel.Debug, $"Finalizing Upgrade {data.name}...");
+            logger.Log(LogLevel.Info, $"Finalizing Upgrade {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             //handle traits
             //traits do not default properly, if null, set to empty
@@ -91,7 +91,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             foreach (var traitReference in traitDataUpgradesReference)
             {
                 var id = traitReference.ToId(key, TemplateConstants.Trait);
-                if (traitRegister.TryLookupId(id, out var trait, out var _))
+                if (traitRegister.TryLookupId(id, out var trait, out var _, traitReference.context))
                 {
                     traitDataUpgrades.Add(trait);
                 }
@@ -113,7 +113,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             foreach (var triggerReference in triggerUpgradeReferences)
             {
                 var id = triggerReference.ToId(key, TemplateConstants.CharacterTrigger);
-                if (triggerRegister.TryLookupId(id, out var trigger, out var _))
+                if (triggerRegister.TryLookupId(id, out var trigger, out var _, triggerReference.context))
                 {
                     triggerUpgrades.Add(trigger);
                 }
@@ -135,7 +135,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             foreach (var cardTriggerReference in cardTriggerUpgradeReferences)
             {
                 var id = cardTriggerReference.ToId(key, TemplateConstants.CardTrigger);
-                if (cardTriggerRegister.TryLookupId(id, out var trigger, out var _))
+                if (cardTriggerRegister.TryLookupId(id, out var trigger, out var _, cardTriggerReference.context))
                 {
                     cardTriggerUpgrades.Add(trigger);
                 }
@@ -157,7 +157,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             foreach (var roomModifierReference in roomModifierUpgradeReferences)
             {
                 var id = roomModifierReference.ToId(key, TemplateConstants.RoomModifier);
-                if (roomModifierRegister.TryLookupId(id, out var roomModifier, out var _))
+                if (roomModifierRegister.TryLookupId(id, out var roomModifier, out var _, roomModifierReference.context))
                 {
                     roomModifierUpgrades.Add(roomModifier);
                 }
@@ -180,7 +180,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 var statusEffectId = statusReference.ToId(key, TemplateConstants.StatusEffect);
                 // Make sure the status effect exists. If using @ notation.
                 // else it is a vanilla status effect.
-                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _))
+                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _, statusReference.context))
                 {
                     statusEffectUpgrades.Add(new StatusEffectStackData
                     {
@@ -209,35 +209,38 @@ namespace TrainworksReloaded.Base.CardUpgrade
             foreach (var removeUpgradeReference in upgradesToRemoveReferences)
             {
                 var id = removeUpgradeReference.ToId(key, TemplateConstants.Upgrade);
-                if (upgradeRegister.TryLookupName(id, out var upgrade, out var _))
+                if (upgradeRegister.TryLookupName(id, out var upgrade, out var _, removeUpgradeReference.context))
                 {
                     upgradesToRemove.Add(upgrade);
                 }
             }
             AccessTools.Field(typeof(CardUpgradeData), "upgradesToRemove").SetValue(data, upgradesToRemove);
 
-            var appliedVFXId = configuration.GetSection("applied_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
-            if (newlyCreatedContent || appliedVFXId != null)
+            var appliedVFXReference = configuration.GetSection("applied_vfx").ParseReference();
+            if (newlyCreatedContent || appliedVFXReference != null)
             {
-                vfxRegister.TryLookupId(appliedVFXId ?? "", out var applied_vfx, out var _);
+                var id = appliedVFXReference?.ToId(key, TemplateConstants.Vfx) ?? "";
+                vfxRegister.TryLookupId(id, out var applied_vfx, out var _, appliedVFXReference?.context);
                 AccessTools
                     .Field(typeof(CardUpgradeData), "appliedVFX")
                     .SetValue(data, applied_vfx);
             }
 
-            var removedVFXId = configuration.GetSection("removed_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
-            if (newlyCreatedContent || removedVFXId != null)
+            var removedVFXReference = configuration.GetSection("removed_vfx").ParseReference();
+            if (newlyCreatedContent || removedVFXReference != null)
             {
-                vfxRegister.TryLookupId(removedVFXId ?? "", out var removed_vfx, out var _);
+                var id = removedVFXReference?.ToId(key, TemplateConstants.Vfx) ?? "";
+                vfxRegister.TryLookupId(id, out var removed_vfx, out var _, removedVFXReference?.context);
                 AccessTools
                     .Field(typeof(CardUpgradeData), "removedVFX")
                     .SetValue(data, removed_vfx);
             }
 
-            var persistentVFXId = configuration.GetSection("persistent_vfx").ParseReference()?.ToId(key, TemplateConstants.Vfx);
-            if (newlyCreatedContent || persistentVFXId != null)
+            var persistentVFXReference = configuration.GetSection("persistent_vfx").ParseReference();
+            if (newlyCreatedContent || persistentVFXReference != null)
             {
-                vfxRegister.TryLookupId(persistentVFXId ?? "", out var persistent_vfx, out var _);
+                var id = persistentVFXReference?.ToId(key, TemplateConstants.Vfx) ?? "";
+                vfxRegister.TryLookupId(id, out var persistent_vfx, out var _, persistentVFXReference?.context);
                 AccessTools
                     .Field(typeof(CardUpgradeData), "persistentVFX")
                     .SetValue(data, persistent_vfx);
@@ -257,7 +260,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             foreach (var reference in filterReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.UpgradeMask);
-                if (upgradeMaskRegister.TryLookupId(id, out var lookup, out var _))
+                if (upgradeMaskRegister.TryLookupId(id, out var lookup, out var _, reference.context))
                 {
                     filters.Add(lookup);
                 }
@@ -268,7 +271,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             var abilityReference = abilityConfig.ParseReference();
             if (abilityReference != null)
             {
-                cardRegister.TryLookupName(abilityReference.ToId(key, TemplateConstants.Card), out var abilityCard, out var _);
+                cardRegister.TryLookupName(abilityReference.ToId(key, TemplateConstants.Card), out var abilityCard, out var _, abilityReference.context);
                 AccessTools.Field(typeof(CardUpgradeData), "unitAbilityUpgrade").SetValue(data, abilityCard);
             }
             if (overrideMode == OverrideMode.Replace && abilityReference == null && abilityConfig.Exists())
@@ -280,7 +283,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             var spriteReference = configuration.GetSection("icon").ParseReference();
             if (spriteReference != null)
             {
-                spriteRegister.TryLookupId(spriteReference.ToId(key, TemplateConstants.Sprite), out var spriteLookup, out var _);
+                spriteRegister.TryLookupId(spriteReference.ToId(key, TemplateConstants.Sprite), out var spriteLookup, out var _, spriteReference.context);
                 AccessTools.Field(typeof(CardUpgradeData), "upgradeIcon").SetValue(data, spriteLookup);
             }
         }

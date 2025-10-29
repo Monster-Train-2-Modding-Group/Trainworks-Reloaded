@@ -29,7 +29,7 @@
           },
           "hide_visual_and_ignore_silence": {
             "type": "boolean",
-            "description": "Whether to hide the tooltip for this trigger."
+            "description": "Whether to hide the tooltip for this trigger. Not commonly used. If this is a trigger added via RelicEffectAddTrigger the game sets this field to true. Rooms that add triggers also set this to true."
           },
           "id": {
             "minLength": 1,

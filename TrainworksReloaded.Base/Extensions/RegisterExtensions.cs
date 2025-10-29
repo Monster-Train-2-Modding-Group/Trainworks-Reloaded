@@ -1,4 +1,5 @@
 using BepInEx.Logging;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
@@ -17,17 +18,19 @@ namespace TrainworksReloaded.Base.Extensions
         /// <param name="name">The name of the item to lookup</param>
         /// <param name="lookup">The item if found</param>
         /// <param name="IsModded">Whether the item is modded</param>
+        /// <param name="context">The context in which the name is looked up (will be the IConfiguration Path) </param>
         public static bool TryLookupName<T>(
             this IRegister<T> register,
             string name,
             [NotNullWhen(true)] out T? lookup,
-            [NotNullWhen(true)] out bool? IsModded
+            [NotNullWhen(true)] out bool? IsModded,
+            IConfigurationSection? context = null
         )
         {
             bool ret = register.TryLookupIdentifier(name, RegisterIdentifierType.ReadableID, out lookup, out IsModded);
             if (!ret)
             {
-                Logger.LogWarning($"Could not find identifier of type {typeof(T).Name} with id (name) {name}.");
+                Logger.LogWarning($"Could not find identifier of type {typeof(T).Name} with id (name) {name}. Configuration Path: {context?.Path}");
                 Logger.LogDebug($"{Environment.StackTrace}");
             }
             return ret;
@@ -39,17 +42,19 @@ namespace TrainworksReloaded.Base.Extensions
         /// <param name="id">The id of the item to lookup</param>
         /// <param name="lookup">The item if found</param>
         /// <param name="IsModded">Whether the item is modded</param>
+        /// <param name="context">The context in which the name is looked up (will be the IConfiguration Path) </param>
         public static bool TryLookupId<T>(
             this IRegister<T> register,
             string id,
             [NotNullWhen(true)] out T? lookup,
-            [NotNullWhen(true)] out bool? IsModded
+            [NotNullWhen(true)] out bool? IsModded,
+            IConfigurationSection? context = null
         )
         {
             bool ret = register.TryLookupIdentifier(id, RegisterIdentifierType.GUID, out lookup, out IsModded);
             if (!ret)
             {
-                Logger.LogWarning($"Could not find identifier of type {typeof(T).Name} with id (guid) {id}.");
+                Logger.LogWarning($"Could not find identifier of type {typeof(T).Name} with id (guid) {id}. Configuration Path: {context?.Path}");
                 Logger.LogDebug($"{Environment.StackTrace}");
             }
             return ret;

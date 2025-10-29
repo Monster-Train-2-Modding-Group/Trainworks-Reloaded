@@ -40,7 +40,7 @@ namespace TrainworksReloaded.Base.Relic
             var data = definition.Data;
             var key = definition.Key;
 
-            logger.Log(LogLevel.Debug, $"Finalizing Relic Pool {data.name}... ");
+            logger.Log(LogLevel.Info, $"Finalizing Relic Pool {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             var relicDatas = new List<CollectableRelicData>();
             var relicReferences = configuration.GetSection("relics")
@@ -51,7 +51,7 @@ namespace TrainworksReloaded.Base.Relic
             foreach (var reference in relicReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.RelicData);
-                if (relicRegister.TryLookupName(id, out var relic, out var _))
+                if (relicRegister.TryLookupName(id, out var relic, out var _, reference.context))
                 {
                     if (relic is CollectableRelicData collectable)
                     {

@@ -20,5 +20,10 @@ namespace TrainworksReloaded.Base.Extensions
                 return configuration.GetSection(newName);
             }
         }
+
+        public static string GetPath(this IConfiguration configuration)
+        {
+            return (configuration as IConfigurationSection)?.Path ?? "";
+        }
     }
 }
