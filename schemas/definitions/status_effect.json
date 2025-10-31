@@ -4,7 +4,8 @@
   "type": "object",
   "properties": {
     "status": {
-      "$ref": "../definitions/status.json"
+      "$ref": "../definitions/status.json",
+      "description": "Status Effect ID or a reference to a custom status effect."
     },
     "count": {
       "type": "integer",

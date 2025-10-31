@@ -17,6 +17,7 @@
       "$ref": "../definitions/reference.json"
     },
     {
+      "type": "string",
       "enum": [
         "CardTraitAddCardUpgradeOnMoonPhase",
         "CardTraitAddDamagePerStatusEffect",

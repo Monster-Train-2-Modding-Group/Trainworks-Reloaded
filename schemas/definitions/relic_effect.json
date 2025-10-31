@@ -1,7 +1,6 @@
 {
     "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/relic_effect.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "type": "string",
     "description": "The name of a class that inherits from RelicEffectBase.",
     "examples": [
         "RelicEffectAddAlliedChampionToDeck",
@@ -15,6 +14,7 @@
       "$ref": "../definitions/reference.json"
     },
     {
+      "type": "string",
       "enum": [
         "GrosMichelRelicEffectChanceToDestroySelf",
         "RelicEffectAddAlliedChampionToDeck",
