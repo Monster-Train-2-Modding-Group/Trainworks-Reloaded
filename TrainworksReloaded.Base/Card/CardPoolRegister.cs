@@ -71,6 +71,7 @@ namespace TrainworksReloaded.Base.Card
             var disallowedCardPoolsField = AccessTools.Field(typeof(CardUpgradeMaskData), "disallowedCardPools");
             var cardPoolRewardDataField = AccessTools.Field(typeof(CardPoolRewardData), "cardPool");
             var equipmentGraftRewardDataField = AccessTools.Field(typeof(EquipmentRandomGraftRewardData), "equipmentCardPool");
+            var draftPoolDataField = AccessTools.Field(typeof(DraftRewardData), "draftPool");
 
             var merchant = allGameData.FindMapNodeData(/*Equipment Merchant*/ "e2c67b52-4d52-48b5-b20a-c6f4c12e44fa") as MerchantData;
             var swordmaiden = allGameData.FindCharacterData(/*Swordmaiden*/ "f58d2cb6-0c2c-42f5-98e2-69d4354d42c6") as CharacterData;
@@ -110,14 +111,15 @@ namespace TrainworksReloaded.Base.Card
             // MegaPool
             AddVanillaCardPool(allGameData.FindRelicData(/*Large Mystery Box*/"d537c198-899f-4385-9552-f35f58826be4")?.GetFirstRelicEffectData<RelicEffectAddPrecachedBattleCardToHand>()?.GetParamCardPool());
             // UnitsAllBanner
-            AddVanillaCardPool((allGameData.FindRewardData(/*CardDraftLevelUpUnitMainOrAllied*/"8a8782bf-3faf-4dd7-8f5d-413c1b269c3d") as DraftRewardData)?.GetDraftPool());
+            AddVanillaCardPool(draftPoolDataField.GetValue((allGameData.FindRewardData(/*CardDraftLevelUpUnitMainOrAllied*/"8a8782bf-3faf-4dd7-8f5d-413c1b269c3d") as DraftRewardData)) as CardPool);
             // StarterCardsOnly:
             filter = allGameData.FindPyreArtifactData(/*Dominion Pyre*/"c0c09adc-b23e-422e-bb75-689ee82cfa36")?.GetFirstRelicEffectData<RelicEffectPurgeStarterDeckMatchingFilter>()?.GetParamCardFilter();
             AddVanillaCardPoolsFromFilter(filter);
             // NewChallengerChampionPool
             AddVanillaCardPool(allGameData.FindMutatorData(/*ANewChallenger*/"8bf5c01f-cd2a-46d2-8ba5-c4f594bf2753")?.GetFirstRelicEffectData<RelicEffectReplaceChampion>()?.GetParamCardPool());
             // RoomAndEquipmentDraftPool
-            AddVanillaCardPool((allGameData.FindRewardData(/*CardDraftEquipmentOrRoom*/ "4a74d384-8d5b-4c62-9758-eccd50f31f4a") as DraftRewardData)?.GetDraftPool());
+            ;
+            AddVanillaCardPool(draftPoolDataField.GetValue((allGameData.FindRewardData(/*CardDraftEquipmentOrRoom*/ "4a74d384-8d5b-4c62-9758-eccd50f31f4a") as DraftRewardData)) as CardPool);
             // RoomAndEquipmentMerchant_EquipmentPool
             // RoomAndEquipmentMerchant_RoomPool
             // RoomAndEquipmentMerchant_RoomAndEquipmentPool
