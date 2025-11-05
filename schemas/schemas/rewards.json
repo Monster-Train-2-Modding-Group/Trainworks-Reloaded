@@ -44,6 +44,10 @@
             "type": "boolean",
             "description": "Whether this is a story-related reward."
           },
+          "requires_mutator": {
+            "$ref": "../definitions/reference.json",
+            "description": "Reference to required mutator."
+          },
           "show_animation_in_event": {
             "type": "boolean",
             "description": "Whether to show an animation when this reward appears in an event."
@@ -251,6 +255,23 @@
                               "description": "Applicable if use_run_rarity_floors is false, custom rarity ticket values for relics.",
                               "items": {
                                 "$ref": "../definitions/rarity_ticket.json"
+                              }
+                            },
+                            "relic_draft_pool_substitutions": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": ["relic", "replacement_draft_pool"],
+                                "properties": {
+                                  "relic": {
+                                    "$ref": "../definitions/reference.json",
+                                    "description": "Reference to a relic data that would change the draft pool."
+                                  },
+                                  "replacement_draft_pool": {
+                                    "$ref": "../definitions/card_pool.json",
+                                    "description": "Reference to a card pool to replace the draft pool by."
+                                  }
+                                }
                               }
                             }
                           },

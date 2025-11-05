@@ -126,6 +126,10 @@
             "description": "Multiplier parameter for the effect.",
             "default": 1.0
           },
+          "param_relic": {
+            "$ref": "../definitions/reference.json",
+            "description": "Reference to a RelicData to use for the effect."
+          },
           "param_status_effects": {
             "type": "array",
             "description": "List of status effects to apply.",

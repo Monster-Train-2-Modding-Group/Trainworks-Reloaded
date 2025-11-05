@@ -8,6 +8,10 @@
       "description": "A collection of triggers that define when and how characters can activate effects.",
       "items": {
         "properties": {
+          "additional_text_on_trigger": {
+            "$ref": "../definitions/parse_term.json",
+            "description": "Text to display when this trigger activates."
+          },
           "allow_additional_tooltips_when_visual_is_hidden": {
             "type": "boolean",
             "description": "Whether additional tooltips should be shown if the trigger type is hidden in the display UI."
@@ -44,6 +48,15 @@
             "type": "boolean",
             "description": "Mainly for flying bosses, remove this trigger on relentless"
           },
+          "required_status_effects": {
+            "type": "array",
+            "items": {
+              "description": "List of status effects required for this trigger to fire.",
+              "items": {
+                "$ref": "../definitions/status_effect.json"
+              }
+            }
+          },
           "show_additional_text_on_trigger_success_only": {
             "type": "boolean",
             "description": "Whether to only show text when the trigger successfully activates."
@@ -52,22 +65,18 @@
             "type": "boolean",
             "description": "Whether to suppress the trigger's default notification text when this trigger activates. This also prevents the camera from scrolling to the room when the trigger fires."
           },
-          "additional_text_on_trigger": {
-            "$ref": "../definitions/parse_term.json",
-            "description": "Text to display when this trigger activates."
-          },
           "trigger": {
             "$ref": "../definitions/character_trigger.json",
             "description": "The type of event that activates this trigger.",
             "default": "on_death"
           },
-          "trigger_once": {
-            "type": "boolean",
-            "description": "Whether this trigger can only activate once."
-          },
           "trigger_at_threshold": {
             "type": "integer",
             "description": "This value tells the trigger to only fire if a parameter is greater than this number. The parameter value is determined by the trigger type. (i.e. for a Revenge trigger the parameter will be the amount of damage taken.)"
+          },
+          "trigger_once": {
+            "type": "boolean",
+            "description": "Whether this trigger can only activate once."
           }
         },
         "required": [

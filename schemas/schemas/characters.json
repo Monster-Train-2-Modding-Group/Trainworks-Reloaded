@@ -173,6 +173,10 @@
             "$ref": "../definitions/vfx.json",
             "description": "Visual effect played when this character is hit."
           },
+          "is_companion_boss": {
+            "type": "boolean",
+            "description": "Whether this character is a companion boss."
+          },
           "is_mini_boss": {
             "type": "boolean",
             "description": "Whether this character is a mini-boss."
