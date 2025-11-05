@@ -51,6 +51,8 @@ namespace TrainworksReloaded.Base.Extensions
                 "none" => 0,
                 "always" => MapNodeData.SkipCheckSettings.Always,
                 "if_full_health" => MapNodeData.SkipCheckSettings.IfFullHealth,
+                "if_no_champion" => MapNodeData.SkipCheckSettings.IfNoChampion,
+                // TODO Check if both should include if_no_champion?
                 "both" => MapNodeData.SkipCheckSettings.Always
                     | MapNodeData.SkipCheckSettings.IfFullHealth,
                 _ => null,

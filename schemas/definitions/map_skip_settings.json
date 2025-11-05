@@ -1,11 +1,12 @@
 {
-    "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/map_skip_settings.json",
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "type": "string",
-    "enum": [
-        "none",
-        "always",
-        "if_full_health",
-        "both"
-    ]
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/map_skip_settings.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "string",
+  "enum": [
+    "none",
+    "always",
+    "if_full_health",
+    "if_no_champion",
+    "both"
+  ]
 }

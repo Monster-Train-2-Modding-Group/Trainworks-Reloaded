@@ -80,6 +80,7 @@ namespace TrainworksReloaded.Base.Enums
             ["on_attacking_before_damage"] = CharacterTriggerData.Trigger.OnAttackingBeforeDamage,
             ["on_silence"] = CharacterTriggerData.Trigger.OnSilence,
             ["on_silence_lost"] = CharacterTriggerData.Trigger.OnSilenceLost,
+            ["on_pre_own_ability_activated"] = CharacterTriggerData.Trigger.OnPreOwnAbilityActivated,
         };
 
         public CharacterTriggerTypeRegister(IModLogger<CharacterTriggerRegister> logger)
