@@ -24,6 +24,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -56,11 +61,16 @@ jobs:
         with:
           name: build-bundle
           path: ${{ env.mod_namespace }}-${{ env.mod_name }}-${{ github.ref_name }}.zip
-          
+
+      - name: Build Schema
+        run: npx json-dereference-cli-v2 -s schemas/base.json -o schema.json
+
       - name: Github Release
         uses: softprops/action-gh-release@v2.2.2
         with:
-          files: ${{ env.mod_namespace }}-${{ env.mod_name }}-${{ github.ref_name }}.zip
+          files: |
+            ${{ env.mod_namespace }}-${{ env.mod_name }}-${{ github.ref_name }}.zip
+            schema.json
           prerelease: true
           generate_release_notes: true
 
