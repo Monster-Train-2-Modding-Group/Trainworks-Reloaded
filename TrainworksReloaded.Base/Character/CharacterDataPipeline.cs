@@ -165,6 +165,11 @@ namespace TrainworksReloaded.Base.Character
                 .Field(typeof(CharacterData), "isMiniboss")
                 .SetValue(data, configuration.GetSection("is_mini_boss").ParseBool() ?? isMiniboss);
 
+            var isCompanionBoss = copyData.IsCompanionBoss();
+            AccessTools
+                .Field(typeof(CharacterData), "isCompanionBoss")
+                .SetValue(data, configuration.GetSection("is_companion_boss").ParseBool() ?? isCompanionBoss);
+
             var canAttack = copyData.GetCanAttack();
             AccessTools
                 .Field(typeof(CharacterData), "canAttack")

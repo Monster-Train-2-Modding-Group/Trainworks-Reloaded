@@ -259,6 +259,7 @@
                             },
                             "relic_draft_pool_substitutions": {
                               "type": "array",
+                              "description": "A list of substitutions any relic can compleletely change the pool of cards for a reward. Note that if multiple relics change the pool the one acquired later has priority.",
                               "items": {
                                 "type": "object",
                                 "required": ["relic", "replacement_draft_pool"],

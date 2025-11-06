@@ -1,6 +1,7 @@
 using HarmonyLib;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Extensions;
@@ -14,6 +15,7 @@ namespace TrainworksReloaded.Base.Reward
         private readonly ICache<IDefinition<RewardData>> cache;
         private readonly IRegister<CardPool> cardPoolRegister;
         private readonly IRegister<ClassData> classRegister;
+        private readonly IRegister<RelicData> relicRegister;
         private readonly IDataFinalizer decoratee;
 
         public DraftRewardDataFinalizerDecorator(
@@ -21,6 +23,7 @@ namespace TrainworksReloaded.Base.Reward
             ICache<IDefinition<RewardData>> cache,
             IRegister<CardPool> cardPoolRegister,
             IRegister<ClassData> classRegister,
+            IRegister<RelicData> relicRegister,
             IDataFinalizer decoratee
         )
         {
@@ -28,6 +31,7 @@ namespace TrainworksReloaded.Base.Reward
             this.cache = cache;
             this.cardPoolRegister = cardPoolRegister;
             this.classRegister = classRegister;
+            this.relicRegister = relicRegister;
             this.decoratee = decoratee;
         }
 
@@ -176,6 +180,29 @@ namespace TrainworksReloaded.Base.Reward
             AccessTools
                 .Field(typeof(DraftRewardData), "relicRarityTicketValues")
                 .SetValue(draftData, relicRarityTicketValues);
+
+            List<DraftRewardData.RelicDraftPoolSubstitution> substitutions = [];
+            foreach (var child in configuration.GetSection("relic_draft_pool_substitutions").GetChildren())
+            {
+                var relicReference = child.GetSection("relic").ParseReference();
+                var cardPoolReference = child.GetSection("replacement_draft_pool").ParseReference();
+                if (relicReference == null || cardPoolReference == null)
+                    continue;
+
+                relicRegister.TryLookupName(relicReference.ToId(key, TemplateConstants.RelicData), out var relicData, out var _, relicReference.context);
+                cardPoolRegister.TryLookupName(cardPoolReference.ToId(key, TemplateConstants.CardPool), out var cardPool, out var _2, cardPoolReference.context);
+
+                if (relicData == null || cardPool == null)
+                    continue;
+
+                var sub = new DraftRewardData.RelicDraftPoolSubstitution();
+                AccessTools.Field(typeof(DraftRewardData.RelicDraftPoolSubstitution), "relicData").SetValue(sub, relicData);
+                AccessTools.Field(typeof(DraftRewardData.RelicDraftPoolSubstitution), "replacementDraftPool").SetValue(sub, cardPool);
+
+                substitutions.Add(sub);
+            }
+
+            AccessTools.Field(typeof(DraftRewardData), "relicDraftPoolSubstitutions").SetValue(draftData, substitutions);
         }
     }
 }

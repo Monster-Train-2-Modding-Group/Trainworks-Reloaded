@@ -21,6 +21,7 @@ namespace TrainworksReloaded.Base.Effect
         private readonly IRegister<SubtypeData> subtypeRegister;
         private readonly IRegister<TargetMode> targetModeRegister;
         private readonly IRegister<VfxAtLoc> vfxRegister;
+        private readonly IRegister<RelicData> relicRegister;
         private readonly ICache<IDefinition<CardEffectData>> cache;
 
         public CardEffectFinalizer(
@@ -35,6 +36,7 @@ namespace TrainworksReloaded.Base.Effect
             IRegister<SubtypeData> subtypeRegister,
             IRegister<TargetMode> targetModeRegister,
             IRegister<VfxAtLoc> vfxRegister,
+            IRegister<RelicData> relicRegister,
             ICache<IDefinition<CardEffectData>> cache
         )
         {
@@ -49,6 +51,7 @@ namespace TrainworksReloaded.Base.Effect
             this.subtypeRegister = subtypeRegister;
             this.targetModeRegister = targetModeRegister;
             this.vfxRegister = vfxRegister;
+            this.relicRegister = relicRegister;
             this.cache = cache;
         }
 
@@ -253,6 +256,16 @@ namespace TrainworksReloaded.Base.Effect
                     out var lookup,
                     out var _, filter2Reference.context);
                 AccessTools.Field(typeof(CardEffectData), "paramCardFilterSecondary").SetValue(data, lookup);
+            }
+
+            var paramRelicReference = configuration.GetSection("param_relic").ParseReference();
+            if (paramRelicReference != null)
+            {
+                relicRegister.TryLookupName(
+                    paramRelicReference.ToId(key, TemplateConstants.RelicData),
+                    out var lookup,
+                    out var _, paramRelicReference.context);
+                AccessTools.Field(typeof(CardEffectData), "paramRelicData").SetValue(data, lookup);
             }
 
             var poolReference = configuration.GetSection("param_card_pool").ParseReference();
