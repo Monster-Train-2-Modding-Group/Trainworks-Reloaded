@@ -61,24 +61,24 @@ namespace TrainworksReloaded.Base.StatusEffects
             {
                 return null;
             }
-            // modguid_statusid
+            // Internal statusID will be modguid_statusid
             var statusId = key.GetId(TemplateConstants.StatusEffect, id);
 
             var data = new StatusEffectData();
             AccessTools.Field(typeof(StatusEffectData), "statusId").SetValue(data, statusId);
 
-            var statusEffectStateName = configuration.GetSection("class_name").Value;
-            if (statusEffectStateName == null)
-            {
-                logger.Log(LogLevel.Error, $"Missing class_name parameter for status effect id {id}.");
+            var statusEffectStateReference = configuration.GetSection("class_name").ParseReference();
+            if (statusEffectStateReference == null)
                 return null;
-            }
 
-            // Because the statusId is coupled with the class, only search the Assembly defining the status effect.
-            var assembly = atlas.PluginDefinitions[key].Assembly;
-            if (!statusEffectStateName.GetFullyQualifiedName<StatusEffectState>(
-                assembly,
-                out string? fullyQualifiedName)
+            var statusEffectStateName = statusEffectStateReference.id;
+            var modReference = statusEffectStateReference.mod_reference ?? key;
+            var assembly = atlas.PluginDefinitions.GetValueOrDefault(modReference)?.Assembly;
+            if (
+                !statusEffectStateName.GetFullyQualifiedName<StatusEffectState>(
+                    assembly,
+                    out string? fullyQualifiedName
+                )
             )
             {
                 logger.Log(LogLevel.Error, $"Failed to load status effect state name {statusEffectStateName} in {id}, Make sure the class inherits from StatusEffectState.");
