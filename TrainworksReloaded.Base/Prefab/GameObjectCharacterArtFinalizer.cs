@@ -5,10 +5,12 @@ using Spine;
 using Spine.Unity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.TextCore.Text;
 using static CharacterUI;
 using static MultiplayerEmoteDefinitionData;
@@ -25,6 +27,7 @@ namespace TrainworksReloaded.Base.Prefab
         private readonly IRegister<Sprite> spriteRegister;
         private readonly IRegister<SkeletonDataAsset> skeletonRegister;
         private readonly IDataFinalizer decoratee;
+        private static Material? defaultQuadMaterial;
 
         private static readonly Dictionary<CharacterUI.Anim, string> ANIM_NAMES = new()
         {
@@ -173,25 +176,109 @@ namespace TrainworksReloaded.Base.Prefab
             
             // Setup mesh renderer.
             var shaderConfig = configuration.GetSection("shader");
-            var shaderName = shaderConfig.GetSection("name").Value ?? "Shiny Shoe/Character Shader";
+            // The actual default was "Shiny Shoe/Character Shader", but that shader requires light to display properly.
+            var shaderName = shaderConfig.GetSection("name").Value ?? "Sprites/Default";
             var characterShader = Shader.Find(shaderName);
             if (characterShader == null)
             {
                 logger.Log(LogLevel.Error, $"Failed to find shader {shaderName} for {name}");
                 return;
             }
+
+            // Get the default material that is on QuadDefault. This should be true for the Fallback character.
+            if (defaultQuadMaterial == null)
+                defaultQuadMaterial = Resources.FindObjectsOfTypeAll<Material>().FirstOrDefault(m => m.name == "CharacterMaterial_Default");
+
             var material = new Material(characterShader);
-            // Required for Champion Screen. Otherwise the sprite is cut off.
-            material.SetFloat("_ClipBottomV", 0);
+            CopyMaterialProperties(defaultQuadMaterial, material);
+
             // Handle color configuration
             var color = GetColorFromSection(shaderConfig.GetSection("color"));
             TrySetMaterialColor(material, "_Color", color);
             var tint = GetColorFromSection(shaderConfig.GetSection("tint"));
             TrySetMaterialColor(material, "_Tint", tint);
+
             meshRenderer.material = material;
 
             spriteRenderer.sprite = sprite;
             spriteRenderer.enabled = true;
+        }
+
+        private static void CopyMaterialProperties(Material srcmat, Material dstmat)
+        {
+            Shader shader = srcmat.shader;
+            int count = shader.GetPropertyCount();
+
+            for (int i = 0; i < count; i++)
+            {
+                string name = shader.GetPropertyName(i);
+                var type = shader.GetPropertyType(i);
+
+                switch (type)
+                {
+                    case ShaderPropertyType.Color:
+                        dstmat.SetColor(name, srcmat.GetColor(name));
+                        break;
+                    case ShaderPropertyType.Vector:
+                        dstmat.SetVector(name, srcmat.GetVector(name));
+                        break;
+                    case ShaderPropertyType.Float:
+                    case ShaderPropertyType.Range:
+                        dstmat.SetFloat(name, srcmat.GetFloat(name));
+                        break;
+                    case ShaderPropertyType.Texture:
+                        dstmat.SetTexture(name, srcmat.GetTexture(name));
+                        break;
+                }
+            }
+        }
+
+        public static void PrintMaterialProperties(Material mat)
+        {
+            if (mat == null)
+            {
+                Debug.Log("Material is null");
+                return;
+            }
+
+            // Note only prints propertries that the shader expects.
+            Shader shader = mat.shader;
+            int count = shader.GetPropertyCount();
+
+            Debug.Log($"--- Material: {mat.name}, Shader: {shader.name} ---");
+
+            for (int i = 0; i < count; i++)
+            {
+                string name = shader.GetPropertyName(i);
+                var type = shader.GetPropertyType(i);
+
+                string valueStr = GetMaterialValueString(mat, i, type, name);
+
+                Debug.Log($"{name} ({type}) = {valueStr}");
+            }
+        }
+
+        private static string GetMaterialValueString(Material mat, int index, ShaderPropertyType type, string name)
+        {
+            switch (type)
+            {
+                case ShaderPropertyType.Color:
+                    return mat.GetColor(name).ToString();
+
+                case ShaderPropertyType.Vector:
+                    return mat.GetVector(name).ToString();
+
+                case ShaderPropertyType.Float:
+                case ShaderPropertyType.Range:
+                    return mat.GetFloat(name).ToString();
+
+                case ShaderPropertyType.Texture:
+                    Texture tex = mat.GetTexture(name);
+                    return tex != null ? tex.name : "null";
+
+                default:
+                    return "(unknown type)";
+            }
         }
 
         private void CreateCharacterWithSkeletonAnimations(GameObject original, string name, Sprite sprite, Dictionary<Anim, SkeletonDataAsset> animations, IConfiguration configuration)
