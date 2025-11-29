@@ -39,9 +39,8 @@
               "properties": {
                 "name": {
                   "type": "string",
-                  "enum": [ "Standard", "Shiny Shoe/Character Shader" ],
-                  "description": "Name of the shader to use (e.g. 'Standard' or 'Shiny Shoe/Character Shader')",
-                  "default": "Shiny Shoe/Character Shader"
+                  "enum": [ "Sprites/Default", "Standard", "Shiny Shoe/Character Shader" ],
+                  "description": "Name of the shader to use (e.g. 'Sprites/Default', 'Standard', or 'Shiny Shoe/Character Shader'). Recommended to leave alone unless you know what you are doing. The default is Sprites/Default for a static image, and Shine Shoe/Character Graphs 2.0 for a spine animation.",
                 },
                 "color": {
                   "$ref": "../definitions/color.json",
@@ -61,7 +60,7 @@
                     "b": 1.0,
                     "a": 1.0
                   },
-                  "description": "Tint color RGBA values (0-1)"
+                  "description": "Tint color RGBA values (0-1). This is not supported by the Sprites/Default shader"
                 }
               }
             },
