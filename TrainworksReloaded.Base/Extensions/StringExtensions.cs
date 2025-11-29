@@ -10,7 +10,7 @@ namespace TrainworksReloaded.Base.Extensions
         {
             if (id.StartsWith("@"))
             {
-                Logger.LogWarning($"For mod_guid {key} type {template} we are attempting to create an id for {template} there should be no @ preceeding this id {id}." +
+                Logger.LogWarning($"For mod_guid {key} type {template} we are attempting to create an id for {template} there should be no @ preceding this id {id}." +
                     " @ is only needed when referencing this id in other places not when defining it.");
             }
             return FormId(key, template, id);
