@@ -176,8 +176,7 @@ namespace TrainworksReloaded.Base.Prefab
             
             // Setup mesh renderer.
             var shaderConfig = configuration.GetSection("shader");
-            // The actual default was "Shiny Shoe/Character Shader", but that shader requires light to display properly.
-            var shaderName = shaderConfig.GetSection("name").Value ?? "Sprites/Default";
+            var shaderName = shaderConfig.GetSection("name").Value ?? "Shiny Shoe/Character Shader";
             var characterShader = Shader.Find(shaderName);
             if (characterShader == null)
             {
@@ -231,6 +230,7 @@ namespace TrainworksReloaded.Base.Prefab
                         break;
                 }
             }
+            dstmat.renderQueue = srcmat.renderQueue;
         }
 
         public static void PrintMaterialProperties(Material mat)
