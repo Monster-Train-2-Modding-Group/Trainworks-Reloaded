@@ -97,7 +97,7 @@
           },
           "chosen_variant": {
             "type": "boolean",
-            "description": "Whether this is a chosen variant of the character. Setting this to true sets the chosen property in the shader."
+            "description": "Whether this is a chosen variant of the character. Setting this to true sets the chosen property in the shader. This only works for spine animations."
           },
           "clone_id": {
             "type": "string",

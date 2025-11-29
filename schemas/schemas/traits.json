@@ -96,7 +96,7 @@
           },
           "stack_mode": {
             "$ref": "../definitions/stack_mode.json",
-            "description": "Card trait stack mode. Controls the behaviour when the trait is applied to a card multiple times",
+            "description": "Card trait stack mode. Controls the behaviour when the trait is applied to a card multiple times. This only applies when the trait is added via an upgrade. Traits that are initially present on a card, with card text will not have the text updated.",
             "default": "none"
           },
           "status_effect_tooltips_suppressed": {
