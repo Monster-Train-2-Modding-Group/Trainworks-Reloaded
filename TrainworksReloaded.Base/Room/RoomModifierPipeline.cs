@@ -88,7 +88,7 @@ namespace TrainworksReloaded.Base.Room
                 )
             )
             {
-                logger.Log(LogLevel.Error, $"Failed to load room modifer state name {nameClass} in {id} with mod reference {modReference}, Make sure the class inherits from RoomStateModifierBase.");
+                logger.Log(LogLevel.Error, $"Failed to load room modifier state name {nameClass} in {id} mod {modReference}, Make sure the class exists in {modReference} and that the class inherits from RoomStateModifierBase.");
                 return null;
             }
             AccessTools

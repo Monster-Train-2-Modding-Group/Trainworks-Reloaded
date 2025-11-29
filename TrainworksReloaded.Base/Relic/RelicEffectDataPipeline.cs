@@ -86,7 +86,7 @@ namespace TrainworksReloaded.Base.Relic
                 )
             )
             {
-                _logger.Log(LogLevel.Error, $"Failed to load relic effect class name {effectStateName} in {name} with mod reference {modReference}. Make sure it is a class inheriting from relicEffectBase.");
+                _logger.Log(LogLevel.Error, $"Failed to load relic effect state name {effectStateName} in {effectId} mod {modReference}, Make sure the class exists in {modReference} and that the class inherits from RelicEffectBase.");
                 return null;
             }
             AccessTools.Field(typeof(RelicEffectData), "relicEffectClassName").SetValue(data, fullyQualifiedName);

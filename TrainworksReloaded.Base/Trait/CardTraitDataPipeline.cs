@@ -83,7 +83,7 @@ namespace TrainworksReloaded.Base.Trait
                 )
             )
             {
-                logger.Log(LogLevel.Error, $"Failed to load trait state name {traitStateName} in {name} with mod reference {modReference}, Make sure the class inherits from CardTraitState");
+                logger.Log(LogLevel.Error, $"Failed to load trait state name {traitStateName} in {id} mod {modReference}, Make sure the class exists in {modReference} and that the class inherits from CardTraitState.");
                 return null;
             }
             AccessTools

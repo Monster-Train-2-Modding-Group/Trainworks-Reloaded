@@ -81,7 +81,7 @@ namespace TrainworksReloaded.Base.StatusEffects
                 )
             )
             {
-                logger.Log(LogLevel.Error, $"Failed to load status effect state name {statusEffectStateName} in {id}, Make sure the class inherits from StatusEffectState.");
+                logger.Log(LogLevel.Error, $"Failed to load status effect state name {statusEffectStateName} in {id} mod {modReference}, Make sure the class exists in {modReference} and that the class inherits from StatusEffectState.");
                 return null;
             }
             AccessTools.Field(typeof(StatusEffectData), "statusEffectStateName").SetValue(data, fullyQualifiedName);
