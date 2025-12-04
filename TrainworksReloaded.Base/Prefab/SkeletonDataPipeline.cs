@@ -20,6 +20,10 @@ namespace TrainworksReloaded.Base.Prefab
     {
         private readonly PluginAtlas atlas;
         private readonly IModLogger<SkeletonDataPipeline> logger;
+        private static Lazy<Material> skeletonDefaultMaterial = new(() =>
+        {
+            return Resources.FindObjectsOfTypeAll<Material>().FirstOrDefault(m => m.name == "UI_Daedalus_Idle_Material");
+        });
 
         public SkeletonDataPipeline(PluginAtlas atlas, IModLogger<SkeletonDataPipeline> logger)
         {
@@ -90,6 +94,7 @@ namespace TrainworksReloaded.Base.Prefab
             else if (data_path.EndsWith("skel"))
             {
                 var bytes = File.ReadAllBytes(data_path);
+                // Hack to be able to load binary skeleton files, since TextAsset doesn't support binary data at runtime only through the Unity Editor.
                 skeletonData = new TextAsset("SPINE64|" + Convert.ToBase64String(bytes))
                 {
                     name = Path.GetFileName(data_path + ".base64")
@@ -100,50 +105,8 @@ namespace TrainworksReloaded.Base.Prefab
                 logger.Log(LogLevel.Error, $"File {data_path} not readable. The extension must be .json, .skel");
                 return null;
             }
-
-            var material = new Material(Shader.Find(shader));
-            material.SetFloat("_BUILTIN_QueueControl", 0);
-            material.SetFloat("_BUILTIN_QueueControl", 0f);
-            material.SetFloat("_BUILTIN_QueueOffset", 0f);
-            material.SetFloat("_Blackout_Slider", 0f);
-            material.SetFloat("_Chosen", 0f);
-            material.SetFloat("_ClipBottomAlpha", 1f);
-            material.SetFloat("_ClipBottomV", 0f);
-            material.SetFloat("_Cutoff", 0.1f);
-            material.SetFloat("_Darken_Color", 1f);
-            material.SetFloat("_DissolveAmount", 0f);
-            material.SetFloat("_Dissolve_Border_Thickness", 1.14f);
-            material.SetFloat("_Dissolve_Scale", 50f);
-            material.SetFloat("_GrayScale_Factor", 0f);
-            material.SetFloat("_Invalid", 0f);
-            material.SetFloat("_OutlineMipLevel", 0f);
-            material.SetFloat("_OutlineOpaqueAlpha", 1f);
-            material.SetFloat("_OutlineReferenceTexWidth", 1024f);
-            material.SetFloat("_OutlineSmoothness", 1f);
-            material.SetFloat("_OutlineWidth", 3f);
-            material.SetFloat("_Pulse_Frequency", 2f);
-            material.SetFloat("_Pulse_Texture_Toggle", 0f);
-            material.SetFloat("_RimLight_Sharpness", 0.26f);
-            material.SetFloat("_Rim_Light_Opacity", 0.501f);
-            material.SetFloat("_Rim_Light_Thickness_Thickness", 4f);
-            material.SetFloat("_Selected", 0f);
-            material.SetFloat("_Selection_Outline", 0f);
-            material.SetFloat("_Shadow_Gradient_Offset", -3f);
-            material.SetFloat("_Shadow_Gradient_Sharpness", 2.5f);
-            material.SetFloat("_StencilComp", 8f);
-            material.SetFloat("_StencilRef", 1f);
-            material.SetFloat("_StraightAlphaInput", 0f);
-            material.SetFloat("_ThresholdEnd", 0.25f);
-            material.SetFloat("_Use8Neighbourhood", 1f);
-
-            material.SetColor("_Color", new Color(1f, 1f, 1f, 1f));
-            material.SetColor("_Dissolve_Border_Color", new Color(1f, 0.1701541f, 0f, 0f));
-            material.SetColor("_OutlineColor", new Color(1f, 1f, 0f, 1f));
-            material.SetColor("_Pulse_Remap", new Color(0f, 1f, 0f, 0f));
-            material.SetColor("_Pulse_Texture_Color", new Color(1f, 1f, 1f, 0f));
-            material.SetColor("_RimLight_Color_1", new Color(0f, 0.254902f, 0.6980392f, 0f));
-            material.SetColor("_Rim_Light_Color_2", new Color(0.6901961f, 0.2862745f, 0f, 0f));
-
+                
+            var material = new Material(skeletonDefaultMaterial.Value);
             var spineAtlasAsset = SpineAtlasAsset.CreateRuntimeInstance(atlasData, textures.ToArray(), material, true);
             var skeletonDataAsset = SkeletonDataAsset.CreateRuntimeInstance(skeletonData, spineAtlasAsset, true);
             skeletonDataAsset.name = id;
