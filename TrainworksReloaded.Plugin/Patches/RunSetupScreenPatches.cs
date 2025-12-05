@@ -55,6 +55,11 @@ namespace TrainworksReloaded.Plugin.Patches
                     var characterUITransform = clone.transform.Find("CharacterScale/CharacterUI");
                     var characterUI = characterUITransform.GetComponent<CharacterUI>();
 
+                    // Ensure GameObject is on layer 10.
+                    // It could be on layer 20, but no need to have it on that layer as a non animated character
+                    // in this scene is drawn by the CharacterUI directly.
+                    characterUI.gameObject.layer = LayerMask.NameToLayer("Character_Lights");
+
                     clone.transform.SetParent(main.transform, false);
 
 

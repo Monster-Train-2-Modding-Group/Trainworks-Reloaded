@@ -15,6 +15,11 @@
               "$ref": "../definitions/reference.json",
               "description": "Reference to the character art sprite. This is used in silhouttes and the character if no skeleton animations are provided."
             },
+            "layer": {
+              "type": "integer",
+              "description": "Controls which layer a non-spine animated character game object is on. Normally characters are on layer 10, but static image characters are much darker due to the shader and lighting in scene. Layer 20 is the default and is a modded layer with full brightness so that images show up properly.",
+              "default": 20
+            }
             "skeleton_animations": {
               "type": "array",
               "items": {

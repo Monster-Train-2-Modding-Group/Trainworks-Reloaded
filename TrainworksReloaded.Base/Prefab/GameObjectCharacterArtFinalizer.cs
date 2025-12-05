@@ -149,7 +149,7 @@ namespace TrainworksReloaded.Base.Prefab
             {
                 CreateCharacterWithStaticSprite(original, definition.Id, sprite, characterConfig);
             }
-            PostCharacterAdjustments(original, sprite, characterConfig);
+            PostCharacterAdjustments(original, sprite, characterConfig, usingAnimations);
         }
 
         private void CreateCharacterWithStaticSprite(GameObject original, string name, Sprite sprite, IConfiguration configuration)
@@ -241,7 +241,7 @@ namespace TrainworksReloaded.Base.Prefab
                 return;
             }
 
-            // Note only prints propertries that the shader expects.
+            // Note only prints properties that the shader expects.
             Shader shader = mat.shader;
             int count = shader.GetPropertyCount();
 
@@ -306,6 +306,9 @@ namespace TrainworksReloaded.Base.Prefab
                 animation.gameObject.layer = LayerMask.NameToLayer("Character_Lights");
                 animation.transform.localPosition = Vector3.zero;
                 animation.AnimationState.SetAnimation(0, ANIM_NAMES[anim], true);
+                // Required to fix lighting issues. Animations are not affected by lighting in scene otherwise.
+                animation.addNormals = true;
+                animation.calculateTangents = true;
             }
 
             spriteRenderer.sprite = sprite;
@@ -315,7 +318,7 @@ namespace TrainworksReloaded.Base.Prefab
             characterUIMeshSpine.Setup(sprite, -1f, name, out var _);
         }
 
-        private void PostCharacterAdjustments(GameObject original, Sprite sprite, IConfiguration configuration)
+        private void PostCharacterAdjustments(GameObject original, Sprite sprite, IConfiguration configuration, bool isAnimated)
         {
             var characterState = original.GetComponent<CharacterState>();
             var characterUIObject = original.transform.Find("CharacterScale/CharacterUI");
@@ -326,6 +329,13 @@ namespace TrainworksReloaded.Base.Prefab
             AccessTools.Field(typeof(CharacterState), "sprite").SetValue(characterState, sprite);
             AccessTools.Field(typeof(CharacterState), "charUI").SetValue(characterState, characterUI);
             AccessTools.Field(typeof(UnitAbilityIconUI), "characterState").SetValue(unitAbilityIconUI, characterState);
+
+            if (!isAnimated)
+            {
+                var layer = configuration.GetSection("layer").ParseInt() ?? 20;
+                characterUIObject.gameObject.layer = layer;
+                characterUIObject.transform.Find("Quad_Default").gameObject.layer = layer;
+            }
 
             // Get transform adjustments from configuration
             var transformConfig = configuration.GetSection("transform");
