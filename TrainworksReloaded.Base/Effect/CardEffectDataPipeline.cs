@@ -102,7 +102,7 @@ namespace TrainworksReloaded.Base.Effect
                 .Field(typeof(CardEffectData), "suppressPyreRoomFocus")
                 .SetValue(
                     data,
-                    configuration.GetSection("supress_pyre_room_focus").ParseBool()
+                    configuration.GetDeprecatedSection("supress_pyre_room_focus", "suppress_pyre_room_focus").ParseBool()
                         ?? suppressPyreRoomFocus
                 );
 
