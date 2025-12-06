@@ -15,16 +15,19 @@ namespace TrainworksReloaded.Base.Reward
     {
         private readonly PluginAtlas atlas;
         private readonly IRegister<LocalizationTerm> termRegister;
+        private readonly IGuidProvider guidProvider;
         private readonly Dictionary<String, IFactory<RewardData>> generators;
 
         public RewardDataPipeline(
             PluginAtlas atlas,
             IEnumerable<IFactory<RewardData>> generators,
+            IGuidProvider guidProvider,
             IRegister<LocalizationTerm> termRegister
         )
         {
             this.atlas = atlas;
             this.termRegister = termRegister;
+            this.guidProvider = guidProvider;
             this.generators = generators.ToDictionary(xs => xs.FactoryKey);
         }
 
@@ -78,6 +81,9 @@ namespace TrainworksReloaded.Base.Reward
 
             var name = key.GetId(TemplateConstants.RewardData, id);
             data.name = name;
+
+            string guid = guidProvider.GetGuidDeterministic(name).ToString();
+            AccessTools.Field(typeof(RewardData), "id").SetValue(data, guid);
 
             var titleKey = $"RewardData_titleKey-{name}";
             var descriptionKey = $"RewardData_descriptionKey-{name}";

@@ -33,6 +33,8 @@ namespace TrainworksReloaded.Base.Reward
         public void Register(string key, RewardData item)
         {
             logger.Log(LogLevel.Debug, $"Register Reward {key}...");
+            if (item is GrantableRewardData grantableRewardData) 
+                Rewards.Value.Add(grantableRewardData);
             Add(key, item);
         }
 
