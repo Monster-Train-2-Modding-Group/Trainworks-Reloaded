@@ -18,7 +18,7 @@
           "properties": {
             "disabled_sprite": {
               "$ref": "../definitions/reference.json",
-              "description": "Reference to the disabled state sprite."
+              "description": "Reference to the disabled state sprite. This is a dim version of the enabled sprite."
             },
             "enabled_sprite": {
               "$ref": "../definitions/reference.json",
@@ -26,15 +26,15 @@
             },
             "frozen_sprite": {
               "$ref": "../definitions/reference.json",
-              "description": "Reference to the frozen state sprite."
+              "description": "Reference to the frozen state sprite. The banner should be covered in snow."
             },
             "visited_sprite_disabled": {
               "$ref": "../definitions/reference.json",
-              "description": "Reference to the visited and disabled state sprite."
+              "description": "Reference to the visited and disabled state sprite. The banner should be removed leaving only a stick and some rocks."
             },
-            "visited_sprite_enabled": {
+            "enabled_mask_sprite": {
               "$ref": "../definitions/reference.json",
-              "description": "Reference to the visited and enabled state sprite."
+              "description": "Reference to the enabled mask state sprite. This is a black and white image which is used to make the banner glow. The default is a small black texture 2x2px."
             }
           }
         }

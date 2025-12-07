@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TrainworksReloaded.Base.Extensions;
+using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,25 +16,28 @@ namespace TrainworksReloaded.Base.Prefab
     {
         private readonly IDataPipeline<IRegister<GameObject>, GameObject> decoratee;
         private readonly IRegister<Sprite> spriteRegister;
-        private readonly Lazy<Sprite?> indicatorSprite;
+        private readonly IModLogger<GameObjectMapIconDecorator> logger;
+        private readonly Lazy<RewardNodeData?> baseMapNode;
 
         public GameObjectMapIconDecorator(
             IDataPipeline<IRegister<GameObject>, GameObject> decoratee,
+            IModLogger<GameObjectMapIconDecorator> logger,
+            GameDataClient gameDataClient,
             IRegister<Sprite> spriteRenderer
         )
         {
             this.decoratee = decoratee;
             this.spriteRegister = spriteRenderer;
-            indicatorSprite = new Lazy<Sprite?>(
-                () =>
-                    Resources
-                        .FindObjectsOfTypeAll<Image>()
-                        .FirstOrDefault(xs =>
-                        {
-                            return xs.name == "Selected indicator";
-                        })
-                        ?.sprite
-            );
+            this.logger = logger;
+            baseMapNode = new(() =>
+            {
+                SaveManager? saveManager;
+                if (gameDataClient.TryGetProvider(out saveManager))
+                {
+                    return saveManager.GetAllGameData().FindMapNodeData(id: /*RewardNodeUnitPackRemnant*/ "904c4de0-5e5a-45c2-af71-dcbebf7bb69a") as RewardNodeData;
+                }
+                return null;
+            });
         }
 
         public List<IDefinition<GameObject>> Run(IRegister<GameObject> service)
@@ -52,197 +56,68 @@ namespace TrainworksReloaded.Base.Prefab
             if (type != "map_node_icon")
                 return;
 
-            var mapConfig = definition
-                .Configuration.GetSection("extensions")
-                .GetSection("map_node_icon");
+            var mapConfig = definition.Configuration.GetSection("extensions").GetSection("map_node_icon");
 
             var gameObject = definition.Data;
             gameObject.SetActive(true);
-            var rectTransform = gameObject.AddComponent<RectTransform>();
-            var canvasRenderer = gameObject.AddComponent<CanvasRenderer>();
-            var mapNodeIcon = gameObject.AddComponent<MapNodeIcon>();
-            var raycastTarget = gameObject.AddComponent<Graphic2DInvisRaycastTarget>();
 
+            var originalMapIconPrefab = baseMapNode.Value?.GetMapIconPrefab();
+            gameObject.CopyPrefabToObject(originalMapIconPrefab!.gameObject);
+
+            var rectTransform = gameObject.GetComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(120, 120);
 
-            var artRoot = new GameObject { name = "Art root" };
-            var artRectTransform = artRoot.AddComponent<RectTransform>();
-            artRoot.transform.SetParent(gameObject.transform);
-            artRectTransform.sizeDelta = new Vector2(210, 210);
-            artRectTransform.anchoredPosition = new Vector2(0, 15.2500f);
+            var mapNodeIcon = gameObject.GetComponent<MapNodeIcon>();
+            mapNodeIcon.useGUILayout = true;
 
-            var fxRoot = new GameObject { name = "Fx Root" };
-            fxRoot.transform.SetParent(gameObject.transform);
+            var fxRoot = gameObject.transform.Find("Enabled FX").gameObject;
+            var selectedIndicator = gameObject.transform.Find("Selected indicator").gameObject;
+            var enabled_icon = gameObject.transform.Find("Art root/IconSprite_Enabled").gameObject;
+            var visited_disabled_icon = gameObject.transform.Find("Art root/IconSprite_Visited_Disabled").gameObject;
+            var disabled_icon = gameObject.transform.Find("Art root/IconSprite_Disabled").gameObject;
+            var frozen_icon = gameObject.transform.Find("Art root/IconSprite_Frozen").gameObject;
+            var animator = frozen_icon.GetComponent<Animator>();
+
             AccessTools.Field(typeof(MapNodeIcon), "enabledFxRoot").SetValue(mapNodeIcon, fxRoot);
+            AccessTools.Field(typeof(MapNodeIcon), "iconSprite_Enabled").SetValue(mapNodeIcon, enabled_icon);
+            AccessTools.Field(typeof(MapNodeIcon), "iconSprite_Visited_Enabled").SetValue(mapNodeIcon, null);
+            AccessTools.Field(typeof(MapNodeIcon), "iconSprite_Visited_Disabled").SetValue(mapNodeIcon, visited_disabled_icon);
+            AccessTools.Field(typeof(MapNodeIcon), "iconSprite_Disabled").SetValue(mapNodeIcon, disabled_icon);
+            AccessTools.Field(typeof(MapNodeIcon), "selectedIndicator").SetValue(mapNodeIcon, selectedIndicator);
+            AccessTools.Field(typeof(MapNodeIcon), "frozenAnimator").SetValue(mapNodeIcon, animator);
+            AccessTools.Field(typeof(MapNodeIcon), "enabledEmittingParticles").SetValue(mapNodeIcon, new ParticleSystem[0]);
 
-            var selectedIndicator = new GameObject { name = "Selected Indicator" };
-            var selectedTransform = selectedIndicator.AddComponent<RectTransform>();
-            var selectedCanvasRenderer = selectedIndicator.AddComponent<CanvasRenderer>();
-            var selectedAspectRatioFilter = selectedIndicator.AddComponent<AspectRatioFitter>();
-            selectedAspectRatioFilter.aspectMode = AspectRatioFitter.AspectMode.WidthControlsHeight;
-            selectedAspectRatioFilter.aspectRatio = 1.1f;
-            selectedTransform.sizeDelta = new Vector2(136.0000f, 123.6364f);
-            selectedTransform.anchoredPosition = new Vector2(-1.5f, -16f);
-            selectedIndicator.transform.SetParent(gameObject.transform);
+            var key = definition.Key;
+            ReferencedObject? enabledSpriteRef = mapConfig.GetSection("enabled_sprite").ParseReference();
+            ReferencedObject? enabledMaskSpriteRef = mapConfig.GetSection("enabled_mask_sprite").ParseReference();
+            ReferencedObject? disabledVisitedSpriteRef = mapConfig.GetSection("visited_sprite_disabled").ParseReference();
+            ReferencedObject? disabledSpriteRef = mapConfig.GetSection("disabled_sprite").ParseReference();
+            ReferencedObject? frozenSpriteRef = mapConfig.GetSection("frozen_sprite").ParseReference();
 
-            var selectedImage = selectedIndicator.AddComponent<Image>();
-            selectedImage.sprite = indicatorSprite.Value;
-            AccessTools
-                .Field(typeof(MapNodeIcon), "selectedIndicator")
-                .SetValue(mapNodeIcon, selectedIndicator);
-
-            var enabled_sprite = mapConfig.GetSection("enabled_sprite").ParseReference();
-            var enabled_icon = GetIconSprite(definition.Key, enabled_sprite);
-            if (enabled_icon != null)
-            {
-                enabled_icon.transform.SetParent(artRoot.transform);
-                var animator = enabled_icon.AddComponent<Animator>();
-                var rect = enabled_icon.GetComponent<RectTransform>();
-                if (rect != null)
-                {
-                    rect.anchorMin = Vector2.zero; // Bottom-left corner
-                    rect.anchorMax = Vector2.one; // Top-right corner
-                    rect.offsetMin = Vector2.zero; // Zero out offsets
-                    rect.offsetMax = Vector2.zero;
-                    rect.pivot = new Vector2(0.5f, 0.5f); // Center pivot
-                }
-
-                AccessTools
-                    .Field(typeof(MapNodeIcon), "iconSprite_Enabled")
-                    .SetValue(mapNodeIcon, enabled_icon);
-            }
-
-            var visited_sprite_enabled = mapConfig
-                .GetSection("visited_sprite_enabled")
-                .ParseReference();
-            var visited_sprite_enabled_icon = GetIconSprite(definition.Key, visited_sprite_enabled);
-            if (visited_sprite_enabled_icon != null)
-            {
-                visited_sprite_enabled_icon.transform.SetParent(artRoot.transform);
-                var rect = visited_sprite_enabled_icon.GetComponent<RectTransform>();
-                if (rect != null)
-                {
-                    rect.anchorMin = Vector2.zero; // Bottom-left corner
-                    rect.anchorMax = Vector2.one; // Top-right corner
-                    rect.offsetMin = Vector2.zero; // Zero out offsets
-                    rect.offsetMax = Vector2.zero;
-                    rect.pivot = new Vector2(0.5f, 0.5f); // Center pivot
-                }
-
-                AccessTools
-                    .Field(typeof(MapNodeIcon), "iconSprite_Visited_Enabled")
-                    .SetValue(mapNodeIcon, visited_sprite_enabled_icon);
-            }
-
-            var visited_sprite_disabled = mapConfig
-                .GetSection("visited_sprite_disabled")
-                .ParseReference();
-            var visited_sprite_disabled_icon = GetIconSprite(
-                definition.Key,
-                visited_sprite_disabled
-            );
-            if (visited_sprite_disabled_icon != null)
-            {
-                visited_sprite_disabled_icon.transform.SetParent(artRoot.transform);
-                var rect = visited_sprite_disabled_icon.GetComponent<RectTransform>();
-                if (rect != null)
-                {
-                    rect.anchorMin = Vector2.zero; // Bottom-left corner
-                    rect.anchorMax = Vector2.one; // Top-right corner
-                    rect.offsetMin = Vector2.zero; // Zero out offsets
-                    rect.offsetMax = Vector2.zero;
-                    rect.pivot = new Vector2(0.5f, 0.5f); // Center pivot
-                }
-
-                AccessTools
-                    .Field(typeof(MapNodeIcon), "iconSprite_Visited_Disabled")
-                    .SetValue(mapNodeIcon, visited_sprite_disabled_icon);
-            }
-
-            var disabled_sprite = mapConfig.GetSection("disabled_sprite").ParseReference();
-            var disabled_sprite_icon = GetIconSprite(definition.Key, disabled_sprite);
-            if (disabled_sprite_icon != null)
-            {
-                disabled_sprite_icon.transform.SetParent(artRoot.transform);
-                var rect = disabled_sprite_icon.GetComponent<RectTransform>();
-                if (rect != null)
-                {
-                    rect.anchorMin = Vector2.zero; // Bottom-left corner
-                    rect.anchorMax = Vector2.one; // Top-right corner
-                    rect.offsetMin = Vector2.zero; // Zero out offsets
-                    rect.offsetMax = Vector2.zero;
-                    rect.pivot = new Vector2(0.5f, 0.5f); // Center pivot
-                }
-
-                AccessTools
-                    .Field(typeof(MapNodeIcon), "iconSprite_Disabled")
-                    .SetValue(mapNodeIcon, disabled_sprite_icon);
-            }
-
-            var frozen_sprite = mapConfig.GetSection("frozen_sprite").ParseReference();
-            var frozen_sprite_icon = GetIconSprite(definition.Key, frozen_sprite);
-            if (frozen_sprite_icon != null)
-            {
-                frozen_sprite_icon.transform.SetParent(artRoot.transform);
-                var animator = frozen_sprite_icon.GetComponent<Animator>();
-                var rect = frozen_sprite_icon.GetComponent<RectTransform>();
-                if (rect != null)
-                {
-                    rect.anchorMin = Vector2.zero; // Bottom-left corner
-                    rect.anchorMax = Vector2.one; // Top-right corner
-                    rect.offsetMin = Vector2.zero; // Zero out offsets
-                    rect.offsetMax = Vector2.zero;
-                    rect.pivot = new Vector2(0.5f, 0.5f); // Center pivot
-                }
-
-                AccessTools
-                    .Field(typeof(MapNodeIcon), "frozenAnimator")
-                    .SetValue(mapNodeIcon, animator);
-            }
-
-            AccessTools
-                .Field(typeof(MapNodeIcon), "enabledEmittingParticles")
-                .SetValue(mapNodeIcon, new ParticleSystem[0]);
+            SetupIconSprite(enabled_icon, key, enabledSpriteRef, "_Layer1Tex", enabledMaskSpriteRef, "_Layer4Mask");
+            SetupIconSprite(visited_disabled_icon, key, disabledVisitedSpriteRef, "_Layer1Tex");
+            SetupIconSprite(disabled_icon, key, disabledSpriteRef, "_Layer1Tex");
+            SetupIconSprite(frozen_icon, key, frozenSpriteRef, "_Layer2Tex", frozenSpriteRef, "_Layer2Motion");
         }
 
-        public GameObject? GetIconSprite(string key, ReferencedObject? spriteRef)
+        public void SetupIconSprite(GameObject iconSprite, string key, ReferencedObject? spriteRef, string materialPropertyName, ReferencedObject? additionalSprite = null, string? additionalPropertyName=null)
         {
-            if (spriteRef == null)
-                return null;
-
-            if (
-                !spriteRegister.TryLookupId(
-                    spriteRef.ToId(key, TemplateConstants.Sprite),
-                    out var sprite,
-                    out _,
-                    spriteRef.context
-                )
-            )
+            if (spriteRef == null || !spriteRegister.TryLookupId(spriteRef.ToId(key, TemplateConstants.Sprite), out var sprite, out _, spriteRef.context))
             {
-                return null;
+                return;
             }
 
-            var iconSprite = new GameObject { name = $"IconSprite_{sprite.name}" };
-            var rectTransform = iconSprite.AddComponent<RectTransform>();
-
-            var canvasRenderer = iconSprite.AddComponent<CanvasRenderer>();
-
-            var image = iconSprite.AddComponent<Image>();
-            image.sprite = sprite;
-            image.preserveAspect = true;
-            image.SetNativeSize();
-
-            var material = new Material(Shader.Find("Shiny Shoe/CardEffects"))
+            Sprite? sprite2 = null;
+            if (additionalSprite != null)
             {
-                mainTexture = sprite.texture,
-            };
-            material.SetTexture("_Layer1Tex", sprite.texture);
-            image.material = material;
-            canvasRenderer.materialCount = 1;
-            canvasRenderer.SetMaterial(material, 0);
+                spriteRegister.TryLookupId(additionalSprite.ToId(key, TemplateConstants.Sprite), out sprite2, out _, additionalSprite.context);
+            }
 
-            var animator = iconSprite.AddComponent<Animator>();
-            return iconSprite;
+            var image = iconSprite.GetComponent<Image>();
+            var material = image.material;
+            material.SetTexture(materialPropertyName, sprite.texture);
+            if (additionalPropertyName != null)
+                material.SetTexture(additionalPropertyName, sprite2?.texture ?? Texture2D.blackTexture);
         }
     }
 }

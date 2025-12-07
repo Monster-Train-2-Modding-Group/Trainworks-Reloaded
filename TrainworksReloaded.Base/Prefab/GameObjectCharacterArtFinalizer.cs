@@ -1,9 +1,7 @@
 using HarmonyLib;
 using Microsoft.Extensions.Configuration;
 using ShinyShoe;
-using Spine;
 using Spine.Unity;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TrainworksReloaded.Base.Extensions;
@@ -11,10 +9,7 @@ using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.TextCore.Text;
 using static CharacterUI;
-using static MultiplayerEmoteDefinitionData;
-using static RotaryHeart.Lib.DataBaseExample;
 
 namespace TrainworksReloaded.Base.Prefab
 {
@@ -139,7 +134,7 @@ namespace TrainworksReloaded.Base.Prefab
             GameObject original = definition.Data;
             var fallbackData = fallbackDataProvider.FallbackData;
             var prefab = fallbackData.GetDefaultCharacterPrefab();
-            CopyFallbackPrefab(original, prefab);
+            original.CopyPrefabToObject(prefab);
 
             if (usingAnimations)
             {
@@ -374,42 +369,7 @@ namespace TrainworksReloaded.Base.Prefab
             }
         }
 
-        private void CopyFallbackPrefab(GameObject original, GameObject prefab)
-        {
-            var characterPrefab = GameObject.Instantiate(prefab);
 
-            foreach (var component in original.GetComponents<Component>())
-            {
-                if (component is Transform) 
-                    continue;
-                GameObject.Destroy(component);
-            }
-            original.transform.DestroyAllChildren();
-            original.layer = 0;
-            int childCount = characterPrefab.transform.childCount;
-            for (int i = childCount - 1; i >= 0; i--)
-            {
-                Transform child = characterPrefab.transform.GetChild(i);
-                child.SetParent(original.transform);
-            }
-            foreach (Component component in characterPrefab.GetComponents<Component>())
-            {
-                if (component is Transform) 
-                    continue;
-
-                Component newComponent = original.AddComponent(component.GetType());
-                System.Type componentType = component.GetType();
-
-                foreach (var field in componentType.GetFields())
-                {
-                    if (field.IsLiteral)
-                        continue;
-
-                    field.SetValue(newComponent, field.GetValue(component));
-                }
-            }
-            GameObject.Destroy(characterPrefab);
-        }
 
         // Helper function to create Color from config section
         Color GetColorFromSection(IConfigurationSection section)
