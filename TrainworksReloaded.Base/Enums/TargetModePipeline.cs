@@ -14,7 +14,6 @@ namespace TrainworksReloaded.Base.Enums
     public class TargetModePipeline : IDataPipeline<IRegister<TargetMode>, TargetMode>
     {
         private readonly PluginAtlas atlas;
-        private static byte NextEnumId = (byte) ((from byte x in Enum.GetValues(typeof(TargetMode)).AsQueryable() select x).Max() + 1);
 
         public TargetModePipeline(PluginAtlas atlas)
         {
@@ -47,7 +46,7 @@ namespace TrainworksReloaded.Base.Enums
             }
 
             var name = key.GetId(TemplateConstants.TargetModeEnum, id);
-            TargetMode targetMode = (TargetMode)NextEnumId++;
+            TargetMode targetMode = EnumAllocator<TargetMode>.CreateEnum(key, id);
             service.Register(name, targetMode);
         }
     }

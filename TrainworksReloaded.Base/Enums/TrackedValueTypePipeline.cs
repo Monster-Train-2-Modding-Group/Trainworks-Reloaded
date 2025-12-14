@@ -12,7 +12,6 @@ namespace TrainworksReloaded.Base.Enums
     public class TrackedValueTypePipeline : IDataPipeline<IRegister<CardStatistics.TrackedValueType>, CardStatistics.TrackedValueType>
     {
         private readonly PluginAtlas atlas;
-        private static int NextEnumId = (int) ((from int x in Enum.GetValues(typeof(CardStatistics.TrackedValueType)).AsQueryable() select x).Max() + 1);
 
         public TrackedValueTypePipeline(PluginAtlas atlas)
         {
@@ -45,7 +44,7 @@ namespace TrainworksReloaded.Base.Enums
             }
 
             var name = key.GetId(TemplateConstants.TrackedValueTypeEnum, id);
-            CardStatistics.TrackedValueType trackedValue = (CardStatistics.TrackedValueType)NextEnumId++;
+            CardStatistics.TrackedValueType trackedValue = EnumAllocator<CardStatistics.TrackedValueType>.CreateEnum(key, id);
             service.Register(name, trackedValue);
         }
     }

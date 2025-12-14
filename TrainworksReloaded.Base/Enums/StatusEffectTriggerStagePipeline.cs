@@ -13,7 +13,6 @@ namespace TrainworksReloaded.Base.Enums
     public class StatusEffectTriggerStagePipeline : IDataPipeline<IRegister<StatusEffectData.TriggerStage>, StatusEffectData.TriggerStage>
     {
         private readonly PluginAtlas atlas;
-        private static byte NextEnumId = (byte) ((from byte x in Enum.GetValues(typeof(StatusEffectData.TriggerStage)).AsQueryable() select x).Max() + 1);
 
         public StatusEffectTriggerStagePipeline(PluginAtlas atlas)
         {
@@ -46,7 +45,7 @@ namespace TrainworksReloaded.Base.Enums
             }
 
             var name = key.GetId(TemplateConstants.StatusEffectTriggerStageEnum, id);
-            StatusEffectData.TriggerStage triggerStage = (StatusEffectData.TriggerStage)NextEnumId++;
+            StatusEffectData.TriggerStage triggerStage = EnumAllocator<StatusEffectData.TriggerStage>.CreateEnum(key, id);
             service.Register(name, triggerStage);
         }
     }

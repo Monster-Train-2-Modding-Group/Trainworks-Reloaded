@@ -15,7 +15,6 @@ namespace TrainworksReloaded.Base.Enums
     {
         private readonly PluginAtlas atlas;
         private readonly IRegister<LocalizationTerm> termRegister;
-        private static int NextEnumId = (from int x in Enum.GetValues(typeof(CharacterTriggerData.Trigger)).AsQueryable() select x).Max() + 1;
 
         public CharacterTriggerTypePipeline(PluginAtlas atlas, IRegister<LocalizationTerm> termRegister)
         {
@@ -63,7 +62,7 @@ namespace TrainworksReloaded.Base.Enums
                 return null;
             }
             var name = key.GetId(TemplateConstants.CharacterTriggerEnum, id);
-            CharacterTriggerData.Trigger trigger = (CharacterTriggerData.Trigger)NextEnumId++;
+            CharacterTriggerData.Trigger trigger = EnumAllocator<CharacterTriggerData.Trigger>.CreateEnum(key, id);
 
             // The localization keys per trigger are generated based a based on a base key name.
             var baseKey = "CharacterTrigger_" + id;
