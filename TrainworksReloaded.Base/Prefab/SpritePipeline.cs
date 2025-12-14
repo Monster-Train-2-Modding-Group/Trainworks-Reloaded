@@ -43,7 +43,7 @@ namespace TrainworksReloaded.Base.Prefab
                         continue;
                     }
                     
-                    var name = key.GetId("Sprite", id);
+                    var name = key.GetId(TemplateConstants.Sprite, id);
 
                     var pixelsPerUnit = spriteConfig.GetSection("pixels_per_unit").ParseFloat() ?? GetPixelsPerUnit(key);
                     var pivot = spriteConfig.GetSection("pivot").ParseVec2(0.5f, 0.5f);

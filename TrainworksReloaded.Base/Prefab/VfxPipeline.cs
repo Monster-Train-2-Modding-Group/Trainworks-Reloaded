@@ -32,7 +32,7 @@ namespace TrainworksReloaded.Base.Prefab
                     {
                         continue;
                     }
-                    var name = key.GetId("Vfx", id);
+                    var name = key.GetId(TemplateConstants.Vfx, id);
 
                     var vfx = (VfxAtLoc)FormatterServices.GetUninitializedObject(typeof(VfxAtLoc));
                     AccessTools.Field(typeof(VfxAtLoc), "vfxPrefabLeft").SetValue(vfx, null);
