@@ -9,6 +9,7 @@ using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.ResourceManagement.ResourceProviders;
+using UnityEngine.ResourceManagement.Util;
 
 namespace TrainworksReloaded.Base.Prefab
 {
@@ -20,6 +21,35 @@ namespace TrainworksReloaded.Base.Prefab
             this.transform.position = new Vector3(10000, 10000, 0);
         }
     }
+
+    class DeferredCompletedOperation<T> : AsyncOperationBase<T>
+    {
+        public IAsyncOperation<T> Start(
+            object context,
+            object key,
+            T val,
+            Exception? error = null
+        )
+        {
+            Context = context;
+            OperationException = error;
+            Key = key;
+
+            DelayedActionManager.AddAction(
+                () => FakeCompletion(val),
+                0f
+            );
+
+            return this;
+        }
+
+        public void FakeCompletion(T val)
+        {
+            SetResult(val);
+            InvokeCompletionEvent();
+        }    
+    }
+
     /// <summary>
     /// Provide Game Object Prefabs
     /// </summary>
@@ -123,8 +153,7 @@ namespace TrainworksReloaded.Base.Prefab
             // obj.SetActive(true);
             if (obj is TObject @object)
             {
-
-                return new CompletedOperation<TObject>().Start(
+                return new DeferredCompletedOperation<TObject>().Start(
                     location,
                     location.InternalId,
                     @object
@@ -133,7 +162,7 @@ namespace TrainworksReloaded.Base.Prefab
             else
             {
                 logger.Log(LogLevel.Debug, $"Did not Find for {location.InternalId}");
-                return new CompletedOperation<TObject>().Start(
+                return new DeferredCompletedOperation<TObject>().Start(
                     location,
                     location.InternalId,
                     default!
