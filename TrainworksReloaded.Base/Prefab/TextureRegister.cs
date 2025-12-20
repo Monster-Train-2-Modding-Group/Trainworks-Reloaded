@@ -7,17 +7,15 @@ using UnityEngine;
 
 namespace TrainworksReloaded.Base.Prefab
 {
-    public class AtlasIconRegister(IModLogger<AtlasIconRegister> logger) : Dictionary<string, Texture2D>, IRegister<Texture2D>
+    public class TextureRegister(IModLogger<TextureRegister> logger) : Dictionary<string, Texture2D>, IRegister<Texture2D>
     {
-        private readonly IModLogger<AtlasIconRegister> logger = logger;
-
+        private readonly IModLogger<TextureRegister> logger = logger;
 
         public void Register(string key, Texture2D item)
         {
-            logger.Log(LogLevel.Debug, $"Register Icon {key}");
+            logger.Log(LogLevel.Debug, $"Register Texture {key}");
             this.Add(key, item);
         }
-
 
         public List<string> GetAllIdentifiers(RegisterIdentifierType identifierType)
         {

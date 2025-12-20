@@ -7,12 +7,10 @@ using UnityEngine.TextCore;
 namespace TrainworksReloaded.Base.Prefab
 {
     public class AtlasIconFinalizer(
-        IRegister<Texture2D> iconRegister,
         ICache<IDefinition<Texture2D>> cache
         ) : IDataFinalizer
     {
         private readonly ICache<IDefinition<Texture2D>> cache = cache;
-        private readonly IRegister<Texture2D> iconRegister = iconRegister;
 
         public void FinalizeData()
         {

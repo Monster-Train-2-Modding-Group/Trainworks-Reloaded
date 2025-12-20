@@ -41,7 +41,7 @@ namespace TrainworksReloaded.Base.Prefab
                     // query the TMP_SpriteAsset for an icon with the exact same name.
                     // A sprite with ID will be used for StatusEffectData.Icon then an Atlas Icon needs to be 
                     // registered with the same ID for use in Tooltips.
-                    var name = key.GetId("Sprite", id);
+                    var name = key.GetId(TemplateConstants.Sprite, id);
 
                     foreach (var directory in pluginDefinition.Value.AssetDirectories)
                     {
