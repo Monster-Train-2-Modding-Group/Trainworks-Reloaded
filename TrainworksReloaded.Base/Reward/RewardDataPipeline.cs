@@ -133,11 +133,6 @@ namespace TrainworksReloaded.Base.Reward
                     configuration.GetDeprecatedSection("endless_mode_unique", "is_unique_in_endless_mode").ParseBool() ?? false
                 );
 
-            //string
-            AccessTools
-                .Field(typeof(RewardData), "_collectSFXCueName")
-                .SetValue(data, configuration.GetDeprecatedSection("collect_cue", "collect_sfx_cue").ParseString() ?? "");
-
             //int[]
             var costs = configuration
                 .GetSection("costs")

@@ -1,5 +1,7 @@
 ﻿using HarmonyLib;
 using Microsoft.Extensions.Configuration;
+using Mono.Cecil;
+using ShinyShoe.Audio;
 using System.Collections.Generic;
 using System.Linq;
 using TrainworksReloaded.Base.Extensions;
@@ -7,7 +9,9 @@ using TrainworksReloaded.Base.Prefab;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
+using static ShinyShoe.Audio.CoreSoundEffectData;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.Character
@@ -17,6 +21,7 @@ namespace TrainworksReloaded.Base.Character
         private readonly IModLogger<CharacterDataFinalizer> logger;
         private readonly ICache<IDefinition<CharacterData>> cache;
         private readonly IRegister<AssetReferenceGameObject> assetReferenceRegister;
+        private readonly IRegister<GameObject> gameObjectRegister;
         private readonly IRegister<CharacterTriggerData> triggerRegister;
         private readonly IRegister<VfxAtLoc> vfxRegister;
         private readonly IRegister<StatusEffectData> statusRegister;
@@ -25,12 +30,14 @@ namespace TrainworksReloaded.Base.Character
         private readonly IRegister<SubtypeData> subtypeRegister;
         private readonly IRegister<RoomModifierData> roomModifierRegister;
         private readonly IRegister<RelicData> relicRegister;
+        private readonly IRegister<SoundCueDefinition> soundCueRegister;
         private readonly FallbackDataProvider dataProvider;
 
         public CharacterDataFinalizer(
             IModLogger<CharacterDataFinalizer> logger,
             ICache<IDefinition<CharacterData>> cache,
             IRegister<AssetReferenceGameObject> assetReferenceRegister,
+            IRegister<GameObject> gameObjectRegister,
             IRegister<CharacterTriggerData> triggerRegister,
             IRegister<VfxAtLoc> vfxRegister,
             IRegister<StatusEffectData> statusRegister,
@@ -39,12 +46,14 @@ namespace TrainworksReloaded.Base.Character
             IRegister<SubtypeData> subtypeRegister,
             IRegister<RoomModifierData> roomModifierRegister,
             IRegister<RelicData> relicRegister,
+            IRegister<SoundCueDefinition> soundCueRegister,
             FallbackDataProvider dataProvider
         )
         {
             this.logger = logger;
             this.cache = cache;
             this.assetReferenceRegister = assetReferenceRegister;
+            this.gameObjectRegister = gameObjectRegister;
             this.triggerRegister = triggerRegister;
             this.vfxRegister = vfxRegister;
             this.statusRegister = statusRegister;
@@ -53,6 +62,7 @@ namespace TrainworksReloaded.Base.Character
             this.subtypeRegister = subtypeRegister;
             this.roomModifierRegister = roomModifierRegister;
             this.relicRegister = relicRegister;
+            this.soundCueRegister = soundCueRegister;
             this.dataProvider = dataProvider;
         }
 
@@ -95,6 +105,24 @@ namespace TrainworksReloaded.Base.Character
             }
             AccessTools.Field(typeof(CharacterData), "characterPrefabVariantRef").SetValue(data, assetReferencedGameObject);
 
+            var soundEffects = configuration.GetSection("sound_effects").GetChildren().Select(x => x.ParseReference()).Where(x => x != null).Cast<ReferencedObject>();
+            if (soundEffects.Any() && characterArtReference != null)
+            {
+                if (gameObjectRegister.TryLookupName(characterArtReference.ToId(key, TemplateConstants.GameObject), out var gameObject, out var _, characterArtReference.context))
+                {
+                    var holder = gameObject.AddComponent<CoreSoundEffectHolder>();
+                    holder.SoundEffectData = ScriptableObject.CreateInstance<CoreSoundEffectData>();
+                    List<SoundCueDefinition> sounds = [];
+                    foreach (var soundReference in soundEffects)
+                    {
+                        if (soundCueRegister.TryLookupId(soundReference.ToId(key, TemplateConstants.SoundCueDefinition), out var sound, out var _2, soundReference.context))
+                        {
+                            sounds.Add(sound);
+                        }
+                    }
+                    holder.SoundEffectData.Sounds = sounds.ToArray();
+                }
+            }
 
             //handle ability
             var abilityConfig = configuration.GetSection("ability");

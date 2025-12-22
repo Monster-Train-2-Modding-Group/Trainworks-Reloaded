@@ -153,15 +153,6 @@ namespace TrainworksReloaded.Base.Class
                 .Field(typeof(ClassData), "isCrew")
                 .SetValue(data, configuration.GetSection("is_crew").ParseBool() ?? isCrew);
 
-            //string
-            var clanSelectSfxCue = data.GetClanSelectSfxCue() ?? "";
-            AccessTools
-                .Field(typeof(ClassData), "clanSelectSfxCue")
-                .SetValue(
-                    data,
-                    configuration.GetDeprecatedSection("sfx_cue", "clan_select_sfx_cue").ParseString() ?? clanSelectSfxCue
-                );
-
             //handle color
             var uiColor = overrideMode.IsNewContent() ? Color.white : data.GetUIColor();
             AccessTools

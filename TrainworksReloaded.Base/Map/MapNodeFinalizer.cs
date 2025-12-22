@@ -5,6 +5,7 @@ using System.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
+using static ShinyShoe.Audio.CoreSoundEffectData;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.Map
@@ -16,13 +17,15 @@ namespace TrainworksReloaded.Base.Map
         private readonly IRegister<Sprite> spriteRegister;
         private readonly IRegister<GameObject> gameObjectRegister;
         private readonly IRegister<MapNodeData> mapNodeRegister;
+        private readonly IRegister<SoundCueDefinition> soundCueRegister;
 
         public MapNodeFinalizer(
             IModLogger<MapNodeFinalizer> logger,
             ICache<IDefinition<MapNodeData>> cache,
             IRegister<Sprite> spriteRegister,
             IRegister<GameObject> gameObjectRegister,
-            IRegister<MapNodeData> mapNodeRegister
+            IRegister<MapNodeData> mapNodeRegister,
+            IRegister<SoundCueDefinition> soundCueRegister
         )
         {
             this.logger = logger;
@@ -30,6 +33,7 @@ namespace TrainworksReloaded.Base.Map
             this.spriteRegister = spriteRegister;
             this.gameObjectRegister = gameObjectRegister;
             this.mapNodeRegister = mapNodeRegister;
+            this.soundCueRegister = soundCueRegister;
         }
 
         public void FinalizeData()
@@ -131,7 +135,7 @@ namespace TrainworksReloaded.Base.Map
                         out var _,
                         mapPoolReference.context
                     )
-                    // MapNodeBucketContainer is handled much later in Intialization steps.
+                    // MapNodeBucketContainer is handled much later in initialization steps.
                     && mapLookup is RandomMapDataContainer mapContainer
                 )
                 {
@@ -144,6 +148,15 @@ namespace TrainworksReloaded.Base.Map
                     mapData?.Add(data);
                 }
             }
+
+            var sfxCue = data.GetNodeSelectedSfxCue() ?? "";
+            var sfxCueReference = configuration.GetDeprecatedSection("node_selection_cue", "node_selected_sfx_cue").ParseReference();
+            if (sfxCueReference != null)
+            {
+                if (soundCueRegister.TryLookupName(sfxCueReference.ToId(key, TemplateConstants.SoundCueDefinition), out var sound, out var _, sfxCueReference.context))
+                    sfxCue = sound.Name;
+            }
+            AccessTools.Field(typeof(MapNodeData), "nodeSelectedSfxCue").SetValue(data, sfxCue);
         }
     }
 }

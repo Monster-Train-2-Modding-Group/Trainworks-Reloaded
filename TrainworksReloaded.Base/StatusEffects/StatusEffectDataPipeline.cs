@@ -138,16 +138,6 @@ namespace TrainworksReloaded.Base.StatusEffects
                 replacementTextRegister.Register(replacement_key, replacement);
             }
 
-            var appliedSFXName = "";
-            AccessTools
-                .Field(typeof(StatusEffectData), "appliedSFXName")
-                .SetValue(data, configuration.GetSection("applied_sfx").ParseString() ?? appliedSFXName);
-
-            var triggeredSFXName = "";
-            AccessTools
-                .Field(typeof(StatusEffectData), "triggeredSFXName")
-                .SetValue(data, configuration.GetSection("triggered_sfx").ParseString() ?? triggeredSFXName);
-
             var displayCategory = StatusEffectData.DisplayCategory.Positive;
             AccessTools
                 .Field(typeof(StatusEffectData), "displayCategory")

@@ -8,6 +8,7 @@ using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Base.Map;
 using TrainworksReloaded.Base.Relic;
 using TrainworksReloaded.Base.Scenarios;
+using TrainworksReloaded.Base.Sound;
 using TrainworksReloaded.Core;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
@@ -175,6 +176,12 @@ namespace TrainworksReloaded.Plugin.Patches
                 logger.Log(LogLevel.Info, $"Added scenario {scenario.name} to {distance} and run_type {runType} successfully.");
             }
             logger.Log(LogLevel.Info, "Map data processing complete");
+
+
+            var delegator = container.GetInstance<GlobalSoundCueDelegator>();
+            var soundRegister = container.GetInstance<SoundCueRegister>();
+            soundRegister.RegisterGlobalSoundEffects(delegator.GetSounds());
+            logger.Log(LogLevel.Info, $"Added {delegator.GetSounds().Count} new global sounds.");
 
             //Run finalization steps to populate data that requires all other data to be loaded first
             logger.Log(LogLevel.Info, "Running finalization steps...");

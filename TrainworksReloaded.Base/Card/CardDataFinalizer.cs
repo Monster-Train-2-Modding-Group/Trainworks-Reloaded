@@ -1,15 +1,19 @@
 ﻿using HarmonyLib;
 using Malee;
 using Microsoft.Extensions.Configuration;
+using ShinyShoe.Audio;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Prefab;
+using TrainworksReloaded.Base.Sound;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
+using static ShinyShoe.Audio.CoreSoundEffectData;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.Card
@@ -24,10 +28,12 @@ namespace TrainworksReloaded.Base.Card
         private readonly IRegister<CardTraitData> traitRegister;
         private readonly IRegister<CardEffectData> effectRegister;
         private readonly IRegister<AssetReferenceGameObject> assetReferenceRegister;
+        private readonly IRegister<GameObject> gameObjectRegister;
         private readonly IRegister<CardUpgradeData> upgradeRegister;
         private readonly IRegister<CardTriggerEffectData> triggerEffectRegister;
         private readonly IRegister<CharacterTriggerData> triggerDataRegister;
         private readonly IRegister<VfxAtLoc> vfxRegister;
+        private readonly IRegister<SoundCueDefinition> soundCueRegister;
         private readonly FallbackDataProvider fallbackDataProvider;
 
         private readonly FieldInfo CardPoolCardDataListField = AccessTools.Field(typeof(CardPool), "cardDataList");
@@ -41,9 +47,11 @@ namespace TrainworksReloaded.Base.Card
             IRegister<CardTraitData> traitRegister,
             IRegister<CardEffectData> effectRegister,
             IRegister<AssetReferenceGameObject> assetReferenceRegister,
+            IRegister<GameObject> gameObjectRegister,
             IRegister<CardUpgradeData> upgradeRegister,
             IRegister<CardTriggerEffectData> triggerEffectRegister,
             IRegister<CharacterTriggerData> triggerDataRegister,
+            IRegister<SoundCueDefinition> soundCueRegister,
             IRegister<VfxAtLoc> vfxRegister,
             FallbackDataProvider fallbackDataProvider
         )
@@ -56,10 +64,12 @@ namespace TrainworksReloaded.Base.Card
             this.traitRegister = traitRegister;
             this.effectRegister = effectRegister;
             this.assetReferenceRegister = assetReferenceRegister;
+            this.gameObjectRegister = gameObjectRegister;
             this.upgradeRegister = upgradeRegister;
             this.triggerEffectRegister = triggerEffectRegister;
             this.triggerDataRegister = triggerDataRegister;
             this.vfxRegister = vfxRegister;
+            this.soundCueRegister = soundCueRegister;
             this.fallbackDataProvider = fallbackDataProvider;
         }
 
@@ -204,6 +214,25 @@ namespace TrainworksReloaded.Base.Card
             else if (overrideMode.IsNewContent())
             {
                 logger.Log(LogLevel.Warning, $"Card {key} {definition.Id} is missing card_art. This is required for non ability cards.");
+            }
+
+            var soundEffects = configuration.GetSection("sound_effects").GetChildren().Select(x => x.ParseReference()).Where(x => x != null).Cast<ReferencedObject>();
+            if (soundEffects.Any() && cardArtReference != null)
+            {
+                if (gameObjectRegister.TryLookupId(cardArtReference.ToId(key, TemplateConstants.GameObject), out var gameObject, out var _, cardArtReference.context))
+                {
+                    var holder = gameObject.AddComponent<CoreSoundEffectHolder>();
+                    holder.SoundEffectData = ScriptableObject.CreateInstance<CoreSoundEffectData>();
+                    List<SoundCueDefinition> sounds = [];
+                    foreach (var soundReference in soundEffects)
+                    {
+                        if (soundCueRegister.TryLookupName(soundReference.ToId(key, TemplateConstants.SoundCueDefinition), out var sound, out var _2, soundReference.context))
+                        {
+                            sounds.Add(sound);
+                        }
+                    }
+                    holder.SoundEffectData.Sounds = sounds.ToArray();
+                }
             }
 
             //handle traits

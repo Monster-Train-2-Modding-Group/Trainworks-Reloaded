@@ -21,6 +21,7 @@ using TrainworksReloaded.Base.Relic;
 using TrainworksReloaded.Base.Reward;
 using TrainworksReloaded.Base.Room;
 using TrainworksReloaded.Base.Scenarios;
+using TrainworksReloaded.Base.Sound;
 using TrainworksReloaded.Base.StatusEffects;
 using TrainworksReloaded.Base.Subtype;
 using TrainworksReloaded.Base.Tooltips;
@@ -32,6 +33,7 @@ using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using static ShinyShoe.Audio.CoreSoundEffectData;
 
 namespace TrainworksReloaded.Plugin
 {
@@ -119,12 +121,11 @@ namespace TrainworksReloaded.Plugin
                 c.Collection.Register<IDataFinalizer>(
                     [
                         typeof(AdditionalTooltipFinalizer),
-                        typeof(CardDataFinalizer),
+
                         typeof(CardEffectFinalizer),
                         typeof(CardTraitDataFinalizer),
                         typeof(CardUpgradeFinalizer),
                         typeof(CardUpgradeMaskFinalizer),
-                        typeof(CharacterDataFinalizer),
                         typeof(ClassDataFinalizer),
                         typeof(CharacterTriggerFinalizer),
                         typeof(CardTriggerEffectFinalizer),
@@ -147,6 +148,10 @@ namespace TrainworksReloaded.Plugin
                         typeof(RelicEffectConditionFinalizer),
                         typeof(GameObjectFinalizer),
                         typeof(ClassCardStyleFinalizer),
+                        typeof(SoundCueFinalizer),
+                        // Has to run last. Sounds are added to the GameObjects which isn't available until GameObject finalizers has ran..
+                        typeof(CharacterDataFinalizer),
+                        typeof(CardDataFinalizer),
                     ]
                 );
 
@@ -281,6 +286,32 @@ namespace TrainworksReloaded.Plugin
                     xs => xs.ImplementationType == typeof(GameObjectFinalizer)
                 );
 
+                //Register AudioClips
+                c.RegisterSingleton<IRegister<AudioClip>, AudioClipRegister>();
+                c.RegisterSingleton<AudioClipRegister, AudioClipRegister>();
+                c.Register<IDataPipeline<IRegister<AudioClip>, AudioClip>, AudioClipPipeline>();
+                c.RegisterInitializer<IRegister<AudioClip>>(x =>
+                {
+                    var pipeline = c.GetInstance<IDataPipeline<IRegister<AudioClip>, AudioClip>>();
+                    pipeline.Run(x);
+                });
+
+                //Register Sound Effects
+                c.RegisterSingleton<GlobalSoundCueDelegator, GlobalSoundCueDelegator>();
+                c.RegisterSingleton<IRegister<SoundCueDefinition>, SoundCueRegister>();
+                c.RegisterSingleton<SoundCueRegister, SoundCueRegister>();
+                c.Register<
+                    IDataPipeline<IRegister<SoundCueDefinition>, SoundCueDefinition>,
+                    SoundCuePipeline
+                >();
+                c.RegisterInitializer<IRegister<SoundCueDefinition>>(x =>
+                {
+                    var pipeline = c.GetInstance<
+                        IDataPipeline<IRegister<SoundCueDefinition>, SoundCueDefinition>
+                    >();
+                    pipeline.Run(x);
+                });
+
                 //Register Sprite
                 c.RegisterSingleton<IRegister<Sprite>, SpriteRegister>();
                 c.RegisterSingleton<SpriteRegister, SpriteRegister>();
@@ -292,8 +323,8 @@ namespace TrainworksReloaded.Plugin
                 });
 
                 //Register Icons
-                c.RegisterSingleton<IRegister<Texture2D>, AtlasIconRegister>();
-                c.RegisterSingleton<AtlasIconRegister, AtlasIconRegister>();
+                c.RegisterSingleton<IRegister<Texture2D>, TextureRegister>();
+                c.RegisterSingleton<TextureRegister, TextureRegister>();
                 c.Register<IDataPipeline<IRegister<Texture2D>, Texture2D>, AtlasIconPipeline>();
                 c.RegisterInitializer<IRegister<Texture2D>>(x =>
                 {

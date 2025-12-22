@@ -6,10 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
+using TrainworksReloaded.Base.Sound;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
+using static ShinyShoe.Audio.CoreSoundEffectData;
 using static SpawnGroupData;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
@@ -28,6 +30,7 @@ namespace TrainworksReloaded.Base.Scenarios
         private readonly IRegister<BossVariantSpawnData> bossVariantRegister;
         private readonly IRegister<TrialDataList> trialListRegister;
         private readonly IRegister<LocalizationTerm> termRegister;
+        private readonly IRegister<SoundCueDefinition> soundCueRegister;
         private readonly Lazy<SaveManager> saveManager;
 
         public ScenarioDataFinalizer(
@@ -42,6 +45,7 @@ namespace TrainworksReloaded.Base.Scenarios
             IRegister<BackgroundData> backgroundRegister,
             IRegister<BossVariantSpawnData> bossVariantRegister,
             IRegister<TrialDataList> trialListRegister,
+            IRegister<SoundCueDefinition> soundCueRegister,
             IRegister<LocalizationTerm> termRegister)
         {
             this.logger = logger;
@@ -55,6 +59,7 @@ namespace TrainworksReloaded.Base.Scenarios
             this.bossVariantRegister = bossVariantRegister;
             this.trialListRegister = trialListRegister;
             this.termRegister = termRegister;
+            this.soundCueRegister = soundCueRegister;
             saveManager = new Lazy<SaveManager>(() =>
             {
                 if (client.TryGetProvider<SaveManager>(out var provider))
@@ -133,6 +138,14 @@ namespace TrainworksReloaded.Base.Scenarios
                 var id = trialsReference.ToId(key, TemplateConstants.TrialList);
                 trialListRegister.TryLookupId(id, out var lookup, out var _, trialsReference.context);
                 AccessTools.Field(typeof(ScenarioData), "trials").SetValue(data, lookup);
+            }
+
+            var bossSpawnSFXReference = configuration.GetSection("boss_spawn_sfx_cue").ParseReference();
+            AccessTools.Field(typeof(ScenarioData), "bossSpawnSFXCue").SetValue(data, copyData.GetBossSpawnSFXCue());
+            if (bossSpawnSFXReference != null)
+            {
+                soundCueRegister.TryLookupName(bossSpawnSFXReference.ToId(key, TemplateConstants.SoundCueDefinition), out var sound, out var _, bossSpawnSFXReference.context);
+                AccessTools.Field(typeof(ScenarioData), "bossSpawnSFXCue").SetValue(data, sound?.Name ?? "");
             }
 
             var displayedEnemies = AccessTools.Field(typeof(ScenarioData), "displayedEnemies").GetValue(copyData) as List<CharacterData> ?? [];

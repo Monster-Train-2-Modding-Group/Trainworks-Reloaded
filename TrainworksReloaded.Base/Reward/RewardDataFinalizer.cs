@@ -1,7 +1,9 @@
 ﻿using HarmonyLib;
 using TrainworksReloaded.Base.Extensions;
+using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
+using static ShinyShoe.Audio.CoreSoundEffectData;
 
 namespace TrainworksReloaded.Base.Reward
 {
@@ -11,18 +13,21 @@ namespace TrainworksReloaded.Base.Reward
         private readonly ICache<IDefinition<RewardData>> cache;
         private readonly IRegister<Sprite> spriteRegister;
         private readonly IRegister<RelicData> relicRegister;
+        private readonly IRegister<SoundCueDefinition> soundCueRegister;
 
         public RewardDataFinalizer(
             IModLogger<RewardDataFinalizer> logger,
             ICache<IDefinition<RewardData>> cache,
             IRegister<Sprite> spriteRegister,
-            IRegister<RelicData> relicRegister
+            IRegister<RelicData> relicRegister,
+            IRegister<SoundCueDefinition> soundCueRegister
         )
         {
             this.logger = logger;
             this.cache = cache;
             this.spriteRegister = spriteRegister;
             this.relicRegister = relicRegister;
+            this.soundCueRegister = soundCueRegister;
         }
 
         public void FinalizeData()
@@ -81,6 +86,15 @@ namespace TrainworksReloaded.Base.Reward
                 }
 
             }
+
+            var sfxCueReference = configuration.GetDeprecatedSection("collect_cue", "collect_sfx_cue").ParseReference();
+            var sfxCue = data.CollectSFXCueName ?? "";
+            if (sfxCueReference != null)
+            {
+                if (soundCueRegister.TryLookupName(sfxCueReference.ToId(key, TemplateConstants.SoundCueDefinition), out var sound, out var _, sfxCueReference.context))
+                    sfxCue = sound.Name;
+            }
+            AccessTools.Field(typeof(RewardData), "_collectSFXCueName").SetValue(data, sfxCue);
         }
     }
 }

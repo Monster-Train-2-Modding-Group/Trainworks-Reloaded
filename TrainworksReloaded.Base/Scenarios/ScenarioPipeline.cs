@@ -112,10 +112,6 @@ namespace TrainworksReloaded.Base.Scenarios
             AccessTools.Field(typeof(ScenarioData), "battleTrackNameData")
                 .SetValue(data, configuration.GetSection("battle_track_name").ParseString() ?? battleTrack);
 
-            var bossSpawnSFXCue = copyData.GetBossSpawnSFXCue() ?? "";
-            AccessTools.Field(typeof(ScenarioData), "bossSpawnSFXCue")
-                .SetValue(data, configuration.GetSection("boss_spawn_sfx_cue").ParseString() ?? bossSpawnSFXCue);
-
             var minTreasureUnits = copyData.GetMinTreasureUnits();
             AccessTools.Field(typeof(ScenarioData), "minTreasureUnits")
                 .SetValue(data, configuration.GetSection("min_treasure_units").ParseInt() ?? minTreasureUnits);

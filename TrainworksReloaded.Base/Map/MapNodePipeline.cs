@@ -127,11 +127,6 @@ namespace TrainworksReloaded.Base.Map
                     configuration.GetDeprecatedSection("updated_map_icon_on_click", "update_map_icon_immediately_on_click").ParseBool() ?? false
                 );
 
-            //string
-            AccessTools
-                .Field(typeof(MapNodeData), "nodeSelectedSfxCue")
-                .SetValue(data, configuration.GetDeprecatedSection("node_selection_cue", "node_selected_sfx_cue").ParseString() ?? "");
-
             //dlc
             AccessTools
                 .Field(typeof(MapNodeData), "requiredDlc")

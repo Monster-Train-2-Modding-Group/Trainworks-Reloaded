@@ -3,6 +3,7 @@ using System.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
+using static ShinyShoe.Audio.CoreSoundEffectData;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.StatusEffects
@@ -14,14 +15,22 @@ namespace TrainworksReloaded.Base.StatusEffects
         private readonly IRegister<VfxAtLoc> vfxRegister;
         private readonly IRegister<Sprite> spriteRegister;
         private readonly IRegister<StatusEffectData.TriggerStage> triggerStageRegister;
+        private readonly IRegister<SoundCueDefinition> soundCueRegister;
 
-        public StatusEffectDataFinalizer(IModLogger<StatusEffectDataFinalizer> logger, ICache<IDefinition<StatusEffectData>> cache, IRegister<VfxAtLoc> vfxRegister, IRegister<Sprite> spriteRegister, IRegister<StatusEffectData.TriggerStage> triggerStageRegister)
+        public StatusEffectDataFinalizer(
+            IModLogger<StatusEffectDataFinalizer> logger,
+            ICache<IDefinition<StatusEffectData>> cache,
+            IRegister<VfxAtLoc> vfxRegister,
+            IRegister<Sprite> spriteRegister,
+            IRegister<StatusEffectData.TriggerStage> triggerStageRegister,
+            IRegister<SoundCueDefinition> soundCueRegister)
         {
             this.logger = logger;
             this.cache = cache;
             this.vfxRegister = vfxRegister;
             this.spriteRegister = spriteRegister;
             this.triggerStageRegister = triggerStageRegister;
+            this.soundCueRegister = soundCueRegister;
         }
 
         public void FinalizeData()
@@ -172,6 +181,23 @@ namespace TrainworksReloaded.Base.StatusEffects
                                     out var stage, out var _, additionalTriggerStage.context);
                 triggerStageList.Add(stage);
             }
+
+            var appliedSFXReference = configuration.GetSection("applied_sfx").ParseReference();
+            var appliedSFXName = "";
+            if (appliedSFXReference != null) {
+                soundCueRegister.TryLookupName(appliedSFXReference.ToId(key, TemplateConstants.SoundCueDefinition), out var sound, out var _, appliedSFXReference.context);
+                appliedSFXName = sound?.Name ?? string.Empty;
+            }
+            AccessTools.Field(typeof(StatusEffectData), "appliedSFXName").SetValue(data, appliedSFXName);
+
+            var triggeredSFXReference = configuration.GetSection("triggered_sfx").ParseReference();
+            var triggeredSFXName = "";
+            if (triggeredSFXReference != null)
+            {
+                soundCueRegister.TryLookupName(triggeredSFXReference.ToId(key, TemplateConstants.SoundCueDefinition), out var sound, out var _, triggeredSFXReference.context);
+                triggeredSFXName = sound?.Name ?? string.Empty;
+            }
+            AccessTools.Field(typeof(StatusEffectData), "triggeredSFXName").SetValue(data, triggeredSFXName);
         }
     }
 }

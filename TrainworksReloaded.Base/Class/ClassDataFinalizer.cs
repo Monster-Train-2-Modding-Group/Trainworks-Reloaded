@@ -7,6 +7,7 @@ using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
+using static ShinyShoe.Audio.CoreSoundEffectData;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.Class
@@ -22,6 +23,7 @@ namespace TrainworksReloaded.Base.Class
         private readonly IRegister<EnhancerPool> enhancerPoolRegister;
         private readonly IRegister<GameObject> gameObjectRegister;
         private readonly IRegister<ClassCardStyle> classCardStyleRegister;
+        private readonly IRegister<SoundCueDefinition> soundCueRegister;
         private readonly ClassAssetsDelegator classAssetsDelegator;
 
         public ClassDataFinalizer(
@@ -34,6 +36,7 @@ namespace TrainworksReloaded.Base.Class
             IRegister<EnhancerPool> enhancerPoolRegister,
             IRegister<GameObject> gameObjectRegister,
             IRegister<ClassCardStyle> classCardStyleRegister,
+            IRegister<SoundCueDefinition> soundCueRegister,
             ClassAssetsDelegator classAssetsDelegator
         )
         {
@@ -46,6 +49,7 @@ namespace TrainworksReloaded.Base.Class
             this.enhancerPoolRegister = enhancerPoolRegister;
             this.gameObjectRegister = gameObjectRegister;
             this.classCardStyleRegister = classCardStyleRegister;
+            this.soundCueRegister = soundCueRegister;
             this.classAssetsDelegator = classAssetsDelegator;
         }
 
@@ -154,6 +158,18 @@ namespace TrainworksReloaded.Base.Class
             {
                 AccessTools.Field(iconSetType, "silhouette").SetValue(iconSet, lookup4);
             }
+
+            var sfxCue = data.GetClanSelectSfxCue() ?? "";
+            var soundCueReference = configuration.GetDeprecatedSection("sfx_cue", "clan_select_sfx_cue").ParseReference();
+            if (soundCueReference != null && soundCueRegister.TryLookupName(
+                    soundCueReference.ToId(key, TemplateConstants.SoundCueDefinition),
+                    out var sound,
+                    out var _,
+                    soundCueReference.context))
+            {
+                sfxCue = sound.Name;
+            }
+            AccessTools.Field(typeof(ClassData), "clanSelectSfxCue").SetValue(data, sfxCue);
 
             //card style
             var cardStyleReference = configuration.GetSection("card_style").ParseReference();
@@ -345,6 +361,19 @@ namespace TrainworksReloaded.Base.Class
                 )
                 {
                     championData.championPortrait = icon3;
+                }
+
+                var selectedCueReference = champion.GetDeprecatedSection("selected_cue", "selected_sfx_cue").ParseReference();
+                if (
+                    selectedCueReference != null &&
+                    soundCueRegister.TryLookupName(
+                    selectedCueReference.ToId(key, TemplateConstants.SoundCueDefinition),
+                    out var champSound,
+                    out var _,
+                    selectedCueReference.context)
+                )
+                {
+                    championData.championSelectedCue = champSound.Name;
                 }
 
                 //upgrade upgrade tree
