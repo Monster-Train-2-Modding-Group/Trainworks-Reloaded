@@ -8,6 +8,9 @@
     "atlas_icons": {
       "$ref": "schemas/atlas_icons.json#/properties/atlas_icons"
     },
+    "audio_clips": {
+      "$ref": "schemas/audio_clips.json#/properties/audio_clips"
+    },
     "card_pools": {
       "$ref": "schemas/card_pools.json#/properties/card_pools"
     },
@@ -32,11 +35,11 @@
     "chatter": {
       "$ref": "schemas/chatter.json#/properties/chatter"
     },
-    "classes": {
-      "$ref": "schemas/classes.json#/properties/classes"
-    },
     "class_card_styles": {
       "$ref": "schemas/class_card_styles.json#/properties/class_card_styles"
+    },
+    "classes": {
+      "$ref": "schemas/classes.json#/properties/classes"
     },
     "effects": {
       "$ref": "schemas/effects.json#/properties/effects"
@@ -47,11 +50,11 @@
     "game_objects": {
       "$ref": "schemas/game_objects.json#/properties/game_objects"
     },
-    "localization_terms": {
-      "$ref": "schemas/localization_terms.json#/properties/localization_terms"
-    },
     "langauge_sources": {
       "$ref": "schemas/language_sources.json#/properties/language_sources"
+    },
+    "localization_terms": {
+      "$ref": "schemas/localization_terms.json#/properties/localization_terms"
     },
     "map_nodes": {
       "$ref": "schemas/map_nodes.json#/properties/map_nodes"
@@ -83,14 +86,17 @@
     "skeletons": {
       "$ref": "schemas/skeletons.json#/properties/skeletons"
     },
+    "sound_effects": {
+      "$ref": "schemas/sound_effects.json#/properties/sound_effects"
+    },
     "sprites": {
       "$ref": "schemas/sprites.json#/properties/sprites"
     },
-    "status_effects": {
-      "$ref": "schemas/status_effects.json#/properties/status_effects"
-    },
     "status_effect_trigger_stages": {
       "$ref": "schemas/status_effect_trigger_stages.json#/properties/status_effect_trigger_stages"
+    },
+    "status_effects": {
+      "$ref": "schemas/status_effects.json#/properties/status_effects"
     },
     "subtypes": {
       "$ref": "schemas/subtypes.json#/properties/subtypes"

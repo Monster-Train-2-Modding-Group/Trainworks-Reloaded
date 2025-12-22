@@ -13,7 +13,7 @@
         "properties": {
           "collect_sfx_cue": {
             "$ref": "../definitions/sfx.json",
-            "description": "Reference to the sound sfx cue played when collecting this reward (Not implemented)."
+            "description": "Reference to the sound sfx cue played when collecting this reward. To use a custom sound effect, a sound effect must be registered globally."
           },
           "costs": {
             "type": "array",

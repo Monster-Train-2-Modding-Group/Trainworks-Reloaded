@@ -36,7 +36,7 @@
           },
           "applied_sfx": {
             "$ref": "../definitions/sfx.json",
-            "description": "Reference to the sound effect played when the status is applied (Not implemented)."
+            "description": "Reference to the sound effect cue played when the status is applied."
           },
           "card_tooltips": {
             "$ref": "../definitions/parse_term.json",
@@ -208,7 +208,7 @@
           },
           "triggered_sfx": {
             "$ref": "../definitions/sfx.json",
-            "description": "Reference to the sound effect played when the status is triggered (Not implemented)."
+            "description": "Reference to the sound effect cue played when the status is triggered."
           },
           "triggered_vfx": {
             "$ref": "../definitions/vfx.json",

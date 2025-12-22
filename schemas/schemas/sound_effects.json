@@ -1,0 +1,93 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/sound_effects.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "sound_effects": {
+      "type": "array",
+      "description": "A collection of all sound effect cues in the game.",
+      "items": {
+        "required": [
+          "id",
+          "clips"
+        ],
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique identifier for this sound effect. This ID is used to reference the sound effect throughout the game."
+          },
+          "name": {
+            "type": "string",
+            "enum": [
+              "Combat_Death",
+              "Combat_Despawn",
+              "Combat_OnHit",
+              "Combat_Attack",
+              "Combat_AttackPrep",
+              "Combat_Resolve",
+              "Combat_Spawn",
+              "Combat_BossSpellCast",
+              "Combat_BossTransition",
+              "Combat_BossSpellPrep",
+              "Combat_BossMovement"
+            ],
+            "description": "Name of the Sound Effect Cue. (i.e. Combat_Spawn). This is only required if global is false. If global is true then the id becomes the cue name (and this property is ignored). If this is a card/character specific sound effect name is required (and global should be false)."
+          },
+          "clips": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "../definitions/reference.json"
+            },
+            "description": "References to Audio Clips to play for the sound effect."
+          },
+          "volume_min": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "default": 1.0,
+            "description": "Minimum volume of the sound effect."
+          },
+          "volume_max": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "default": 1.0,
+            "description": "Maximum volume of the sound effect."
+          },
+          "pitch_min": {
+            "type": "number",
+            "minimum": -3.0,
+            "maximum": 3.0,
+            "default": 1.0,
+            "description": "Minimum pitch of the sound effect."
+          },
+          "pitch_max": {
+            "type": "number",
+            "minimum": -3.0,
+            "maximum": 3.0,
+            "default": 1.0,
+            "description": "Maximum pitch of the sound effect."
+          },
+          "loop": {
+            "type": "boolean",
+            "description": "Does this sound effect loop?",
+            "default": false
+          },
+          "global": {
+            "type": "boolean",
+            "description": "Marks this as a global sound effect. Should be set to false if the sound effect is tied to a character or card, as those sound effects share the same cue name locally. The name paramater will be ignored. Reference the cue for properties that need it with the @id syntax.",
+            "default": "false"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tags."
+          }
+        }
+      }
+    }
+  }
+}

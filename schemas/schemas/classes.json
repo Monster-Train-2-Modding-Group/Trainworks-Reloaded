@@ -64,12 +64,16 @@
                   "$ref": "../definitions/reference.json",
                   "description": "Reference to the champion's portrait sprite."
                 },
-                "selected_cue": {
-                  "type": "string",
+                "selected_sfx_cue": {
+                  "$ref": "../definitions/sfx.json",
                   "description": "Reference to the sound cue played when this champion is selected."
                 }
               }
             }
+          },
+          "clan_select_sfx_cue": {
+            "$ref": "../definitions/sfx.json",
+            "description": "(Unused by the base game) Reference to the sound effect cue played for this class. To use a custom sound effect, a sound effect must be registered globally."
           },
           "class_select_character_displays": {
             "type": "array",
@@ -93,14 +97,6 @@
           "descriptions": {
             "$ref": "../definitions/parse_term.json",
             "description": "Localized text describing this class."
-          },
-          "override": {
-            "$ref": "../definitions/override_mode.json",
-            "description": "Whether this class overrides an existing class with the same ID (requires the Unity Asset Name)."
-          },
-          "random_draft_enhancer_pool": {
-            "$ref": "../definitions/enhancer_pool.json",
-            "description": "Reference to an EnhancerPool used to randomly apply enhancers to card drafts."
           },
           "icons": {
             "type": "object",
@@ -133,9 +129,17 @@
             "type": "boolean",
             "description": "Whether this class is a crew member class."
           },
-          "clan_select_sfx_cue": {
-            "$ref": "../definitions/sfx.json",
-            "description": "Reference to the sound effect cue played for this class (Not implemented)."
+          "override": {
+            "$ref": "../definitions/override_mode.json",
+            "description": "Whether this class overrides an existing class with the same ID (requires the Unity Asset Name)."
+          },
+          "random_draft_enhancer_pool": {
+            "$ref": "../definitions/enhancer_pool.json",
+            "description": "Reference to an EnhancerPool used to randomly apply enhancers to card drafts."
+          },
+          "starter_card_upgrade": {
+            "type": "string",
+            "description": "Reference to the upgrade applied to starter cards."
           },
           "starter_relics": {
             "type": "array",
@@ -143,10 +147,6 @@
             "items": {
               "$ref": "../definitions/collectable_relic.json"
             }
-          },
-          "starter_card_upgrade": {
-            "type": "string",
-            "description": "Reference to the upgrade applied to starter cards."
           },
           "subclass_descriptions": {
             "$ref": "../definitions/parse_term.json",

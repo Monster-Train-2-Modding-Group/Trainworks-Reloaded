@@ -7,6 +7,7 @@
       "uniqueItems": true,
       "description": "A collection of all characters in the game, defining their properties, abilities, and behaviors.",
       "items": {
+        "description": "A character definition that specifies all properties and behaviors of a character in the game.",
         "properties": {
           "ability": {
             "$ref": "../definitions/card.json",
@@ -86,10 +87,6 @@
               }
             ],
             "description": "Reference to the character's art asset."
-          },
-          "character_sound_data": {
-            "type": "string",
-            "description": "Reference to the character's sound data. (Not implemented)"
           },
           "chatter": {
             "$ref": "../definitions/reference.json",
@@ -191,7 +188,7 @@
           },
           "loops_between_train_floors": {
             "type": "boolean",
-            "description": "Whether this character loops between train floors (bypassing the pyre room)."
+            "description": "Whether this character loops between train floors (bypassing the pyre room). You should give the starting status effect pyrebane if this is set to true."
           },
           "lore_tooltips": {
             "type": "array",
@@ -233,6 +230,13 @@
             "description": "Size of this character in the room.",
             "default": 2
           },
+          "sound_effects": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/sfx.json"
+            },
+            "description": "Reference to the sound effects the character uses. References to Sound Effects. Not overrideable, if set then character_art_reference must also be set."
+          },
           "starting_status_effects": {
             "type": "array",
             "description": "List of status effects this character starts with.",
@@ -271,8 +275,7 @@
         },
         "required": [
           "id"
-        ],
-        "description": "A character definition that specifies all properties and behaviors of a character in the game."
+        ]
       }
     }
   }

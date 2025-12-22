@@ -11,10 +11,25 @@
           "path"
         ],
         "properties": {
+          "extrude": {
+            "type": "integer",
+            "default": 0,
+            "minimum": 0,
+            "description": "Sets the extrude parameter."
+          },
           "id": {
             "minLength": 1,
             "type": "string",
             "description": "Unique identifier for this sprite. This ID is used to reference the sprite throughout the game."
+          },
+          "mesh_type": {
+            "type": "string",
+            "enum": [
+              "full_rect",
+              "tight"
+            ],
+            "default": "full_rect",
+            "description": "Sprite mesh type."
           },
           "path": {
             "type": "string",
@@ -28,25 +43,16 @@
               "y": 0.5
             }
           },
-          "extrude": {
-            "type": "integer",
-            "default": 0,
-            "minimum": 0,
-            "description": "Sets the extrude parameter."
-          },
-          "mesh_type": {
-            "type": "string",
-            "enum": [
-              "full_rect",
-              "tight"
-            ],
-            "default": "full_rect",
-            "description": "Sprite mesh type."
-          },
           "pixels_per_unit": {
             "type": "number",
             "description": "Pixels per unit.",
-            "default":  100.0
+            "default": 100.0
+          },
+          "wrap_mode": {
+            "type": "string",
+            "enum": [ "repeat", "clamp", "mirror", "mirror_once" ],
+            "description": "Sets the wrap mode for the underlying texture",
+            "default": "clamp"
           }
         },
         "description": "A sprite definition that specifies the properties and image path of a sprite used in the game."

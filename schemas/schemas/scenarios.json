@@ -24,8 +24,8 @@
             "description": "Reference to a sprite for the boss portrait."
           },
           "boss_spawn_sfx_cue": {
-            "type": "string",
-            "description": "Sound effect for the boss spawning."
+            "$ref": "../definitions/sfx.json",
+            "description": "Sound effect for the boss spawning. To use a custom sound effect, a sound effect must be registered globally."
           },
           "boss_variants": {
             "$ref": "../definitions/boss_variants.json",

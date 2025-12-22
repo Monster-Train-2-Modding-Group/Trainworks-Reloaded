@@ -1,0 +1,27 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/audio_clips.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "audio_clips": {
+      "type": "array",
+      "description": "A collection of all audio clips in the game.",
+      "items": {
+        "required": [
+          "id",
+          "path"
+        ],
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique identifier for this sound. This ID is used to reference the sound throughout the game."
+          },
+          "path": {
+            "type": "string",
+            "description": "Path to the sound file. The path should be relative to the mod's assets directory. Only wav (PCM only) and ogg (Vorbis only) are supported."
+          }
+        }
+      }
+    }
+  }
+}

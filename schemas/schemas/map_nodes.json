@@ -71,7 +71,7 @@
           },
           "node_selected_sfx_cue": {
             "$ref": "../definitions/sfx.json",
-            "description": "Reference to the sound cue played when selecting this node (Not implemented)."
+            "description": "Reference to the sound cue played when selecting this node. To use a custom sound effect, a sound effect must be registered globally."
           },
           "prefab": {
             "$ref": "../definitions/reference.json",
