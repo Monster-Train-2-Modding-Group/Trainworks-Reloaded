@@ -39,5 +39,7 @@
         public const string StatusEffectTriggerStageEnum = "StatusEffectTriggerStage";
         public const string ClassCardStyle = "ClassCardStyle";
         public const string TrackedValueTypeEnum = "TrackedValueTypeEnum";
+        public const string AudioClip = "AudioClip";
+        public const string SoundCueDefinition = "SoundCueDefinition";
     }
 }
