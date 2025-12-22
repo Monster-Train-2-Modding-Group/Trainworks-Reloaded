@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <RootNamespace>TrainworksReloaded.Plugin</RootNamespace>
     <LangVersion>latest</LangVersion>
-    <Version>0.6.3</Version>
+    <Version>0.6.4</Version>
   </PropertyGroup>
 
   <PropertyGroup>
