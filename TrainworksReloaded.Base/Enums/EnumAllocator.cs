@@ -6,9 +6,10 @@ using TrainworksReloaded.Base.Extensions;
 namespace TrainworksReloaded.Base.Enums
 {
     /// <summary>
-    /// Class that extends an enum and adds values to it.
+    /// Class that extends an enum and adds values to it. 
+    /// TODO make public, but restrict access to enums that are definable in JSON / or referenced directly by other GameObjects.
     /// </summary>
-    public static class EnumAllocator<TEnum> where TEnum : Enum
+    internal static class EnumAllocator<TEnum> where TEnum : Enum
     {
         private static IDictionary<string, TEnum> NameToEnum;
         private static long NextEnumId;
