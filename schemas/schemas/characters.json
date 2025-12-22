@@ -235,7 +235,7 @@
             "items": {
               "$ref": "../definitions/sfx.json"
             },
-            "description": "Reference to the sound effects the character uses. References to Sound Effects. Not overrideable, if set then character_art_reference must also be set."
+            "description": "Reference to the sound effects the character uses. References to non global Sound Effects. Not overrideable, if set then character_art_reference must also be set."
           },
           "starting_status_effects": {
             "type": "array",

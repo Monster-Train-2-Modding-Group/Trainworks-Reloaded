@@ -184,9 +184,9 @@
           "sound_effects": {
             "type": "array",
             "items": {
-              "$ref": "../definitions/reference.json"
+              "$ref": "../definitions/sfx.json"
             },
-            "description": "Reference to the sound effects the card uses. References to Sound Effects. Not overrideable, if set then card_art_reference must also be set. Cue names used by base game are Cast, UnitAbility, and Reserve."
+            "description": "Reference to the sound effects the card uses. References to Sound Effects that are non global. Not overrideable, if set then card_art_reference must also be set. Cue names used by base game are Cast, UnitAbility, and Reserve."
           },
           "special_edge_vfx": {
             "$ref": "../definitions/vfx.json",

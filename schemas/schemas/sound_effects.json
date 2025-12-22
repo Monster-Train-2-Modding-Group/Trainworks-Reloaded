@@ -4,7 +4,7 @@
   "properties": {
     "sound_effects": {
       "type": "array",
-      "description": "A collection of all sound effect cues in the game.",
+      "description": "A collection of all sound effect cues in the game. Global sound effects are used throughout the codebase. For sound effects used for Characters, Cards, and VFX these are non global and have a specific cue name.",
       "items": {
         "required": [
           "id",
@@ -17,21 +17,33 @@
             "description": "Unique identifier for this sound effect. This ID is used to reference the sound effect throughout the game."
           },
           "name": {
-            "type": "string",
-            "enum": [
-              "Combat_Death",
-              "Combat_Despawn",
-              "Combat_OnHit",
-              "Combat_Attack",
-              "Combat_AttackPrep",
-              "Combat_Resolve",
-              "Combat_Spawn",
-              "Combat_BossSpellCast",
-              "Combat_BossTransition",
-              "Combat_BossSpellPrep",
-              "Combat_BossMovement"
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "Combat_Death",
+                  "Combat_Despawn",
+                  "Combat_OnHit",
+                  "Combat_Attack",
+                  "Combat_AttackPrep",
+                  "Combat_Resolve",
+                  "Combat_Spawn",
+                  "Combat_BossSpellCast",
+                  "Combat_BossTransition",
+                  "Combat_BossSpellPrep",
+                  "Combat_BossMovement",
+                  "Triggered",
+                  "Cast",
+                  "Play",
+                  "UnitAbility",
+                  "Reserve"
+                ]
+              },
+              {
+                "type": "string"
+              }
             ],
-            "description": "Name of the Sound Effect Cue. (i.e. Combat_Spawn). This is only required if global is false. If global is true then the id becomes the cue name (and this property is ignored). If this is a card/character specific sound effect name is required (and global should be false)."
+            "description": "Name of the Sound Effect Cue for non global sound effects (i.e. Combat_Spawn). This is required if global is false. If global is true then the id becomes the cue name (and this property is ignored). If this is a card/character specific sound effect name is required (and global should be false)."
           },
           "clips": {
             "type": "array",
