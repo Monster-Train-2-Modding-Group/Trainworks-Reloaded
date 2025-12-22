@@ -17,6 +17,18 @@ namespace TrainworksReloaded.Base.Prefab
             "StewardClan.Plugin",
             "SweetkinBackOnTrack.Plugin"
         ];
+        private static readonly Dictionary<string?, TextureWrapMode> StringToWrapMode = new()
+        {
+            ["clamp"] = TextureWrapMode.Clamp,
+            ["repeat"] = TextureWrapMode.Repeat,
+            ["mirror"] = TextureWrapMode.Mirror,
+            ["mirror_once"] = TextureWrapMode.MirrorOnce,
+        };
+        private static readonly Dictionary<string?, SpriteMeshType> StringToMeshType = new()
+        {
+            ["full_rect"] = SpriteMeshType.FullRect,
+            ["tight"] = SpriteMeshType.Tight,
+        };
 
         public SpritePipeline(PluginAtlas atlas, IModLogger<SpritePipeline> logger)
         {
@@ -48,16 +60,8 @@ namespace TrainworksReloaded.Base.Prefab
                     var pixelsPerUnit = spriteConfig.GetSection("pixels_per_unit").ParseFloat() ?? GetPixelsPerUnit(key);
                     var pivot = spriteConfig.GetSection("pivot").ParseVec2(0.5f, 0.5f);
                     uint extrude = (uint)(spriteConfig.GetSection("extrude").ParseInt() ?? 0);
-                    var spriteMeshType = SpriteMeshType.FullRect;
-                    var spriteMeshValue = spriteConfig.GetSection("mesh_type").Value;
-                    if (spriteMeshValue == "full_rect")
-                    {
-                        spriteMeshType = SpriteMeshType.FullRect;
-                    }
-                    else if (spriteMeshValue == "tight")
-                    {
-                        spriteMeshType = SpriteMeshType.Tight;
-                    }
+                    var spriteMeshType = StringToMeshType.GetValueOrDefault(spriteConfig.GetSection("mesh_type").Value?.ToLower() ?? "", SpriteMeshType.FullRect);
+                    var textureWrapMode = StringToWrapMode.GetValueOrDefault(spriteConfig.GetSection("wrap_mode").Value?.ToLower() ?? "", TextureWrapMode.Clamp);
 
                     foreach (var directory in config.Value.AssetDirectories)
                     {
@@ -74,6 +78,7 @@ namespace TrainworksReloaded.Base.Prefab
                             logger.Log(LogLevel.Warning, $"Could not load image at path: {fullpath}. Sprite will not exist.");
                             continue;
                         }
+                        texture2d.wrapMode = textureWrapMode;
                         var sprite = Sprite.Create(
                             texture2d,
                             new Rect(0, 0, texture2d.width, texture2d.height),
