@@ -233,23 +233,29 @@ namespace TrainworksReloaded.Test
             var existingCard = new CardData();
 
             var mockCardRegister = new Mock<IRegister<CardData>>();
+            CardData? ignoredCard = null;
+            bool? ignoredModded = null;
+
             mockCardRegister
                 .Setup(cr =>
                     cr.TryLookupIdentifier(
                         "fire_starter",
                         It.IsAny<RegisterIdentifierType>(),
-                        out It.Ref<CardData?>.IsAny,
-                        out It.Ref<bool?>.IsAny
+                        out ignoredCard,
+                        out ignoredModded
                     )
                 )
-                .Returns(
-                    (string _, RegisterIdentifierType identifierType, out CardData? card, out bool? modded) =>
-                    {
-                        modded = true;
-                        card = existingCard;
-                        return true;
-                    }
-                );
+                .Callback((
+                    string _,
+                    RegisterIdentifierType _,
+                    out CardData? card,
+                    out bool? modded
+                ) =>
+                {
+                    card = existingCard;
+                    modded = true;
+                })
+                .Returns(true);
 
             var mockConfig = new ConfigurationBuilder()
                 .AddInMemoryCollection(
