@@ -7,9 +7,16 @@ using UnityEngine;
 
 namespace TrainworksReloaded.Base.Prefab
 {
-    public class TextureRegister(IModLogger<TextureRegister> logger) : Dictionary<string, Texture2D>, IRegister<Texture2D>
+    public class TextureRegister : Dictionary<string, Texture2D>, IRegister<Texture2D>
     {
-        private readonly IModLogger<TextureRegister> logger = logger;
+        private readonly IModLogger<TextureRegister> logger;
+        private readonly IRegister<Sprite> spriteRegister;
+
+        public TextureRegister(IModLogger<TextureRegister> logger, IRegister<Sprite> spriteRegister)
+        {
+            this.logger = logger;
+            this.spriteRegister = spriteRegister;
+        }
 
         public void Register(string key, Texture2D item)
         {
@@ -29,6 +36,11 @@ namespace TrainworksReloaded.Base.Prefab
 
         public bool TryLookupIdentifier(string identifier, RegisterIdentifierType identifierType, [NotNullWhen(true)] out Texture2D? lookup, [NotNullWhen(true)] out bool? IsModded)
         {
+            if (spriteRegister.TryLookupIdentifier(identifier, identifierType, out var sprite, out IsModded))
+            {
+                lookup = sprite.texture;
+                return true;
+            }
             lookup = null;
             IsModded = true;
             switch (identifierType)
@@ -42,13 +54,16 @@ namespace TrainworksReloaded.Base.Prefab
                             return true;
                         }
                     }
-                    return false;
+                    break;
                 case RegisterIdentifierType.GUID:
-                    return this.TryGetValue(identifier, out lookup);
-                default:
-                    return false;
+                    if (this.TryGetValue(identifier, out lookup))
+                    {
+                        return true;
+                    }
+                    break;
             }
+            IsModded = false;
+            return false;
         }
-
     }
 }

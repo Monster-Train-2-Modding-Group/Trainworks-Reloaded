@@ -106,7 +106,11 @@ namespace TrainworksReloaded.Base.Prefab
                 return null;
             }
                 
-            var material = new Material(skeletonDefaultMaterial.Value);
+            var material = new Material(Shader.Find(shader))
+            {
+                name = $"{id}_Material"
+            };
+            material.CopyPropertiesFromMaterial(skeletonDefaultMaterial.Value);
             var spineAtlasAsset = SpineAtlasAsset.CreateRuntimeInstance(atlasData, textures.ToArray(), material, true);
             var skeletonDataAsset = SkeletonDataAsset.CreateRuntimeInstance(skeletonData, spineAtlasAsset, true);
             skeletonDataAsset.name = id;

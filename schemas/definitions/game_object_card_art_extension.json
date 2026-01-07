@@ -13,7 +13,33 @@
           "properties": {
             "sprite": {
               "$ref": "../definitions/reference.json",
-              "description": "Reference to the card art sprite."
+              "description": "Reference to the card art sprite and forms the base sprite of the card. Unused for animated card art. Use base_layer+layers instead."
+            },
+            "shader": {
+              "type": "string",
+              "description": "Which shader to use, this is an advanced property only set if you know what you are doing. Ignored if base_layer/layers is not set.",
+              "enum": [ "Shiny Shoe/CardEffects", "Shiny Shoe/CardEffects Non-Additive" ],
+              "default": "Shiny Shoe/CardEffects"
+            },
+            "base_layer": {
+              "$ref": "../definitions/effect_layer.json",
+              "description": "Base layer, should be of type texture with the texture being at least ~210x210."
+            },
+            "layers": {
+              "type": "array",
+              "description": "Configures a layered effect.",
+              "items": {
+                "$ref": "../definitions/effect_layer.json"
+              },
+              "maxItems": 8
+            },
+            "transforms": {
+              "type": "array",
+              "description": "CardEffectTransform configurations. Modifies the position, rotation, scale of a particular layer(s). The base layer does not have an associated transform.",
+              "items": {
+                "$ref": "../definitions/effect_transforms.json"
+              },
+              "maxItems": 8
             }
           }
         }

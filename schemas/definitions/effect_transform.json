@@ -1,0 +1,30 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/effect_transform.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Name of the transform"
+    },
+    "layers": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 7
+      },
+      "description": "An array of effect layer indicies to associate this transform to, these can be reused. Only one transform can be associated per layer."
+    },
+    "position": {
+      "$ref": "../definitions/vec3.json"
+    },
+    "rotation": {
+      "$ref": "../definitions/vec3.json"
+    },
+    "scale": {
+      "$ref": "../definitions/vec3.json",
+      "default": {"x": 1.0, "y": 1.0, "z": 1.0}
+    }
+  }
+}

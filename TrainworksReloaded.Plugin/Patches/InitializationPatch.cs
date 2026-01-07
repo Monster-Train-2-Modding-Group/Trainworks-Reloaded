@@ -12,6 +12,7 @@ using TrainworksReloaded.Base.Sound;
 using TrainworksReloaded.Core;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
+using UnityEngine;
 
 namespace TrainworksReloaded.Plugin.Patches
 {

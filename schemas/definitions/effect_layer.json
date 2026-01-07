@@ -1,0 +1,69 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/effect_layer.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [ "none", "texture", "distortion", "flowing_texture", "moving_texture", "dissolve", "glow" ],
+      "description": "Effect layer type"
+    },
+    "texture": {
+      "$ref": "../definitions/reference.json",
+      "description": "Reference to a sprite to use as a texture."
+    },
+    "motion_texture": {
+      "$ref": "../definitions/reference.json",
+      "description": "Reference to a sprite to use as a motion texture."
+    },
+    "mask_texture": {
+      "$ref": "../definitions/reference.json",
+      "description": "Reference to a sprite to use as a mask texture."
+    },
+    "tint": {
+      "$ref": "../definitions/color.json",
+      "description": "Color tint for the layer.",
+      "default": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}
+    },
+    "linear_offset": {
+      "$ref": "../definitions/vec2.json",
+      "description": "Linear offset."
+    },
+    "linear_speed": {
+      "$ref": "../definitions/vec2.json",
+      "description": "Linear speed."
+    },
+    "tilt": {
+      "$ref": "../definitions/vec3.json",
+      "description": "Tilt."
+    },
+    "rotation_speed": {
+      "$ref": "../definitions/vec3.json",
+      "description": "Rotation Speed."
+    },
+    "scale": {
+      "$ref": "../definitions/vec2.json",
+      "description": "Scale.",
+      "default": {"x": 1.0, "y": 1.0}
+    },
+    "position_offset": {
+      "$ref": "../definitions/vec2.json",
+      "description": "Position offset."
+    },
+    "stretch": {
+      "type": "boolean",
+      "description": "Stretch.",
+      "default": true
+    },
+    "additive": {
+      "type": "boolean",
+      "description": "Additive.",
+      "default": true
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Enable layer",
+      "default": true
+    }
+  }
+}

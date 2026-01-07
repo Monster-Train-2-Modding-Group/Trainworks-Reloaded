@@ -78,6 +78,7 @@ namespace TrainworksReloaded.Base.Prefab
                             logger.Log(LogLevel.Warning, $"Could not load image at path: {fullpath}. Sprite will not exist.");
                             continue;
                         }
+                        texture2d.name = name;
                         texture2d.wrapMode = textureWrapMode;
                         var sprite = Sprite.Create(
                             texture2d,
