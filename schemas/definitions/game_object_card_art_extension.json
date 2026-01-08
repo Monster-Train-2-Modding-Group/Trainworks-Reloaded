@@ -37,7 +37,7 @@
               "type": "array",
               "description": "CardEffectTransform configurations. Modifies the position, rotation, scale of a particular layer(s). The base layer does not have an associated transform.",
               "items": {
-                "$ref": "../definitions/effect_transforms.json"
+                "$ref": "../definitions/effect_transform.json"
               },
               "maxItems": 8
             }
