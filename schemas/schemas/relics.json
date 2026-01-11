@@ -23,6 +23,7 @@
               "collectable",
               "enhancer",
               "sin",
+              "mutator",
               null
             ],
             "description": "Type of relic."
@@ -163,7 +164,7 @@
                     "type": "array",
                     "items": {
                       "properties": {
-                        "collectable": {
+                        "enhancer": {
                           "type": "object",
                           "description": "Configuration specific to enhancers",
                           "properties": {
@@ -209,6 +210,49 @@
                   },
                   "extensions": {
                     "type": "array"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "mutator"
+                    ]
+                  },
+                  "extensions": {
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "mutator": {
+                          "type": "object",
+                          "description": "Properties specific to mutators.",
+                          "properties": {
+                            "boon_value": {
+                              "type": "integer",
+                              "description": "The boon value, which defines how good or bad the mutator is. Negative mutators have a negative boon_value and vice versa. Controls what mutators are picked when they are randomized. This is generally a value between -15 and 15.",
+                              "default": 0
+                            },
+                            "disable_in_daily_challenges": {
+                              "type": "boolean",
+                              "default": false,
+                              "description": "Not useful, the game controls which mutators can appear in daily challenges with this. Custom mutators can't appear in daily challenges."
+                            },
+                            "required_dlc": {
+                              "type": "string",
+                              "description": "Not useful currently, tie a mutator to an official DLC with this."
+                            },
+                            "tags": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "description": "Tags associated with the mutator, controls which mutators are picked when randomized, mutators selected can not share any tag."
+                            }
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
