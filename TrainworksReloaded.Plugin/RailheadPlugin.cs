@@ -702,6 +702,7 @@ namespace TrainworksReloaded.Plugin
                     [
                         typeof(CollectableRelicDataFactory),
                         typeof(EnhancerDataFactory),
+                        typeof(MutatorDataFactory),
                         typeof(SinsDataFactory)
                     ],
                     Lifestyle.Singleton
@@ -719,6 +720,12 @@ namespace TrainworksReloaded.Plugin
                     xs => xs.ImplementationType == typeof(RelicDataFinalizer)
                 );
                 c.RegisterSingleton<VanillaRelicPoolDelegator>();
+
+                //MutatorData
+                c.RegisterDecorator(
+                    typeof(IDataPipeline<IRegister<RelicData>, RelicData>),
+                    typeof(MutatorDataPipelineDecorator)
+                );
 
                 //EnhancerData
                 c.RegisterDecorator(

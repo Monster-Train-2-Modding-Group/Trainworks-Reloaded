@@ -230,7 +230,7 @@
                           "properties": {
                             "boon_value": {
                               "type": "integer",
-                              "description": "The boon value, which defines how good or bad the mutator is. Negative mutators have a negative boon_value and vice versa. Controls what mutators are picked when they are randomized. This is generally a value between -15 and 15.",
+                              "description": "The boon value, which defines how good or bad the mutator is. Negative mutators have a negative boon_value and vice versa. Controls what mutators are picked when they are randomized. This is generally a value between -15 and 12.",
                               "default": 0
                             },
                             "disable_in_daily_challenges": {

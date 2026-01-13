@@ -11,6 +11,10 @@ namespace TrainworksReloaded.Base.Relic
     {
         private readonly IModLogger<RelicDataRegister> logger;
         private readonly Lazy<SaveManager> SaveManager;
+        private readonly Lazy<List<CollectableRelicData>> collectables;
+        private readonly Lazy<List<SinsData>> sins;
+        private readonly Lazy<List<EnhancerData>> enhancers;
+        private readonly Lazy<List<MutatorData>> mutators;
 
         public RelicDataRegister(GameDataClient client, IModLogger<RelicDataRegister> logger)
         {
@@ -24,6 +28,22 @@ namespace TrainworksReloaded.Base.Relic
                 {
                     return new SaveManager();
                 }
+            });
+            collectables = new(() =>
+            {
+                return (List<CollectableRelicData>)AccessTools.Field(typeof(AllGameData), "collectableRelicDatas").GetValue(SaveManager.Value.GetAllGameData());
+            });
+            sins = new(() =>
+            {
+                return (List<SinsData>)AccessTools.Field(typeof(AllGameData), "sinsDatas").GetValue(SaveManager.Value.GetAllGameData());
+            });
+            enhancers = new(() =>
+            {
+                return (List<EnhancerData>)AccessTools.Field(typeof(AllGameData), "enhancerDatas").GetValue(SaveManager.Value.GetAllGameData());
+            });
+            mutators = new(() =>
+            {
+                return (List<MutatorData>)AccessTools.Field(typeof(AllGameData), "mutatorDatas").GetValue(SaveManager.Value.GetAllGameData());
             });
             this.logger = logger;
         }
@@ -41,27 +61,22 @@ namespace TrainworksReloaded.Base.Relic
         public void Register(string key, RelicData item)
         {
             logger.Log(LogLevel.Info, $"Register Relic {key}... ");
-            var gamedata = SaveManager.Value.GetAllGameData();
+            
             if (item is CollectableRelicData collectableRelic)
             {
-                var RelicDatas =
-                    (List<CollectableRelicData>)
-                        AccessTools.Field(typeof(AllGameData), "collectableRelicDatas").GetValue(gamedata);
-                RelicDatas.Add(collectableRelic);
+                collectables.Value.Add(collectableRelic);
             }
             else if (item is EnhancerData enhancerData)
             {
-                var enhancerDatas =
-                    (List<EnhancerData>)
-                        AccessTools.Field(typeof(AllGameData), "enhancerDatas").GetValue(gamedata);
-                enhancerDatas.Add(enhancerData);
+                enhancers.Value.Add(enhancerData);
             }
             else if (item is SinsData sinsData)
             {
-                var sinsDatas =
-                    (List<SinsData>)
-                        AccessTools.Field(typeof(AllGameData), "sinsDatas").GetValue(gamedata);
-                sinsDatas.Add(sinsData);
+                sins.Value.Add(sinsData);
+            }
+            else if (item is MutatorData mutatorData)
+            {
+                mutators.Value.Add(mutatorData);
             }
             Add(key, item);
         }
