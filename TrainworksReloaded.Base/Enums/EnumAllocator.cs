@@ -11,14 +11,8 @@ namespace TrainworksReloaded.Base.Enums
     /// </summary>
     internal static class EnumAllocator<TEnum> where TEnum : Enum
     {
-        private static IDictionary<string, TEnum> NameToEnum;
-        private static long NextEnumId;
-
-        static EnumAllocator()
-        {
-            NameToEnum = new Dictionary<string, TEnum>();
-            NextEnumId = Enum.GetValues(typeof(TEnum)).Cast<object>().Select(Convert.ToInt64).Max() + 1;
-        }
+        private static IDictionary<string, TEnum> NameToEnum = new Dictionary<string, TEnum>();
+        private static long NextEnumId = Enum.GetValues(typeof(TEnum)).Cast<object>().Select(Convert.ToInt64).Max() + 1;
 
         internal static TEnum GetNext()
         {
