@@ -65,7 +65,7 @@ namespace TrainworksReloaded.Base.Trait
             {
                 return null;
             }
-            var name = key.GetId("Trait", id);
+            var name = key.GetId(TemplateConstants.Trait, id);
             var data = new CardTraitData();
 
             // TraitState
