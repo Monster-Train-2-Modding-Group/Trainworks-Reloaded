@@ -17,6 +17,7 @@ using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Base.Map;
 using TrainworksReloaded.Base.Prefab;
+using TrainworksReloaded.Base.Pyre;
 using TrainworksReloaded.Base.Relic;
 using TrainworksReloaded.Base.Reward;
 using TrainworksReloaded.Base.Room;
@@ -121,7 +122,6 @@ namespace TrainworksReloaded.Plugin
                 c.Collection.Register<IDataFinalizer>(
                     [
                         typeof(AdditionalTooltipFinalizer),
-
                         typeof(CardEffectFinalizer),
                         typeof(CardTraitDataFinalizer),
                         typeof(CardUpgradeFinalizer),
@@ -149,6 +149,7 @@ namespace TrainworksReloaded.Plugin
                         typeof(GameObjectFinalizer),
                         typeof(ClassCardStyleFinalizer),
                         typeof(SoundCueFinalizer),
+                        typeof(PyreHeartDataFinalizer),
                         // Has to run last. Sounds are added to the GameObjects which isn't available until GameObject finalizers has ran..
                         typeof(CharacterDataFinalizer),
                         typeof(CardDataFinalizer),
@@ -542,6 +543,21 @@ namespace TrainworksReloaded.Plugin
                     pipeline.Run(x);
                 });
 
+                //Register PyreHeartData
+                c.RegisterSingleton<IRegister<PyreHeartData>, PyreHeartDataRegister>();
+                c.RegisterSingleton<PyreHeartDataRegister, PyreHeartDataRegister>();
+                c.Register<
+                    IDataPipeline<IRegister<PyreHeartData>, PyreHeartData>,
+                    PyreHeartDataPipeline
+                >();
+                c.RegisterInitializer<IRegister<PyreHeartData>>(x =>
+                {
+                    var pipeline = c.GetInstance<
+                        IDataPipeline<IRegister<PyreHeartData>, PyreHeartData>
+                    >();
+                    pipeline.Run(x);
+                });
+
                 //Register Card Trigger
                 c.RegisterSingleton<IRegister<CardTriggerEffectData>, CardTriggerEffectRegister>();
                 c.RegisterSingleton<CardTriggerEffectRegister, CardTriggerEffectRegister>();
@@ -703,7 +719,8 @@ namespace TrainworksReloaded.Plugin
                         typeof(CollectableRelicDataFactory),
                         typeof(EnhancerDataFactory),
                         typeof(MutatorDataFactory),
-                        typeof(SinsDataFactory)
+                        typeof(PyreArtifactDataFactory),
+                        typeof(SinsDataFactory),
                     ],
                     Lifestyle.Singleton
                 );

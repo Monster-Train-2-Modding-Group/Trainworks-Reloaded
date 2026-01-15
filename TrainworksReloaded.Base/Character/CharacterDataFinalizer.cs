@@ -31,6 +31,7 @@ namespace TrainworksReloaded.Base.Character
         private readonly IRegister<RoomModifierData> roomModifierRegister;
         private readonly IRegister<RelicData> relicRegister;
         private readonly IRegister<SoundCueDefinition> soundCueRegister;
+        private readonly IRegister<PyreHeartData> pyreHeartRegister;
         private readonly FallbackDataProvider dataProvider;
 
         public CharacterDataFinalizer(
@@ -47,6 +48,7 @@ namespace TrainworksReloaded.Base.Character
             IRegister<RoomModifierData> roomModifierRegister,
             IRegister<RelicData> relicRegister,
             IRegister<SoundCueDefinition> soundCueRegister,
+            IRegister<PyreHeartData> pyreHeartRegister,
             FallbackDataProvider dataProvider
         )
         {
@@ -63,6 +65,7 @@ namespace TrainworksReloaded.Base.Character
             this.roomModifierRegister = roomModifierRegister;
             this.relicRegister = relicRegister;
             this.soundCueRegister = soundCueRegister;
+            this.pyreHeartRegister = pyreHeartRegister;
             this.dataProvider = dataProvider;
         }
 
@@ -370,6 +373,19 @@ namespace TrainworksReloaded.Base.Character
             if (overrideMode == OverrideMode.Replace && relicReference == null && relicConfig.Exists())
             {
                 AccessTools.Field(typeof(CharacterData), "enemyRelicData").SetValue(data, null);
+            }
+
+            var pyreHeartConfig = configuration.GetSection("pyre_heart_data");
+            AccessTools.Field(typeof(CharacterData), "pyreHeartData").SetValue(data, copyData.GetPyreHeartData());
+            var pyreHeartReference = pyreHeartConfig.ParseReference();
+            if (pyreHeartReference != null)
+            {
+                pyreHeartRegister.TryLookupName(pyreHeartReference.ToId(key, TemplateConstants.PyreHeart), out var pyreHeart, out var _, pyreHeartReference.context);
+                AccessTools.Field(typeof(CharacterData), "pyreHeartData").SetValue(data, pyreHeart);
+            }
+            if (overrideMode == OverrideMode.Replace && pyreHeartReference == null && pyreHeartConfig.Exists())
+            {
+                AccessTools.Field(typeof(CharacterData), "pyreHeartData").SetValue(data, null);
             }
 
             AccessTools.Field(typeof(CharacterData), "bossActionGroups").SetValue(data, copyData.GetBossActionData());

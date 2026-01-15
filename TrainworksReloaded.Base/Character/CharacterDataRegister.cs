@@ -41,6 +41,10 @@ namespace TrainworksReloaded.Base.Character
                 (List<CharacterData>)
                     AccessTools.Field(typeof(AllGameData), "characterDatas").GetValue(gamedata);
             CharacterDatas.Add(item);
+            if (item.IsPyreHeart())
+            {
+                gamedata.GetBalanceData().GetPyreHeartCharacterDatas().Add(item);
+            }
             Add(key, item);
         }
 

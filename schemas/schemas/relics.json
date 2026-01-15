@@ -24,6 +24,7 @@
               "enhancer",
               "sin",
               "mutator",
+              "pyre_artifact",
               null
             ],
             "description": "Type of relic."

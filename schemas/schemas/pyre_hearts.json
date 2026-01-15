@@ -1,0 +1,101 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/vfxs.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "pyre_hearts": {
+      "type": "array",
+      "description": "A collection of pyre hearts.",
+      "items": {
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "activated_texts": {
+            "$ref": "../definitions/parse_term.json"
+          },
+          "attack": {
+            "type": "integer",
+            "default": 20,
+            "description": "Starting attack for the pyre heart."
+          },
+          "body_color": {
+            "$ref": "../definitions/color.json",
+            "default": {
+              "r": 1.0,
+              "g": 1.0,
+              "b": 1.0,
+              "a": 1.0
+            },
+            "description": "Color RGBA values (0-1)"
+          },
+          "hp": {
+            "type": "integer",
+            "default": 80,
+            "description": "Starting HP for the pyre heart."
+          },
+          "icon": {
+            "$ref": "../definitions/reference.json",
+            "description": "Icon used in various locations should be 208x268"
+          },
+          "icon_boss_win": {
+            "$ref": "../definitions/reference.json",
+            "description": "Icon used in various locations should be 208x268"
+          },
+          "icon_defeat": {
+            "$ref": "../definitions/reference.json",
+            "description": "Icon used in various locations should be 208x268"
+          },
+          "icon_win": {
+            "$ref": "../definitions/reference.json",
+            "description": "Icon used in various locations should be 208x268"
+          },
+          "id": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique identifier for this pyre heart."
+          },
+          "pyre_artifact": {
+            "$ref": "../definitions/reference.json",
+            "description": "Reference to an relic of type pyre_artifact which specifies the pyre heart's effect."
+          },
+          "unlock_criteria": {
+            "type": "object",
+            "properties": {
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json"
+              },
+              "condition": {
+                "$ref": "../definitions/metagame_tracked_value.json",
+                "description": "Condition to unlock this pyre heart."
+              },
+              "param_int": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Parameter for unlock condition."
+              }
+            }
+          },
+          "upgrade_attack": {
+            "type": "array",
+            "items": { "type": "integer" },
+            "default": [],
+            "description": "Attack stat granted per boss artifact gained."
+          },
+          "upgrade_hp": {
+            "type": "array",
+            "items": { "type": "integer" },
+            "default": [],
+            "description": "Attack stat granted per boss artifact gained."
+          },
+          "vfx_activated_hud": {
+            "$ref": "../definitions/reference.json"
+          },
+          "vfx_activated_popup": {
+            "$ref": "../definitions/reference.json"
+          }
+        },
+        "description": "A pyre heart that specifies its stats, effects, and upgrades from major boss artifacts."
+      }
+    }
+  }
+}

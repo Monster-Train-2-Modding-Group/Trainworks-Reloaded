@@ -28,7 +28,7 @@
           },
           "attack_damage": {
             "type": "integer",
-            "description": "Base damage dealt by this character's attacks.",
+            "description": "Base damage dealt by this character's attacks. This is ignored for PyreHearts, it is set in the PyreHeartData instead.",
             "default": 0
           },
           "attack_teleports_to_defender": {
@@ -154,7 +154,7 @@
           },
           "health": {
             "type": "integer",
-            "description": "Base health of this character.",
+            "description": "Base health of this character. This is ignored for PyreHearts, it is set in the PyreHeartData instead.",
             "default": 0
           },
           "hide_in_logbook": {
@@ -184,7 +184,7 @@
           },
           "is_pyre_heart": {
             "type": "boolean",
-            "description": "Whether this character is the Pyre."
+            "description": "Whether this character is a Pyre Heart."
           },
           "loops_between_train_floors": {
             "type": "boolean",
@@ -214,8 +214,8 @@
             "description": "Visual effect played for this character's projectiles."
           },
           "pyre_heart_data": {
-            "type": "string",
-            "description": "Reference to the Pyre heart data (not implemented yet)."
+            "$ref": "../definitions/reference.json",
+            "description": "Reference to the PyreHeartData for characters with is_pyre_heart set to true."
           },
           "room_modifiers": {
             "type": "array",

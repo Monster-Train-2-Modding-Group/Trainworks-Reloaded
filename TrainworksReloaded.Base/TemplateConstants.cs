@@ -41,5 +41,6 @@
         public const string TrackedValueTypeEnum = "TrackedValueTypeEnum";
         public const string AudioClip = "AudioClip";
         public const string SoundCueDefinition = "SoundCueDefinition";
+        public const string PyreHeart = "PyreHeart";
     }
 }
