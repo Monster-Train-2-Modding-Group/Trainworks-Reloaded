@@ -34,7 +34,6 @@ namespace TrainworksReloaded.Base.Character
 
         public List<IDefinition<CharacterData>> Run(IRegister<CharacterData> service)
         {
-            // We load all cards and then finalize them to avoid dependency loops
             var processList = new List<IDefinition<CharacterData>>();
             foreach (var config in atlas.PluginDefinitions)
             {
@@ -46,7 +45,7 @@ namespace TrainworksReloaded.Base.Character
         }
 
         /// <summary>
-        /// Loads the Card Definitions in
+        /// Loads the Character Definitions
         /// </summary>
         /// <param name="service"></param>
         /// <param name="key"></param>
