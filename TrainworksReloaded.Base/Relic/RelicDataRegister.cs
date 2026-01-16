@@ -15,6 +15,7 @@ namespace TrainworksReloaded.Base.Relic
         private readonly Lazy<List<SinsData>> sins;
         private readonly Lazy<List<EnhancerData>> enhancers;
         private readonly Lazy<List<MutatorData>> mutators;
+        private readonly Lazy<List<EndlessMutatorData>> endless_mutators;
 
         public RelicDataRegister(GameDataClient client, IModLogger<RelicDataRegister> logger)
         {
@@ -44,6 +45,10 @@ namespace TrainworksReloaded.Base.Relic
             mutators = new(() =>
             {
                 return (List<MutatorData>)AccessTools.Field(typeof(AllGameData), "mutatorDatas").GetValue(SaveManager.Value.GetAllGameData());
+            });
+            endless_mutators = new(() =>
+            {
+                return (List<EndlessMutatorData>)AccessTools.Field(typeof(AllGameData), "endlessMutatorDatas").GetValue(SaveManager.Value.GetAllGameData());
             });
             this.logger = logger;
         }
@@ -77,6 +82,10 @@ namespace TrainworksReloaded.Base.Relic
             else if (item is MutatorData mutatorData)
             {
                 mutators.Value.Add(mutatorData);
+            }
+            else if (item is EndlessMutatorData endlessMutatorData)
+            {
+                endless_mutators.Value.Add(endlessMutatorData);
             }
             Add(key, item);
         }
