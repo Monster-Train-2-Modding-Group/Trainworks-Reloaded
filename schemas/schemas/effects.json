@@ -146,6 +146,22 @@
             "description": "Subtype parameter for the effect.",
             "default": "SubtypesData_None"
           },
+          "param_timing_delays": {
+            "type": "object",
+            "properties": {
+              "normal": {
+                "type": "number"
+              },
+              "fast": {
+                "type": "number"
+              },
+              "ultra": {
+                "type": "number"
+              }
+            },
+            "description": "Timing delays.",
+            "default": {"normal": 0.0, "fast": 0.0, "ultra": 0.0}
+          },
           "param_trigger": {
             "$ref": "../definitions/character_trigger.json",
             "description": "Trigger parameter for the effect. This is a reference to a defined Character Trigger Enum.",

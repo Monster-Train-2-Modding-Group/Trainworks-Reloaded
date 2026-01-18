@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using System.Numerics;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Extensions;
@@ -328,8 +329,21 @@ namespace TrainworksReloaded.Base.Effect
                 .Field(typeof(CardEffectData), "animToPlay")
                 .SetValue(data, configuration.GetSection("anim_to_play").ParseAnim() ?? animToPlay);
 
+            var timingDelays = ParseTimingDelays(configuration.GetSection("param_timing_delays"));
+            AccessTools
+                .Field(typeof(CardEffectData), "paramTimingDelays")
+                .SetValue(data, timingDelays);
+
             service.Register(name, data);
             return new CardEffectDefinition(key, data, configuration);
+        }
+
+        private Vector3 ParseTimingDelays(IConfiguration configuration)
+        {
+            var x = configuration.GetSection("normal").ParseFloat() ?? 0.0f;
+            var y = configuration.GetSection("fast").ParseFloat() ?? 0.0f;
+            var z = configuration.GetSection("ultra").ParseFloat() ?? 0.0f;
+            return new Vector3(x, y, z);
         }
     }
 }
