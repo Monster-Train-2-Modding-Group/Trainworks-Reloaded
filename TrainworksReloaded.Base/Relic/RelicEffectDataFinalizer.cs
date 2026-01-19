@@ -272,20 +272,20 @@ namespace TrainworksReloaded.Base.Relic
 
             //handle paramReward 
             var rewardReference = configuration.GetSection("param_reward").ParseReference();
-            if (rewardReference != null && rewardRegister.TryLookupId(rewardReference.ToId(key, TemplateConstants.RewardData), out var reward, out var _, rewardReference.context))
+            if (rewardReference != null && rewardRegister.TryLookupName(rewardReference.ToId(key, TemplateConstants.RewardData), out var reward, out var _, rewardReference.context))
             {
                 AccessTools.Field(typeof(RelicEffectData), "paramReward").SetValue(data, reward);
             }
 
             //handle paramReward 2
             var rewardReference2 = configuration.GetSection("param_reward_2").ParseReference();
-            if (rewardReference2 != null && rewardRegister.TryLookupId(rewardReference2.ToId(key, TemplateConstants.RewardData), out var reward2, out var _, rewardReference2.context))
+            if (rewardReference2 != null && rewardRegister.TryLookupName(rewardReference2.ToId(key, TemplateConstants.RewardData), out var reward2, out var _, rewardReference2.context))
             {
                 AccessTools.Field(typeof(RelicEffectData), "paramReward2").SetValue(data, reward2);
             }
 
             var rewardReference3 = configuration.GetSection("param_grantable_reward").ParseReference();
-            if (rewardReference3 != null && rewardRegister.TryLookupId(rewardReference3.ToId(key, TemplateConstants.RewardData), out var reward3, out var _, rewardReference3.context))
+            if (rewardReference3 != null && rewardRegister.TryLookupName(rewardReference3.ToId(key, TemplateConstants.RewardData), out var reward3, out var _, rewardReference3.context))
             {
                 if (reward3 is not GrantableRewardData grantableReward)
                 {
