@@ -118,12 +118,57 @@
             "$ref": "../definitions/card_pool.json",
             "description": "Card pool identifier"
           },
+          "param_card_set_builder": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "card_pool": {
+                  "$ref": "../definitions/card_pool.json"
+                },
+                "class_type": {
+                  "$ref": "../definitions/class_type.json",
+                  "default": "main"
+                },
+                "num_copies": {
+                  "type": "integer",
+                  "default": 1,
+                  "minimum": 1
+                },
+                "has_rarity_condition": {
+                  "type": "boolean",
+                  "description": "Whether a card of a specific rarity should be acquired from this pull."
+                },
+                "rarity": {
+                  "$ref": "../definitions/rarity.json"
+                },
+                "showcase_at_run_start": {
+                  "type": "boolean",
+                  "description": "If enabled, will show resulting card at starting screen with this covenant enabled."
+                }
+              }
+            }
+          },
           "param_characters": {
             "type": "array",
             "items": {
               "$ref": "../definitions/character.json"
             },
             "description": "Array of characters"
+          },
+          "param_character_substitution": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "unit_before": {
+                  "$ref": "../definitions/character.json"
+                },
+                "unit_after": {
+                  "$ref": "../definitions/character.json"
+                }
+              }
+            }
           },
           "param_enhancer_pool": {
             "$ref": "../definitions/enhancer_pool.json",
@@ -134,6 +179,10 @@
             "description": "Float parameter",
             "default": 0.0
           },
+          "param_grantable_reward": {
+            "$ref": "../definitions/reward.json",
+            "description": "Grantable reward identifier."
+          },
           "param_int": {
             "type": "integer",
             "description": "Primary integer parameter"
@@ -142,16 +191,49 @@
             "type": "integer",
             "description": "Secondary integer parameter"
           },
+          "param_random_champion_pool": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "champion_card": {
+                  "$ref": "../definitions/card.json"
+                },
+                "upgrades": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "../definitions/card_upgrade.json"
+                  }
+                }
+              }
+            }
+          },
+          "param_rarity_multipliers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["rarity", "multiplier"],
+              "properties": {
+                "rarity": {
+                  "$ref": "../definitions/rarity.json"
+                },
+                "multiplier": {
+                  "type": "number",
+                  "default": 1.0
+                }
+              }
+            }
+          },
           "param_relic": {
             "$ref": "../definitions/collectable_relic.json",
             "description": "Relic data identifier, reference to a collectable relic"
           },
           "param_reward": {
-            "$ref": "../definitions/reference.json",
+            "$ref": "../definitions/reward.json",
             "description": "Reward identifier"
           },
           "param_reward_2": {
-            "$ref": "../definitions/reference.json",
+            "$ref": "../definitions/reward.json",
             "description": "Secondary reward identifier"
           },
           "param_status_effects": {

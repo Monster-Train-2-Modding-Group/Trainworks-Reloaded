@@ -1,10 +1,13 @@
 using HarmonyLib;
+using Malee;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using TrainworksReloaded.Base.Enums;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
+using UnityEngine;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.Relic
@@ -177,6 +180,22 @@ namespace TrainworksReloaded.Base.Relic
             }
             AccessTools.Field(typeof(RelicEffectData), "paramCharacters").SetValue(data, characters);
 
+            var entries = new List<CharacterSubstitution.Entry>();
+            foreach (var item in configuration.GetSection("param_character_substitution").GetChildren())
+            {
+                var entry = ParseCharacterSubstitutionEntry(key, item);
+                if (entry != null)
+                {
+                    entries.Add(entry);
+                }
+            }
+            if (entries.Count > 0)
+            {
+                var characterSubstitution = ScriptableObject.CreateInstance<CharacterSubstitution>();
+                AccessTools.Field(typeof(CharacterSubstitution), "entries").SetValue(characterSubstitution, entries);
+                AccessTools.Field(typeof(RelicEffectData), "paramCharacterSubstitution").SetValue(data, characterSubstitution);
+            }
+
             // Handle traits
             var traits = new List<CardTraitData>();
             var traitsReferences = configuration.GetSection("traits")
@@ -263,6 +282,19 @@ namespace TrainworksReloaded.Base.Relic
             if (rewardReference2 != null && rewardRegister.TryLookupId(rewardReference2.ToId(key, TemplateConstants.RewardData), out var reward2, out var _, rewardReference2.context))
             {
                 AccessTools.Field(typeof(RelicEffectData), "paramReward2").SetValue(data, reward2);
+            }
+
+            var rewardReference3 = configuration.GetSection("param_grantable_reward").ParseReference();
+            if (rewardReference3 != null && rewardRegister.TryLookupId(rewardReference3.ToId(key, TemplateConstants.RewardData), out var reward3, out var _, rewardReference3.context))
+            {
+                if (reward3 is not GrantableRewardData grantableReward)
+                {
+                    logger.Log(LogLevel.Warning, $"RelicEffectData {definition.Id} Attempted to add a non-GrantableRewardData RewardData {reward3.name}. Ignoring...");
+                }
+                else
+                {
+                    AccessTools.Field(typeof(RelicEffectData), "paramGrantableReward").SetValue(data, grantableReward);
+                }
             }
 
             //handle paramCardFilter
@@ -417,6 +449,136 @@ namespace TrainworksReloaded.Base.Relic
                 }
             }
             AccessTools.Field(typeof(RelicEffectData), "effectConditions").SetValue(data, conditions);
+
+            List<RandomChampionPool.GrantedChampionInfo> champions = [];
+            foreach (var item in configuration.GetSection("param_random_champion_pool").GetChildren())
+            {
+                var champ = ParseGrantedChampionInfo(key, item);
+                if (champ != null)
+                {
+                    champions.Add(champ);
+                }
+            }
+            if (champions.Count > 0)
+            {
+                var championPool = ScriptableObject.CreateInstance<RandomChampionPool>();
+                var championPoolData = AccessTools.Field(typeof(RandomChampionPool), "championInfoList").GetValue(championPool) as ReorderableArray<RandomChampionPool.GrantedChampionInfo>;
+                championPoolData!.CopyFrom(champions);
+                AccessTools.Field(typeof(RelicEffectData), "paramRandomChampionPool").SetValue(data, championPool);
+            }
+
+            List<CardPull> cardPulls = [];
+            foreach (var item in configuration.GetSection("param_card_set_builder").GetChildren())
+            {
+                var cardPull = ParseCardPull(key, item);
+                if (cardPull != null)
+                {
+                    cardPulls.Add(cardPull);
+                }
+            }
+            if (cardPulls.Count > 0)
+            {
+                var cardSetBuilder = ScriptableObject.CreateInstance<CardSetBuilder>();
+                AccessTools.Field(typeof(CardSetBuilder), "paramCardPulls").SetValue(cardSetBuilder, cardPulls);
+                AccessTools.Field(typeof(RelicEffectData), "paramCardSetBuilder").SetValue(data, cardSetBuilder);
+            }
+        }
+
+        RandomChampionPool.GrantedChampionInfo? ParseGrantedChampionInfo(string key, IConfigurationSection configuration)
+        {
+            if (!configuration.Exists())
+                return null;
+
+            var cardReference = configuration.GetSection("champion_card").ParseReference();
+            CardData? card = null;
+            if (cardReference != null && cardRegister.TryLookupName(cardReference.ToId(key, TemplateConstants.Card), out var lookup, out var _, cardReference.context))
+            {
+                card = lookup;
+            }
+
+            if (card == null)
+                return null;
+
+            List<CardUpgradeData> upgrades = [];
+            var upgradeReferences = configuration
+                .GetSection("upgrades")
+                .GetChildren()
+                .Select(x => x.ParseReference())
+                .Where(x => x != null)
+                .Cast<ReferencedObject>();
+            foreach (var reference in upgradeReferences)
+            {
+                if (upgradeRegister.TryLookupName(reference.ToId(key, TemplateConstants.Upgrade), out var upgradeLookup, out var _, reference.context))
+                {
+                    upgrades.Add(upgradeLookup);
+                }
+            }
+
+            return new RandomChampionPool.GrantedChampionInfo { 
+                championCard = card,
+                upgrades = upgrades,
+            };
+        }
+
+        CharacterSubstitution.Entry? ParseCharacterSubstitutionEntry(string key, IConfigurationSection configuration)
+        {
+            if (!configuration.Exists())
+                return null;
+
+            var characterReference = configuration.GetSection("unit_before").ParseReference();
+            CharacterData? character = null;
+            if (characterReference != null && characterRegister.TryLookupName(characterReference.ToId(key, TemplateConstants.Character), out var lookup, out var _, characterReference.context))
+            {
+                character = lookup;
+            }
+
+            var characterReference2 = configuration.GetSection("unit_after").ParseReference();
+            CharacterData? character2 = null;
+            if (characterReference2 != null && characterRegister.TryLookupName(characterReference2.ToId(key, TemplateConstants.Character), out lookup, out var _, characterReference2.context))
+            {
+                character2 = lookup;
+            }
+
+            if (character == null || character2 == null)
+                return null;
+
+            return new CharacterSubstitution.Entry
+            {
+                UnitBefore = character,
+                UnitAfter = character2,
+            };
+        }
+
+        CardPull? ParseCardPull(string key, IConfigurationSection configuration)
+        {
+            var data = ScriptableObject.CreateInstance<CardPull>();
+
+            var cardPoolReference = configuration.GetSection("card_pool").ParseReference();
+            CardPool? cardPool = null;
+            if (cardPoolReference != null && cardPoolRegister.TryLookupName(cardPoolReference.ToId(key, TemplateConstants.CardPool), out var lookup, out var _, cardPoolReference.context))
+            {
+                cardPool = lookup;
+            }
+            AccessTools.Field(typeof(CardPull), "cardPool").SetValue(data, cardPool);
+
+            var classType = configuration.GetSection("class_type").ParseClassType() ?? RunState.ClassType.MainClass;
+            AccessTools.Field(typeof(CardPull), "classType").SetValue(data, classType);
+
+            var copies = configuration.GetSection("num_copies").ParseInt() ?? 1;
+            if (copies <= 0)
+                copies = 1;
+            AccessTools.Field(typeof(CardPull), "numCopies").SetValue(data, (uint)copies);
+
+            var hasRarityCondition = configuration.GetSection("has_rarity_condition").ParseBool() ?? false;
+            AccessTools.Field(typeof(CardPull), "hasRarityCondition").SetValue(data, hasRarityCondition);
+
+            var rarity = configuration.GetSection("rarity").ParseRarity() ?? CollectableRarity.Common;
+            AccessTools.Field(typeof(CardPull), "cardRarity").SetValue(data, rarity);
+
+            var showcaseAtRunStart = configuration.GetSection("showcase_at_run_start").ParseBool() ?? false;
+            AccessTools.Field(typeof(CardPull), "showcaseAtRunStart").SetValue(data, showcaseAtRunStart);
+
+            return data;
         }
     }
 }

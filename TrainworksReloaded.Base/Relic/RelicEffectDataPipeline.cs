@@ -13,9 +13,9 @@ namespace TrainworksReloaded.Base.Relic
 {
     public class RelicEffectDataPipeline : IDataPipeline<IRegister<RelicEffectData>, RelicEffectData>
     {
-        private readonly PluginAtlas _atlas;
-        private readonly IModLogger<RelicEffectDataPipeline> _logger;
-        private readonly IRegister<LocalizationTerm> _termRegister;
+        private readonly PluginAtlas atlas;
+        private readonly IModLogger<RelicEffectDataPipeline> logger;
+        private readonly IRegister<LocalizationTerm> termRegister;
 
         public RelicEffectDataPipeline(
             PluginAtlas atlas,
@@ -23,15 +23,15 @@ namespace TrainworksReloaded.Base.Relic
             IRegister<LocalizationTerm> termRegister
         )
         {
-            _atlas = atlas;
-            _logger = logger;
-            _termRegister = termRegister;
+            this.atlas = atlas;
+            this.logger = logger;
+            this.termRegister = termRegister;
         }
 
         public List<IDefinition<RelicEffectData>> Run(IRegister<RelicEffectData> register)
         {
             var processList = new List<IDefinition<RelicEffectData>>();
-            foreach (var config in _atlas.PluginDefinitions)
+            foreach (var config in atlas.PluginDefinitions)
             {
                 processList.AddRange(LoadRelicEffects(register, config.Key, config.Value.Configuration));
             }
@@ -65,7 +65,7 @@ namespace TrainworksReloaded.Base.Relic
             var effectId = config.GetSection("id").ParseString();
             if (string.IsNullOrEmpty(effectId))
             {
-                _logger.Log(LogLevel.Error, $"Relic effect configuration missing required 'id' field");
+                logger.Log(LogLevel.Error, $"Relic effect configuration missing required 'id' field");
                 return null;
             }
 
@@ -78,7 +78,7 @@ namespace TrainworksReloaded.Base.Relic
                 return null;
 
             var modReference = config.GetSection("mod_reference").Value ?? key;
-            var assembly = _atlas.PluginDefinitions.GetValueOrDefault(modReference)?.Assembly;
+            var assembly = atlas.PluginDefinitions.GetValueOrDefault(modReference)?.Assembly;
             if (
                 !effectStateName.GetFullyQualifiedName<RelicEffectBase>(
                     assembly,
@@ -86,7 +86,7 @@ namespace TrainworksReloaded.Base.Relic
                 )
             )
             {
-                _logger.Log(LogLevel.Error, $"Failed to load relic effect state name {effectStateName} in {effectId} mod {modReference}, Make sure the class exists in {modReference} and that the class inherits from RelicEffectBase.");
+                logger.Log(LogLevel.Error, $"Failed to load relic effect state name {effectStateName} in {effectId} mod {modReference}, Make sure the class exists in {modReference} and that the class inherits from RelicEffectBase.");
                 return null;
             }
             AccessTools.Field(typeof(RelicEffectData), "relicEffectClassName").SetValue(data, fullyQualifiedName);
@@ -102,7 +102,7 @@ namespace TrainworksReloaded.Base.Relic
             {
                 AccessTools.Field(typeof(RelicEffectData), "tooltipTitleKey").SetValue(data, tooltipTitleKey);
                 toolTipTitleTerm.Key = tooltipTitleKey;
-                _termRegister.Register(tooltipTitleKey, toolTipTitleTerm);
+                termRegister.Register(tooltipTitleKey, toolTipTitleTerm);
             }
 
             var tooltipBodyTerm = config.GetSection("tooltip_body").ParseLocalizationTerm();
@@ -110,7 +110,7 @@ namespace TrainworksReloaded.Base.Relic
             {
                 AccessTools.Field(typeof(RelicEffectData), "tooltipBodyKey").SetValue(data, tooltipBodyKey);
                 tooltipBodyTerm.Key = tooltipBodyKey;
-                _termRegister.Register(tooltipBodyKey, tooltipBodyTerm);
+                termRegister.Register(tooltipBodyKey, tooltipBodyTerm);
             }
 
             // Handle source team
@@ -177,12 +177,12 @@ namespace TrainworksReloaded.Base.Relic
 
             // Handle source card trait
             var sourceCardTraitConfig = config.GetSection("source_card_trait");
-            var sourceCardTraitName = ParseEffectType<CardTraitState>(sourceCardTraitConfig, key, _atlas, effectId);
+            var sourceCardTraitName = ParseEffectType<CardTraitState>(sourceCardTraitConfig, key, atlas, effectId);
             AccessTools.Field(typeof(RelicEffectData), "sourceCardTraitParam").SetValue(data, sourceCardTraitName ?? "");
 
             // Handle target card trait
             var targetCardTraitConfig = config.GetSection("target_card_trait");
-            var targetCardTraitName = ParseEffectType<CardTraitState>(targetCardTraitConfig, key, _atlas, effectId);
+            var targetCardTraitName = ParseEffectType<CardTraitState>(targetCardTraitConfig, key, atlas, effectId);
             AccessTools.Field(typeof(RelicEffectData), "targetCardTraitParam").SetValue(data, targetCardTraitName ?? "");
 
             // Handle rarity ticket type
@@ -193,6 +193,10 @@ namespace TrainworksReloaded.Base.Relic
             var cardRarityType = config.GetDeprecatedSection("card_rarity_type", "param_card_rarity_type").ParseRarity() ?? CollectableRarity.Common;
             AccessTools.Field(typeof(RelicEffectData), "paramCardRarityType").SetValue(data, cardRarityType);
 
+            var rarityMultipliers = config.GetSection("param_rarity_multipliers").GetChildren().Select(x =>
+                new RarityTicketMultiplier { rarityType = x.GetSection("rarity").ParseRarity() ?? CollectableRarity.Common, ticketValueMultiplier = x.GetSection("multiplier").ParseFloat() ?? 1.0f }
+            ).ToList();
+            AccessTools.Field(typeof(RelicEffectData), "paramRarityMultipliers").SetValue(data, rarityMultipliers);
 
             //Handle cardTriggers
             var cardTriggers = config.GetSection("card_triggers").GetChildren()
@@ -204,15 +208,6 @@ namespace TrainworksReloaded.Base.Relic
             {
                 AccessTools.Field(typeof(RelicEffectData), "cardTriggers").SetValue(data, cardTriggers);
             }
-
-            //handle relic effect conditions
-            var relicEffectConditions = new List<RelicEffectCondition>();
-            var relicEffectConditionsConfig = config.GetSection("relic_effect_conditions").GetChildren();
-            foreach (var relicEffectConditionConfig in relicEffectConditionsConfig)
-            {
-                // TODO: implement relic effect conditions
-            }
-            AccessTools.Field(typeof(RelicEffectData), "effectConditions").SetValue(data, relicEffectConditions);
 
             service.Register(name, data);
             return new RelicEffectDataDefinition(key, data, config)
@@ -233,7 +228,7 @@ namespace TrainworksReloaded.Base.Relic
             {
                 return fullyQualifiedName;
             }
-            _logger.Log(LogLevel.Warning, $"Failed to load class name {name} in relic_effect {id} with mod reference {modReference}, Note that this isn't a reference to a CardTraitData, but a class that inherits from {typeof(T).Name}.");
+            logger.Log(LogLevel.Warning, $"Failed to load class name {name} in relic_effect {id} with mod reference {modReference}, Note that this isn't a reference to a CardTraitData, but a class that inherits from {typeof(T).Name}.");
             return null;
         }
     }
