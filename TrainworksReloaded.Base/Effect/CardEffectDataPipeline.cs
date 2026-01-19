@@ -1,12 +1,12 @@
 ﻿using HarmonyLib;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-using System.Numerics;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
+using UnityEngine;
 
 namespace TrainworksReloaded.Base.Effect
 {
