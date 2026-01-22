@@ -4,7 +4,7 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "MT2"
 name = "Trainworks_Reloaded"
-versionNumber = "0.6.8"
+versionNumber = "0.6.9"
 description = "A Data Loader and Injection Engine for Monster Train 2"
 websiteUrl = "https://github.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded"
 containsNsfwContent = false
