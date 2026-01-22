@@ -5,14 +5,15 @@
     {
       "type": "string",
       "enum": [
-        "UnitUpgradePoolCommon",
-        "UnitUpgradePoolRare",
-        "SpellUpgradePoolCostReduction",
-        "SpellUpgradePoolCommon",
-        "SpellUpgradePoolRare",
+        "DominionUpgradePool",
         "DraftUpgradePool",
         "MalickaDraftUpgradePool",
-        null
+        "SpellUpgradePoolCommon",
+        "SpellUpgradePoolCostReduction",
+        "SpellUpgradePoolRare",
+        "TitanSavageryUpgradePool",
+        "UnitUpgradePoolCommon",
+        "UnitUpgradePoolRare"
       ]
     },
     {

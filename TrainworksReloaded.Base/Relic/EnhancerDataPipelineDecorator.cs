@@ -63,22 +63,6 @@ namespace TrainworksReloaded.Base.Relic
 
             var numCardsToShowInUpgradeScreen = configuration.GetSection("num_cards_to_show_in_upgrade_screen").ParseInt() ?? -1;
             AccessTools.Field(typeof(EnhancerData), "numCardsToShowInUpgradeScreen").SetValue(enhancer, numCardsToShowInUpgradeScreen);
-
-            // Handle pools
-            // TODO move to the finalizer and directly add to the EnhancerPool
-            foreach (var child in configuration.GetSection("pools").GetChildren())
-            {
-                var pool = child?.ParseString();
-                if (pool == null) continue;
-
-                if (!enhancerPoolDelegator.EnhancerPoolToData.ContainsKey(pool))
-                {
-                    enhancerPoolDelegator.EnhancerPoolToData[pool] = [];
-                }
-                enhancerPoolDelegator.EnhancerPoolToData[pool].Add(enhancer);
-
-                logger.Log(LogLevel.Debug, $"Added enhancer {definition.Id.ToId(key, TemplateConstants.RelicData)} to pool: {pool}");
-            }
         }
     }
 }

@@ -88,35 +88,6 @@ namespace TrainworksReloaded.Base.Relic
             // Handle force update count label flag
             var forceUpdateCountLabel = configuration.GetSection("force_update_count_label").ParseBool() ?? false;
             AccessTools.Field(typeof(CollectableRelicData), "forceUpdateCountLabel").SetValue(collectableRelic, forceUpdateCountLabel);
-            // Handle pool
-            // TODO remove in favor of pools.
-            var pool = configuration.GetSection("pool").ParseString();
-            if (pool != null)
-            {
-                logger.Log(LogLevel.Warning, "[Deprecation] relics.pool is deprecated and will be removed soon use relics.pools instead.");
-                if (!relicPoolDelegator.RelicPoolToData.ContainsKey(pool))
-                {
-                    relicPoolDelegator.RelicPoolToData[pool] = [];
-                }
-                relicPoolDelegator.RelicPoolToData[pool].Add(collectableRelic);
-                logger.Log(LogLevel.Debug, $"Added relic {definition.Id.ToId(key, TemplateConstants.RelicData)} to pool: {pool}");
-            }
-
-            // Handle pools
-            // TODO move to the finalizer and directly add to the RelicPool
-            foreach (var child in configuration.GetSection("pools").GetChildren())
-            {
-                var relicPool = child?.ParseString();
-                if (relicPool == null) continue;
-
-                if (!relicPoolDelegator.RelicPoolToData.ContainsKey(relicPool))
-                {
-                    relicPoolDelegator.RelicPoolToData[relicPool] = [];
-                }
-                relicPoolDelegator.RelicPoolToData[relicPool].Add(collectableRelic);
-
-                logger.Log(LogLevel.Debug, $"Added relic {definition.Id.ToId(key, TemplateConstants.RelicData)} to pool: {relicPool}");
-            }
         }
     }
 }

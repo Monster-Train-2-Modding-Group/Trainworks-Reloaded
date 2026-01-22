@@ -90,6 +90,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "definitions", "definitions"
 		schemas\definitions\card_upgrade_mask.json = schemas\definitions\card_upgrade_mask.json
 		schemas\definitions\character.json = schemas\definitions\character.json
 		schemas\definitions\character_trigger.json = schemas\definitions\character_trigger.json
+		schemas\definitions\chatter.json = schemas\definitions\chatter.json
 		schemas\definitions\classes.json = schemas\definitions\classes.json
 		schemas\definitions\class_type.json = schemas\definitions\class_type.json
 		schemas\definitions\collectable_relic.json = schemas\definitions\collectable_relic.json

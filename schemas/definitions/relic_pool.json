@@ -5,7 +5,11 @@
     {
       "type": "string",
       "enum": [
-        "megapool",
+        "BossPool",
+        "BossPoolDH",
+        "BossPoolLevel6",
+        "DragonHoard_DHRelics_RewardPool",
+        "DragonHoard10_RewardPool",
         "MegaRelicPool",
         null
       ]

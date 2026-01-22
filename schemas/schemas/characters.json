@@ -89,8 +89,8 @@
             "description": "Reference to the character's art asset."
           },
           "chatter": {
-            "$ref": "../definitions/reference.json",
-            "description": "Reference to the character's dialogue data."
+            "$ref": "../definitions/chatter.json",
+            "description": "Reference to the character's chatter data."
           },
           "chosen_variant": {
             "type": "boolean",

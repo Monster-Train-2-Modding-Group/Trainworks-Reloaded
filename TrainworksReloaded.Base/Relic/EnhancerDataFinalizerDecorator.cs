@@ -1,8 +1,11 @@
 ﻿using HarmonyLib;
+using Malee;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
+using System.Reflection;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Interfaces;
+using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.Relic
 {
@@ -11,18 +14,23 @@ namespace TrainworksReloaded.Base.Relic
         private readonly IModLogger<EnhancerDataFinalizerDecorator> logger;
         private readonly ICache<IDefinition<RelicData>> cache;
         private readonly IRegister<ClassData> classRegister;
+        private readonly IRegister<EnhancerPool> enhancerPoolRegister;
         private readonly IDataFinalizer decoratee;
+
+        private readonly FieldInfo EnhancerPoolRelicDataListField = AccessTools.Field(typeof(EnhancerPool), "relicDataList");
 
         public EnhancerDataFinalizerDecorator(
             IModLogger<EnhancerDataFinalizerDecorator> logger,
             ICache<IDefinition<RelicData>> cache,
             IRegister<ClassData> classRegister,
+            IRegister<EnhancerPool> enhancerPoolRegister,
             IDataFinalizer decoratee
         )
         {
             this.logger = logger;
             this.cache = cache;
             this.classRegister = classRegister;
+            this.enhancerPoolRegister = enhancerPoolRegister;
             this.decoratee = decoratee;
         }
 
@@ -62,6 +70,22 @@ namespace TrainworksReloaded.Base.Relic
             if (linkedClassReference != null && classRegister.TryLookupName(linkedClassReference.ToId(key, TemplateConstants.Class), out var linkedClass, out var _, linkedClassReference.context))
             {
                 AccessTools.Field(typeof(EnhancerData), "linkedClass").SetValue(enhancer, linkedClass);
+            }
+
+            var poolReferences = configuration.GetSection("pools")
+                .GetChildren()
+                .Select(x => x.ParseReference())
+                .Where(x => x != null)
+                .Cast<ReferencedObject>();
+            foreach (var poolReference in poolReferences)
+            {
+                var id = poolReference.ToId(key, TemplateConstants.RelicPool);
+                if (enhancerPoolRegister.TryLookupId(id, out var pool, out var _, poolReference.context))
+                {
+                    var relicDataList = EnhancerPoolRelicDataListField.GetValue(pool) as ReorderableArray<EnhancerData>;
+                    relicDataList?.Add(enhancer);
+                    logger.Log(LogLevel.Debug, $"Added enhancer {definition.Id.ToId(key, TemplateConstants.RelicData)} to pool: {pool}");
+                }
             }
         }
     }

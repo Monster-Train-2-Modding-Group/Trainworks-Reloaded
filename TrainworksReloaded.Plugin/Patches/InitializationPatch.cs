@@ -2,10 +2,12 @@
 using Malee;
 using SimpleInjector;
 using TrainworksReloaded.Base.Card;
+using TrainworksReloaded.Base.CardUpgrade;
 using TrainworksReloaded.Base.Class;
 using TrainworksReloaded.Base.Enums;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Base.Map;
+using TrainworksReloaded.Base.Prefab;
 using TrainworksReloaded.Base.Relic;
 using TrainworksReloaded.Base.Scenarios;
 using TrainworksReloaded.Base.Sound;
@@ -27,62 +29,10 @@ namespace TrainworksReloaded.Plugin.Patches
             // gameObjectRegister.hiddenRoot.transform.position = new Vector3(10000, 10000, 0);
 
             var logger = container.GetInstance<IModLogger<InitializationPatch>>();
-
-            var cardPoolRegister = container.GetInstance<CardPoolRegister>();
-            cardPoolRegister.PreloadAllVanillaCardPools(____assetLoadingData.AllGameData);
-
             logger.Log(LogLevel.Info, "Starting TrainworksReloaded initialization...");
 
-            //we add custom card pool so that the card data is loaded, even if it doesn't exist in any pool.
+            //we add custom card pool so that the modded card data is loaded.
             ____assetLoadingData.CardPoolsAll.Add(container.GetInstance<CardDataRegister>().CustomCardPool);
-
-            //add relic data to megapool
-            var relicDelegator = container.GetInstance<VanillaRelicPoolDelegator>();
-            logger.Log(LogLevel.Info, "Processing relic pools...");
-            foreach (var poolName in relicDelegator.RelicPoolToData.Keys)
-            {
-                var relicPool = RelicPoolRegister.GetVanillaRelicPool(____assetLoadingData.AllGameData, poolName);
-                if (relicPool == null)
-                {
-                    logger.Log(LogLevel.Warning, $"Could not find relic pool associated with {poolName}!");
-                    continue;
-                }
-                var dataList =
-                    (ReorderableArray<CollectableRelicData>)
-                        AccessTools
-                            .Field(typeof(RelicPool), "relicDataList")
-                            .GetValue(relicPool);
-                foreach (var relic in relicDelegator.RelicPoolToData[poolName])
-                {
-                    dataList.Add(relic);
-                }
-                logger.Log(LogLevel.Debug, $"Added {relicDelegator.RelicPoolToData[poolName].Count} relics to {poolName}");
-            }
-            relicDelegator.RelicPoolToData.Clear();
-            logger.Log(LogLevel.Info, "Relic pool processing complete");
-
-            logger.Log(LogLevel.Info, "Processing enhancer pools...");
-            var enhancerDelegator = container.GetInstance<VanillaEnhancerPoolDelegator>();
-            foreach (var poolName in enhancerDelegator.EnhancerPoolToData.Keys)
-            {
-                var enhancerPool = EnhancerPoolRegister.GetVanillaEnhancerPool(____assetLoadingData.AllGameData, poolName);
-                if (enhancerPool == null)
-                {
-                    logger.Log(LogLevel.Warning, $"Could not find enhancer pool associated with {poolName}!");
-                    continue;
-                }
-                var dataList =
-                    (ReorderableArray<EnhancerData>)
-                        AccessTools
-                            .Field(typeof(EnhancerPool), "relicDataList")
-                            .GetValue(enhancerPool);
-                foreach (var enhancer in enhancerDelegator.EnhancerPoolToData[poolName])
-                {
-                    dataList.Add(enhancer);
-                }
-                logger.Log(LogLevel.Debug, $"Added {enhancerDelegator.EnhancerPoolToData[poolName].Count} enhancers to {poolName}");
-            }
-            logger.Log(LogLevel.Info, "Enhancer pool processing complete");
 
             var classRegister = container.GetInstance<ClassDataRegister>();
             var classDatas =
