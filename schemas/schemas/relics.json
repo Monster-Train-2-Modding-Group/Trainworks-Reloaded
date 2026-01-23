@@ -12,10 +12,60 @@
           "type"
         ],
         "properties": {
+          "clone_id": {
+            "type": "string",
+            "description": "Vanilla relic data asset name to clone. Cloning defaults all fields to the same value as the clone. If set override_mode should also be set, by default overriding a property will replace it."
+          },
+          "descriptions": {
+            "$ref": "../definitions/parse_term.json",
+            "description": "Localization data for the relic's description"
+          },
+          "disallow_in_deployment": {
+            "type": "boolean",
+            "description": "Whether the relic is not allowed to activate during deployment phase"
+          },
+          "icon": {
+            "$ref": "../definitions/reference.json",
+            "description": "Sprite identifier for the relic's main icon"
+          },
+          "icon_small": {
+            "$ref": "../definitions/reference.json",
+            "description": "Sprite identifier for the relic's small icon (used when activated)."
+          },
           "id": {
             "minLength": 1,
             "type": "string",
             "description": "Unique identifier for the relic"
+          },
+          "lore_style": {
+            "$ref": "../definitions/lore_tooltip_style.json",
+            "description": "Style of the relic's lore tooltip"
+          },
+          "lore_tooltips": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/parse_term.json"
+            },
+            "description": "Array of localization data for the relic's lore tooltips"
+          },
+          "names": {
+            "$ref": "../definitions/parse_term.json",
+            "description": "Localization data for the relic's name"
+          },
+          "override": {
+            "$ref": "../definitions/override_mode.json",
+            "description": "Whether this relic overrides an existing character with the same ID (requires the Unity Asset Name)."
+          },
+          "relic_activated_texts": {
+            "$ref": "../definitions/parse_term.json",
+            "description": "Localization data for the relic's activation message"
+          },
+          "relic_effects": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/reference.json"
+            },
+            "description": "Array of relic effects associated with this relic"
           },
           "type": {
             "type": "string",
@@ -29,56 +79,6 @@
               null
             ],
             "description": "Type of relic."
-          },
-          "names": {
-            "$ref": "../definitions/parse_term.json",
-            "description": "Localization data for the relic's name"
-          },
-          "descriptions": {
-            "$ref": "../definitions/parse_term.json",
-            "description": "Localization data for the relic's description"
-          },
-          "relic_activated_texts": {
-            "$ref": "../definitions/parse_term.json",
-            "description": "Localization data for the relic's activation message"
-          },
-          "lore_tooltips": {
-            "type": "array",
-            "items": {
-              "$ref": "../definitions/parse_term.json"
-            },
-            "description": "Array of localization data for the relic's lore tooltips"
-          },
-          "disallow_in_deployment": {
-            "type": "boolean",
-            "description": "Whether the relic is not allowed to activate during deployment phase"
-          },
-          "lore_style": {
-            "$ref": "../definitions/lore_tooltip_style.json",
-            "description": "Style of the relic's lore tooltip"
-          },
-          "icon": {
-            "$ref": "../definitions/reference.json",
-            "description": "Sprite identifier for the relic's main icon"
-          },
-          "icon_small": {
-            "$ref": "../definitions/reference.json",
-            "description": "Sprite identifier for the relic's small icon (used when activated)."
-          },
-          "relic_effects": {
-            "type": "array",
-            "items": {
-              "$ref": "../definitions/reference.json"
-            },
-            "description": "Array of relic effects associated with this relic"
-          },
-          "override": {
-            "$ref": "../definitions/override_mode.json",
-            "description": "Whether this relic overrides an existing character with the same ID (requires the Unity Asset Name)."
-          },
-          "clone_id": {
-            "type": "string",
-            "description": "Vanilla relic data asset name to clone. Cloning defaults all fields to the same value as the clone. If set override_mode should also be set, by default overriding a property will replace it."
           }
         },
         "dependencies": {
@@ -103,20 +103,24 @@
                               "$ref": "../definitions/classes.json",
                               "description": "ID of the class this relic is associated with, leave unset for clanless."
                             },
-                            "rarity": {
-                              "$ref": "../definitions/rarity.json",
-                              "description": "Rarity of the collectable relic",
-                              "default": "common"
+                            "deprioritize_in_ftue_drafts": {
+                              "type": "boolean",
+                              "description": "Whether this relic should be deprioritized in FTUE (first time user experience) drafts",
+                              "default": false
                             },
-                            "unlock_level": {
-                              "type": "integer",
-                              "description": "Level required to unlock this relic. 0 or 1 will always be unlocked, 2 will unlock at level 2, etc.",
-                              "minimum": 0,
-                              "default": 0
+                            "force_update_count_label": {
+                              "type": "boolean",
+                              "description": "Whether to force update the count label for this relic",
+                              "default": false
                             },
                             "from_story_event": {
                               "type": "boolean",
                               "description": "Whether this relic is obtained from a story event",
+                              "default": false
+                            },
+                            "ignore_for_no_relic_achievement": {
+                              "type": "boolean",
+                              "description": "Whether this relic should be ignored for the no relic achievement",
                               "default": false
                             },
                             "is_boss_given": {
@@ -129,32 +133,28 @@
                               "description": "Whether this relic is part of the dragon's hoard",
                               "default": false
                             },
-                            "ignore_for_no_relic_achievement": {
-                              "type": "boolean",
-                              "description": "Whether this relic should be ignored for the no relic achievement",
-                              "default": false
-                            },
-                            "required_dlc": {
-                              "$ref": "../definitions/dlc.json",
-                              "description": "DLC required to see the relic",
-                              "default": "none"
-                            },
-                            "deprioritize_in_ftue_drafts": {
-                              "type": "boolean",
-                              "description": "Whether this relic should be deprioritized in FTUE (first time user experience) drafts",
-                              "default": false
-                            },
-                            "force_update_count_label": {
-                              "type": "boolean",
-                              "description": "Whether to force update the count label for this relic",
-                              "default": false
-                            },
                             "pools": {
                               "type": "array",
                               "description": "Pools to add this relic to. Not override-able or replaceable. To change pools of an existing collectable relic you must edit the RelicPool it belongs to in code.",
                               "items": {
                                 "$ref": "../definitions/relic_pool.json"
                               }
+                            },
+                            "rarity": {
+                              "$ref": "../definitions/rarity.json",
+                              "description": "Rarity of the collectable relic",
+                              "default": "common"
+                            },
+                            "required_dlc": {
+                              "$ref": "../definitions/dlc.json",
+                              "description": "DLC required to see the relic",
+                              "default": "none"
+                            },
+                            "unlock_level": {
+                              "type": "integer",
+                              "description": "Level required to unlock this relic. 0 or 1 will always be unlocked, 2 will unlock at level 2, etc.",
+                              "minimum": 0,
+                              "default": 0
                             }
                           }
                         }
@@ -182,16 +182,6 @@
                               "type": "string",
                               "description": "ID of the class this enhancer is associated with"
                             },
-                            "rarity": {
-                              "$ref": "../definitions/rarity.json",
-                              "description": "Rarity of the collectable relic",
-                              "default": "common"
-                            },
-                            "unlock_level": {
-                              "type": "integer",
-                              "description": "Level required to unlock this relic. 0 or 1 will always be unlocked, 2 will unlock at level 2, etc.",
-                              "minimum": 0
-                            },
                             "num_cards_to_show_in_upgrade_screen": {
                               "type": "integer",
                               "description": "Number of cards to show in the upgrade screen. The default is -1 for all cards.",
@@ -203,6 +193,16 @@
                               "items": {
                                 "$ref": "../definitions/enhancer_pool.json"
                               }
+                            },
+                            "rarity": {
+                              "$ref": "../definitions/rarity.json",
+                              "description": "Rarity of the collectable relic",
+                              "default": "common"
+                            },
+                            "unlock_level": {
+                              "type": "integer",
+                              "description": "Level required to unlock this relic. 0 or 1 will always be unlocked, 2 will unlock at level 2, etc.",
+                              "minimum": 0
                             }
                           }
                         }
