@@ -18,6 +18,7 @@ namespace TrainworksReloaded.Base.Relic
         private readonly IDataFinalizer decoratee;
 
         private readonly FieldInfo EnhancerPoolRelicDataListField = AccessTools.Field(typeof(EnhancerPool), "relicDataList");
+        private readonly FieldInfo LinkedClassField = AccessTools.Field(typeof(EnhancerData), "linkedClass");
 
         public EnhancerDataFinalizerDecorator(
             IModLogger<EnhancerDataFinalizerDecorator> logger,
@@ -38,21 +39,25 @@ namespace TrainworksReloaded.Base.Relic
         {
             foreach (var definition in cache.GetCacheItems())
             {
-                FinalizeRelicData(definition);
+                FinalizeRelicData((definition as RelicDataDefinition)!);
             }
             decoratee.FinalizeData();
             cache.Clear();
         }
 
-        private void FinalizeRelicData(IDefinition<RelicData> definition)
+        private void FinalizeRelicData(RelicDataDefinition definition)
         {
             var config = definition.Configuration;
             var data = definition.Data;
+            var overrideMode = definition.Override;
             var key = definition.Key;
             var relicId = definition.Id.ToId(key, TemplateConstants.RelicData);
 
             if (data is not EnhancerData enhancer)
                 return;
+
+            if (definition.CopyData is not EnhancerData copyData)
+                copyData = enhancer;
 
             var configuration = config
                 .GetSection("extensions")
@@ -60,6 +65,7 @@ namespace TrainworksReloaded.Base.Relic
                 .Where(xs => xs.GetSection("enhancer").Exists())
                 .Select(xs => xs.GetSection("enhancer"))
                 .FirstOrDefault();
+
             if (configuration == null)
                 return;
 
@@ -67,10 +73,12 @@ namespace TrainworksReloaded.Base.Relic
 
             // Handle linked class
             var linkedClassReference = configuration.GetSection("class").ParseReference();
-            if (linkedClassReference != null && classRegister.TryLookupName(linkedClassReference.ToId(key, TemplateConstants.Class), out var linkedClass, out var _, linkedClassReference.context))
+            var linkedClass = copyData.GetLinkedClass();
+            if (linkedClassReference != null && classRegister.TryLookupName(linkedClassReference.ToId(key, TemplateConstants.Class), out var lookup, out var _, linkedClassReference.context))
             {
-                AccessTools.Field(typeof(EnhancerData), "linkedClass").SetValue(enhancer, linkedClass);
+                linkedClass = lookup;
             }
+            LinkedClassField.SetValue(enhancer, linkedClass);
 
             var poolReferences = configuration.GetSection("pools")
                 .GetChildren()

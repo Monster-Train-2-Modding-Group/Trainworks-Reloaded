@@ -20,6 +20,7 @@ namespace TrainworksReloaded.Base.Relic
         private readonly IDataFinalizer decoratee;
 
         private readonly FieldInfo RelicPoolRelicDataListField = AccessTools.Field(typeof(RelicPool), "relicDataList");
+        private readonly FieldInfo LinkedClassField = AccessTools.Field(typeof(CollectableRelicData), "linkedClass");
 
         public CollectableRelicDataFinalizerDecorator(
             IModLogger<CollectableRelicDataFinalizerDecorator> logger,
@@ -40,21 +41,25 @@ namespace TrainworksReloaded.Base.Relic
         {
             foreach (var definition in cache.GetCacheItems())
             {
-                FinalizeRelicData(definition);
+                FinalizeRelicData((definition as RelicDataDefinition)!);
             }
             decoratee.FinalizeData();
             cache.Clear();
         }
 
-        private void FinalizeRelicData(IDefinition<RelicData> definition)
+        private void FinalizeRelicData(RelicDataDefinition definition)
         {
             var config = definition.Configuration;
             var data = definition.Data;
+            var overrideMode = definition.Override;
             var key = definition.Key;
             var relicId = definition.Id.ToId(key, TemplateConstants.RelicData);
 
-            if (data is not CollectableRelicData collectableRelic)
+            if (data is not CollectableRelicData relic)
                 return;
+
+            if (definition.CopyData is not CollectableRelicData copyData)
+                copyData = relic;
 
             var configuration = config
                 .GetSection("extensions")
@@ -69,10 +74,12 @@ namespace TrainworksReloaded.Base.Relic
 
             // Handle linked class
             var linkedClassReference = configuration.GetSection("class").ParseReference();
-            if (linkedClassReference != null && classRegister.TryLookupName(linkedClassReference.ToId(key, TemplateConstants.Class), out var linkedClass, out var _, linkedClassReference.context))
+            var linkedClass = copyData.GetLinkedClass();
+            if (linkedClassReference != null && classRegister.TryLookupName(linkedClassReference.ToId(key, TemplateConstants.Class), out var lookup, out var _, linkedClassReference.context))
             {
-                AccessTools.Field(typeof(CollectableRelicData), "linkedClass").SetValue(collectableRelic, linkedClass);
+                linkedClass = lookup;
             }
+            LinkedClassField.SetValue(relic, linkedClass);
 
             var poolReferences = configuration.GetSection("pools")
                 .GetChildren()
@@ -85,7 +92,7 @@ namespace TrainworksReloaded.Base.Relic
                 if (relicPoolRegister.TryLookupId(id, out var pool, out var _, poolReference.context))
                 {
                     var relicDataList = RelicPoolRelicDataListField.GetValue(pool) as ReorderableArray<CollectableRelicData>;
-                    relicDataList?.Add(collectableRelic);
+                    relicDataList?.Add(relic);
                     logger.Log(LogLevel.Debug, $"Added relic {definition.Id.ToId(key, TemplateConstants.RelicData)} to pool: {pool}");
                 }
             }

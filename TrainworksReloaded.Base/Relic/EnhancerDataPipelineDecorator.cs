@@ -30,19 +30,24 @@ namespace TrainworksReloaded.Base.Relic
             var definitions = decoratee.Run(register);
             foreach (var definition in definitions)
             {
-                ProcessEnhancerData(definition);
+                ProcessEnhancerData((definition as RelicDataDefinition)!);
             }
             return definitions;
         }
 
-        private void ProcessEnhancerData(IDefinition<RelicData> definition)
+        private void ProcessEnhancerData(RelicDataDefinition definition)
         {
             var config = definition.Configuration;
             var data = definition.Data;
+            var overrideMode = definition.Override;
             var key = definition.Key;
+            var relicId = definition.Id.ToId(key, TemplateConstants.RelicData);
 
             if (data is not EnhancerData enhancer)
                 return;
+
+            if (definition.CopyData is not EnhancerData copyData)
+                copyData = enhancer;
 
             var configuration = config
                 .GetSection("extensions")
@@ -50,18 +55,19 @@ namespace TrainworksReloaded.Base.Relic
                 .Where(xs => xs.GetSection("enhancer").Exists())
                 .Select(xs => xs.GetSection("enhancer"))
                 .FirstOrDefault();
+
             if (configuration == null)
                 return;
 
             // Handle rarity
-            var rarity = configuration.GetSection("rarity").ParseRarity() ?? CollectableRarity.Common;
+            var rarity = configuration.GetSection("rarity").ParseRarity() ?? copyData.GetRarity();
             AccessTools.Field(typeof(EnhancerData), "rarity").SetValue(enhancer, rarity);
 
             // Handle unlock level
-            var unlockLevel = configuration.GetSection("unlock_level").ParseInt() ?? 0;
+            var unlockLevel = configuration.GetSection("unlock_level").ParseInt() ?? copyData.GetUnlockLevel();
             AccessTools.Field(typeof(EnhancerData), "unlockLevel").SetValue(enhancer, unlockLevel);
 
-            var numCardsToShowInUpgradeScreen = configuration.GetSection("num_cards_to_show_in_upgrade_screen").ParseInt() ?? -1;
+            var numCardsToShowInUpgradeScreen = configuration.GetSection("num_cards_to_show_in_upgrade_screen").ParseInt() ?? copyData.NumCardsToShowInUpgradeScreen;
             AccessTools.Field(typeof(EnhancerData), "numCardsToShowInUpgradeScreen").SetValue(enhancer, numCardsToShowInUpgradeScreen);
         }
     }

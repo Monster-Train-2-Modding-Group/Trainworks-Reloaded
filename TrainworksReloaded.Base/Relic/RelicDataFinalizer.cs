@@ -1,7 +1,9 @@
 using HarmonyLib;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using TrainworksReloaded.Base.Extensions;
+using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
@@ -31,52 +33,73 @@ namespace TrainworksReloaded.Base.Relic
         {
             foreach (var definition in cache.GetCacheItems())
             {
-                FinalizeRelicData(definition);
+                FinalizeRelicData((definition as RelicDataDefinition)!);
             }
             cache.Clear();
         }
 
-        private void FinalizeRelicData(IDefinition<RelicData> definition)
+        private void FinalizeRelicData(RelicDataDefinition definition)
         {
             var configuration = definition.Configuration;
             var data = definition.Data;
+            var copyData = definition.CopyData;
             var key = definition.Key;
+            var overrideMode = definition.Override;
 
             logger.Log(LogLevel.Info, $"Finalizing Relic {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             // Handle relic sprite
-            var iconSprite = configuration.GetSection("icon").ParseReference();
+            AccessTools.Field(typeof(RelicData), "icon").SetValue(data, copyData.GetIcon());
+            var iconConfig = configuration.GetSection("icon");
+            var iconReference = iconConfig.ParseReference();
             if (
-                iconSprite != null
+                iconReference != null
                 && spriteRegister.TryLookupId(
-                    iconSprite.ToId(key, TemplateConstants.Sprite),
+                    iconReference.ToId(key, TemplateConstants.Sprite),
                     out var spriteLookup,
                     out var _,
-                    iconSprite.context
+                    iconReference.context
                 )
             )
             {
                 AccessTools.Field(typeof(RelicData), "icon").SetValue(data, spriteLookup);
             }
+            else if (overrideMode == OverrideMode.Replace && iconReference == null && iconConfig.Exists())
+            {
+                AccessTools.Field(typeof(RelicData), "icon").SetValue(data, null);
+            }
 
             // Handle relic activated sprite
-            var iconSmallSprite = configuration.GetSection("icon_small").ParseReference();
+            AccessTools.Field(typeof(RelicData), "iconSmall").SetValue(data, copyData.GetIconSmall());
+            var iconSmallConfig = configuration.GetSection("icon_small");
+            var iconSmallReference = iconSmallConfig.ParseReference();
             if (
-                iconSmallSprite != null
+                iconSmallReference != null
                 && spriteRegister.TryLookupId(
-                    iconSmallSprite.ToId(key, TemplateConstants.Sprite),
+                    iconSmallReference.ToId(key, TemplateConstants.Sprite),
                     out var activatedSpriteLookup,
                     out var _,
-                    iconSprite?.context
+                    iconSmallReference?.context
                 )
             )
             {
                 AccessTools.Field(typeof(RelicData), "iconSmall").SetValue(data, activatedSpriteLookup);
             }
+            else if (overrideMode == OverrideMode.Replace && iconReference == null && iconConfig.Exists())
+            {
+                AccessTools.Field(typeof(RelicData), "iconSmall").SetValue(data, null);
+            }
 
             //handle relic effects
-            var relicEffects = new List<RelicEffectData>();
-            var relicEffectsReferences = configuration.GetSection("relic_effects")
+            var relicEffects = copyData.GetEffects() ?? [];
+            if (copyData != data)
+                relicEffects = [.. relicEffects];
+            IConfigurationSection effectsConfig = configuration.GetSection("relic_effects");
+            if (overrideMode == OverrideMode.Replace && effectsConfig.Exists())
+            {
+                relicEffects.Clear();
+            }
+            var relicEffectsReferences = effectsConfig
                 .GetChildren()
                 .Select(x => x.ParseReference())
                 .Where(x => x != null)

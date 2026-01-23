@@ -143,7 +143,7 @@
                             },
                             "pools": {
                               "type": "array",
-                              "description": "Pools to add this relic to",
+                              "description": "Pools to add this relic to. Not override-able or replaceable. To change pools of an existing collectable relic you must edit the RelicPool it belongs to in code.",
                               "items": {
                                 "$ref": "../definitions/relic_pool.json"
                               }
@@ -191,7 +191,7 @@
                             },
                             "pools": {
                               "type": "array",
-                              "description": "Pools to add this enhancer to.",
+                              "description": "Pools to add this enhancer to. Not override-able or replaceable. To change pools of an existing enhancer you must edit the EnhancerPool it belongs to in code.",
                               "items": {
                                 "$ref": "../definitions/enhancer_pool.json"
                               }
