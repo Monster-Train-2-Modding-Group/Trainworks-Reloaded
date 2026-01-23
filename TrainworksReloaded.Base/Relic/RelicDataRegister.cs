@@ -18,6 +18,10 @@ namespace TrainworksReloaded.Base.Relic
         private readonly List<MutatorData> mutators = [];
         private readonly List<EndlessMutatorData> endless_mutators = [];
         private readonly Dictionary<string, RelicData> VanillaRelicData = [];
+        private readonly HashSet<string> DuplicatedIdentifiers =
+        [
+            "UpgradedDrafts"
+        ];
 
         public RelicDataRegister(GameDataClient client, IModLogger<RelicDataRegister> logger)
         {
@@ -94,6 +98,14 @@ namespace TrainworksReloaded.Base.Relic
         {
             lookup = null;
             IsModded = true;
+
+            if (DuplicatedIdentifiers.Contains(identifier))
+            {
+                logger.Log(LogLevel.Warning, $"{identifier} is ambiguous. Multiple RelicData subclasses have an identifier with that name. " +
+                    $"Append one of (Artifact, Enhancer, Mutator, Sin, or EndlessMutator) to disambiguate.");
+                return false;
+            }
+
             switch (identifierType)
             {
                 case RegisterIdentifierType.ReadableID:

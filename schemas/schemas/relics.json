@@ -75,6 +75,10 @@
           "override": {
             "$ref": "../definitions/override_mode.json",
             "description": "Whether this relic overrides an existing character with the same ID (requires the Unity Asset Name)."
+          },
+          "clone_id": {
+            "type": "string",
+            "description": "Vanilla relic data asset name to clone. Cloning defaults all fields to the same value as the clone. If set override_mode should also be set, by default overriding a property will replace it."
           }
         },
         "dependencies": {
