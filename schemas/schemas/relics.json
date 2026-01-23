@@ -71,6 +71,10 @@
               "$ref": "../definitions/reference.json"
             },
             "description": "Array of relic effects associated with this relic"
+          },
+          "override": {
+            "$ref": "../definitions/override_mode.json",
+            "description": "Whether this relic overrides an existing character with the same ID (requires the Unity Asset Name)."
           }
         },
         "dependencies": {

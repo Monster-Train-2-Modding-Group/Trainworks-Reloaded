@@ -166,8 +166,10 @@ namespace TrainworksReloaded.Base.Relic
             }
 
             // Handle lore tooltips
-            var loreTooltips = data.GetRelicLoreTooltipKeys();
-            AccessTools.Field(typeof(RelicData), "relicLoreTooltipKeys").SetValue(data, copyData.GetRelicLoreTooltipKeys());
+            var loreTooltips = copyData.GetRelicLoreTooltipKeys() ?? [];
+            if (copyData != data)
+                loreTooltips = [.. loreTooltips];
+            AccessTools.Field(typeof(RelicData), "relicLoreTooltipKeys").SetValue(data, loreTooltips);
             var loreTooltipsSection = config.GetSection("lore_tooltips");
             if (overrideMode == OverrideMode.Replace && loreTooltipsSection.Exists())
             {
@@ -188,7 +190,6 @@ namespace TrainworksReloaded.Base.Relic
                     tooltip_count++;
                 }
             }
-            AccessTools.Field(typeof(RelicData), "relicLoreTooltipKeys").SetValue(data, loreTooltips);
 
             // Handle deployment phase restriction
             var disallowInDeploymentPhase = config.GetSection("disallow_in_deployment").ParseBool() ?? copyData.DisallowInDeploymentPhase;

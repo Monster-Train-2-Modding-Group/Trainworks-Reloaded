@@ -36,11 +36,19 @@ namespace TrainworksReloaded.Base.Relic
             mutators = (List<MutatorData>)AccessTools.Field(typeof(AllGameData), "mutatorDatas").GetValue(saveManager.GetAllGameData());
             endless_mutators = (List<EndlessMutatorData>)AccessTools.Field(typeof(AllGameData), "endlessMutatorDatas").GetValue(saveManager.GetAllGameData());
 
+            VanillaRelicData.AddRange(mutators.ToDictionary(x => x.name, x => x));
+            // Collision prevention.
+            var mutator = VanillaRelicData["UpgradedDrafts"];
+            VanillaRelicData.Remove("UpgradedDrafts");
             VanillaRelicData.AddRange(collectables.ToDictionary(x => x.name, x => x));
+            var collectable = VanillaRelicData["UpgradedDrafts"];
+            VanillaRelicData.Remove("UpgradedDrafts");
             VanillaRelicData.AddRange(sins.ToDictionary(x => x.name, x => x));
             VanillaRelicData.AddRange(enhancers.ToDictionary(x => x.name, x => x));
-            VanillaRelicData.AddRange(mutators.ToDictionary(x => x.name, x => x));
             VanillaRelicData.AddRange(endless_mutators.ToDictionary(x => x.name, x => x));
+            /// TODO Document this in the schema.
+            VanillaRelicData.Add("UpgradedDraftsMutator", mutator);
+            VanillaRelicData.Add("UpgradedDraftsArtifact", collectable);
 
             this.AddRange(VanillaRelicData);
         }
