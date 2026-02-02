@@ -27,6 +27,7 @@ namespace TrainworksReloaded.Base.Enums
             ["on_feed"] = CardTriggerType.OnFeed,
             ["on_exhausted"] = CardTriggerType.OnExhausted,
             ["on_unplayed_positive"] = CardTriggerType.OnUnplayedPositive,
+            ["on_forge"] = CardTriggerType.OnForge,
         };
 
         public CardTriggerTypeRegister(IModLogger<CardTriggerTypeRegister> logger)

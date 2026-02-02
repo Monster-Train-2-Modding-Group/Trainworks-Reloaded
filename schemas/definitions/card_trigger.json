@@ -18,7 +18,8 @@
         "on_unplayed_negative",
         "on_feed",
         "on_exhausted",
-        "on_unplayed_positive"
+        "on_unplayed_positive",
+        "on_forge"
       ]
     },
     {
