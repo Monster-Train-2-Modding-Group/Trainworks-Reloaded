@@ -468,6 +468,7 @@ namespace TrainworksReloaded.Base.Extensions
 
             return val.ToLower() switch
             {
+                "cumulative" => CardTraitData.StackMode.Cumulative,
                 "none" => CardTraitData.StackMode.None,
                 "param_int" => CardTraitData.StackMode.ParamInt,
                 "param_int_largest" => CardTraitData.StackMode.ParamIntLargest,
