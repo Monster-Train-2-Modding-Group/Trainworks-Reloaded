@@ -46,6 +46,10 @@
         "num_specific_cards_in_deck",
         "any_status_effect_stacks_added",
         "any_status_effect_stacks_removed",
+        "capacity_of_target_room",
+        "current_cost",
+        "energy_remaining_end_of_turn",
+        "forge_points",
         "last_attack_damage_dealt"
       ]
     },

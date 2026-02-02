@@ -55,6 +55,10 @@ namespace TrainworksReloaded.Base.Enums
             ["any_status_effect_stacks_added"] = CardStatistics.TrackedValueType.AnyStatusEffectStacksAdded,
             ["any_status_effect_stacks_removed"] = CardStatistics.TrackedValueType.AnyStatusEffectStacksRemoved,
             ["last_attack_damage_dealt"] = CardStatistics.TrackedValueType.LastAttackDamageDealt,
+            ["capacity_of_target_room"] = CardStatistics.TrackedValueType.CapacityOfTargetRoom,
+            ["current_cost"] = CardStatistics.TrackedValueType.CurrentCost,
+            ["energy_remaining_end_of_turn"] = CardStatistics.TrackedValueType.EnergyRemainingEndOfTurn,
+            ["forge_points"] = CardStatistics.TrackedValueType.ForgePoints,
         };
 
         private readonly IModLogger<TrackedValueTypeRegister> logger;
