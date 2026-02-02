@@ -23,7 +23,9 @@ namespace TrainworksReloaded.Base.Class
             ["awoken"] = ClassCardStyle.Awoken,
             ["stygian_guard"] = ClassCardStyle.Stygian,
             ["umbra"] = ClassCardStyle.Umbra,
-            ["melting_remnant"] = ClassCardStyle.Remnant
+            ["melting_remnant"] = ClassCardStyle.Remnant,
+            ["wurmkin"] = ClassCardStyle.Wurmkin,
+            ["railforged"] = ClassCardStyle.Railforged,
         };
 
         public ClassCardStyleRegister(IModLogger<ClassCardStyleRegister> logger)
