@@ -17,6 +17,7 @@
         "drop_target_character",
         "draw_pile",
         "discard",
+        "dying_character",
         "exhaust",
         "eaten",
         "weakest",
@@ -25,6 +26,7 @@
         "last_drawn_card",
         "last_feeder_character",
         "pyre",
+        "random_from_any_room",
         "last_targeted_characters",
         "last_damaged_characters",
         "last_spawned_morsel",
@@ -34,6 +36,7 @@
         "strongest_all_rooms",
         "last_equipped_character",
         "last_sacrificed_character",
+        "last_spawned_character",
         "strongest_last_targeted_characters",
         "strongest_last_targeted_characters_room"
       ]

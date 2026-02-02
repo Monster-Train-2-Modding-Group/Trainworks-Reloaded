@@ -160,6 +160,7 @@ namespace TrainworksReloaded.Base.Extensions
             return val.ToLower() switch
             {
                 "none" => DLC.None,
+                "railforged" => DLC.Railforged,
                 _ => null,
             };
         }
