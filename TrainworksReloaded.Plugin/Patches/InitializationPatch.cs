@@ -48,9 +48,10 @@ namespace TrainworksReloaded.Plugin.Patches
             var mapDelegator = container.GetInstance<MapNodeDelegator>();
             var runDataDictionary = new Dictionary<string, RunData>
             {
-                { "primary", ____assetLoadingData.BalanceData.GetRunData(false, false) },
-                { "first_time", ____assetLoadingData.BalanceData.GetRunData(true, false) },
-                { "endless", ____assetLoadingData.BalanceData.GetRunData(false, true) },
+                { "primary", ____assetLoadingData.BalanceData.GetRunData(false, false, false) },
+                { "first_time", ____assetLoadingData.BalanceData.GetRunData(true, false, false) },
+                { "endless", ____assetLoadingData.BalanceData.GetRunData(false, true, false) },
+                { "soul_savior", ____assetLoadingData.BalanceData.GetRunData(false, false, true) }
             };
 
             foreach (var kvp in runDataDictionary)

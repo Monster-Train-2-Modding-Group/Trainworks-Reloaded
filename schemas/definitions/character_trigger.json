@@ -40,7 +40,7 @@
         "card_exhausted",
         "on_remove_hatch",
         "on_own_ability_activated",
-        "card_regal_played",
+        "on_sentry",
         "regal_count_added",
         "on_unit_ability_available",
         "on_unit_ability_unavailable",
@@ -54,6 +54,7 @@
         "on_pyregel_added",
         "on_moon_phase_shift",
         "on_equipment_added_to_ally",
+        "on_equipment_added_to_any",
         "on_timebomb",
         "on_reanimated",
         "on_graft_equipment_added",
@@ -68,6 +69,8 @@
         "on_train_room_loop",
         "on_status_effect_changed",
         "on_attacking_before_damage",
+        "on_silence",
+        "on_silence_lost",
         "on_pre_own_ability_activated"
       ]
     },
