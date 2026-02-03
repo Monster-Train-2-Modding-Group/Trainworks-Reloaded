@@ -157,7 +157,7 @@ namespace TrainworksReloaded.Base.Relic
 
             // Handle relic activation localization
             var activatedTerm = config.GetSection("relic_activated_texts").ParseLocalizationTerm();
-            AccessTools.Field(typeof(RelicData), "descriptionKey").SetValue(data, copyData.GetRelicActivatedKey());
+            AccessTools.Field(typeof(RelicData), "relicActivatedKey").SetValue(data, copyData.GetRelicActivatedKey());
             if (activatedTerm != null)
             {
                 AccessTools.Field(typeof(RelicData), "relicActivatedKey").SetValue(data, activatedKey);
