@@ -202,6 +202,11 @@ namespace TrainworksReloaded.Base.Effect
                 .Field(typeof(CardEffectData), "paramBool2")
                 .SetValue(data, configuration.GetSection("param_bool_2").ParseBool() ?? paramBool2);
 
+            var paramBool3 = false;
+            AccessTools
+                .Field(typeof(CardEffectData), "paramBool3")
+                .SetValue(data, configuration.GetSection("param_bool_3").ParseBool() ?? paramBool3);
+
             var useStatusEffectStackMultiplier = false;
             AccessTools
                 .Field(typeof(CardEffectData), "useStatusEffectStackMultiplier")
@@ -283,6 +288,14 @@ namespace TrainworksReloaded.Base.Effect
                 .SetValue(
                     data,
                     configuration.GetSection("param_multiplier").ParseFloat() ?? paramMultiplier
+                );
+
+            var paramFloat = 0.0f;
+            AccessTools
+                .Field(typeof(CardEffectData), "paramFloat")
+                .SetValue(
+                    data,
+                    configuration.GetSection("param_float").ParseFloat() ?? paramFloat
                 );
 
             //health filter

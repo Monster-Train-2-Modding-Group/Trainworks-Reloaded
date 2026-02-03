@@ -22,6 +22,7 @@ namespace TrainworksReloaded.Base.Effect
         private readonly IRegister<TargetMode> targetModeRegister;
         private readonly IRegister<VfxAtLoc> vfxRegister;
         private readonly IRegister<RelicData> relicRegister;
+        private readonly IRegister<RewardData> rewardRegister;
         private readonly ICache<IDefinition<CardEffectData>> cache;
 
         public CardEffectFinalizer(
@@ -37,6 +38,7 @@ namespace TrainworksReloaded.Base.Effect
             IRegister<TargetMode> targetModeRegister,
             IRegister<VfxAtLoc> vfxRegister,
             IRegister<RelicData> relicRegister,
+            IRegister<RewardData> rewardRegister,
             ICache<IDefinition<CardEffectData>> cache
         )
         {
@@ -52,6 +54,7 @@ namespace TrainworksReloaded.Base.Effect
             this.targetModeRegister = targetModeRegister;
             this.vfxRegister = vfxRegister;
             this.relicRegister = relicRegister;
+            this.rewardRegister = rewardRegister;
             this.cache = cache;
         }
 
@@ -195,6 +198,24 @@ namespace TrainworksReloaded.Base.Effect
             AccessTools
                 .Field(typeof(CardEffectData), "targetModeStatusEffectsFilter")
                 .SetValue(data, targetModeStatusEffectsFilter.ToArray());
+
+            var targetModeExcludedStatusEffectsFilterReferences = configuration.GetSection("target_mode_status_effects_excluded_filter")
+                .GetChildren()
+                .Select(x => x.ParseReference())
+                .Where(x => x != null)
+                .Cast<ReferencedObject>();
+            List<string> targetModeStatusEffectsExcludedFilter = [];
+            foreach (var statusReference in targetModeExcludedStatusEffectsFilterReferences)
+            {
+                var statusEffectId = statusReference.ToId(key, TemplateConstants.StatusEffect);
+                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _, statusReference.context))
+                {
+                    targetModeStatusEffectsExcludedFilter.Add(statusEffectData.GetStatusId());
+                }
+            }
+            AccessTools
+                .Field(typeof(CardEffectData), "targetModeStatusEffectsExcludedFilter")
+                .SetValue(data, targetModeStatusEffectsExcludedFilter.ToArray());
 
             List<StatusEffectStackData> paramStatusEffects = [];
             foreach (var child in configuration.GetSection("param_status_effects").GetChildren())
@@ -373,6 +394,12 @@ namespace TrainworksReloaded.Base.Effect
             if (vfxRegister.TryLookupId(appliedVFXId, out var appliedVFX, out var _, appliedVFXReference?.context))
             {
                 AccessTools.Field(typeof(CardEffectData), "appliedVFX").SetValue(data, appliedVFX);
+            }
+
+            var rewardReference = configuration.GetSection("param_reward").ParseReference();
+            if (rewardReference != null && rewardRegister.TryLookupName(rewardReference.ToId(key, TemplateConstants.RewardData), out var reward, out var _, rewardReference.context))
+            {
+                AccessTools.Field(typeof(CardEffectData), "paramRewardData").SetValue(data, reward);
             }
         }
     }

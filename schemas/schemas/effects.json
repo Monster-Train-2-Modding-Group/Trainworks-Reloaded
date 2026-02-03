@@ -70,6 +70,10 @@
             "type": "boolean",
             "description": "Second boolean parameter for the effect."
           },
+          "param_bool_3": {
+            "type": "boolean",
+            "description": "Second boolean parameter for the effect."
+          },
           "param_card_filter": {
             "$ref": "../definitions/card_upgrade_mask.json",
             "description": "Reference to an upgrade mask. Used in certain effects to filter out target cards."
@@ -101,6 +105,10 @@
               "$ref": "../definitions/character.json"
             }
           },
+          "param_float": {
+            "type": "number",
+            "description": "Float parameter for the effect."
+          },
           "param_int": {
             "type": "integer",
             "description": "Integer parameter for the effect."
@@ -129,6 +137,10 @@
           "param_relic": {
             "$ref": "../definitions/reference.json",
             "description": "Reference to a RelicData to use for the effect."
+          },
+          "param_reward": {
+            "$ref": "../definitions/reward.json",
+            "description": "Reference to a RewardData to use for the effect."
           },
           "param_status_effects": {
             "type": "array",
@@ -160,7 +172,11 @@
               }
             },
             "description": "Timing delays.",
-            "default": {"normal": 0.0, "fast": 0.0, "ultra": 0.0}
+            "default": {
+              "normal": 0.0,
+              "fast": 0.0,
+              "ultra": 0.0
+            }
           },
           "param_trigger": {
             "$ref": "../definitions/character_trigger.json",
@@ -230,6 +246,13 @@
           "target_mode_status_effect_filter": {
             "type": "array",
             "description": "List of status effects used to filter out targets gathered from target_mode by.",
+            "items": {
+              "$ref": "../definitions/status.json"
+            }
+          },
+          "target_mode_status_effects_excluded_filter": {
+            "type": "array",
+            "description": "List of status effects used to filter out targets wiuthout the status effect gathered from target_mode by.",
             "items": {
               "$ref": "../definitions/status.json"
             }
