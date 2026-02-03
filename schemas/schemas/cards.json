@@ -112,6 +112,11 @@
             "description": "Whether this card represents a unit ability.",
             "default": false
           },
+          "is_room_ability": {
+            "type": "boolean",
+            "description": "Whether this card represents a room ability.",
+            "default": false
+          },
           "linked_mastery_card": {
             "$ref": "../definitions/card.json",
             "description": "Used when a card has different variations (Think Blazing Bolts from MT1) the masteries are all linked to the original variation."

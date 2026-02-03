@@ -193,6 +193,11 @@ namespace TrainworksReloaded.Base.Card
                 .Field(typeof(CardData), "isUnitAbility")
                 .SetValue(data, configuration.GetDeprecatedSection("ability", "is_an_ability").ParseBool() ?? defaultAbility);
 
+            var defaultRoomAbility = (bool)AccessTools.Field(typeof(CardData), "isRoomAbility").GetValue(data);
+            AccessTools
+                .Field(typeof(CardData), "isRoomAbility")
+                .SetValue(data, configuration.GetSection("is_room_ability").ParseBool() ?? defaultRoomAbility);
+
             var defaultTargetsRoom = (bool)AccessTools.Field(typeof(CardData), "targetsRoom").GetValue(data);
             AccessTools
                 .Field(typeof(CardData), "targetsRoom")
