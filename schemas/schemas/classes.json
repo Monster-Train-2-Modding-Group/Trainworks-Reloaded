@@ -129,6 +129,15 @@
             "type": "boolean",
             "description": "Whether this class is a crew member class."
           },
+          "is_launch_clan": {
+            "type": "boolean",
+            "description": "Whether this class is a clan available at original game launch.",
+            "default": true
+          },
+          "is_wurmkin": {
+            "type": "boolean",
+            "description": "Whether this class is Wurmkin (and it is not)."
+          },
           "override": {
             "$ref": "../definitions/override_mode.json",
             "description": "Whether this class overrides an existing class with the same ID (requires the Unity Asset Name)."
