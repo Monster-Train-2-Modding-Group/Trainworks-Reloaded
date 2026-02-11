@@ -218,6 +218,14 @@ namespace TrainworksReloaded.Base.Character
                     configuration.GetSection("chosen_variant").ParseBool() ?? chosenVariant
                 );
 
+            var lifemotherVariant = copyData.IsLifemotherVariant();
+            AccessTools
+                .Field(typeof(CharacterData), "lifemotherVariant")
+                .SetValue(
+                    data,
+                    configuration.GetSection("lifemother_variant").ParseBool() ?? lifemotherVariant
+                );
+
             var isPyreHeart = copyData.IsPyreHeart();
             AccessTools
                 .Field(typeof(CharacterData), "isPyreHeart")
