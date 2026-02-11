@@ -264,6 +264,13 @@ namespace TrainworksReloaded.Base.CardUpgrade
                     configuration.GetSection("bonus_equipment").ParseInt() ?? data.GetBonusEquipment()
                 );
 
+            AccessTools
+                .Field(typeof(CardUpgradeData), "bonusUpgradeSlotCount")
+                .SetValue(
+                    data,
+                    configuration.GetSection("bonus_upgrade_slot_count").ParseInt() ?? data.GetBonusUpgradeSlotCount()
+                );
+
             //bool
             AccessTools
                 .Field(typeof(CardUpgradeData), "excludeFromClones")
@@ -277,6 +284,20 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 .SetValue(
                     data,
                     configuration.GetSection("upgrade_will_be_scaled_by_non_magic_power_trait").ParseBool() ?? data.GetUpgradeWillBeScaledByNonMagicPowerTrait()
+                );
+
+            AccessTools
+                .Field(typeof(CardUpgradeData), "isRegionRunUpgrade")
+                .SetValue(
+                    data,
+                    configuration.GetSection("is_region_run_upgrade").ParseBool() ?? data.GetIsRegionRunUpgrade()
+                );
+
+            AccessTools
+                .Field(typeof(CardUpgradeData), "skipDefaultStatusEffectNotif")
+                .SetValue(
+                    data,
+                    configuration.GetSection("skip_default_status_effect_notification").ParseBool() ?? data.GetSkipDefaultStatusEffectNotif()
                 );
 
             //List<String>

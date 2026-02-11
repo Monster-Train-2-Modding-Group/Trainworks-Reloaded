@@ -48,6 +48,10 @@
             "type": "integer",
             "description": "Amount of bonus unhealed maximum hp to add. Don't use this unless its used for a room. If this is present on a spell/unit that applies an upgrade the unfilled max hp will fall off on death."
           },
+          "bonus_upgrade_slot_count": {
+            "type": "integer",
+            "description": "Amount of upgrade slots to add to the card."
+          },
           "card_trigger_upgrades": {
             "type": "array",
             "description": "List of card trigger upgrades to apply.",
@@ -87,6 +91,10 @@
             "type": "string",
             "description": "Unique identifier for this upgrade."
           },
+          "is_region_run_upgrade": {
+            "type": "boolean",
+            "description": "Is this an upgrade tied to a SoulData."
+          },
           "is_unique": {
             "type": "boolean",
             "description": "Whether this upgrade is unique. Not commonly used. If the upgrade is specified for the effects of RelicEffectAddTrigger, then you should set this to true to prevent the upgrade from being applied multiple times."
@@ -125,6 +133,10 @@
             "type": "boolean",
             "description": "Whether to restrict the unit's size to room capacity."
           },
+          "room_ability_upgrade": {
+            "$ref": "../definitions/card.json",
+            "description": "Reference to card specifiying the room ability upgrade."
+          },
           "room_modifier_upgrades": {
             "type": "array",
             "description": "List of room modifier upgrades to apply.",
@@ -135,6 +147,10 @@
           "show_description_on_cards": {
             "type": "boolean",
             "description": "Whether to show the upgrade's description on cards. If set then descriptions must be provided."
+          },
+          "skip_default_status_effect_notification": {
+            "type": "boolean",
+            "description": "Rarely used, skips the status effect notification, used by Boilerplate."
           },
           "status_effect_upgrades": {
             "type": "array",
@@ -161,14 +177,14 @@
               "$ref": "../definitions/reference.json"
             }
           },
+          "upgrade_will_be_scaled_by_non_magic_power_trait": {
+            "type": "boolean",
+            "description": "Only used by Sacrificial Resurrection / Prism Retrieval. This field was added for a bugfix, set to true if this upgrade is intended for units and has its attack damage dynamically generated. This prevents the upgrade from being reset when the unit with the upgrade gets reformed."
+          },
           "use_upgrade_highlight_tags": {
             "type": "boolean",
             "description": "Whether to use upgrade highlight tags for upgrade text.",
             "default": true
-          },
-          "upgrade_will_be_scaled_by_non_magic_power_trait": {
-            "type": "boolean",
-            "description": "Only used by Sacrificial Resurrection / Prism Retrieval. This field was added for a bugfix, set to true if this upgrade is intended for units and has its attack damage dynamically generated. This prevents the upgrade from being reset when the unit with the upgrade gets reformed."
           },
           "x_cost_reduction": {
             "type": "integer",

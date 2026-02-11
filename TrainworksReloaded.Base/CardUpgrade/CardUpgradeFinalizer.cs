@@ -272,11 +272,31 @@ namespace TrainworksReloaded.Base.CardUpgrade
             if (abilityReference != null)
             {
                 cardRegister.TryLookupName(abilityReference.ToId(key, TemplateConstants.Card), out var abilityCard, out var _, abilityReference.context);
+                if (abilityCard != null && !abilityCard.IsUnitAbility())
+                {
+                    logger.Log(LogLevel.Warning, $"Attempting to add {abilityCard.GetName()} as a unit ability upgrade for {data.Cheat_GetNameEnglish()}, but is not a unit ability card.");
+                }
                 AccessTools.Field(typeof(CardUpgradeData), "unitAbilityUpgrade").SetValue(data, abilityCard);
             }
             if (overrideMode == OverrideMode.Replace && abilityReference == null && abilityConfig.Exists())
             {
                 AccessTools.Field(typeof(CardUpgradeData), "unitAbilityUpgrade").SetValue(data, null);
+            }
+
+            var roomAbilityConfig = configuration.GetSection("room_ability_upgrade");
+            var roomAbilityReference = abilityConfig.ParseReference();
+            if (roomAbilityReference != null)
+            {
+                cardRegister.TryLookupName(roomAbilityReference.ToId(key, TemplateConstants.Card), out var abilityCard, out var _, roomAbilityReference.context);
+                if (abilityCard != null && !abilityCard.IsRoomAbility())
+                {
+                    logger.Log(LogLevel.Warning, $"Attempting to add {abilityCard.GetName()} as a room ability upgrade for {data.Cheat_GetNameEnglish()}, but is not a room ability card.");
+                }
+                AccessTools.Field(typeof(CardUpgradeData), "roomAbilityUpgrade").SetValue(data, abilityCard);
+            }
+            if (overrideMode == OverrideMode.Replace && roomAbilityReference == null && roomAbilityConfig.Exists())
+            {
+                AccessTools.Field(typeof(CardUpgradeData), "roomAbilityUpgrade").SetValue(data, null);
             }
 
             // Setting an icon already set to null isn't useful so not supporting it.
