@@ -117,6 +117,10 @@ namespace TrainworksReloaded.Base.Map
                 .SetValue(data, configuration.GetDeprecatedSection("is_banner", "is_banner_node").ParseBool() ?? false);
 
             AccessTools
+                .Field(typeof(MapNodeData), "isSoulSaviorUpgradedNode")
+                .SetValue(data, configuration.GetSection("is_soul_savior_upgraded_node").ParseBool() ?? false);
+
+            AccessTools
                 .Field(typeof(MapNodeData), "usePyreHeartHpTooltipKey")
                 .SetValue(data, configuration.GetDeprecatedSection("use_hp_tooltip", "use_pyre_hp_tooltip").ParseBool() ?? false);
 

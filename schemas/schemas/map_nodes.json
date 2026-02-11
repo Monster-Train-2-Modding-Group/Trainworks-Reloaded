@@ -53,6 +53,10 @@
             "type": "boolean",
             "description": "Whether this is a banner map node."
           },
+          "is_soul_savior_upgraded_node": {
+            "type": "boolean",
+            "description": "Whether this is an upgraded node for Soul Savior mode."
+          },
           "map_icon": {
             "$ref": "../definitions/reference.json",
             "description": "Reference to the map icon sprite."
