@@ -117,6 +117,27 @@ namespace TrainworksReloaded.Base.Trigger
             AccessTools
                 .Field(typeof(CharacterTriggerData), "requiredStatusEffects")
                 .SetValue(data, requiredStatusEffects);
+
+            var requiredStatusEffectsDyingCharacter = data.GetRequiredStatusEffectsForDyingCharacter() ?? [];
+            foreach (var child in configuration.GetSection("required_status_effects_for_dying_character").GetChildren())
+            {
+                var reference = child.GetSection("status").ParseReference();
+                if (reference == null)
+                    continue;
+                var statusEffectId = reference.ToId(key, TemplateConstants.StatusEffect);
+                if (statusRegister.TryLookupId(statusEffectId, out var statusEffectData, out var _, reference.context))
+                {
+                    requiredStatusEffectsDyingCharacter.Add(new StatusEffectStackData()
+                    {
+                        statusId = statusEffectData.GetStatusId(),
+                        count = child.GetSection("count").ParseInt() ?? 0,
+                        fromPermanentUpgrade = child.GetSection("from_permanent_upgrade").ParseBool() ?? false
+                    });
+                }
+            }
+            AccessTools
+                .Field(typeof(CharacterTriggerData), "requiredStatusEffectsForDyingCharacter")
+                .SetValue(data, requiredStatusEffectsDyingCharacter);
         }
     }
 }
