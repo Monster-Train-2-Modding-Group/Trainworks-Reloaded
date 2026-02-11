@@ -195,6 +195,9 @@ namespace TrainworksReloaded.Base.Relic
             var disallowInDeploymentPhase = config.GetSection("disallow_in_deployment").ParseBool() ?? copyData.DisallowInDeploymentPhase;
             AccessTools.Field(typeof(RelicData), "disallowInDeploymentPhase").SetValue(data, disallowInDeploymentPhase);
 
+            var isHidden = config.GetSection("is_hidden").ParseBool() ?? copyData.IsHidden;
+            AccessTools.Field(typeof(RelicData), "isHidden").SetValue(data, isHidden);
+
             // Handle lore tooltip style
             var loreStyle = config.GetSection("lore_style").ParseRelicLoreTooltipStyle() ?? copyData.GetRelicLoreTooltipStyle();
             AccessTools.Field(typeof(RelicData), "relicLoreTooltipStyle").SetValue(data, loreStyle);

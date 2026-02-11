@@ -37,6 +37,10 @@
             "type": "string",
             "description": "Unique identifier for the relic"
           },
+          "is_hidden": {
+            "type": "boolean",
+            "description": "Makes this relic data hidden. Mainly used by Soul Savior region effects."
+          },
           "lore_style": {
             "$ref": "../definitions/lore_tooltip_style.json",
             "description": "Style of the relic's lore tooltip"
