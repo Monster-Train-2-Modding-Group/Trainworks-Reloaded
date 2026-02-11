@@ -88,6 +88,11 @@ namespace TrainworksReloaded.Base.Trigger
                 .Field(typeof(CardTriggerEffectData), "triggerKeywordTooltipSuppressed")
                 .SetValue(data, triggerKeywordTooltipSuppressed);
 
+            var triggerKeywordCardTextSuppressed = configuration.GetSection("trigger_keyword_card_text_suppressed").ParseBool() ?? false;
+            AccessTools
+                .Field(typeof(CardTriggerEffectData), "triggerKeywordCardTextSuppressed")
+                .SetValue(data, triggerKeywordCardTextSuppressed);
+
             service.Register(name, data);
             return new CardTriggerEffectDefinition(key, data, configuration) { Id = id };
         }

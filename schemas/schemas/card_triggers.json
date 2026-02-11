@@ -61,7 +61,11 @@
         },
         "trigger_keyword_tooltip_suppressed": {
           "type": "boolean",
-          "description": "Rarely used. Supresses the tooltip for the trigger type. Currently used by Fecundity's OnCast trigger."
+          "description": "Rarely used. Supresses the tooltip for the trigger type. Currently used by Fecundity's OnCast card trigger."
+        },
+        "trigger_keyword_card_text_suppressed": {
+          "type": "boolean",
+          "description": "Rarely used. Supresses the card text for the trigger type. Mainly used by soul's effects which add an OnCast card trigger."
         },
         "required": [
           "id"
