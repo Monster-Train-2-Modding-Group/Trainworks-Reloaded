@@ -124,6 +124,9 @@ namespace TrainworksReloaded.Base.Relic
             var paramInt2 = config.GetSection("param_int_2").ParseInt() ?? 0;
             AccessTools.Field(typeof(RelicEffectData), "paramInt2").SetValue(data, paramInt2);
 
+            var paramInt3 = config.GetSection("param_int_3").ParseInt() ?? 0;
+            AccessTools.Field(typeof(RelicEffectData), "paramInt3").SetValue(data, paramInt3);
+
 
             // Handle float parameter
             var paramFloat = config.GetSection("param_float").ParseFloat() ?? 0;
@@ -156,6 +159,9 @@ namespace TrainworksReloaded.Base.Relic
 
             var paramBool3 = config.GetSection("param_bool_3").ParseBool() ?? false;
             AccessTools.Field(typeof(RelicEffectData), "paramBool3").SetValue(data, paramBool3);
+
+            var paramBool4 = config.GetSection("param_bool_4").ParseBool() ?? false;
+            AccessTools.Field(typeof(RelicEffectData), "paramBool4").SetValue(data, paramBool4);
 
             // Handle card type
             var cardType = config.GetDeprecatedSection("card_type", "param_card_type").ParseCardType() ?? CardType.Spell;

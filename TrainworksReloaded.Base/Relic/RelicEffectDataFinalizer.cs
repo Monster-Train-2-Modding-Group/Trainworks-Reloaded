@@ -311,6 +311,12 @@ namespace TrainworksReloaded.Base.Relic
                 AccessTools.Field(typeof(RelicEffectData), "paramCardFilterSecondary").SetValue(data, cardFilterSecondary);
             }
 
+            var paramCardFilter3 = configuration.GetSection("param_card_upgrade_mask_data").ParseReference();
+            if (paramCardFilter3 != null && cardUpgradeMaskRegister.TryLookupId(paramCardFilter3.ToId(key, TemplateConstants.UpgradeMask), out var cardFilter3, out var _, paramCardFilter3.context))
+            {
+                AccessTools.Field(typeof(RelicEffectData), "paramCardUpgradeMaskData").SetValue(data, cardFilter3);
+            }
+
             // Handle character subtype
             var characterSubtype = "SubtypesData_None";
             var characterSubtypeReference = configuration.GetDeprecatedSection("character_subtype", "param_subtype").ParseReference();
@@ -345,6 +351,27 @@ namespace TrainworksReloaded.Base.Relic
 
             }
             AccessTools.Field(typeof(RelicEffectData), "paramExcludeCharacterSubtypes").SetValue(data, excludedSubtypes.ToArray());
+
+            
+            var upgradeReferences = configuration.GetSection("param_card_upgrade_pool")
+               .GetChildren()
+               .Select(x => x.ParseReference())
+               .Where(x => x != null)
+               .Cast<ReferencedObject>();
+            if (!upgradeReferences.IsNullOrEmpty())
+            {
+                List<CardUpgradeData> upgrades = [];
+                foreach (var reference in upgradeReferences)
+                {
+                    if (reference != null && upgradeRegister.TryLookupName(reference.ToId(key, TemplateConstants.Upgrade), out var item, out var _, reference.context))
+                    {
+                        upgrades.Add(item);
+                    }
+                }
+                var pool = ScriptableObject.CreateInstance<CardUpgradePool>();
+                AccessTools.Field(typeof(CardUpgradePool), "cardUpgradeDataList").SetValue(pool, upgrades);
+                AccessTools.Field(typeof(RelicEffectData), "paramCardUpgradePool").SetValue(data, pool);
+            }
 
             var appliedVFXReference = configuration.GetSection("applied_vfx").ParseReference();
             if (vfxRegister.TryLookupId(appliedVFXReference?.ToId(key, TemplateConstants.Vfx) ?? "", out var appliedVFX, out var _, appliedVFXReference?.context))
