@@ -33,6 +33,10 @@
               "$ref": "../definitions/reference.json"
             }
           },
+          "param_float": {
+            "type": "number",
+            "description": "Float parameter."
+          },
           "extra_body_tooltips": {
             "$ref": "../definitions/parse_term.json",
             "description": "Additional body text for the tooltip."
@@ -84,6 +88,14 @@
           "in_play_descriptions": {
             "$ref": "../definitions/parse_term.json",
             "description": "Tooltip text to use when the modifier is in play on a character or room."
+          },
+          "titles": {
+            "$ref": "../definitions/parse_term.json",
+            "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+          },
+          "tooltips_suppressed": {
+            "type": "boolean",
+            "description": "Suppress the tooltips for this room modifier."
           },
           "triggered_vfx": {
             "$ref": "../definitions/vfx.json",

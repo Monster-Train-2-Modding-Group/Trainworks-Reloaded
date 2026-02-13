@@ -68,6 +68,7 @@ namespace TrainworksReloaded.Base.Room
                 return null;
             }
             var name = key.GetId("RoomModifier", id);
+            var titleKey = $"RoomModifierData_titleKey-{name}";
             var descriptionKey = $"RoomModifierData_descriptionKey-{name}";
             var descriptionKeyInPlay = $"RoomModifierData_descriptionKeyInPlay-{name}";
             var extraTooltipTitleKey = $"RoomModifierData_extraTooltipTitleKey-{name}";
@@ -94,6 +95,16 @@ namespace TrainworksReloaded.Base.Room
             AccessTools
                 .Field(typeof(RoomModifierData), "roomStateModifierClassName")
                 .SetValue(data, fullyQualifiedName);
+
+
+            var titleKeyTerm = configuration.GetSection("titles").ParseLocalizationTerm();
+            if (titleKeyTerm != null)
+            {
+                AccessTools.Field(typeof(RoomModifierData), "overrideTitleKey").SetValue(data, titleKey);
+                titleKeyTerm.Key = titleKey;
+                termRegister.Register(titleKey, titleKeyTerm);
+            }
+
             //handle descriptions
             var descriptionKeyTerm = configuration
                 .GetSection("descriptions")
@@ -182,10 +193,21 @@ namespace TrainworksReloaded.Base.Room
             AccessTools
                 .Field(typeof(RoomModifierData), "paramInt")
                 .SetValue(data, configuration.GetSection("param_int").ParseInt() ?? paramInt);
+
             var paramInt2 = 0;
             AccessTools
                 .Field(typeof(RoomModifierData), "paramInt2")
                 .SetValue(data, configuration.GetSection("param_int_2").ParseInt() ?? paramInt2);
+
+            var paramFloat = 0f;
+            AccessTools
+                .Field(typeof(RoomModifierData), "paramFloat")
+                .SetValue(data, configuration.GetSection("param_float").ParseFloat() ?? paramFloat);
+
+            var tooltipsSuppressed = false;
+            AccessTools
+                .Field(typeof(RoomModifierData), "tooltipsSuppressed")
+                .SetValue(data, configuration.GetSection("tooltips_suppressed").ParseBool() ?? tooltipsSuppressed);
 
             service.Register(name, data);
             return new RoomModifierDefinition(key, data, configuration) { Id = id };

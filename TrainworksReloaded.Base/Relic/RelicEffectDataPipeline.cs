@@ -126,8 +126,6 @@ namespace TrainworksReloaded.Base.Relic
 
             var paramInt3 = config.GetSection("param_int_3").ParseInt() ?? 0;
             AccessTools.Field(typeof(RelicEffectData), "paramInt3").SetValue(data, paramInt3);
-
-
             // Handle float parameter
             var paramFloat = config.GetSection("param_float").ParseFloat() ?? 0;
             AccessTools.Field(typeof(RelicEffectData), "paramFloat").SetValue(data, paramFloat);

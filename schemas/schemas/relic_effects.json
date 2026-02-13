@@ -95,6 +95,10 @@
             "type": "boolean",
             "description": "Tertiary boolean parameter"
           },
+          "param_bool_4": {
+            "type": "boolean",
+            "description": "Quaternary boolean parameter"
+          },
           "param_card": {
             "$ref": "../definitions/card.json",
             "description": "Card data identifier"
@@ -113,6 +117,17 @@
           "param_card_filter_2": {
             "$ref": "../definitions/card_upgrade_mask.json",
             "description": "Secondary card filter identifier reference to an upgrade mask."
+          },
+          "param_card_upgrade_mask": {
+            "$ref": "../definitions/card_upgrade_mask.json",
+            "description": "Another card filter identifier reference to an upgrade mask (Only used by RelicEffectCardUpgradeRandomCardsInDeck)."
+          },
+          "param_card_upgrade_pool": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/card_upgrade.json"
+            },
+            "description": "A pool of potential upgrades to apply. (Only used by RelicEffectCardUpgradeRandomCardsInDeck)."
           },
           "param_card_pool": {
             "$ref": "../definitions/card_pool.json",
@@ -191,6 +206,10 @@
             "type": "integer",
             "description": "Secondary integer parameter"
           },
+          "param_int_3": {
+            "type": "integer",
+            "description": "Tertiary integer parameter"
+          },
           "param_random_champion_pool": {
             "type": "array",
             "items": {
@@ -212,7 +231,7 @@
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["rarity", "multiplier"],
+              "required": [ "rarity", "multiplier" ],
               "properties": {
                 "rarity": {
                   "$ref": "../definitions/rarity.json"
