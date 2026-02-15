@@ -1,4 +1,5 @@
-﻿using SimpleInjector;
+﻿using BepInEx.Logging;
+using SimpleInjector;
 
 namespace TrainworksReloaded.Core
 {
@@ -7,20 +8,41 @@ namespace TrainworksReloaded.Core
     /// </summary>
     public class Railend
     {
-        private static readonly List<Action<Container>> PreContainerActions = new();
-        private static readonly List<Action<Container>> PostContainerActions = new();
+        private static readonly List<Action<Container>> PreContainerActions = [];
+        private static readonly List<Action<Container>> PostContainerActions = [];
+        private static readonly ManualLogSource logger = Logger.CreateLogSource("Railend");
         private static readonly Lazy<Container> container = new(() =>
         {
             var init = Railhead.GetBuilderForInit();
             var container = new Container();
             foreach (var action in PreContainerActions)
             {
-                action(container);
+                try
+                {
+                    action(container);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError($"============================================================");
+                    logger.LogError($"[CATASTROPHIC] Mod at {action.Method.DeclaringType.Assembly.FullName} failed to load due to exception.");
+                    logger.LogError($"============================================================");
+                    logger.LogError(ex.ToString());
+                }
             }
             init.Build(container);
             foreach (var action in PostContainerActions)
             {
-                action(container);
+                try
+                {
+                    action(container);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError($"============================================================");
+                    logger.LogError($"[CATASTROPHIC] Mod at {action.Method.DeclaringType.Assembly.FullName} failed to load due to exception.");
+                    logger.LogError($"============================================================");
+                    logger.LogError(ex.ToString());
+                }
             }
             container.Verify();
             return container;

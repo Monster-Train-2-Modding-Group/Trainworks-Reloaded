@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace TrainworksReloaded.Core.Configuration
@@ -51,21 +52,28 @@ namespace TrainworksReloaded.Core.Configuration
 
             foreach (var path in Source.Paths)
             {
-                var info = Source.FileProvider?.GetFileInfo(path) ?? null;
-                if (info != null && info.Exists)
+                try
                 {
-                    using var stream = info.CreateReadStream();
-                    using var reader = new StreamReader(stream);
-                    var currentJson = JObject.Parse(reader.ReadToEnd());
+                    var info = Source.FileProvider?.GetFileInfo(path) ?? null;
+                    if (info != null && info.Exists)
+                    {
+                        using var stream = info.CreateReadStream();
+                        using var reader = new StreamReader(stream);
+                        var currentJson = JObject.Parse(reader.ReadToEnd());
 
-                    if (mergedJson == null)
-                    {
-                        mergedJson = currentJson;
+                        if (mergedJson == null)
+                        {
+                            mergedJson = currentJson;
+                        }
+                        else if (currentJson != null)
+                        {
+                            mergedJson.Merge(currentJson);
+                        }
                     }
-                    else if (currentJson != null)
-                    {
-                        mergedJson.Merge(currentJson);
-                    }
+                }
+                catch (JsonReaderException e)
+                {
+                    throw new Exception($"Failed to parse file {path} due to exception", e);
                 }
             }
 

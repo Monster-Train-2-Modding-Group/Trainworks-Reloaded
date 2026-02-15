@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using BepInEx.Logging;
+using Microsoft.Extensions.Configuration;
 using SimpleInjector;
+using System;
 using System.Reflection;
 using TrainworksReloaded.Core.Interfaces;
 
@@ -9,6 +11,7 @@ namespace TrainworksReloaded.Core.Impl
     {
         public Dictionary<String, List<Action<IConfigurationBuilder>>> configActions = [];
         public List<Action<Container>> containerActions = [];
+        private ManualLogSource logger = Logger.CreateLogSource("LazyBuilder");
 
         public void Configure(string pluginId, Action<IConfigurationBuilder> action)
         {
@@ -33,23 +36,33 @@ namespace TrainworksReloaded.Core.Impl
             var atlas = new PluginAtlas();
             foreach (var key in configActions.Keys)
             {
-                var configuration = new ConfigurationBuilder();
-                var directory = new HashSet<string>();
-                Assembly? assembly = null;
-                foreach (var action in configActions[key])
+                try
                 {
-                    var basePath = Path.GetDirectoryName(
-                        action.Method.DeclaringType.Assembly.Location
-                    );
-                    directory.Add(basePath);
-                    assembly = action.Method.DeclaringType.Assembly;
-                    configuration.SetBasePath(basePath);
-                    action(configuration);
+                    var configuration = new ConfigurationBuilder();
+                    var directory = new HashSet<string>();
+                    Assembly? assembly = null;
+                    foreach (var action in configActions[key])
+                    {
+                        var basePath = Path.GetDirectoryName(
+                            action.Method.DeclaringType.Assembly.Location
+                        );
+                        directory.Add(basePath);
+                        assembly = action.Method.DeclaringType.Assembly;
+                        configuration.SetBasePath(basePath);
+                        action(configuration);
+                    }
+                    var definition = new PluginDefinition(configuration.Build());
+                    definition.AssetDirectories.AddRange(directory);
+                    definition.Assembly = assembly;
+                    atlas.PluginDefinitions.Add(key, definition);
                 }
-                var definition = new PluginDefinition(configuration.Build());
-                definition.AssetDirectories.AddRange(directory);
-                definition.Assembly = assembly;
-                atlas.PluginDefinitions.Add(key, definition);
+                catch (Exception ex)
+                {
+                    logger.LogError($"============================================================");
+                    logger.LogError($"[CATASTROPHIC] Mod at {key} failed to load due to exception.");
+                    logger.LogError($"============================================================");
+                    logger.LogError(ex.ToString());
+                }
             }
             container.RegisterInstance<PluginAtlas>(atlas);
 
