@@ -274,7 +274,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 cardRegister.TryLookupName(abilityReference.ToId(key, TemplateConstants.Card), out var abilityCard, out var _, abilityReference.context);
                 if (abilityCard != null && !abilityCard.IsUnitAbility())
                 {
-                    logger.Log(LogLevel.Warning, $"Attempting to add {abilityCard.GetName()} as a unit ability upgrade for {data.Cheat_GetNameEnglish()}, but is not a unit ability card.");
+                    logger.Log(LogLevel.Warning, $"Attempting to add {abilityCard.name} as a unit ability upgrade for {data.name}, but is not a unit ability card.");
                 }
                 AccessTools.Field(typeof(CardUpgradeData), "unitAbilityUpgrade").SetValue(data, abilityCard);
             }
@@ -284,13 +284,13 @@ namespace TrainworksReloaded.Base.CardUpgrade
             }
 
             var roomAbilityConfig = configuration.GetSection("room_ability_upgrade");
-            var roomAbilityReference = abilityConfig.ParseReference();
+            var roomAbilityReference = roomAbilityConfig.ParseReference();
             if (roomAbilityReference != null)
             {
                 cardRegister.TryLookupName(roomAbilityReference.ToId(key, TemplateConstants.Card), out var abilityCard, out var _, roomAbilityReference.context);
                 if (abilityCard != null && !abilityCard.IsRoomAbility())
                 {
-                    logger.Log(LogLevel.Warning, $"Attempting to add {abilityCard.GetName()} as a room ability upgrade for {data.Cheat_GetNameEnglish()}, but is not a room ability card.");
+                    logger.Log(LogLevel.Warning, $"Attempting to add {abilityCard.name} as a room ability upgrade for {data.name}, but is not a room ability card.");
                 }
                 AccessTools.Field(typeof(CardUpgradeData), "roomAbilityUpgrade").SetValue(data, abilityCard);
             }

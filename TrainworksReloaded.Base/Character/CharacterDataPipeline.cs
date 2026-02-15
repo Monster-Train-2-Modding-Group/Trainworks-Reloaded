@@ -371,7 +371,10 @@ namespace TrainworksReloaded.Base.Character
             if (modded)
                 service.Register(name, data);
 
-            return new CharacterDataDefinition(key, data, copyData, configuration, overrideMode, modded);
+            return new CharacterDataDefinition(key, data, copyData, configuration, overrideMode, modded)
+            {
+                Id = id
+            };
         }
     }
 }

@@ -134,6 +134,10 @@ namespace TrainworksReloaded.Base.Character
             if (abilityReference != null)
             {
                 cardRegister.TryLookupName(abilityReference.ToId(key, TemplateConstants.Card), out var abilityCard, out var _, abilityReference.context);
+                if (abilityCard != null && !abilityCard.IsUnitAbility())
+                {
+                    logger.Log(LogLevel.Warning, $"Attempting to add {abilityCard.name} as a unit ability upgrade for {data.name}, but is not a unit ability card.");
+                }
                 AccessTools.Field(typeof(CharacterData), "unitAbility").SetValue(data, abilityCard);
             }
             if (overrideMode == OverrideMode.Replace && abilityReference == null && abilityConfig.Exists())
