@@ -24,7 +24,7 @@ namespace TrainworksReloaded.Core
                 catch (Exception ex)
                 {
                     logger.LogError($"============================================================");
-                    logger.LogError($"[CATASTROPHIC] Mod at {action.Method.DeclaringType.Assembly.FullName} failed to load due to exception.");
+                    logger.LogError($"[CATASTROPHIC] Mod at {action.Method.DeclaringType.Assembly.GetName()} failed to load due to exception.");
                     logger.LogError($"============================================================");
                     logger.LogError(ex.ToString());
                 }
@@ -39,7 +39,7 @@ namespace TrainworksReloaded.Core
                 catch (Exception ex)
                 {
                     logger.LogError($"============================================================");
-                    logger.LogError($"[CATASTROPHIC] Mod at {action.Method.DeclaringType.Assembly.FullName} failed to load due to exception.");
+                    logger.LogError($"[CATASTROPHIC] Mod at {action.Method.DeclaringType.Assembly.GetName()} failed to load due to exception.");
                     logger.LogError($"============================================================");
                     logger.LogError(ex.ToString());
                 }
