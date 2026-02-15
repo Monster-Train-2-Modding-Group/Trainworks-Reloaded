@@ -58,9 +58,9 @@ namespace TrainworksReloaded.Core.Impl
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError($"============================================================");
-                    logger.LogError($"[CATASTROPHIC] Mod at {key} failed to load due to exception.");
-                    logger.LogError($"============================================================");
+                    logger.LogError($"=============================================================");
+                    logger.LogError($"[CATASTROPHIC] Mod at {key} failed to build due to exception.");
+                    logger.LogError($"=============================================================");
                     logger.LogError(ex.ToString());
                 }
             }
@@ -68,7 +68,17 @@ namespace TrainworksReloaded.Core.Impl
 
             foreach (var action in containerActions)
             {
-                action(container);
+                try
+                {
+                    action(container);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError($"============================================================");
+                    logger.LogError($"[CATASTROPHIC] Mod at {action.Method.DeclaringType.Assembly.GetName()} failed to load due to exception.");
+                    logger.LogError($"============================================================");
+                    logger.LogError(ex.ToString());
+                }
             }
         }
     }
