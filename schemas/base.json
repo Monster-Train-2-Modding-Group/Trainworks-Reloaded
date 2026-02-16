@@ -59,6 +59,9 @@
     "map_nodes": {
       "$ref": "schemas/map_nodes.json#/properties/map_nodes"
     },
+    "pyre_hearts": {
+      "$ref": "schemas/pyre_hearts.json#/properties/pyre_hearts"
+    },
     "relic_effect_conditions": {
       "$ref": "schemas/relic_effect_conditions.json#/properties/relic_effect_conditions"
     },
