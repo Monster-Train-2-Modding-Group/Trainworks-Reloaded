@@ -15,7 +15,7 @@
           },
           "enhancers": {
             "items": {
-              "$ref": "../definitions/reference.json",
+              "$ref": "../definitions/enhancers.json",
               "description": "Reference to an enhancer's unique identifier that can appear in this pool."
             },
             "type": "array",
