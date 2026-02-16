@@ -65,7 +65,7 @@
                 "$ref": "../definitions/parse_term.json"
               },
               "condition": {
-                "$ref": "../definitions/metagame_tracked_value.json",
+                "$ref": "../definitions/tracked_value.json",
                 "description": "Condition to unlock this pyre heart."
               },
               "param_int": {
