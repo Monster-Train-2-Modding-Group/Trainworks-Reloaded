@@ -5,15 +5,22 @@
     {
       "type": "string",
       "enum": [
+        "Class6CorruptEnhancerPool",
         "DominionUpgradePool",
         "DraftUpgradePool",
         "MalickaDraftUpgradePool",
+        "SoulSavior_SpellUpgradePoolCommon",
+        "SoulSavior_SpellUpgradePoolCostReduction",
+        "SoulSavior_SpellUpgradePoolRare",
+        "SoulSavior_UnitUpgradePoolCommon",
+        "SoulSavior_UnitUpgradePoolRare",
         "SpellUpgradePoolCommon",
         "SpellUpgradePoolCostReduction",
         "SpellUpgradePoolRare",
         "TitanSavageryUpgradePool",
         "UnitUpgradePoolCommon",
         "UnitUpgradePoolRare"
+
       ]
     },
     {
