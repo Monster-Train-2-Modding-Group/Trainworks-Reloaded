@@ -188,7 +188,7 @@
           "ui_gradient": {
             "type": "array",
             "uniqueItems": true,
-            "description": "Color gradient used in the UI for this class.",
+            "description": "Color gradient used in the UI for this class, specifically used in the Clan Select Dialog as the background when clan is selected.",
             "items": {
               "required": [
                 "time"

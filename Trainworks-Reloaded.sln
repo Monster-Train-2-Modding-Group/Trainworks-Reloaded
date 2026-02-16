@@ -103,6 +103,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "definitions", "definitions"
 		schemas\definitions\dlc.json = schemas\definitions\dlc.json
 		schemas\definitions\effect_layer.json = schemas\definitions\effect_layer.json
 		schemas\definitions\effect_transform.json = schemas\definitions\effect_transform.json
+		schemas\definitions\enhancers.json = schemas\definitions\enhancers.json
 		schemas\definitions\enhancer_pool.json = schemas\definitions\enhancer_pool.json
 		schemas\definitions\entry_duration.json = schemas\definitions\entry_duration.json
 		schemas\definitions\game_object_battle_node_extension.json = schemas\definitions\game_object_battle_node_extension.json
