@@ -13,7 +13,7 @@
     },
     "from_permanent_upgrade": {
       "type": "boolean",
-      "description": "Set to true if this status effect stack data is present in a permanent upgrade. Currently only used by Unchained Fel."
+      "description": "Set to true if this status effect stack data is present in a permanent upgrade."
     }
   },
   "required": [ "status", "count" ]
