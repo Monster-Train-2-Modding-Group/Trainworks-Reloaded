@@ -15,8 +15,8 @@
           },
           "relics": {
             "items": {
-              "$ref": "../definitions/reference.json",
-              "description": "Reference to an relic's unique identifier that can appear in this pool (must be a collectable)."
+              "$ref": "../definitions/collectable_relic.json",
+              "description": "Reference to an relic's unique identifier that can appear in this pool (must be of type collectable)."
             },
             "type": "array",
             "description": "List of relics references that can appear in this pool."
