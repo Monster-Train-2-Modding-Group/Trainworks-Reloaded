@@ -131,7 +131,7 @@
           },
           "is_launch_clan": {
             "type": "boolean",
-            "description": "Whether this class is a clan available at original game launch. Do not set to true.",
+            "description": "Whether this class is a clan available at original game launch. Do not set to true."
           },
           "is_wurmkin": {
             "type": "boolean",
