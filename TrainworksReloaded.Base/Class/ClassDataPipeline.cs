@@ -153,7 +153,7 @@ namespace TrainworksReloaded.Base.Class
                 .Field(typeof(ClassData), "isCrew")
                 .SetValue(data, configuration.GetSection("is_crew").ParseBool() ?? isCrew);
 
-            var isLaunch = true;
+            var isLaunch = data.IsLaunchClan();
             AccessTools
                 .Field(typeof(ClassData), "isLaunchClan")
                 .SetValue(data, configuration.GetSection("is_launch_clan").ParseBool() ?? isLaunch);
