@@ -26,7 +26,6 @@
         "RoomStateCapacityModifier",
         "RoomStateConduitModifier",
         "RoomStateCorruptionModifier",
-        "RoomStateCostModifierBase",
         "RoomStateDamageAllPostCombatModifier",
         "RoomStateDamageCostModifier",
         "RoomStateDrawRandomConsumedCardsPreCombatModifier",
