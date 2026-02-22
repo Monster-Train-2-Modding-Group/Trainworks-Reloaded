@@ -114,10 +114,11 @@ namespace TrainworksReloaded.Base.Prefab
             }
 
             var image = iconSprite.GetComponent<Image>();
-            var material = image.material;
-            material.SetTexture(materialPropertyName, sprite.texture);
+            var srcMaterial = new Material(image.material);
+            image.material = srcMaterial;
+            image.material.SetTexture(materialPropertyName, sprite.texture);
             if (additionalPropertyName != null)
-                material.SetTexture(additionalPropertyName, sprite2?.texture ?? Texture2D.blackTexture);
+                image.material.SetTexture(additionalPropertyName, sprite2?.texture ?? Texture2D.blackTexture);
         }
     }
 }
