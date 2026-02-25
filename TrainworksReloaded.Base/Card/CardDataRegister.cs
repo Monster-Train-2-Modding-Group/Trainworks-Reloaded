@@ -14,6 +14,7 @@ namespace TrainworksReloaded.Base.Card
     {
         private readonly Lazy<SaveManager> SaveManager;
         private readonly IModLogger<CardDataRegister> logger;
+
         public CardPool CustomCardPool;
         public ReorderableArray<CardData> CardPoolBacking;
 

@@ -200,7 +200,7 @@
                             },
                             "ignore_relic_rarity_override": {
                               "type": "boolean",
-                              "description": "Whether to ignore relic rarity overrides."
+                              "description": "Whether to ignore relic rarity overrides. This should be set to true for unit banner rewards, as it make it ignore Shattered Halo's effect."
                             },
                             "use_run_rarity_floors": {
                               "type": "boolean",
@@ -259,7 +259,7 @@
                             },
                             "relic_draft_pool_substitutions": {
                               "type": "array",
-                              "description": "A list of substitutions any relic can compleletely change the pool of cards for a reward. Note that if multiple relics change the pool the one acquired later has priority.",
+                              "description": "A list of substitutions any relic can compleletely change the pool of cards for a reward. Note that if multiple relics change the pool the one acquired later has priority. You shouldn't need to set this, it is automatically set to the proper substitutions for unit banner rewards. If set then you will need to set the 3 entries present on all banner nodes manaully.",
                               "items": {
                                 "type": "object",
                                 "required": ["relic", "replacement_draft_pool"],

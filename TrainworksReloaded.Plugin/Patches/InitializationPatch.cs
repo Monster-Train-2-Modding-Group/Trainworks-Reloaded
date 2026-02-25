@@ -32,15 +32,19 @@ namespace TrainworksReloaded.Plugin.Patches
             logger.Log(LogLevel.Info, "Starting TrainworksReloaded initialization...");
 
             //we add custom card pool so that the modded card data is loaded.
-            ____assetLoadingData.CardPoolsAll.Add(container.GetInstance<CardDataRegister>().CustomCardPool);
+            var moddedPool = container.GetInstance<CardDataRegister>().CustomCardPool;
+            ____assetLoadingData.CardPoolsAll.Add(moddedPool);
 
             var classRegister = container.GetInstance<ClassDataRegister>();
+            var cardPoolRegister = container.GetInstance<CardPoolRegister>();
+
+            var moddedClasses = classRegister.Values;
             var classDatas =
                 (List<ClassData>)
                     AccessTools
                         .Field(typeof(BalanceData), "classDatas")
                         .GetValue(____assetLoadingData.BalanceData);
-            classDatas.AddRange(classRegister.Values);
+            classDatas.AddRange(moddedClasses);
             logger.Log(LogLevel.Info, $"Added {classRegister.Values.Count} custom classes");
 
             //handle map data
@@ -139,6 +143,44 @@ namespace TrainworksReloaded.Plugin.Patches
             logger.Log(LogLevel.Info, "Running finalization steps...");
             var finalizer = container.GetInstance<Finalizer>();
             finalizer.FinalizeData();
+
+            // Compute the Banner-ed reward replacement pools.
+            var megaPool = cardPoolRegister.GetValueOrDefault("MegaPool");
+            Dictionary<ClassData, List<CardData>> classDraftableCards = [];
+            if (megaPool != null)
+            {
+                HashSet<CardData> allCards = [];
+                megaPool.CollectAllCards(allCards);
+                HashSet<CardData> moddedCards = [];
+                moddedPool.CollectAllCards(moddedCards);
+
+                IEnumerable<CardData> moddedMegaPoolCards = allCards.Intersect(moddedCards);
+                foreach (CardData card in moddedMegaPoolCards)
+                {
+                    var clan = card.GetLinkedClass();
+                    if (clan == null || card.IsBannerUnit())
+                        continue;
+                    if (!classDraftableCards.ContainsKey(clan))
+                    {
+                        classDraftableCards[clan] = [];
+                    }
+                    classDraftableCards[clan].Add(card);
+                }
+                foreach (var (clan, cardPool) in classDraftableCards)
+                {
+                    var clanCardPool = cardPoolRegister.GetBannerReplacementPool(clan.name);
+                    if (clanCardPool == null)
+                    {
+                        logger.Log(LogLevel.Warning, "Clan doesn't have a Banner Replacement Pool registered, this shouldn't happen for modded clans. " +
+                            "Currently there is a bug with Melting Remnant, Railforged, and Wurmkin who don't have these pools.");
+                        continue;
+                    }
+                    var arrayField = (ReorderableArray<CardData>) AccessTools.Field(typeof(CardPool), "cardDataList").GetValue(clanCardPool);
+                    foreach (var card in cardPool)
+                        arrayField.Add(card);
+                }
+            }
+
 
             //Load localization at this time
             logger.Log(LogLevel.Info, "Loading localization data...");

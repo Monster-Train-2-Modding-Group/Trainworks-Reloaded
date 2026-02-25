@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
@@ -13,15 +15,17 @@ namespace TrainworksReloaded.Base.Reward
     {
         private readonly IModLogger<DraftRewardDataFinalizerDecorator> logger;
         private readonly ICache<IDefinition<RewardData>> cache;
-        private readonly IRegister<CardPool> cardPoolRegister;
+        private readonly CardPoolRegister cardPoolRegister;
         private readonly IRegister<ClassData> classRegister;
         private readonly IRegister<RelicData> relicRegister;
         private readonly IDataFinalizer decoratee;
 
+        private readonly FieldInfo RelicDraftPoolSubstitutions = AccessTools.Field(typeof(DraftRewardData), "relicDraftPoolSubstitutions");
+
         public DraftRewardDataFinalizerDecorator(
             IModLogger<DraftRewardDataFinalizerDecorator> logger,
             ICache<IDefinition<RewardData>> cache,
-            IRegister<CardPool> cardPoolRegister,
+            CardPoolRegister cardPoolRegister,
             IRegister<ClassData> classRegister,
             IRegister<RelicData> relicRegister,
             IDataFinalizer decoratee
@@ -181,28 +185,31 @@ namespace TrainworksReloaded.Base.Reward
                 .Field(typeof(DraftRewardData), "relicRarityTicketValues")
                 .SetValue(draftData, relicRarityTicketValues);
 
-            List<DraftRewardData.RelicDraftPoolSubstitution> substitutions = [];
-            foreach (var child in configuration.GetSection("relic_draft_pool_substitutions").GetChildren())
+            // Only set field if present. It is auto populated in RewardNodeDataFinalizer.
+            var substitutions = RelicDraftPoolSubstitutions.GetValue(draftData) as List<DraftRewardData.RelicDraftPoolSubstitution>;
+            if (configuration.GetSection("relic_draft_pool_substitutions").Exists())
             {
-                var relicReference = child.GetSection("relic").ParseReference();
-                var cardPoolReference = child.GetSection("replacement_draft_pool").ParseReference();
-                if (relicReference == null || cardPoolReference == null)
-                    continue;
+                substitutions!.Clear();
+                foreach (var child in configuration.GetSection("relic_draft_pool_substitutions").GetChildren())
+                {
+                    var relicReference = child.GetSection("relic").ParseReference();
+                    var cardPoolReference = child.GetSection("replacement_draft_pool").ParseReference();
+                    if (relicReference == null || cardPoolReference == null)
+                        continue;
 
-                relicRegister.TryLookupName(relicReference.ToId(key, TemplateConstants.RelicData), out var relicData, out var _, relicReference.context);
-                cardPoolRegister.TryLookupName(cardPoolReference.ToId(key, TemplateConstants.CardPool), out var cardPool, out var _2, cardPoolReference.context);
+                    relicRegister.TryLookupName(relicReference.ToId(key, TemplateConstants.RelicData), out var relicData, out var _, relicReference.context);
+                    cardPoolRegister.TryLookupName(cardPoolReference.ToId(key, TemplateConstants.CardPool), out var cardPool, out var _2, cardPoolReference.context);
 
-                if (relicData == null || cardPool == null)
-                    continue;
+                    if (relicData == null || cardPool == null)
+                        continue;
 
-                var sub = new DraftRewardData.RelicDraftPoolSubstitution();
-                AccessTools.Field(typeof(DraftRewardData.RelicDraftPoolSubstitution), "relicData").SetValue(sub, relicData);
-                AccessTools.Field(typeof(DraftRewardData.RelicDraftPoolSubstitution), "replacementDraftPool").SetValue(sub, cardPool);
+                    var sub = new DraftRewardData.RelicDraftPoolSubstitution();
+                    AccessTools.Field(typeof(DraftRewardData.RelicDraftPoolSubstitution), "relicData").SetValue(sub, relicData);
+                    AccessTools.Field(typeof(DraftRewardData.RelicDraftPoolSubstitution), "replacementDraftPool").SetValue(sub, cardPool);
 
-                substitutions.Add(sub);
+                    substitutions!.Add(sub);
+                }
             }
-
-            AccessTools.Field(typeof(DraftRewardData), "relicDraftPoolSubstitutions").SetValue(draftData, substitutions);
         }
     }
 }

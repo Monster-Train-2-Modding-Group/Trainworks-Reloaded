@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Enum;
@@ -17,17 +18,20 @@ namespace TrainworksReloaded.Base.Class
         private readonly IModLogger<ClassDataPipeline> logger;
         private readonly IRegister<LocalizationTerm> termRegister;
         private readonly IGuidProvider guidProvider;
+        private readonly CardPoolRegister cardPoolRegister;
 
         public ClassDataPipeline(
             PluginAtlas atlas,
             IModLogger<ClassDataPipeline> logger,
             IRegister<LocalizationTerm> termRegister,
+            CardPoolRegister cardPoolRegister,
             IGuidProvider guidProvider
         )
         {
             this.atlas = atlas;
             this.logger = logger;
             this.termRegister = termRegister;
+            this.cardPoolRegister = cardPoolRegister;
             this.guidProvider = guidProvider;
         }
 
@@ -219,10 +223,19 @@ namespace TrainworksReloaded.Base.Class
                 classUnlockPreviewTexts.Add(val.Key);
             }
 
-            //register before filling in data using
             var modded = overrideMode.IsNewContent();
             if (modded)
+            {
                 service.Register(name, data);
+
+                // Register a CardPool for the Banner-ed Mutator. The cards will be auto-added to this pool later.
+                CardPool replacementCardPool = ScriptableObject.CreateInstance<CardPool>();
+                replacementCardPool.name = $"Units{id}BannerReplacementMutator";
+                string cardPoolKey = replacementCardPool.name.ToId(key, TemplateConstants.CardPool);
+                cardPoolRegister.Register(cardPoolKey, replacementCardPool);
+                cardPoolRegister.RegisterBannerReplacementPool(name, replacementCardPool);
+            }
+                
 
             return new ClassDataDefinition(key, data, configuration, !modded);
         }
