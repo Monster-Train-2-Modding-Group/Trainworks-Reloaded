@@ -107,7 +107,7 @@
       ]
     },
     {
-      "$ref": "../definitions/reference"
+      "$ref": "../definitions/reference.json"
     }
   ]
 }
