@@ -89,6 +89,9 @@
     "skeletons": {
       "$ref": "schemas/skeletons.json#/properties/skeletons"
     },
+    "soul_pools": {
+      "$ref": "schemas/soul_pools.json#/properties/soul_pools"
+    },
     "sound_effects": {
       "$ref": "schemas/sound_effects.json#/properties/sound_effects"
     },

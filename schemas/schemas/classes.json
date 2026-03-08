@@ -207,7 +207,7 @@
           },
           "unlock_data": {
             "type": "object",
-            "description": "Data defining how this class is unlocked. (Not implemented)",
+            "description": "Data defining how this class is unlocked.",
             "properties": {
               "descriptions": {
                 "$ref": "../definitions/parse_term.json",

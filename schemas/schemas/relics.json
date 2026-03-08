@@ -80,6 +80,7 @@
               "mutator",
               "endless_mutator",
               "pyre_artifact",
+              "soul",
               null
             ],
             "description": "Type of relic."
@@ -224,6 +225,87 @@
                   },
                   "extensions": {
                     "type": "array"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "soul"
+                    ]
+                  },
+                  "extensions": {
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "soul": {
+                          "type": "object",
+                          "properties": {
+                            "tier_level": {
+                              "type": "integer",
+                              "description": "Tier level of the soul"
+                            },
+                            "next_tier": {
+                              "$ref": "../definitions/reference.json",
+                              "description": "Reference to relic of type soul for the SoulData of the next tier."
+                            },
+                            "class": {
+                              "$ref": "../definitions/classes.json"
+                            },
+                            "icon": {
+                              "$ref": "../definitions/reference.json",
+                              "description": "(Optional) Reference to the icon for the soul for use in the SoulHUD. If unset it will use the RelicData's icon."
+                            },
+                            "unlock_level": {
+                              "type": "integer",
+                              "description": "Clan unlock level (unused?)"
+                            },
+                            "unlock_data": {
+                              "type": "object",
+                              "description": "Data defining how this soul is unlocked.",
+                              "properties": {
+                                "descriptions": {
+                                  "$ref": "../definitions/parse_term.json",
+                                  "description": "Localized text describing the unlock requirements."
+                                },
+                                "tracked_value": {
+                                  "$ref": "../definitions/tracked_value.json",
+                                  "description": "Value that needs to be tracked for unlocking."
+                                },
+                                "param_int": {
+                                  "type": "integer",
+                                  "description": "Numerical parameter for the unlock requirement."
+                                }
+                              }
+                            },
+                            "required_dlc": {
+                              "$ref": "../definitions/dlc.json"
+                            },
+                            "draft_min_distance_allowed": {
+                              "type": "integer",
+                              "description": "Min distance required to draft this soul."
+                            },
+                            "draft_max_distance_allowed": {
+                              "type": "integer",
+                              "description": "Max distance required to draft this soul."
+                            },
+                            "draft_min_battles_completed": {
+                              "type": "integer",
+                              "description": "Min battles completed to draft this soul."
+                            },
+                            "draft_max_battles_completed": {
+                              "type": "integer",
+                              "description": "Max battles completed to draft this soul."
+                            },
+                            "pools": {
+                              "$ref": "../definitions/soul_pool.json",
+                              "description": "Soul pools to add this soul to. Only necessary for T1 souls."
+                            }
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               },

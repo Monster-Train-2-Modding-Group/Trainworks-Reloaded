@@ -1,0 +1,32 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/soul_pools.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "soul_pools": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "A collection of soul pools that define which souls can appear in specific situations or rewards.",
+      "items": {
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique identifier for this soul pool. Used to reference this pool from other parts of the game."
+          },
+          "relics": {
+            "items": {
+              "$ref": "../definitions/soul.json",
+              "description": "Reference to an soul's unique identifier that can appear in this pool (must be of type soul)."
+            },
+            "type": "array",
+            "description": "List of soul references that can appear in this pool."
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "description": "A soul pool definition that specifies which souls can appear together."
+      }
+    }
+  }
+}

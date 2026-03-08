@@ -71,6 +71,10 @@
             "type": "boolean",
             "description": "Whether this upgrade should not replace an existing unit ability."
           },
+          "exclude_from_clones": {
+            "type": "boolean",
+            "description": "Whether this upgrade is excluded from cloned units."
+          },
           "filters": {
             "type": "array",
             "description": "List of upgrade filters to apply. Reference to an upgrade mask.",
