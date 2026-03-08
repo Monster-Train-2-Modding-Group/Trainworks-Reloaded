@@ -42,5 +42,6 @@
         public const string AudioClip = "AudioClip";
         public const string SoundCueDefinition = "SoundCueDefinition";
         public const string PyreHeart = "PyreHeart";
+        public const string SoulPool = "SoulPool";
     }
 }

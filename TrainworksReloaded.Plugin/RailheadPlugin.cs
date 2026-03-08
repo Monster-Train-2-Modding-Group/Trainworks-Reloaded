@@ -140,6 +140,7 @@ namespace TrainworksReloaded.Plugin
                         typeof(CardPoolFinalizer),
                         typeof(EnhancerPoolFinalizer),
                         typeof(RelicPoolFinalizer),
+                        typeof(SoulPoolFinalizer),
                         typeof(CharacterTriggerTypeFinalizer),
                         typeof(CardTriggerTypeFinalizer),
                         typeof(CharacterChatterFinalizer),
@@ -518,6 +519,15 @@ namespace TrainworksReloaded.Plugin
                     pipeline.Run(x);
                 });
 
+                c.RegisterSingleton<IRegister<SoulPool>, SoulPoolRegister>();
+                c.RegisterSingleton<SoulPoolRegister, SoulPoolRegister>();
+                c.Register<IDataPipeline<IRegister<SoulPool>, SoulPool>, SoulPoolPipeline>();
+                c.RegisterInitializer<IRegister<SoulPool>>(x =>
+                {
+                    var pipeline = c.GetInstance<IDataPipeline<IRegister<SoulPool>, SoulPool>>();
+                    pipeline.Run(x);
+                });
+
                 //Register Relic Pool
                 c.RegisterSingleton<IRegister<RelicPool>, RelicPoolRegister>();
                 c.RegisterSingleton<RelicPoolRegister, RelicPoolRegister>();
@@ -721,6 +731,7 @@ namespace TrainworksReloaded.Plugin
                         typeof(MutatorDataFactory),
                         typeof(PyreArtifactDataFactory),
                         typeof(SinsDataFactory),
+                        typeof(SoulDataFactory),
                     ],
                     Lifestyle.Singleton
                 );
@@ -736,7 +747,6 @@ namespace TrainworksReloaded.Plugin
                     typeof(CollectableRelicDataFinalizerDecorator),
                     xs => xs.ImplementationType == typeof(RelicDataFinalizer)
                 );
-                c.RegisterSingleton<VanillaRelicPoolDelegator>();
 
                 //MutatorData
                 c.RegisterDecorator(
@@ -754,7 +764,17 @@ namespace TrainworksReloaded.Plugin
                     typeof(EnhancerDataFinalizerDecorator),
                     xs => xs.ImplementationType == typeof(RelicDataFinalizer)
                 );
-                c.RegisterSingleton<VanillaEnhancerPoolDelegator>();
+
+                // SoulData
+                c.RegisterDecorator(
+                    typeof(IDataPipeline<IRegister<RelicData>, RelicData>),
+                    typeof(SoulDataPipelineDecorator)
+                );
+                c.RegisterDecorator(
+                    typeof(IDataFinalizer),
+                    typeof(SoulDataFinalizerDecorator),
+                    xs => xs.ImplementationType == typeof(RelicDataFinalizer)
+                );
 
                 //Register Relic Effect Data
                 c.RegisterSingleton<IRegister<RelicEffectData>, RelicEffectDataRegister>();

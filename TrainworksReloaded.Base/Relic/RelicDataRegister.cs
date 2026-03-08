@@ -17,6 +17,7 @@ namespace TrainworksReloaded.Base.Relic
         private readonly List<EnhancerData> enhancers = [];
         private readonly List<MutatorData> mutators = [];
         private readonly List<EndlessMutatorData> endless_mutators = [];
+        private readonly List<SoulData> souls = [];
         private readonly Dictionary<string, RelicData> VanillaRelicData = [];
         private readonly HashSet<string> DuplicatedIdentifiers =
         [
@@ -39,6 +40,7 @@ namespace TrainworksReloaded.Base.Relic
             enhancers = (List<EnhancerData>)AccessTools.Field(typeof(AllGameData), "enhancerDatas").GetValue(saveManager.GetAllGameData());
             mutators = (List<MutatorData>)AccessTools.Field(typeof(AllGameData), "mutatorDatas").GetValue(saveManager.GetAllGameData());
             endless_mutators = (List<EndlessMutatorData>)AccessTools.Field(typeof(AllGameData), "endlessMutatorDatas").GetValue(saveManager.GetAllGameData());
+            souls = (List<SoulData>)AccessTools.Field(typeof(AllGameData), "soulDatas").GetValue(saveManager.GetAllGameData());
 
             VanillaRelicData.AddRange(mutators.ToDictionary(x => x.name, x => x));
             // Collision prevention.
@@ -50,6 +52,7 @@ namespace TrainworksReloaded.Base.Relic
             VanillaRelicData.AddRange(sins.ToDictionary(x => x.name, x => x));
             VanillaRelicData.AddRange(enhancers.ToDictionary(x => x.name, x => x));
             VanillaRelicData.AddRange(endless_mutators.ToDictionary(x => x.name, x => x));
+            VanillaRelicData.AddRange(souls.ToDictionary(x => x.name, x => x));
             /// TODO Document this in the schema.
             VanillaRelicData.Add("UpgradedDraftsMutator", mutator);
             VanillaRelicData.Add("UpgradedDraftsArtifact", collectable);
@@ -90,6 +93,10 @@ namespace TrainworksReloaded.Base.Relic
             else if (item is EndlessMutatorData endlessMutatorData)
             {
                 endless_mutators.Add(endlessMutatorData);
+            }
+            else if (item is SoulData soulData)
+            {
+                souls.Add(soulData);
             }
             Add(key, item);
         }
