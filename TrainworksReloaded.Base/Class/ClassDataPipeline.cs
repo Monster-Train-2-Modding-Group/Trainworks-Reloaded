@@ -223,6 +223,28 @@ namespace TrainworksReloaded.Base.Class
                 classUnlockPreviewTexts.Add(val.Key);
             }
 
+            var unlockCriteriaConfig = configuration.GetSection("unlock_criteria");
+            if (unlockCriteriaConfig.Exists())
+            {
+                var unlockCriteria = data.GetUnlockCriteria();
+                var term = unlockCriteriaConfig.GetSection("descriptions").ParseLocalizationTerm();
+                var termKey = unlockCriteria.GetDescriptionKey();
+                if (term != null)
+                {
+                    termKey = $"ClassData_unlockDescriptionKey-{name}";
+
+                    term.Key = termKey;
+                    termRegister.Register(termKey, term);
+                }
+                AccessTools.Field(typeof(UnlockCriteria), "descriptionKey").SetValue(unlockCriteria, termKey);
+
+                var condition = unlockCriteriaConfig.GetSection("unlock_condition").ParseTrackedValue() ?? unlockCriteria.GetUnlockCondition();
+                AccessTools.Field(typeof(UnlockCriteria), "unlockCondition").SetValue(unlockCriteria, condition);
+
+                var paramInt = unlockCriteriaConfig.GetSection("param_int").ParseInt() ?? unlockCriteria.GetParamInt();
+                AccessTools.Field(typeof(UnlockCriteria), "paramInt").SetValue(unlockCriteria, paramInt);
+            }
+
             var modded = overrideMode.IsNewContent();
             if (modded)
             {
