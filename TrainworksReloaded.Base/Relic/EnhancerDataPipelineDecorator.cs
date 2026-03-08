@@ -12,17 +12,14 @@ namespace TrainworksReloaded.Base.Relic
     {
         private readonly IModLogger<EnhancerDataPipelineDecorator> logger;
         private readonly IDataPipeline<IRegister<RelicData>, RelicData> decoratee;
-        private readonly VanillaEnhancerPoolDelegator enhancerPoolDelegator;
 
         public EnhancerDataPipelineDecorator(
             IModLogger<EnhancerDataPipelineDecorator> logger,
-            IDataPipeline<IRegister<RelicData>, RelicData> decoratee,
-            VanillaEnhancerPoolDelegator enhancerPoolDelegator
+            IDataPipeline<IRegister<RelicData>, RelicData> decoratee
         )
         {
             this.logger = logger;
             this.decoratee = decoratee;
-            this.enhancerPoolDelegator = enhancerPoolDelegator;
         }
 
         public List<IDefinition<RelicData>> Run(IRegister<RelicData> register)
