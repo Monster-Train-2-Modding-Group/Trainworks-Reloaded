@@ -146,6 +146,10 @@
             "$ref": "../definitions/enhancer_pool.json",
             "description": "Reference to an EnhancerPool used to randomly apply enhancers to card drafts."
           },
+          "required_dlc": {
+            "$ref": "../definitions/dlc.json",
+            "description": "Required DLC"
+          },
           "starter_card_upgrade": {
             "type": "string",
             "description": "Reference to the upgrade applied to starter cards."

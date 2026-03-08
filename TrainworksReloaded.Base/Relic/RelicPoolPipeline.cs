@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using HarmonyLib;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Extensions;
@@ -64,6 +65,12 @@ namespace TrainworksReloaded.Base.Relic
             var name = key.GetId(TemplateConstants.RelicPool, id);
             var data = generator.CreateInstance();
             data.name = name;
+
+            var allowRollingDuplicates = false;
+            AccessTools
+                .Field(typeof(RelicPool), "allowRollingDuplicates")
+                .SetValue(data, configuration.GetSection("allow_rolling_duplicates").ParseBool() ?? allowRollingDuplicates);
+
             service.Register(name, data);
 
             return new RelicPoolDefinition(key, data, configuration) { Id = id };

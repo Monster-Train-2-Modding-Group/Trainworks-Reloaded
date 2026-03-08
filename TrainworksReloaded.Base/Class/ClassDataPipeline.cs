@@ -167,6 +167,11 @@ namespace TrainworksReloaded.Base.Class
                 .Field(typeof(ClassData), "isWurmkin")
                 .SetValue(data, configuration.GetSection("is_wurmkin").ParseBool() ?? isWurmkin);
 
+            var requiredDLC = ShinyShoe.DLC.None;
+            AccessTools
+                .Field(typeof(ClassData), "requiredDlc")
+                .SetValue(data, configuration.GetSection("required_dlc").ParseDLC() ?? requiredDLC);
+
             //handle color
             var uiColor = overrideMode.IsNewContent() ? Color.white : data.GetUIColor();
             AccessTools

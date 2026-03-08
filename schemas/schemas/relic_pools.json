@@ -20,6 +20,10 @@
             },
             "type": "array",
             "description": "List of relics references that can appear in this pool."
+          },
+          "allow_rolling_duplicates": {
+            "type": "boolean",
+            "description": "Allow rolling duplicates."
           }
         },
         "required": [

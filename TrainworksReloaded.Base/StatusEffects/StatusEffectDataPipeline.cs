@@ -168,6 +168,11 @@ namespace TrainworksReloaded.Base.StatusEffects
                 .Field(typeof(StatusEffectData), "removeAtEndOfTurn")
                 .SetValue(data, configuration.GetSection("remove_at_end_of_turn").ParseBool() ?? removeAtEndOfTurn);
 
+            var removeDuringDeployment = false;
+            AccessTools
+                .Field(typeof(StatusEffectData), "removeDuringDeployment")
+                .SetValue(data, configuration.GetSection("remove_during_deployment").ParseBool() ?? removeDuringDeployment);
+
             var removeWhenTriggered = false;
             AccessTools
                 .Field(typeof(StatusEffectData), "removeWhenTriggered")
@@ -197,6 +202,12 @@ namespace TrainworksReloaded.Base.StatusEffects
             AccessTools
                 .Field(typeof(StatusEffectData), "scalesInEndless")
                 .SetValue(data, configuration.GetSection("scales_in_endless").ParseBool() ?? scalesInEndless);
+
+            var skipTriggerDuringDeployment = false;
+            AccessTools
+                .Field(typeof(StatusEffectData), "skipTriggerDuringDeployment")
+                .SetValue(data, configuration.GetSection("skip_trigger_during_deployment").ParseBool() ?? skipTriggerDuringDeployment);
+
 
             var excludeHeroPropagation = false;
             AccessTools

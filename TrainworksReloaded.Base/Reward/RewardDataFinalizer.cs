@@ -68,23 +68,15 @@ namespace TrainworksReloaded.Base.Reward
                 AccessTools.Field(typeof(RewardData), "_rewardSprite").SetValue(data, spriteLookup);
             }
 
-            var mutatorReference = configuration.GetSection("requires_mutator").ParseReference();
-            if (mutatorReference != null)
+            var relicReference = configuration.GetSection("requires_relic").ParseReference();
+            if (relicReference != null)
             {
                 relicRegister.TryLookupName(
-                    mutatorReference.ToId(key, TemplateConstants.RelicData),
+                    relicReference.ToId(key, TemplateConstants.RelicData),
                     out var relic,
                     out var _,
-                    mutatorReference.context);
-                if (relic is not MutatorData)
-                {
-                    logger.Log(LogLevel.Error, $"{configuration.GetPath()} - requires_mutator requires a MutatorData got class {relic?.GetType()} instead. Ignoring.");
-                }
-                else
-                {
-                    AccessTools.Field(typeof(RewardData), "_requiresMutator").SetValue(data, relic);
-                }
-
+                    relicReference.context);
+                AccessTools.Field(typeof(RewardData), "_requiresRelic").SetValue(data, relic);
             }
 
             var sfxCueReference = configuration.GetDeprecatedSection("collect_cue", "collect_sfx_cue").ParseReference();

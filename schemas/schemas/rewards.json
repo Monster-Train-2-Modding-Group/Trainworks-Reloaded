@@ -44,9 +44,9 @@
             "type": "boolean",
             "description": "Whether this is a story-related reward."
           },
-          "requires_mutator": {
+          "requires_relic": {
             "$ref": "../definitions/reference.json",
-            "description": "Reference to required mutator."
+            "description": "Reference to required relic (of any type)."
           },
           "show_animation_in_event": {
             "type": "boolean",
