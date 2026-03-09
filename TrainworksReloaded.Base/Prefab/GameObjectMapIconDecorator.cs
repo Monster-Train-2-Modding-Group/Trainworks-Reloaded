@@ -115,8 +115,11 @@ namespace TrainworksReloaded.Base.Prefab
             var srcMaterial = new Material(image.material);
             image.material = srcMaterial;
             image.material.SetTexture(materialPropertyName, sprite.texture);
+            // sprite2 can potentially be null.
+            #pragma warning disable L119
             if (additionalPropertyName != null)
                 image.material.SetTexture(additionalPropertyName, sprite2?.texture ?? Texture2D.blackTexture);
+            #pragma warning restore L119
         }
     }
 }
