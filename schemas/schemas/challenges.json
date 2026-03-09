@@ -1,0 +1,65 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/challenges.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "challenges": {
+      "type": "array",
+      "description": "A collection of Dimensional Challenges.",
+      "items": {
+        "required": [
+          "id",
+          "main_clan",
+          "allied_clan",
+          "pyre_heart"
+        ],
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique identifier for this challenge."
+          },
+          "override": {
+            "$ref": "../definitions/override_mode.json",
+            "description": "Whether this challenge overrides an existing challenge with the same ID (requires the Unity Asset Name)."
+          },
+          "names": {
+            "$ref": "../definitions/parse_term.json"
+          },
+          "descriptions": {
+            "$ref": "../definitions/parse_term.json"
+          },
+          "icon": {
+            "$ref": "../definitions/reference.json",
+            "description": "Icon for the challenge."
+          },
+          "main_clan": {
+            "$ref": "../definitions/classes.json",
+            "description": "Main clan for the challenge."
+          },
+          "allied_clan": {
+            "$ref": "../definitions/classes.json",
+            "description": "Allied clan for the challenge."
+          },
+          "main_champion_index": {
+            "type": "integer",
+            "description": "Main champion index (0: for primary 1: for exiled)."
+          },
+          "allied_champion_index": {
+            "type": "integer",
+            "description": "Allied champion index (0: for primary 1: for exiled)."
+          },
+          "pyre_heart": {
+            "$ref": "../definitions/characters.json"
+          },
+          "mutators": {
+            "$ref": "../definitions/mutators.json"
+          },
+          "covenent_level": {
+            "type": "integer",
+            "description": "Covenant Level."
+          }
+        }
+      }
+    }
+  }
+}

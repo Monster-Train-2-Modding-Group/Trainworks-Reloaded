@@ -23,6 +23,9 @@
     "cards": {
       "$ref": "schemas/cards.json#/properties/cards"
     },
+    "challenges": {
+      "$ref": "schemas/challenges.json#/properties/challenges"
+    },
     "character_trigger_types": {
       "$ref": "schemas/character_trigger_types.json#/properties/character_trigger_types"
     },

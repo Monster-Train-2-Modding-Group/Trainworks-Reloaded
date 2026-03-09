@@ -30,6 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "schemas", "schemas", "{7F34
 		schemas\schemas\card_pools.json = schemas\schemas\card_pools.json
 		schemas\schemas\card_triggers.json = schemas\schemas\card_triggers.json
 		schemas\schemas\card_trigger_types.json = schemas\schemas\card_trigger_types.json
+		schemas\schemas\challenges.json = schemas\schemas\challenges.json
 		schemas\schemas\characters.json = schemas\schemas\characters.json
 		schemas\schemas\character_triggers.json = schemas\schemas\character_triggers.json
 		schemas\schemas\character_trigger_types.json = schemas\schemas\character_trigger_types.json
