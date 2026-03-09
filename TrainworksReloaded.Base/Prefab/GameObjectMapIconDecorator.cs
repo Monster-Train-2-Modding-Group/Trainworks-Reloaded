@@ -105,21 +105,18 @@ namespace TrainworksReloaded.Base.Prefab
                 return;
             }
 
-            Sprite? sprite2 = null;
-            if (additionalSprite != null)
-            {
-                spriteRegister.TryLookupId(additionalSprite.ToId(key, TemplateConstants.Sprite), out sprite2, out _, additionalSprite.context);
+            Texture2D texture = Texture2D.blackTexture;
+            if (additionalSprite != null && spriteRegister.TryLookupId(additionalSprite.ToId(key, TemplateConstants.Sprite), out var sprite2, out _, additionalSprite.context))
+            {    
+                texture = sprite2.texture;
             }
 
             var image = iconSprite.GetComponent<Image>();
             var srcMaterial = new Material(image.material);
             image.material = srcMaterial;
             image.material.SetTexture(materialPropertyName, sprite.texture);
-            // sprite2 can potentially be null.
-            #pragma warning disable L119
             if (additionalPropertyName != null)
-                image.material.SetTexture(additionalPropertyName, sprite2?.texture ?? Texture2D.blackTexture);
-            #pragma warning restore L119
+                image.material.SetTexture(additionalPropertyName, texture);
         }
     }
 }
