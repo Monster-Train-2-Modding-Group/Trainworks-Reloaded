@@ -19,14 +19,12 @@ using UnityEngine;
 namespace TrainworksReloaded.Plugin.Patches
 {
     [HarmonyPatch(typeof(AssetLoadingManager), "Start")]
-    public class InitializationPatch
+    static class InitializationPatch
     {
         public static void Postfix(AssetLoadingData ____assetLoadingData)
         {
             var container = Railend.GetContainer();
             InitializePatches(container);
-            // var gameObjectRegister = container.GetInstance<GameObjectRegister>();
-            // gameObjectRegister.hiddenRoot.transform.position = new Vector3(10000, 10000, 0);
 
             var logger = container.GetInstance<IModLogger<InitializationPatch>>();
             logger.Log(LogLevel.Info, "Starting TrainworksReloaded initialization...");

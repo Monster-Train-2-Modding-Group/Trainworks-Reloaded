@@ -16,7 +16,6 @@ namespace TrainworksReloaded.Base.Prefab
     {
         private readonly IDataPipeline<IRegister<GameObject>, GameObject> decoratee;
         private readonly IRegister<Sprite> spriteRegister;
-        private readonly IModLogger<GameObjectMapIconDecorator> logger;
         private readonly Lazy<RewardNodeData?> baseMapNode;
 
         public GameObjectMapIconDecorator(
@@ -28,7 +27,6 @@ namespace TrainworksReloaded.Base.Prefab
         {
             this.decoratee = decoratee;
             this.spriteRegister = spriteRenderer;
-            this.logger = logger;
             baseMapNode = new(() =>
             {
                 SaveManager? saveManager;
