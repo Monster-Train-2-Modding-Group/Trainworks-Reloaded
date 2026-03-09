@@ -19,7 +19,7 @@ using UnityEngine;
 namespace TrainworksReloaded.Plugin.Patches
 {
     [HarmonyPatch(typeof(AssetLoadingManager), "Start")]
-    static class InitializationPatch
+    class InitializationPatch
     {
         public static void Postfix(AssetLoadingData ____assetLoadingData)
         {
