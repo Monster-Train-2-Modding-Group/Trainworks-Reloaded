@@ -49,7 +49,7 @@
             "description": "Allied champion index (0: for primary 1: for exiled)."
           },
           "pyre_heart": {
-            "$ref": "../definitions/characters.json"
+            "$ref": "../definitions/character.json"
           },
           "mutators": {
             "$ref": "../definitions/mutators.json"
