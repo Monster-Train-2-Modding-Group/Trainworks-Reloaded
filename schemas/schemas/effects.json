@@ -243,7 +243,7 @@
             "description": "Filter for target health when selecting targets.",
             "default": "both"
           },
-          "target_mode_status_effect_filter": {
+          "target_mode_status_effects_filter": {
             "type": "array",
             "description": "List of status effects used to filter out targets gathered from target_mode by.",
             "items": {
