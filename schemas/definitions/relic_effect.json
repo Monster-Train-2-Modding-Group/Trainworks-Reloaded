@@ -31,6 +31,7 @@
         "RelicEffectAddCardsStartOfRun",
         "RelicEffectAddCardUpgradeToExpensiveCards",
         "RelicEffectAddChampionCardToHand",
+        "RelicEffectAddEffectOnMooncycle",
         "RelicEffectAddEffectOnStatusAdded",
         "RelicEffectAddEffectOnUnitDeath",
         "RelicEffectAddEffectOnUnitSpawn",
