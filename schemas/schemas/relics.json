@@ -108,6 +108,13 @@
                               "$ref": "../definitions/classes.json",
                               "description": "ID of the class this relic is associated with, leave unset for clanless."
                             },
+                            "description_modifiers": {
+                              "type": "array",
+                              "items": {
+                                "$ref": "../definitions/description_modifiers.json"
+                              },
+                              "description": "Set of description modifiers. These do things like show the (X Subtype) on artifacts that only affect a subset of cards in the deck."
+                            },
                             "deprioritize_in_ftue_drafts": {
                               "type": "boolean",
                               "description": "Whether this relic should be deprioritized in FTUE (first time user experience) drafts",
@@ -333,6 +340,10 @@
                               "type": "boolean",
                               "default": false,
                               "description": "Not useful, the game controls which mutators can appear in daily challenges with this. Custom mutators can't appear in daily challenges."
+                            },
+                            "is_soul_savior_mode_only": {
+                              "type": "boolean",
+                              "description": "Is this a Soul Savior Mutator?"
                             },
                             "required_dlc": {
                               "type": "string",
