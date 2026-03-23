@@ -49,7 +49,6 @@
         "CardTraitLevelMonsterState",
         "CardTraitLimitedRange",
         "CardTraitMagneticState",
-        "CardTraitModifyArmorOnHit",
         "CardTraitModifyCardTriggerSlayFireCount",
         "CardTraitModifyDragonsHoardCap",
         "CardTraitMultiplyDamagePerStatusEffect",
