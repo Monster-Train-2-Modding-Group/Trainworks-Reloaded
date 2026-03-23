@@ -32,10 +32,6 @@
             "$ref": "../definitions/parse_term.json",
             "description": "Localized text describing this map node."
           },
-          "required_dlc": {
-            "$ref": "../definitions/dlc.json",
-            "description": "DLC this map node belongs to."
-          },
           "id": {
             "minLength": 1,
             "type": "string",
@@ -61,14 +57,6 @@
             "$ref": "../definitions/reference.json",
             "description": "Reference to the map icon sprite."
           },
-          "pools": {
-            "type": "array",
-            "description": "List of random map pools this node can appear in.",
-            "items": {
-              "$ref": "../definitions/map_node_pools.json",
-              "description": "Random Map Data Container Reference"
-            }
-          },
           "minimap_icon": {
             "$ref": "../definitions/reference.json",
             "description": "Reference to the minimap icon sprite."
@@ -77,9 +65,21 @@
             "$ref": "../definitions/sfx.json",
             "description": "Reference to the sound cue played when selecting this node. To use a custom sound effect, a sound effect must be registered globally."
           },
+          "pools": {
+            "type": "array",
+            "description": "List of random map pools this node can appear in.",
+            "items": {
+              "$ref": "../definitions/map_node_pools.json",
+              "description": "Random Map Data Container Reference"
+            }
+          },
           "prefab": {
             "$ref": "../definitions/reference.json",
             "description": "Reference to the map node prefab. Should be imported as Map Node Icon."
+          },
+          "required_dlc": {
+            "$ref": "../definitions/dlc.json",
+            "description": "DLC this map node belongs to."
           },
           "skip_check_settings": {
             "$ref": "../definitions/map_skip_settings.json",
