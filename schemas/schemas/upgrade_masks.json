@@ -143,14 +143,14 @@
             "$ref": "../definitions/compare_operator.json",
             "description": "Operator for excluded traits."
           },
-          "excluded_upgrade": {
+          "excluded_upgrades": {
             "type": "array",
             "description": "List of excluded upgrades.",
             "items": {
               "$ref": "../definitions/card_upgrade.json"
             }
           },
-          "excluded_upgrade_operator": {
+          "excluded_upgrades_operator": {
             "$ref": "../definitions/compare_operator.json",
             "description": "Operator for excluded upgrades."
           },
@@ -237,14 +237,14 @@
             "$ref": "../definitions/compare_operator.json",
             "description": "Operator for required traits."
           },
-          "required_upgrade": {
+          "required_upgrades": {
             "type": "array",
             "description": "List of required upgrades.",
             "items": {
               "$ref": "../definitions/card_upgrade.json"
             }
           },
-          "required_upgrade_operator": {
+          "required_upgrades_operator": {
             "$ref": "../definitions/compare_operator.json",
             "description": "Operator for required upgrades."
           }
