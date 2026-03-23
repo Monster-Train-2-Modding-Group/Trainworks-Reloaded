@@ -19,11 +19,6 @@
             "$ref": "../definitions/vfx.json",
             "description": "Reference to VFX to use when applying the effect to a character"
           },
-          "param_card_rarity_type": {
-            "$ref": "../definitions/rarity.json",
-            "description": "Card rarity type parameter",
-            "default": "common"
-          },
           "card_triggers": {
             "type": "array",
             "items": {
@@ -38,23 +33,6 @@
             },
             "description": "Array of references to RelicEffectConditions."
           },
-          "param_card_type": {
-            "$ref": "../definitions/card_type.json",
-            "description": "Card type parameter",
-            "default": "spell"
-          },
-          "param_subtype": {
-            "$ref": "../definitions/subtype.json",
-            "description": "Character subtype parameter",
-            "default": "SubtypesData_None"
-          },
-          "param_excluded_subtypes": {
-            "type": "array",
-            "items": {
-              "$ref": "../definitions/subtype.json"
-            },
-            "description": "Array of excluded character subtypes"
-          },
           "excluded_traits": {
             "type": "array",
             "items": {
@@ -66,14 +44,6 @@
             "minLength": 1,
             "type": "string",
             "description": "Unique identifier for the relic effect"
-          },
-          "param_max_int": {
-            "type": "integer",
-            "description": "When use_int_range is true. Maximum integer value for range"
-          },
-          "param_min_int": {
-            "type": "integer",
-            "description": "When use_int_range is true. Minimum integer value for range"
           },
           "name": {
             "$ref": "../definitions/relic_effect.json",
@@ -103,13 +73,6 @@
             "$ref": "../definitions/card.json",
             "description": "Card data identifier"
           },
-          "param_effects": {
-            "type": "array",
-            "items": {
-              "$ref": "../definitions/reference.json"
-            },
-            "description": "Array of card effects"
-          },
           "param_card_filter": {
             "$ref": "../definitions/card_upgrade_mask.json",
             "description": "Card filter identifier reference to an upgrade mask."
@@ -118,20 +81,14 @@
             "$ref": "../definitions/card_upgrade_mask.json",
             "description": "Secondary card filter identifier reference to an upgrade mask."
           },
-          "param_card_upgrade_mask": {
-            "$ref": "../definitions/card_upgrade_mask.json",
-            "description": "Another card filter identifier reference to an upgrade mask (Only used by RelicEffectCardUpgradeRandomCardsInDeck)."
-          },
-          "param_card_upgrade_pool": {
-            "type": "array",
-            "items": {
-              "$ref": "../definitions/card_upgrade.json"
-            },
-            "description": "A pool of potential upgrades to apply. (Only used by RelicEffectCardUpgradeRandomCardsInDeck)."
-          },
           "param_card_pool": {
             "$ref": "../definitions/card_pool.json",
             "description": "Card pool identifier"
+          },
+          "param_card_rarity_type": {
+            "$ref": "../definitions/rarity.json",
+            "description": "Card rarity type parameter",
+            "default": "common"
           },
           "param_card_set_builder": {
             "type": "array",
@@ -164,12 +121,21 @@
               }
             }
           },
-          "param_characters": {
+          "param_card_type": {
+            "$ref": "../definitions/card_type.json",
+            "description": "Card type parameter",
+            "default": "spell"
+          },
+          "param_card_upgrade_mask": {
+            "$ref": "../definitions/card_upgrade_mask.json",
+            "description": "Another card filter identifier reference to an upgrade mask (Only used by RelicEffectCardUpgradeRandomCardsInDeck)."
+          },
+          "param_card_upgrade_pool": {
             "type": "array",
             "items": {
-              "$ref": "../definitions/character.json"
+              "$ref": "../definitions/card_upgrade.json"
             },
-            "description": "Array of characters"
+            "description": "A pool of potential upgrades to apply. (Only used by RelicEffectCardUpgradeRandomCardsInDeck)."
           },
           "param_character_substitution": {
             "type": "array",
@@ -185,9 +151,30 @@
               }
             }
           },
+          "param_characters": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/character.json"
+            },
+            "description": "Array of characters"
+          },
+          "param_effects": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/reference.json"
+            },
+            "description": "Array of card effects"
+          },
           "param_enhancer_pool": {
             "$ref": "../definitions/enhancer_pool.json",
             "description": "Reference to EnhancerPool."
+          },
+          "param_excluded_subtypes": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/subtype.json"
+            },
+            "description": "Array of excluded character subtypes"
           },
           "param_float": {
             "type": "number",
@@ -209,6 +196,18 @@
           "param_int_3": {
             "type": "integer",
             "description": "Tertiary integer parameter"
+          },
+          "param_max_int": {
+            "type": "integer",
+            "description": "When use_int_range is true. Maximum integer value for range"
+          },
+          "param_min_int": {
+            "type": "integer",
+            "description": "When use_int_range is true. Minimum integer value for range"
+          },
+          "param_mutator": {
+            "$ref": "../definitions/mutators.json",
+            "description": "Reference to a MutatorData for a parameter"
           },
           "param_random_champion_pool": {
             "type": "array",
@@ -243,6 +242,10 @@
               }
             }
           },
+          "param_rarity_ticket_type": {
+            "$ref": "../definitions/rarity_ticket.json",
+            "description": "Rarity ticket type parameter"
+          },
           "param_relic": {
             "$ref": "../definitions/collectable_relic.json",
             "description": "Relic data identifier, reference to a collectable relic"
@@ -255,6 +258,10 @@
             "$ref": "../definitions/reward.json",
             "description": "Secondary reward identifier"
           },
+          "param_special_character_type": {
+            "$ref": "../definitions/special_character_type.json",
+            "description": "Special character type parameter"
+          },
           "param_status_effects": {
             "type": "array",
             "items": {
@@ -266,6 +273,11 @@
             "type": "string",
             "description": "String parameter"
           },
+          "param_subtype": {
+            "$ref": "../definitions/subtype.json",
+            "description": "Character subtype parameter",
+            "default": "SubtypesData_None"
+          },
           "param_trigger": {
             "$ref": "../definitions/character_trigger.json",
             "description": "Trigger parameter for the relic effect."
@@ -273,10 +285,6 @@
           "param_upgrade": {
             "$ref": "../definitions/reference.json",
             "description": "Card upgrade data identifier"
-          },
-          "param_rarity_ticket_type": {
-            "$ref": "../definitions/rarity_ticket.json",
-            "description": "Rarity ticket type parameter"
           },
           "relic_scaling_count": {
             "type": "integer",
@@ -290,10 +298,6 @@
             "$ref": "../definitions/team.json",
             "description": "Source team for the relic effect",
             "default": "none"
-          },
-          "param_special_character_type": {
-            "$ref": "../definitions/special_character_type.json",
-            "description": "Special character type parameter"
           },
           "target_card_trait": {
             "$ref": "../definitions/card_trait.json",
