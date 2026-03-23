@@ -13,10 +13,6 @@
             "$ref": "../definitions/card.json",
             "description": "A reference to a card for this character's ability."
           },
-          "animator": {
-            "type": "string",
-            "description": "Reference to the character's animation controller. (Not Implemented)"
-          },
           "artist": {
             "type": "string",
             "description": "The artist who created the character art."
@@ -95,10 +91,6 @@
           "chosen_variant": {
             "type": "boolean",
             "description": "Whether this is a chosen variant of the character. Setting this to true sets the chosen property in the shader. This only works for spine animations."
-          },
-          "lifemother_variant": {
-            "type": "boolean",
-            "description": "Whether this is a lifemother variant of the character. Setting this to true sets a property in the shader. This only works for spine animations."
           },
           "clone_id": {
             "type": "string",
@@ -189,6 +181,10 @@
           "is_pyre_heart": {
             "type": "boolean",
             "description": "Whether this character is a Pyre Heart."
+          },
+          "lifemother_variant": {
+            "type": "boolean",
+            "description": "Whether this is a lifemother variant of the character. Setting this to true sets a property in the shader. This only works for spine animations."
           },
           "loops_between_train_floors": {
             "type": "boolean",
