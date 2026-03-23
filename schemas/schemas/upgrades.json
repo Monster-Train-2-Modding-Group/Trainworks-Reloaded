@@ -103,6 +103,10 @@
             "type": "boolean",
             "description": "Whether this upgrade is unique. Not commonly used. If the upgrade is specified for the effects of RelicEffectAddTrigger, then you should set this to true to prevent the upgrade from being applied multiple times."
           },
+          "magic_power_trait_scaling_only": {
+            "type": "boolean",
+            "description": "Magic Power Trait Scaling Only. Only use by Gorgon Soul."
+          },
           "notifications": {
             "$ref": "../definitions/parse_term.json",
             "description": "Notification text to display when the upgrade is applied."
@@ -129,7 +133,7 @@
               "$ref": "../definitions/card_upgrade.json"
             }
           },
-          "remove_vfx": {
+          "removed_vfx": {
             "$ref": "../definitions/vfx.json",
             "description": "Reference to the VFX played when the upgrade is removed."
           },
