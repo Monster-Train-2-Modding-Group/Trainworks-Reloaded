@@ -53,8 +53,8 @@ namespace TrainworksReloaded.Base.Reward
             var configuration = configuration1
                 .GetSection("extensions")
                 .GetChildren()
-                .Where(xs => xs.GetSection("cardpool").Exists())
-                .Select(xs => xs.GetSection("cardpool"))
+                .Where(xs => xs.GetSection("card_pool").Exists())
+                .Select(xs => xs.GetSection("card_pool"))
                 .First() as IConfiguration;
             if (configuration == null)
                 return;
@@ -62,7 +62,7 @@ namespace TrainworksReloaded.Base.Reward
             logger.Log(LogLevel.Info, $"Finalizing Card Pool Reward Data {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             //cardpool
-            var cardpool = configuration.GetDeprecatedSection("cardpool", "card_pool").ParseReference();
+            var cardpool = configuration.GetSection("card_pool").ParseReference();
             if (
                 cardpool != null
                 && cardPoolRegister.TryLookupId(

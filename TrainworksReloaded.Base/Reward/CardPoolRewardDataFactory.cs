@@ -5,7 +5,7 @@ namespace TrainworksReloaded.Base.Reward
 {
     public class CardPoolRewardDataFactory : IFactory<RewardData>
     {
-        public string FactoryKey => "cardpool";
+        public string FactoryKey => "card_pool";
 
         public RewardData? GetValue()
         {
