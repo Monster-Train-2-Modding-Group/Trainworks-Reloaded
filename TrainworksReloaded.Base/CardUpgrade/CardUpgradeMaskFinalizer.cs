@@ -153,7 +153,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             AccessTools.Field(typeof(CardUpgradeMaskData), "disallowedCardPools").SetValue(data, disallowedPools);
 
             List<CardUpgradeData> requiredUpgrades = [];
-            var requiredUpgradeReferences = configuration.GetSection("required_upgrade")
+            var requiredUpgradeReferences = configuration.GetDeprecatedSection("required_upgrade", "required_upgrades")
                 .GetChildren()
                 .Select(x => x.ParseReference())
                 .Where(x => x != null)
@@ -168,7 +168,7 @@ namespace TrainworksReloaded.Base.CardUpgrade
             AccessTools.Field(typeof(CardUpgradeMaskData), "requiredCardUpgrades").SetValue(data, requiredUpgrades);
 
             List<CardUpgradeData> excludedUpgrades = [];
-            var excludedUpgradeReferences = configuration.GetSection("excluded_upgrade")
+            var excludedUpgradeReferences = configuration.GetDeprecatedSection("excluded_upgrade", "excluded_upgrades")
                 .GetChildren()
                 .Select(x => x.ParseReference())
                 .Where(x => x != null)

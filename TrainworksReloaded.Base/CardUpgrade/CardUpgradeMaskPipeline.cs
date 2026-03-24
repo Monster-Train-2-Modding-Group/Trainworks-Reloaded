@@ -101,9 +101,9 @@ namespace TrainworksReloaded.Base.CardUpgrade
             AccessTools.Field(typeof(CardUpgradeMaskData), "excludedLinkedClansOperator")
                 .SetValue(data, configuration.GetSection("excluded_class_operator").ParseCompareOperator());
             AccessTools.Field(typeof(CardUpgradeMaskData), "requiredCardUpgradesOperator")
-                .SetValue(data, configuration.GetSection("required_upgrade_operator").ParseCompareOperator());
+                .SetValue(data, configuration.GetDeprecatedSection("required_upgrade_operator", "required_upgrades_operator").ParseCompareOperator());
             AccessTools.Field(typeof(CardUpgradeMaskData), "excludedCardUpgradesOperator")
-                .SetValue(data, configuration.GetSection("excluded_upgrade_operator").ParseCompareOperator());
+                .SetValue(data, configuration.GetDeprecatedSection("excluded_upgrade_operator", "excluded_upgrades_operator").ParseCompareOperator());
 
             //Process booleans
             AccessTools.Field(typeof(CardUpgradeMaskData), "requireXCost")
