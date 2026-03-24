@@ -1,11 +1,16 @@
 using HarmonyLib;
 using Malee;
 using Microsoft.Extensions.Configuration;
+using Spine;
+using System;
 using System.Linq;
 using System.Reflection;
 using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Base.Extensions;
+using TrainworksReloaded.Base.Localization;
+using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Extensions;
+using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
@@ -17,6 +22,10 @@ namespace TrainworksReloaded.Base.Relic
         private readonly ICache<IDefinition<RelicData>> cache;
         private readonly IRegister<ClassData> classRegister;
         private readonly IRegister<RelicPool> relicPoolRegister;
+        private readonly IRegister<CardPool> cardPoolRegister;
+        private readonly IRegister<SubtypeData> subtypeRegister;
+        private readonly IRegister<LocalizationTerm> localizationRegister;
+        private readonly PluginAtlas atlas;
         private readonly IDataFinalizer decoratee;
 
         private readonly FieldInfo RelicPoolRelicDataListField = AccessTools.Field(typeof(RelicPool), "relicDataList");
@@ -25,15 +34,23 @@ namespace TrainworksReloaded.Base.Relic
         public CollectableRelicDataFinalizerDecorator(
             IModLogger<CollectableRelicDataFinalizerDecorator> logger,
             ICache<IDefinition<RelicData>> cache,
+            PluginAtlas atlas,
             IRegister<ClassData> classRegister,
             IRegister<RelicPool> relicPoolRegister,
+            IRegister<SubtypeData> subtypeRegister,
+            IRegister<CardPool> cardPoolRegister,
+            IRegister<LocalizationTerm> localizationRegister,
             IDataFinalizer decoratee
         )
         {
             this.logger = logger;
             this.cache = cache;
+            this.atlas = atlas;
             this.classRegister = classRegister;
             this.relicPoolRegister = relicPoolRegister;
+            this.subtypeRegister = subtypeRegister;
+            this.cardPoolRegister = cardPoolRegister;
+            this.localizationRegister = localizationRegister;
             this.decoratee = decoratee;
         }
 
@@ -96,6 +113,105 @@ namespace TrainworksReloaded.Base.Relic
                     logger.Log(LogLevel.Debug, $"Added relic {definition.Id.ToId(key, TemplateConstants.RelicData)} to pool: {pool}");
                 }
             }
+
+            var descriptionModifiers = configuration.GetSection("description_modifiers");
+            ParseDescriptionModifiers(descriptionModifiers, key, relic, copyData, overrideMode);
+        }
+
+        private void ParseDescriptionModifiers(IConfigurationSection configuration, string key, CollectableRelicData data, CollectableRelicData copyData, OverrideMode overrideMode)
+        {
+            var descriptionModifiers = copyData.GetDescriptionModifiers() ?? [];
+            if (copyData != data)
+                descriptionModifiers = [.. descriptionModifiers];
+            if (overrideMode == OverrideMode.Replace && configuration.Exists())
+            {
+                descriptionModifiers.Clear();
+            }
+            int i = 0;
+            foreach (var item in configuration.GetChildren())
+            {
+                descriptionModifiers.Add(ParseDescriptionModifier(item, key, data.name, i));
+                i++;
+            }
+            AccessTools.Field(typeof(CollectableRelicData), "descriptionModifiers").SetValue(data, descriptionModifiers);
+        }
+
+        private SerializableDescriptionModifier? ParseDescriptionModifier(IConfigurationSection config, string key, string relicId, int index)
+        {
+            if (!config.Exists()) return null;
+
+            var data = new SerializableDescriptionModifier();
+
+            var textFormatKey = $"CollectableRelicData_textFormatKey{index}-{relicId}";
+
+            var effectStateName = config.GetSection("name").Value;
+            if (effectStateName == null)
+                return null;
+
+            var modReference = config.GetSection("mod_reference").Value ?? key;
+            var assembly = atlas.PluginDefinitions.GetValueOrDefault(modReference)?.Assembly;
+            if (
+                !effectStateName.GetFullyQualifiedName<DescriptionModifier>(
+                    assembly,
+                    out string? fullyQualifiedName
+                )
+            )
+            {
+                logger.Log(LogLevel.Error, $"Failed to load description modifier class {effectStateName} in {relicId} mod {modReference}, Make sure the class exists in {modReference} and that the class inherits from DescriptionModifier.");
+                return null;
+            }
+            AccessTools.Field(typeof(SerializableDescriptionModifier), "modifierClassName").SetValue(data, fullyQualifiedName);
+
+            var paramInt = config.GetSection("param_int").ParseInt() ?? 0;
+            AccessTools.Field(typeof(SerializableDescriptionModifier), "paramInt").SetValue(data, paramInt);
+
+            var paramFloat = config.GetSection("param_float").ParseFloat() ?? 0;
+            AccessTools.Field(typeof(SerializableDescriptionModifier), "paramFloat").SetValue(data, paramFloat);
+
+            var paramBool = config.GetSection("param_bool").ParseBool() ?? false;
+            AccessTools.Field(typeof(SerializableDescriptionModifier), "paramBool").SetValue(data, paramBool);
+
+            var paramBool2 = config.GetSection("param_bool_2").ParseBool() ?? false;
+            AccessTools.Field(typeof(SerializableDescriptionModifier), "paramBool2").SetValue(data, paramBool2);
+
+            var cardRarityType = config.GetSection("param_card_rarity_type").ParseRarity() ?? CollectableRarity.Common;
+            AccessTools.Field(typeof(SerializableDescriptionModifier), "paramCardRarityType").SetValue(data, cardRarityType);
+
+            var cardType = config.GetSection("param_card_type").ParseCardType() ?? CardType.Invalid;
+            AccessTools.Field(typeof(SerializableDescriptionModifier), "paramCardType").SetValue(data, cardType);
+
+            var paramString = config.GetSection("param_string").ParseString() ?? "";
+            AccessTools.Field(typeof(SerializableDescriptionModifier), "paramString").SetValue(data, paramString);
+
+            var cardPoolReference = config.GetSection("param_card_pool").ParseReference();
+            if (cardPoolReference != null && cardPoolRegister.TryLookupId(cardPoolReference.ToId(key, TemplateConstants.CardPool), out var cardPool, out var _, cardPoolReference.context))
+            {
+                AccessTools.Field(typeof(SerializableDescriptionModifier), "paramCardPool").SetValue(data, cardPool);
+            }
+
+            var characterSubtype = "SubtypesData_None";
+            var characterSubtypeReference = config.GetSection("param_subtype").ParseReference();
+            if (characterSubtypeReference != null)
+            {
+                if (subtypeRegister.TryLookupId(
+                    characterSubtypeReference.ToId(key, TemplateConstants.Subtype),
+                    out var lookup,
+                    out var _, characterSubtypeReference.context))
+                {
+                    characterSubtype = lookup.Key;
+                }
+            }
+            AccessTools.Field(typeof(SerializableDescriptionModifier), "paramCharacterSubtype").SetValue(data, characterSubtype);
+
+            var formatTerm = config.GetSection("text_formats").ParseLocalizationTerm();
+            if (formatTerm != null)
+            {
+                AccessTools.Field(typeof(SerializableDescriptionModifier), "textFormatKey").SetValue(data, textFormatKey);
+                formatTerm.Key = textFormatKey;
+                localizationRegister.Register(textFormatKey, formatTerm);
+            }
+
+            return data;
         }
     }
 }
