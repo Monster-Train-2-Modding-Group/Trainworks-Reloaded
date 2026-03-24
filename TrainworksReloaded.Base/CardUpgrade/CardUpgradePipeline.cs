@@ -280,6 +280,13 @@ namespace TrainworksReloaded.Base.CardUpgrade
                 );
 
             AccessTools
+                .Field(typeof(CardUpgradeData), "magicPowerTraitScalingOnly")
+                .SetValue(
+                    data,
+                    configuration.GetSection("magic_power_trait_scaling_only").ParseBool() ?? data.GetMagicPowerTraitScalingOnly()
+                );
+
+            AccessTools
                 .Field(typeof(CardUpgradeData), "upgradeWillBeScaledByNonMagicPowerTrait")
                 .SetValue(
                     data,
