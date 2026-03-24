@@ -101,6 +101,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "definitions", "definitions"
 		schemas\definitions\compare_operator.json = schemas\definitions\compare_operator.json
 		schemas\definitions\cost_type.json = schemas\definitions\cost_type.json
 		schemas\definitions\death_type.json = schemas\definitions\death_type.json
+		schemas\definitions\description_modifiers.json = schemas\definitions\description_modifiers.json
 		schemas\definitions\display_category.json = schemas\definitions\display_category.json
 		schemas\definitions\dlc.json = schemas\definitions\dlc.json
 		schemas\definitions\effect_layer.json = schemas\definitions\effect_layer.json
