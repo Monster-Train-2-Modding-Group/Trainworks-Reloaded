@@ -40,10 +40,6 @@
             "type": "string",
             "description": "Unique identifier for this reward."
           },
-          "is_story_reward": {
-            "type": "boolean",
-            "description": "Whether this is a story-related reward."
-          },
           "requires_relic": {
             "$ref": "../definitions/reference.json",
             "description": "Reference to required relic (of any type)."
@@ -80,7 +76,7 @@
                 "properties": {
                   "type": {
                     "enum": [
-                      "cardpool"
+                      "card_pool"
                     ]
                   },
                   "extensions": {
@@ -92,7 +88,7 @@
                           "type": "object",
                           "description": "Card pool reward specific properties.",
                           "properties": {
-                            "cardpool": {
+                            "card_pool": {
                               "$ref": "../definitions/card_pool.json",
                               "description": "Reference to the card pool to offer."
                             },
@@ -173,14 +169,29 @@
                           "type": "object",
                           "description": "Draft reward specific properties.",
                           "properties": {
-                            "draft_pool": {
-                              "$ref": "../definitions/card_pool.json",
-                              "description": "Reference to the card pool to draft from."
+                            "card_rarity_ticket_values": {
+                              "type": "array",
+                              "description": "Applicable if use_run_rarity_floors is false, custom rarity ticket values for cards.",
+                              "items": {
+                                "$ref": "../definitions/rarity_ticket.json"
+                              }
+                            },
+                            "class_data_override": {
+                              "$ref": "../definitions/classes.json",
+                              "description": "Applicable if class_type_override is true, which clan to use for this draft."
                             },
                             "class_type": {
                               "$ref": "../definitions/class_type.json",
                               "description": "The type of clan (primary, allied, clanless) for this draft reward. This is an enum flag if you want to specify primary and allied used the value \"main|subclass\".",
                               "default": "none"
+                            },
+                            "class_type_override": {
+                              "type": "boolean",
+                              "description": "Whether to override the class type."
+                            },
+                            "disable_skip": {
+                              "type": "boolean",
+                              "description": "Whether to disable skipping this draft."
                             },
                             "draft_options_count": {
                               "type": "integer",
@@ -189,22 +200,21 @@
                               "maximum": 3,
                               "default": 2
                             },
+                            "draft_pool": {
+                              "$ref": "../definitions/card_pool.json",
+                              "description": "Reference to the card pool to draft from."
+                            },
+                            "enhancer_rarity_ticket_values": {
+                              "type": "array",
+                              "description": "Applicable if use_run_rarity_floors is false, custom rarity ticket values for enhancers.",
+                              "items": {
+                                "$ref": "../definitions/rarity_ticket.json"
+                              }
+                            },
                             "extra_copies": {
                               "type": "integer",
                               "description": "Number of extra copies to grant.",
                               "minimum": 0
-                            },
-                            "disable_skip": {
-                              "type": "boolean",
-                              "description": "Whether to disable skipping this draft."
-                            },
-                            "ignore_relic_rarity_override": {
-                              "type": "boolean",
-                              "description": "Whether to ignore relic rarity overrides. This should be set to true for unit banner rewards, as it make it ignore Shattered Halo's effect."
-                            },
-                            "use_run_rarity_floors": {
-                              "type": "boolean",
-                              "description": "Whether to use run-defined rarity floors, for instance, common drafts are not available after ring 2."
                             },
                             "flatten_rarity_for_draft_rate": {
                               "type": "boolean",
@@ -214,55 +224,26 @@
                               "type": "boolean",
                               "description": "Whether to grant a single card instead of showing draft options."
                             },
-                            "class_type_override": {
+                            "ignore_relic_rarity_override": {
                               "type": "boolean",
-                              "description": "Whether to override the class type."
-                            },
-                            "use_draft_ticket_override_values": {
-                              "type": "boolean",
-                              "description": "Whether to use custom draft ticket values."
-                            },
-                            "rarity_floor": {
-                              "$ref": "../definitions/rarity.json",
-                              "description": "Minimum rarity for cards in this draft.",
-                              "default": "common"
+                              "description": "Whether to ignore relic rarity overrides. This should be set to true for unit banner rewards, as it make it ignore Shattered Halo's effect."
                             },
                             "rarity_ceiling": {
                               "$ref": "../definitions/rarity.json",
                               "description": "Maximum rarity for cards in this draft.",
                               "default": "unset"
                             },
-                            "class_data_override": {
-                              "$ref": "../definitions/classes.json",
-                              "description": "Applicable if class_type_override is true, which clan to use for this draft."
-                            },
-                            "card_rarity_ticket_values": {
-                              "type": "array",
-                              "description": "Applicable if use_run_rarity_floors is false, custom rarity ticket values for cards.",
-                              "items": {
-                                "$ref": "../definitions/rarity_ticket.json"
-                              }
-                            },
-                            "enhancer_rarity_ticket_values": {
-                              "type": "array",
-                              "description": "Applicable if use_run_rarity_floors is false, custom rarity ticket values for enhancers.",
-                              "items": {
-                                "$ref": "../definitions/rarity_ticket.json"
-                              }
-                            },
-                            "relic_rarity_ticket_values": {
-                              "type": "array",
-                              "description": "Applicable if use_run_rarity_floors is false, custom rarity ticket values for relics.",
-                              "items": {
-                                "$ref": "../definitions/rarity_ticket.json"
-                              }
+                            "rarity_floor": {
+                              "$ref": "../definitions/rarity.json",
+                              "description": "Minimum rarity for cards in this draft.",
+                              "default": "common"
                             },
                             "relic_draft_pool_substitutions": {
                               "type": "array",
                               "description": "A list of substitutions any relic can compleletely change the pool of cards for a reward. Note that if multiple relics change the pool the one acquired later has priority. You shouldn't need to set this, it is automatically set to the proper substitutions for unit banner rewards. If set then you will need to set the 3 entries present on all banner nodes manaully.",
                               "items": {
                                 "type": "object",
-                                "required": ["relic", "replacement_draft_pool"],
+                                "required": [ "relic", "replacement_draft_pool" ],
                                 "properties": {
                                   "relic": {
                                     "$ref": "../definitions/reference.json",
@@ -274,6 +255,21 @@
                                   }
                                 }
                               }
+                            },
+                            "relic_rarity_ticket_values": {
+                              "type": "array",
+                              "description": "Applicable if use_run_rarity_floors is false, custom rarity ticket values for relics.",
+                              "items": {
+                                "$ref": "../definitions/rarity_ticket.json"
+                              }
+                            },
+                            "use_draft_ticket_override_values": {
+                              "type": "boolean",
+                              "description": "Whether to use custom draft ticket values."
+                            },
+                            "use_run_rarity_floors": {
+                              "type": "boolean",
+                              "description": "Whether to use run-defined rarity floors, for instance, common drafts are not available after ring 2."
                             }
                           },
                           "required": [
@@ -297,7 +293,7 @@
       "rewards": [
         {
           "id": "example_cardpool_reward",
-          "type": "cardpool",
+          "type": "card_pool",
           "titles": {
             "english": "Choose a Card"
           },
@@ -306,8 +302,8 @@
           },
           "extensions": [
             {
-              "cardpool": {
-                "cardpool": "@MyCardPool",
+              "card_pool": {
+                "card_pool": "@MyCardPool",
                 "cost_overrides": [
                   {
                     "rarity": "common",
