@@ -31,6 +31,7 @@ namespace TrainworksReloaded.Base.Scenarios
         private readonly IRegister<TrialDataList> trialListRegister;
         private readonly IRegister<LocalizationTerm> termRegister;
         private readonly IRegister<SoundCueDefinition> soundCueRegister;
+        private readonly IRegister<SubtypeData> subtypeRegister;
         private readonly Lazy<SaveManager> saveManager;
 
         public ScenarioDataFinalizer(
@@ -46,7 +47,8 @@ namespace TrainworksReloaded.Base.Scenarios
             IRegister<BossVariantSpawnData> bossVariantRegister,
             IRegister<TrialDataList> trialListRegister,
             IRegister<SoundCueDefinition> soundCueRegister,
-            IRegister<LocalizationTerm> termRegister)
+            IRegister<LocalizationTerm> termRegister,
+            IRegister<SubtypeData> subtypeRegister)
         {
             this.logger = logger;
             this.cache = cache;
@@ -60,6 +62,7 @@ namespace TrainworksReloaded.Base.Scenarios
             this.trialListRegister = trialListRegister;
             this.termRegister = termRegister;
             this.soundCueRegister = soundCueRegister;
+            this.subtypeRegister = subtypeRegister;
             saveManager = new Lazy<SaveManager>(() =>
             {
                 if (client.TryGetProvider<SaveManager>(out var provider))
@@ -363,6 +366,9 @@ namespace TrainworksReloaded.Base.Scenarios
                             AccessTools.Field(typeof(CharacterDataContainer), "requiredCovenant").SetValue(newCharacterContainer, characterDataItem.Covenant);
                             AccessTools.Field(typeof(CharacterDataContainer), "suppressSpawn").SetValue(newCharacterContainer, characterDataItem.SuppressSpawn);
                             AccessTools.Field(typeof(CharacterDataContainer), "useBossCharacter").SetValue(newCharacterContainer, characterDataItem.UseBossCharacter);
+                            AccessTools.Field(typeof(CharacterDataContainer), "requiredDifficultyTier").SetValue(newCharacterContainer, characterDataItem.RequiredDifficultyTier);
+                            AccessTools.Field(typeof(CharacterDataContainer), "requiredMutator").SetValue(newCharacterContainer, characterDataItem.RequiredMutator);
+                            AccessTools.Field(typeof(CharacterDataContainer), "requiredRegionBossDefeated").SetValue(newCharacterContainer, characterDataItem.RequiredRegionBossDefeated);
                             characterDataContainer!.Add(newCharacterContainer);
                         }
                         possibleGroups!.Add(newSpawnGroup);
@@ -379,6 +385,23 @@ namespace TrainworksReloaded.Base.Scenarios
                     spawnGroupWavesData.Add(new());
                 }
                 var spawnGroupPoolData = spawnGroupWavesData[i];
+
+                var name = spawnGroupPoolItem.GetSection("name").ParseString();
+                if (name != null)
+                {
+                    AccessTools.Field(typeof(SpawnGroupPoolData), "name").SetValue(spawnGroupPoolData, name);
+                }
+
+                var relicReference = spawnGroupPoolItem.GetSection("required_mutator").ParseReference();
+                if (relicReference != null)
+                {
+                    relicRegister.TryLookupName(relicReference.ToId(key, TemplateConstants.RelicData), out var lookup, out var _, relicReference.context);
+                    if (lookup is not MutatorData)
+                    {
+                        logger.Log(LogLevel.Warning, $"Relic data name: {lookup?.name} given is not a MutatorData ignoring.");
+                    }
+                    AccessTools.Field(typeof(CharacterDataContainer), "requiredMutator").SetValue(spawnGroupPoolItem, lookup as MutatorData);
+                }
 
                 var possibleGroups = AccessTools.Field(typeof(SpawnGroupPoolData), "possibleGroups").GetValue(spawnGroupPoolData) as SpawnGroupPoolData.SpawnGroupDataList;
 
@@ -433,11 +456,32 @@ namespace TrainworksReloaded.Base.Scenarios
                 if (characterContainer.Character == null)
                     toDelete.Add(i);
 
-                var covenantLevel = characterSpawnConfig.GetSection("required_covenant").ParseInt() ?? -1;
+                var covenantLevel = characterSpawnConfig.GetSection("required_covenant").ParseInt() ?? characterContainer.Covenant?.AscensionLevel ?? -1;
                 if (covenantLevel > 0)
                 {
                     var covenantData = saveManager.Value.GetAllGameData().GetAscensionCovenantForLevel(covenantLevel);
                     AccessTools.Field(typeof(CharacterDataContainer), "requiredCovenant").SetValue(characterContainer, covenantData);
+                }
+
+                var requiredDifficulty = characterSpawnConfig.GetSection("required_difficulty_tier").ParseInt() ?? characterContainer.RequiredDifficultyTier;
+                AccessTools.Field(typeof(CharacterDataContainer), "requiredDifficultyTier").SetValue(characterContainer, requiredDifficulty);
+
+                var relicReference = characterSpawnConfig.GetSection("required_mutator").ParseReference();
+                if (relicReference != null)
+                {
+                    relicRegister.TryLookupName(relicReference.ToId(key, TemplateConstants.RelicData), out var lookup, out var _, relicReference.context);
+                    if (lookup is not MutatorData)
+                    {
+                        logger.Log(LogLevel.Warning, $"Relic data name: {lookup?.name} given is not a MutatorData ignoring.");
+                    }
+                    AccessTools.Field(typeof(CharacterDataContainer), "requiredMutator").SetValue(characterContainer, lookup as MutatorData ?? characterContainer.RequiredMutator);
+                }
+
+                var subtypeReference = characterSpawnConfig.GetSection("required_region_boss_defeated").ParseReference();
+                if (subtypeReference != null)
+                {
+                    subtypeRegister.TryLookupName(subtypeReference.ToId(key, TemplateConstants.Subtype), out var lookup, out var _, subtypeReference.context);
+                    AccessTools.Field(typeof(CharacterDataContainer), "requiredRegionBossDefeated").SetValue(characterContainer, lookup?.Key ?? characterContainer.RequiredRegionBossDefeated);
                 }
 
                 var suppressSpawn = characterSpawnConfig.GetSection("suppress_spawn").ParseBool() ?? characterContainer.SuppressSpawn;
