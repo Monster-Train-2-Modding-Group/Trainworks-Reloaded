@@ -181,7 +181,7 @@ namespace TrainworksReloaded.Base.Effect
 
 
             //string[]
-            var targetModeStatusEffectsFilterReferences = configuration.GetDeprecatedSection("status_effect_filters", "target_mode_status_effect_filter")
+            var targetModeStatusEffectsFilterReferences = configuration.GetDeprecatedSection("target_mode_status_effect_filter", "target_mode_status_effects_filter")
                 .GetChildren()
                 .Select(x => x.ParseReference())
                 .Where(x => x != null)
