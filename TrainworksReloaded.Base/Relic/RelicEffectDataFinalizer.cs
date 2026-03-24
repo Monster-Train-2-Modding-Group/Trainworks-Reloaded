@@ -389,7 +389,28 @@ namespace TrainworksReloaded.Base.Relic
                 )
             )
             {
+                if (relic is not CollectableRelicData)
+                {
+                    logger.Log(LogLevel.Warning, $"Relic data name: {relic?.name} given is not a CollectableRelicData ignoring.");
+                }    
                 AccessTools.Field(typeof(RelicEffectData), "paramRelic").SetValue(data, relic as CollectableRelicData);
+            }
+
+            var mutatorReference = configuration.GetSection("param_mutator").ParseReference();
+            if (mutatorReference != null &&
+                relicRegister.TryLookupName(
+                    mutatorReference.ToId(key, TemplateConstants.RelicData),
+                    out var mutator,
+                    out var _,
+                    mutatorReference.context
+                )
+            )
+            {
+                if (mutator is not MutatorData)
+                {
+                    logger.Log(LogLevel.Warning, $"Relic data name: {mutator?.name} given is not a MutatorData ignoring.");
+                }
+                AccessTools.Field(typeof(RelicEffectData), "paramMutatorData").SetValue(data, mutator as MutatorData);
             }
 
             var paramTrigger = CharacterTriggerData.Trigger.OnDeath;
