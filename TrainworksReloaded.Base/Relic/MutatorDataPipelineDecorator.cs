@@ -17,6 +17,7 @@ namespace TrainworksReloaded.Base.Relic
 
         private readonly FieldInfo BoonValueField = AccessTools.Field(typeof(MutatorData), "boonValue");
         private readonly FieldInfo DisableInDailyChallengesField = AccessTools.Field(typeof(MutatorData), "disableInDailyChallenges");
+        private readonly FieldInfo IsSoulSaviorModeOnlyField = AccessTools.Field(typeof(MutatorData), "isSoulSaviorModeOnly");
         private readonly FieldInfo RequiredDLCField = AccessTools.Field(typeof(MutatorData), "requiredDLC");
         private readonly FieldInfo TagsField = AccessTools.Field(typeof(MutatorData), "tags");
 
@@ -67,6 +68,9 @@ namespace TrainworksReloaded.Base.Relic
 
             bool disabledInDailies = configuration.GetSection("disable_in_daily_challenges").ParseBool() ?? copyData.GetDisableInDailyChallenges();
             DisableInDailyChallengesField.SetValue(mutator, disabledInDailies);
+
+            bool soulSaviorOnly = configuration.GetSection("is_soul_savior_mode_only").ParseBool() ?? copyData.IsSoulSaviorModeOnly();
+            IsSoulSaviorModeOnlyField.SetValue(mutator, soulSaviorOnly);
 
             var dlc = configuration.GetSection("required_dlc").ParseDLC() ?? copyData.GetRequiredDLC();
             RequiredDLCField.SetValue(mutator, dlc);
