@@ -17,6 +17,18 @@
           "type": "integer",
           "description": "Required covenant level."
         },
+        "required_difficulty_tier": {
+          "type": "integer",
+          "description": "Soul Savior Scenarios Only. Required difficulty tier for this character to spawn in a wave."
+        },
+        "required_mutator": {
+          "$ref": "../definitions/mutators.json",
+          "description": "Mutator required for this character to spawn."
+        },
+        "required_region_boss_defeated": {
+          "$ref": "../definitions/subtype.json",
+          "description": "Soul Savior Scenarios Only. Required boss to default to get this character to spawn in a wave."
+        },
         "suppress_spawn": {
           "type": "boolean",
           "description": "If Required Covenant is set, Character wont spawn (nor in successive Covenant levels). This is commonly used for covenant 10 to replace a normal enemy with it's chosen variant."

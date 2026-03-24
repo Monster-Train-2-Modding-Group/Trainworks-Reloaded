@@ -31,12 +31,20 @@
             "items": {
               "type": "object",
               "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of this SpawnGroupPool."
+                },
                 "possible_groups": {
                   "type": "array",
                   "description": "A singular group of enemies that can appear.",
                   "items": {
                     "$ref": "../definitions/spawn_group.json"
                   }
+                },
+                "required_mutator": {
+                  "$ref": "../definitions/mutators.json",
+                  "description": "Required mutator to see this SpawnGroupPool."
                 }
               }
             }
