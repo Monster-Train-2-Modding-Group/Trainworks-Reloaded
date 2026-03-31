@@ -71,17 +71,7 @@
             "default": true
           },
           "character_art": {
-            "oneOf": [
-              {
-                "$ref": "../definitions/reference.json"
-              },
-              {
-                "type": "string",
-                "pattern": "[0-9a-fA-F]+",
-                "minLength": 32,
-                "maxLength": 32
-              }
-            ],
+            "$ref": "../definitions/asset_reference.json",
             "description": "Reference to the character's art asset."
           },
           "chatter": {

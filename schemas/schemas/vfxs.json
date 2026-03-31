@@ -24,11 +24,11 @@
             "description": "Location where the VFX should be spawned relative to its target."
           },
           "vfx_left": {
-            "type": "string",
+            "$ref": "../definitions/asset_reference.json",
             "description": "Reference to the left-facing GameObject asset for this VFX."
           },
           "vfx_right": {
-            "type": "string",
+            "$ref": "../definitions/asset_reference.json",
             "description": "Reference to the right-facing GameObject asset for this VFX."
           }
         },

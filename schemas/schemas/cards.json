@@ -19,17 +19,7 @@
           },
           "card_art": {
             "description": "Reference to the card's artwork asset. This is either a reference to a game object, or an asset guid to reuse vanilla card art.",
-            "oneOf": [
-              {
-                "$ref": "../definitions/reference.json"
-              },
-              {
-                "type": "string",
-                "pattern": "[0-9a-fA-F]+",
-                "minLength": 32,
-                "maxLength": 32
-              }
-            ]
+            "$ref": "../definitions/asset_reference.json"
           },
           "card_type": {
             "$ref": "../definitions/card_type.json",
