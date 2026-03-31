@@ -336,6 +336,15 @@ namespace TrainworksReloaded.Base.Effect
                         ?? targetCardSelectionMode
                 );
 
+            var statusEffectTooltipsSuppressed = false;
+            AccessTools
+                .Field(typeof(CardEffectData), "statusEffectTooltipsSuppressed")
+                .SetValue(
+                    data,
+                    configuration.GetSection("status_effect_tooltips_suppressed").ParseBool()
+                        ?? statusEffectTooltipsSuppressed
+                );
+
             //selection mode
             var animToPlay = CharacterUI.Anim.None;
             AccessTools

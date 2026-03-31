@@ -208,6 +208,10 @@
             "$ref": "../definitions/status.json",
             "description": "Status effect multiplier parameter. Only applicable if use_status_effect_multipler is true and this effect is within a CharacterTrigger. The number of stacks of status effect given will be used to multiply the effects magnitude."
           },
+          "status_effect_tooltips_suppressed": {
+            "type": "boolean",
+            "description": "Suppress status effect tooltips."
+          },
           "suppress_pyre_room_focus": {
             "type": "boolean",
             "description": "Whether to suppress Pyre room focus when applying this effect."
