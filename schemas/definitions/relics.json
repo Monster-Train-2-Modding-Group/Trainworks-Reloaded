@@ -6,7 +6,7 @@
       "$ref": "../definitions/collectable_relic.json"
     },
     {
-      "$ref": "../definitions/mutator.json"
+      "$ref": "../definitions/mutators.json"
     },
     {
       "$ref": "../definitions/sin.json"
