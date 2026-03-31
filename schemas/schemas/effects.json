@@ -135,7 +135,7 @@
             "default": 1.0
           },
           "param_relic": {
-            "$ref": "../definitions/reference.json",
+            "$ref": "../definitions/relics.json",
             "description": "Reference to a RelicData to use for the effect."
           },
           "param_reward": {
