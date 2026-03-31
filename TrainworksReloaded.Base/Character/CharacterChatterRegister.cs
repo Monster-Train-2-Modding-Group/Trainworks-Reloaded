@@ -11,7 +11,7 @@ namespace TrainworksReloaded.Base.Character
     public class CharacterChatterRegister : Dictionary<string, CharacterChatterData>, IRegister<CharacterChatterData>
     {
         private readonly IModLogger<CharacterChatterRegister> logger;
-        private Dictionary<string, CharacterChatterData> VanillaChatter = [];
+        private readonly Dictionary<string, CharacterChatterData> VanillaChatter = [];
 
         public CharacterChatterRegister(IModLogger<CharacterChatterRegister> logger)
         {
