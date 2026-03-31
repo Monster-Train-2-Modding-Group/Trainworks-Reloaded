@@ -251,8 +251,8 @@
             "description": "Rarity ticket type parameter"
           },
           "param_relic": {
-            "$ref": "../definitions/collectable_relic.json",
-            "description": "Relic data identifier, reference to a collectable relic"
+            "$ref": "../definitions/relics.json",
+            "description": "Relic data identifier."
           },
           "param_reward": {
             "$ref": "../definitions/reward.json",
