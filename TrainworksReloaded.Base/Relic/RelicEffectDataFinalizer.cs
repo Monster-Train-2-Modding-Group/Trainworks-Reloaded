@@ -1,6 +1,8 @@
+using DG.Tweening.Core.Easing;
 using HarmonyLib;
 using Malee;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TrainworksReloaded.Base.Enums;
@@ -8,6 +10,7 @@ using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
+using static SpawnGroupData;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.Relic
@@ -34,6 +37,7 @@ namespace TrainworksReloaded.Base.Relic
         private readonly IRegister<EnhancerPool> enhancerPoolRegister;
         private readonly IRegister<RelicEffectCondition> relicEffectConditionRegister;
         private readonly IRegister<TargetMode> targetModeRegister;
+        private readonly Lazy<SaveManager> saveManager;
 
         public RelicEffectDataFinalizer(
             IModLogger<RelicEffectDataFinalizer> logger,
@@ -55,7 +59,8 @@ namespace TrainworksReloaded.Base.Relic
             IRegister<CharacterTriggerData.Trigger> triggerEnumRegister,
             IRegister<EnhancerPool> enhancerPoolRegister,
             IRegister<RelicEffectCondition> relicEffectConditionRegister,
-            IRegister<TargetMode> targetModeRegister
+            IRegister<TargetMode> targetModeRegister,
+            GameDataClient client
         )
         {
             this.logger = logger;
@@ -78,6 +83,17 @@ namespace TrainworksReloaded.Base.Relic
             this.enhancerPoolRegister = enhancerPoolRegister;
             this.relicEffectConditionRegister = relicEffectConditionRegister;
             this.targetModeRegister = targetModeRegister;
+            saveManager = new Lazy<SaveManager>(() =>
+            {
+                if (client.TryGetProvider<SaveManager>(out var provider))
+                {
+                    return provider;
+                }
+                else
+                {
+                    return new SaveManager();
+                }
+            });
         }
 
         public void FinalizeData()
@@ -480,6 +496,13 @@ namespace TrainworksReloaded.Base.Relic
             AccessTools
                 .Field(typeof(RelicEffectData), "additionalTooltips")
                 .SetValue(data, tooltips.ToArray());
+
+            var covenantLevel = configuration.GetSection("param_covenant").ParseInt() ?? -1;
+            if (covenantLevel >= 0)
+            {
+                var covenantData = saveManager.Value.GetAllGameData().GetAscensionCovenantForLevel(covenantLevel);
+                AccessTools.Field(typeof(RelicEffectData), "paramCovenant").SetValue(data, covenantData);
+            }
 
             var conditions = new List<RelicEffectCondition>();
             var conditionReferences = configuration

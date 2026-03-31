@@ -158,6 +158,10 @@
             },
             "description": "Array of characters"
           },
+          "param_covenant": {
+            "type": "integer",
+            "description": "Covenant level"
+          },
           "param_effects": {
             "type": "array",
             "items": {
