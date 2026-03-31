@@ -34,7 +34,7 @@ namespace TrainworksReloaded.Base.Prefab
             var key = definition.Key;
             var data = definition.Data;
 
-            var vfxLeft = configuration.GetSection("vfx_left").ParseReference();
+            var vfxLeft = configuration.GetSection("vfx_left").ParseAssetReference();
             if (
                 vfxLeft != null
                 && assetReferenceRegister.TryLookupId(
@@ -48,7 +48,7 @@ namespace TrainworksReloaded.Base.Prefab
                 AccessTools.Field(typeof(VfxAtLoc), "vfxPrefabRefLeft").SetValue(data, vfxLeftData);
             }
 
-            var vfxRight = configuration.GetSection("vfx_left").ParseReference();
+            var vfxRight = configuration.GetSection("vfx_left").ParseAssetReference();
             if (
                 vfxRight != null
                 && assetReferenceRegister.TryLookupId(

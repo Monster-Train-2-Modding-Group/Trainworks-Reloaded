@@ -190,7 +190,7 @@ namespace TrainworksReloaded.Base.Card
             }
 
             //handle art (required field so don't allow override with null)
-            var cardArtReference = configuration.GetDeprecatedSection("card_art_reference", "card_art").ParseReference();
+            var cardArtReference = configuration.GetDeprecatedSection("card_art_reference", "card_art").ParseAssetReference();
             if (cardArtReference != null)
             {
                 if (

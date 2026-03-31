@@ -33,5 +33,19 @@ namespace TrainworksReloaded.Base.Extensions
                 return null;
             return new ReferencedObject(id!, mod_reference, section);
         }
+
+        public static ReferencedObject? ParseAssetReference(this IConfigurationSection section)
+        {
+            var reference = section.ParseReference();
+            if (reference != null)
+                return reference;
+
+            string? id = section.GetSection("asset_guid").Value;
+
+            if (id.IsNullOrEmpty() || id == "null")
+                return null;
+
+            return new ReferencedObject(id!, null, section);
+        }
     }
 }

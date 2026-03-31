@@ -1,0 +1,132 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/base_improved.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "additional_tooltips": {
+      "$ref": "schemas/additional_tooltips.json#/properties/additional_tooltips"
+    },
+    "atlas_icons": {
+      "$ref": "schemas/atlas_icons.json#/properties/atlas_icons"
+    },
+    "audio_clips": {
+      "$ref": "schemas/audio_clips.json#/properties/audio_clips"
+    },
+    "card_pools": {
+      "$ref": "schemas/card_pools.json#/properties/card_pools"
+    },
+    "card_trigger_types": {
+      "$ref": "schemas/card_trigger_types.json#/properties/card_trigger_types"
+    },
+    "card_triggers": {
+      "$ref": "schemas/card_triggers.json#/properties/card_triggers"
+    },
+    "cards": {
+      "$ref": "schemas/cards.json#/properties/cards"
+    },
+    "challenges": {
+      "$ref": "schemas/challenges.json#/properties/challenges"
+    },
+    "character_trigger_types": {
+      "$ref": "schemas/character_trigger_types.json#/properties/character_trigger_types"
+    },
+    "character_triggers": {
+      "$ref": "schemas/character_triggers.json#/properties/character_triggers"
+    },
+    "characters": {
+      "$ref": "schemas/characters.json#/properties/characters"
+    },
+    "chatter": {
+      "$ref": "schemas/chatter.json#/properties/chatter"
+    },
+    "class_card_styles": {
+      "$ref": "schemas/class_card_styles.json#/properties/class_card_styles"
+    },
+    "classes": {
+      "$ref": "schemas/classes.json#/properties/classes"
+    },
+    "effects": {
+      "$ref": "schemas/card_effects.generated.json#/properties/effects"
+    },
+    "enhancer_pools": {
+      "$ref": "schemas/enhancer_pools.json#/properties/enhancer_pools"
+    },
+    "game_objects": {
+      "$ref": "schemas/game_objects.json#/properties/game_objects"
+    },
+    "langauge_sources": {
+      "$ref": "schemas/language_sources.json#/properties/language_sources"
+    },
+    "localization_terms": {
+      "$ref": "schemas/localization_terms.json#/properties/localization_terms"
+    },
+    "map_nodes": {
+      "$ref": "schemas/map_nodes.json#/properties/map_nodes"
+    },
+    "pyre_hearts": {
+      "$ref": "schemas/pyre_hearts.json#/properties/pyre_hearts"
+    },
+    "relic_effect_conditions": {
+      "$ref": "schemas/relic_effect_conditions.json#/properties/relic_effect_conditions"
+    },
+    "relic_effects": {
+      "$ref": "schemas/relic_effects.generated.json#/properties/relic_effects"
+    },
+    "relic_pools": {
+      "$ref": "schemas/relic_pools.json#/properties/relic_pools"
+    },
+    "relics": {
+      "$ref": "schemas/relics.json#/properties/relics"
+    },
+    "replacement_texts": {
+      "$ref": "schemas/replacement_texts.json#/properties/replacement_texts"
+    },
+    "rewards": {
+      "$ref": "schemas/rewards.json#/properties/rewards"
+    },
+    "room_modifiers": {
+      "$ref": "schemas/room_modifiers.generated.json#/properties/room_modifiers"
+    },
+    "scenarios": {
+      "$ref": "schemas/scenarios.json#/properties/scenarios"
+    },
+    "skeletons": {
+      "$ref": "schemas/skeletons.json#/properties/skeletons"
+    },
+    "soul_pools": {
+      "$ref": "schemas/soul_pools.json#/properties/soul_pools"
+    },
+    "sound_effects": {
+      "$ref": "schemas/sound_effects.json#/properties/sound_effects"
+    },
+    "sprites": {
+      "$ref": "schemas/sprites.json#/properties/sprites"
+    },
+    "status_effect_trigger_stages": {
+      "$ref": "schemas/status_effect_trigger_stages.json#/properties/status_effect_trigger_stages"
+    },
+    "status_effects": {
+      "$ref": "schemas/status_effects.json#/properties/status_effects"
+    },
+    "subtypes": {
+      "$ref": "schemas/subtypes.json#/properties/subtypes"
+    },
+    "target_modes": {
+      "$ref": "schemas/target_modes.json#/properties/target_modes"
+    },
+    "tracked_value_types": {
+      "$ref": "schemas/tracked_value_types.json#/properties/tracked_value_types"
+    },
+    "traits": {
+      "$ref": "schemas/card_traits.generated.json#/properties/traits"
+    },
+    "upgrade_masks": {
+      "$ref": "schemas/upgrade_masks.json#/properties/upgrade_masks"
+    },
+    "upgrades": {
+      "$ref": "schemas/upgrades.json#/properties/upgrades"
+    },
+    "vfxs": {
+      "$ref": "schemas/vfxs.json#/properties/vfxs"
+    }
+  }
+}

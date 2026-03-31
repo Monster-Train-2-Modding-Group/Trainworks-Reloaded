@@ -1,0 +1,3097 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/room_modifiers.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "room_modifiers": {
+      "type": "array",
+      "description": "A collection of all room modifiers in the game, defining their properties, effects, and behaviors.",
+      "items": {
+        "description": "A room modifier definition that specifies the properties and behaviors of a modifier that can be applied to rooms.",
+        "oneOf": [
+          {
+            "title": "RoomStateAddEffectOnUnitDeath",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateAddEffectOnUnitDeath"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_upgrade": {
+                "$ref": "../definitions/card_upgrade.json",
+                "description": "Only gets the upgrade mask from this to use as a filter for characters that die"
+              },
+              "param_effects": {
+                "type": "array",
+                "description": "Effects to run when a unit dies, the character that dies is selfTarget when the effects run",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateAddEffectPostCombatModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateAddEffectPostCombatModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_effects": {
+                "type": "array",
+                "description": "Effects to run at PostCombat timing.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateAddEffectPreCombatModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateAddEffectPreCombatModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_effects": {
+                "type": "array",
+                "description": "Effects to run at PreCombat timing.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateAddStatusEffectOnStatusApplied",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateAddStatusEffectOnStatusApplied"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Bonus Stack Count."
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status effects to appliy bonus stacks to.",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateBuffModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateBuffModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Rage Damage modifier."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateCapacityModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateCapacityModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Capacity delta."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateCorruptionModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateCorruptionModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Max Charged Echoes Delta."
+              },
+              "param_int_2": {
+                "type": "integer",
+                "description": "Charged Echoes Delta."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateDamageAllPostCombatModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateDamageAllPostCombatModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Amount of damage for each character, both heroes and monsters."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateDamageCostModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateDamageCostModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Modified cost for damage spells."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateDrawRandomConsumedCardsPreCombatModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateDrawRandomConsumedCardsPreCombatModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Number oif cards to restore from consume pile."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateEmberForCostModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateEmberForCostModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_float": {
+                "type": "number",
+                "description": "Modified Ember for Card Cost."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateEnergyModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateEnergyModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Modified Energy."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateEquipmentCostModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateEquipmentCostModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Modified cost for equipment."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateFirstSpellCostModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateFirstSpellCostModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Modified cost for first spell played."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateForgePointsForCostModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateForgePointsForCostModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_float": {
+                "type": "number",
+                "description": "Modified Forge Points for cost (smelt yield modifier)."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateForgeUpgradeModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateForgeUpgradeModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_upgrade": {
+                "$ref": "../definitions/card_upgrade.json",
+                "description": "Modified Forge Upgrade."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateFriendlyDamageMultiplierModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateFriendlyDamageMultiplierModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Damage multiplier"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateFriendlyDamagePerCorruptionModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateFriendlyDamagePerCorruptionModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Additional damage per Charged Echo."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateHandSizeModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateHandSizeModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Hand size modifier"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateHealCostModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateHealCostModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Modified cost for healing spells."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateMagicalPowerModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateMagicalPowerModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_upgrade": {
+                "$ref": "../definitions/card_upgrade.json",
+                "description": "Upgrade with bonusDamage set."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateModifyTriggerCount",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateModifyTriggerCount"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_trigger": {
+                "$ref": "../definitions/character_trigger.json",
+                "description": "Trigger to modify count of."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Trigger count modification."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateNewMoonAlwaysActiveModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateNewMoonAlwaysActiveModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_card": {
+                "$ref": "../definitions/card.json",
+                "description": "Support card. This must be set to Eclipes_SupportCard."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStatePyreAttackHealthModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStatePyreAttackHealthModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Attack amount"
+              },
+              "param_int_2": {
+                "type": "integer",
+                "description": "Health amount"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateRegenModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateRegenModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Modified regen."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateRoomCostModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateRoomCostModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Modified cost for rooms."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateSelfDamagePerCorruptionModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateSelfDamagePerCorruptionModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Additional Damage per Charged Echoes"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateSelfDamagePerGoldModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateSelfDamagePerGoldModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Additional damage per gold."
+              },
+              "param_int_2": {
+                "type": "integer",
+                "description": "Gold Damage divisor."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateSelfDamagePerMagicPowerModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateSelfDamagePerMagicPowerModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Additional damage per magic power"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateSelfDamagePerMissingHp",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateSelfDamagePerMissingHp"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Additional damage per missing hp."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateSelfDamagePerStatusEffectStack",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateSelfDamagePerStatusEffectStack"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Additional damage per stack"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "First status is the status effect to increase self damage by.",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateSelfDamageWhenCorruptionModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateSelfDamageWhenCorruptionModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Additional damage when there's at least 1 charged echo present."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateSpawnUnitOnUnitSpawnModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateSpawnUnitOnUnitSpawnModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype whitelist."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateSpellCostModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateSpellCostModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Modified cost for spells."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateSpikesDamageModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateSpikesDamageModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Spikes modified damage."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateStatusEffectDamageModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateStatusEffectDamageModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Self modified attack when status effect is present."
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "If character has any of these status effects the bonus is given.",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateStatusEffectOnSpawnModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateStatusEffectOnSpawnModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status effects to add on spawn.",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateStatusEffectStackModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateStatusEffectStackModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Add stack count."
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status effects whose stacks should be modified.",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateTroopUnitUpgradeModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateTroopUnitUpgradeModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Target Subtype"
+              },
+              "param_upgrade": {
+                "$ref": "../definitions/card_upgrade.json",
+                "description": "Upgrade to apply"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status effects to apply",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateUnitCostModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateUnitCostModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Modified cost for units."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateUnitPowerupModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateUnitPowerupModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Target subtype"
+              },
+              "param_upgrade": {
+                "$ref": "../definitions/card_upgrade.json",
+                "description": "Upgrade to apply"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "RoomStateValorModifier",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "const": "RoomStateValorModifier"
+              },
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Modified Valor."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "Generic fallback",
+            "type": "object",
+            "properties": {
+              "additional_tooltips": {
+                "type": "array",
+                "description": "Additional tooltips to display for this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text describing this room modifier."
+              },
+              "disallow_in_deployment": {
+                "type": "boolean",
+                "description": "Disallows this RoomModifier effect in the deployment phase"
+              },
+              "param_effects": {
+                "type": "array",
+                "description": "List of card effects applied by this room modifier.",
+                "items": {
+                  "$ref": "../definitions/reference.json"
+                }
+              },
+              "param_float": {
+                "type": "number",
+                "description": "Float parameter."
+              },
+              "extra_body_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional body text for the tooltip."
+              },
+              "extra_title_tooltips": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional title text for the tooltip."
+              },
+              "id": {
+                "minLength": 1,
+                "type": "string",
+                "description": "Unique identifier for this room modifier."
+              },
+              "name": {
+                "description": "The RoomStateModifierClassName, this should be the name of a class inheriting from RoomStateModifierBase.",
+                "$ref": "../definitions/reference.json",
+                "not": {
+                  "enum": [
+                    "RoomStateAddEffectOnUnitDeath",
+                    "RoomStateAddEffectPostCombatModifier",
+                    "RoomStateAddEffectPreCombatModifier",
+                    "RoomStateAddStatusEffectOnStatusApplied",
+                    "RoomStateBuffModifier",
+                    "RoomStateCapacityModifier",
+                    "RoomStateCorruptionModifier",
+                    "RoomStateDamageAllPostCombatModifier",
+                    "RoomStateDamageCostModifier",
+                    "RoomStateDrawRandomConsumedCardsPreCombatModifier",
+                    "RoomStateEmberForCostModifier",
+                    "RoomStateEnergyModifier",
+                    "RoomStateEquipmentCostModifier",
+                    "RoomStateFirstSpellCostModifier",
+                    "RoomStateForgePointsForCostModifier",
+                    "RoomStateForgeUpgradeModifier",
+                    "RoomStateFriendlyDamageMultiplierModifier",
+                    "RoomStateFriendlyDamagePerCorruptionModifier",
+                    "RoomStateHandSizeModifier",
+                    "RoomStateHealCostModifier",
+                    "RoomStateMagicalPowerModifier",
+                    "RoomStateModifyTriggerCount",
+                    "RoomStateNewMoonAlwaysActiveModifier",
+                    "RoomStatePyreAttackHealthModifier",
+                    "RoomStateRegenModifier",
+                    "RoomStateRoomCostModifier",
+                    "RoomStateSelfDamagePerCorruptionModifier",
+                    "RoomStateSelfDamagePerGoldModifier",
+                    "RoomStateSelfDamagePerMagicPowerModifier",
+                    "RoomStateSelfDamagePerMissingHp",
+                    "RoomStateSelfDamagePerStatusEffectStack",
+                    "RoomStateSelfDamageWhenCorruptionModifier",
+                    "RoomStateSpawnUnitOnUnitSpawnModifier",
+                    "RoomStateSpellCostModifier",
+                    "RoomStateSpikesDamageModifier",
+                    "RoomStateStatusEffectDamageModifier",
+                    "RoomStateStatusEffectOnSpawnModifier",
+                    "RoomStateStatusEffectStackModifier",
+                    "RoomStateTroopUnitUpgradeModifier",
+                    "RoomStateUnitCostModifier",
+                    "RoomStateUnitPowerupModifier",
+                    "RoomStateValorModifier"
+                  ]
+                }
+              },
+              "param_card": {
+                "$ref": "../definitions/card.json",
+                "description": "Card parameter."
+              },
+              "param_upgrade": {
+                "$ref": "../definitions/card_upgrade.json",
+                "description": "Card upgrade reference parameter."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Integer parameter."
+              },
+              "param_int_2": {
+                "type": "integer",
+                "description": "Second integer parameter."
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "List of status effects to apply.",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype parameter."
+              },
+              "param_trigger": {
+                "$ref": "../definitions/character_trigger.json",
+                "description": "Character trigger parameter."
+              },
+              "in_play_descriptions": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip text to use when the modifier is in play on a character or room."
+              },
+              "titles": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Tooltip title (name of the room modifier). This should be set on custom room modifier classes as the default localization key will be incorrect. Otherwise, custom room modifier classes can override GetTitleKey to return the localization key for the room modifier."
+              },
+              "tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Suppress the tooltips for this room modifier."
+              },
+              "triggered_vfx": {
+                "$ref": "../definitions/vfx.json",
+                "description": "Reference to the VFX played when triggered."
+              },
+              "use_title_for_card_description": {
+                "type": "boolean",
+                "description": "Whether to use the title as the card description."
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  }
+}

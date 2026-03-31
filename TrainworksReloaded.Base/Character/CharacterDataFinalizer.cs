@@ -90,7 +90,7 @@ namespace TrainworksReloaded.Base.Character
 
             //handle art
             // May not be set to null via override
-            var characterArtReference = configuration.GetSection("character_art").ParseReference();
+            var characterArtReference = configuration.GetSection("character_art").ParseAssetReference();
             var assetReferencedGameObject = AccessTools.Field(typeof(CharacterData), "characterPrefabVariantRef").GetValue(copyData) as AssetReferenceGameObject;
             if (characterArtReference != null)
             {
