@@ -732,6 +732,7 @@ namespace TrainworksReloaded.Base.Extensions
                 "bone_status_effect_slot2" => VfxAtLoc.Location.BoneStatusEffectSlot2,
                 "bone_status_effect_slot3" => VfxAtLoc.Location.BoneStatusEffectSlot3,
                 "bone_status_effect_slot4" => VfxAtLoc.Location.BoneStatusEffectSlot4,
+                "character_floor" => VfxAtLoc.Location.CharacterFloor,
                 _ => null,
             };
         }
