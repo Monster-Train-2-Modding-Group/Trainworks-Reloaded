@@ -126,6 +126,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "definitions", "definitions"
 		schemas\definitions\rarity.json = schemas\definitions\rarity.json
 		schemas\definitions\rarity_ticket.json = schemas\definitions\rarity_ticket.json
 		schemas\definitions\reference.json = schemas\definitions\reference.json
+		schemas\definitions\relics.json = schemas\definitions\relics.json
 		schemas\definitions\relic_effect.json = schemas\definitions\relic_effect.json
 		schemas\definitions\relic_pool.json = schemas\definitions\relic_pool.json
 		schemas\definitions\reward.json = schemas\definitions\reward.json

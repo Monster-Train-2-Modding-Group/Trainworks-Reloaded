@@ -48,7 +48,7 @@ namespace TrainworksReloaded.Base.Prefab
                 AccessTools.Field(typeof(VfxAtLoc), "vfxPrefabRefLeft").SetValue(data, vfxLeftData);
             }
 
-            var vfxRight = configuration.GetSection("vfx_left").ParseAssetReference();
+            var vfxRight = configuration.GetSection("vfx_right").ParseAssetReference();
             if (
                 vfxRight != null
                 && assetReferenceRegister.TryLookupId(
