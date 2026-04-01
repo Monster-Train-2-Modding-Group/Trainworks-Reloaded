@@ -124,7 +124,7 @@
             ]
           },
           "enemy_relic": {
-            "$ref": "../definitions/reference.json",
+            "$ref": "../definitions/sin.json",
             "description": "Reference to a relic (SinsData) for the enemy's relic data."
           },
           "equipment_limit": {

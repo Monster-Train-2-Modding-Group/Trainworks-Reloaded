@@ -287,7 +287,7 @@
             "description": "Trigger parameter for the relic effect."
           },
           "param_upgrade": {
-            "$ref": "../definitions/reference.json",
+            "$ref": "../definitions/card_upgrade.json",
             "description": "Card upgrade data identifier"
           },
           "relic_scaling_count": {
