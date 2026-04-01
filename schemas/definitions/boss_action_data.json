@@ -3,7 +3,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "repeats": {
+    "num_repeats": {
       "type": "integer",
       "description": "Number of times this action group repeats."
     },
@@ -11,16 +11,17 @@
       "type": "array",
       "description": "List of actions in this group.",
       "items": {
+        "required": ["name"],
         "properties": {
           "name": {
             "$ref": "../definitions/boss_action_behavior.json",
             "description": "Name of class implementing IBossActionBehaviour specifying which floor the flying boss moves to."
           },
-          "tooltip": {
+          "tooltips": {
             "$ref": "../definitions/parse_term.json",
             "description": "Localized text describing this action."
           },
-          "team": {
+          "param_team": {
             "$ref": "../definitions/team.json",
             "description": "Which team this action affects."
           },
