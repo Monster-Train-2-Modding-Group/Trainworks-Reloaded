@@ -1,10 +1,13 @@
 ﻿using HarmonyLib;
+using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
+using UnityEngine;
 
 namespace TrainworksReloaded.Base.Reward
 {
@@ -12,10 +15,13 @@ namespace TrainworksReloaded.Base.Reward
     {
         private readonly IModLogger<CardPoolRegister> logger;
         private readonly Lazy<List<GrantableRewardData>> Rewards;
+        private readonly Dictionary<string, RewardData> VanillaRewards = [];
 
         public RewardDataRegister(GameDataClient client, IModLogger<CardPoolRegister> logger)
         {
             this.logger = logger;
+            VanillaRewards.AddRange(Resources.FindObjectsOfTypeAll<RewardData>().ToDictionary(x => x.name, x => x));
+            this.AddRange(VanillaRewards);
             Rewards = new Lazy<List<GrantableRewardData>>(() =>
             {
                 if (client.TryGetProvider<SaveManager>(out var provider))
@@ -51,34 +57,23 @@ namespace TrainworksReloaded.Base.Reward
         public bool TryLookupIdentifier(string identifier, RegisterIdentifierType identifierType, [NotNullWhen(true)] out RewardData? lookup, [NotNullWhen(true)] out bool? IsModded)
         {
             lookup = null;
-            IsModded = true;
+            IsModded = false;
             switch (identifierType)
             {
                 case RegisterIdentifierType.ReadableID:
-                    if (this.TryGetValue(identifier, out lookup))
-                    {
-                        return true;
-                    }
-                    foreach (var reward in Rewards.Value)
-                    {
-                        if (reward.GetAssetKey() == identifier)
-                        {
-                            IsModded = false;
-                            lookup = reward;
-                            return true;
-                        }
-                    }
-                    return false;
+                    IsModded = !VanillaRewards.ContainsKey(identifier);
+                    return this.TryGetValue(identifier, out lookup);
                 case RegisterIdentifierType.GUID:
                     if (this.TryGetValue(identifier, out lookup))
                     {
+                        IsModded = !VanillaRewards.ContainsKey(identifier);
                         return true;
                     }
-                    foreach (var reward in Rewards.Value)
+                    foreach (var reward in this.Values)
                     {
                         if (reward.GetID() == identifier)
                         {
-                            IsModded = false;
+                            IsModded = !VanillaRewards.ContainsKey(reward.name);
                             lookup = reward;
                             return true;
                         }
