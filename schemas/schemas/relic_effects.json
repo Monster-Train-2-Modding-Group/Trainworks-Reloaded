@@ -247,7 +247,21 @@
             }
           },
           "param_rarity_ticket_type": {
-            "$ref": "../definitions/rarity_ticket.json",
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "card",
+                  "enhancer",
+                  "relic"
+                ]
+              },
+              {
+                "type": "string",
+                "pattern": "^(card|enhancer|relic)(\\|(card|enhancer|relic))+$"
+              }
+            ],
             "description": "Rarity ticket type parameter"
           },
           "param_relic": {
