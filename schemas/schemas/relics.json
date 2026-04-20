@@ -80,6 +80,7 @@
               "mutator",
               "endless_mutator",
               "pyre_artifact",
+              "covenant",
               "soul",
               null
             ],
@@ -227,6 +228,30 @@
                 "properties": {
                   "type": {
                     "enum": [
+                      "endless_mutator"
+                    ]
+                  },
+                  "extensions": {
+                    "type": "array"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "pyre_artifact"
+                    ]
+                  },
+                  "extensions": {
+                    "type": "array"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "type": {
+                    "enum": [
                       "sin"
                     ]
                   },
@@ -254,7 +279,7 @@
                               "description": "Tier level of the soul"
                             },
                             "next_tier": {
-                              "$ref": "../definitions/reference.json",
+                              "$ref": "../definitions/soul.json",
                               "description": "Reference to relic of type soul for the SoulData of the next tier."
                             },
                             "class": {
@@ -355,6 +380,52 @@
                                 "type": "string"
                               },
                               "description": "Tags associated with the mutator, controls which mutators are picked when randomized, mutators selected can not share any tag."
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "covenant"
+                    ]
+                  },
+                  "extensions": {
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "covenant": {
+                          "type": "object",
+                          "description": "Properties specific to covenants.",
+                          "properties": {
+                            "ascension_level": {
+                              "type": "integer",
+                              "description": "Ascension level"
+                            },
+                            "disables_covenant": {
+                              "type": "boolean",
+                              "description": "Disables covenant."
+                            },
+                            "hellforged_descriptions": {
+                              "$ref": "../definitions/parse_term.json",
+                              "description": "Hellforged descriptions."
+                            },
+                            "slice_sprite": {
+                              "$ref": "../definitions/reference.json",
+                              "description": "Slice sprite."
+                            },
+                            "text_color": {
+                              "$ref": "../definitions/color.json",
+                              "description": "Text color."
+                            },
+                            "unlock_level": {
+                              "type": "integer",
+                              "description": "Unlock level."
                             }
                           }
                         }
