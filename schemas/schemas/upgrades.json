@@ -123,7 +123,7 @@
             "type": "array",
             "description": "List of trait class names to permanently remove.",
             "items": {
-              "$ref": "../definitions/reference.json"
+              "$ref": "../definitions/card_trait.json"
             }
           },
           "remove_upgrades": {
