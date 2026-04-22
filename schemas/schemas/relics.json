@@ -408,20 +408,8 @@
                               "description": "Ascension level"
                             },
                             "disables_covenant": {
-                              "type": "boolean",
-                              "description": "Disables covenant."
-                            },
-                            "hellforged_descriptions": {
-                              "$ref": "../definitions/parse_term.json",
-                              "description": "Hellforged descriptions."
-                            },
-                            "slice_sprite": {
-                              "$ref": "../definitions/reference.json",
-                              "description": "Slice sprite."
-                            },
-                            "text_color": {
-                              "$ref": "../definitions/color.json",
-                              "description": "Text color."
+                              "type": "string",
+                              "description": "Disables covenant. Must be the Internal ID of the CovenantData to disable for this Covenant."
                             },
                             "unlock_level": {
                               "type": "integer",

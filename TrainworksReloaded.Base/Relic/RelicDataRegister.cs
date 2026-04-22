@@ -16,6 +16,7 @@ namespace TrainworksReloaded.Base.Relic
         private readonly List<SinsData> sins = [];
         private readonly List<EnhancerData> enhancers = [];
         private readonly List<MutatorData> mutators = [];
+        private readonly List<CovenantData> covenants = [];
         private readonly List<EndlessMutatorData> endless_mutators = [];
         private readonly List<SoulData> souls = [];
         private readonly Dictionary<string, RelicData> VanillaRelicData = [];
@@ -35,12 +36,14 @@ namespace TrainworksReloaded.Base.Relic
             }
             saveManager = provider;
 
-            collectables = (List<CollectableRelicData>)AccessTools.Field(typeof(AllGameData), "collectableRelicDatas").GetValue(saveManager.GetAllGameData());
-            sins = (List<SinsData>)AccessTools.Field(typeof(AllGameData), "sinsDatas").GetValue(saveManager.GetAllGameData());
-            enhancers = (List<EnhancerData>)AccessTools.Field(typeof(AllGameData), "enhancerDatas").GetValue(saveManager.GetAllGameData());
-            mutators = (List<MutatorData>)AccessTools.Field(typeof(AllGameData), "mutatorDatas").GetValue(saveManager.GetAllGameData());
-            endless_mutators = (List<EndlessMutatorData>)AccessTools.Field(typeof(AllGameData), "endlessMutatorDatas").GetValue(saveManager.GetAllGameData());
-            souls = (List<SoulData>)AccessTools.Field(typeof(AllGameData), "soulDatas").GetValue(saveManager.GetAllGameData());
+            AllGameData allGameData = saveManager.GetAllGameData();
+            collectables = (List<CollectableRelicData>)AccessTools.Field(typeof(AllGameData), "collectableRelicDatas").GetValue(allGameData);
+            sins = (List<SinsData>)AccessTools.Field(typeof(AllGameData), "sinsDatas").GetValue(allGameData);
+            enhancers = (List<EnhancerData>)AccessTools.Field(typeof(AllGameData), "enhancerDatas").GetValue(allGameData);
+            mutators = (List<MutatorData>)AccessTools.Field(typeof(AllGameData), "mutatorDatas").GetValue(allGameData);
+            endless_mutators = (List<EndlessMutatorData>)AccessTools.Field(typeof(AllGameData), "endlessMutatorDatas").GetValue(allGameData);
+            souls = (List<SoulData>)AccessTools.Field(typeof(AllGameData), "soulDatas").GetValue(allGameData);
+            covenants = (List<CovenantData>)AccessTools.Field(typeof(AllGameData), "covenantDatas").GetValue(allGameData);
 
             VanillaRelicData.AddRange(mutators.ToDictionary(x => x.name, x => x));
             // Collision prevention.
@@ -53,6 +56,7 @@ namespace TrainworksReloaded.Base.Relic
             VanillaRelicData.AddRange(enhancers.ToDictionary(x => x.name, x => x));
             VanillaRelicData.AddRange(endless_mutators.ToDictionary(x => x.name, x => x));
             VanillaRelicData.AddRange(souls.ToDictionary(x => x.name, x => x));
+            VanillaRelicData.AddRange(covenants.ToDictionary(x => x.name, x => x));
             /// TODO Document this in the schema.
             VanillaRelicData.Add("UpgradedDraftsMutator", mutator);
             VanillaRelicData.Add("UpgradedDraftsArtifact", collectable);
@@ -97,6 +101,10 @@ namespace TrainworksReloaded.Base.Relic
             else if (item is SoulData soulData)
             {
                 souls.Add(soulData);
+            }
+            else if (item is CovenantData covenantData)
+            {
+                covenants.Add(covenantData);
             }
             Add(key, item);
         }

@@ -316,6 +316,7 @@ namespace TrainworksReloaded.Plugin
                         typeof(PyreArtifactDataFactory),
                         typeof(SinsDataFactory),
                         typeof(SoulDataFactory),
+                        typeof(CovenantDataFactory),
                     ],
                     Lifestyle.Singleton
                 );
@@ -334,6 +335,11 @@ namespace TrainworksReloaded.Plugin
                 c.RegisterDecorator(
                     typeof(IDataPipeline<IRegister<RelicData>, RelicData>),
                     typeof(MutatorDataPipelineDecorator)
+                );
+                //CovenantData
+                c.RegisterDecorator(
+                    typeof(IDataPipeline<IRegister<RelicData>, RelicData>),
+                    typeof(CovenantDataPipelineDecorator)
                 );
                 //EnhancerData
                 c.RegisterDecorator(
