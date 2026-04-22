@@ -2,15 +2,19 @@
 using Microsoft.Extensions.Configuration;
 using Mono.Cecil;
 using ShinyShoe.Audio;
+using Spine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Prefab;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Extensions;
+using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using static RimLight;
 using static ShinyShoe.Audio.CoreSoundEffectData;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
@@ -33,10 +37,13 @@ namespace TrainworksReloaded.Base.Character
         private readonly IRegister<SoundCueDefinition> soundCueRegister;
         private readonly IRegister<PyreHeartData> pyreHeartRegister;
         private readonly FallbackDataProvider dataProvider;
+        private readonly IRegister<CardEffectData> effectRegister;
+        private readonly PluginAtlas atlas;
 
         public CharacterDataFinalizer(
             IModLogger<CharacterDataFinalizer> logger,
             ICache<IDefinition<CharacterData>> cache,
+            PluginAtlas atlas,
             IRegister<AssetReferenceGameObject> assetReferenceRegister,
             IRegister<GameObject> gameObjectRegister,
             IRegister<CharacterTriggerData> triggerRegister,
@@ -49,12 +56,14 @@ namespace TrainworksReloaded.Base.Character
             IRegister<RelicData> relicRegister,
             IRegister<SoundCueDefinition> soundCueRegister,
             IRegister<PyreHeartData> pyreHeartRegister,
+            IRegister<CardEffectData> effectRegister,
             FallbackDataProvider dataProvider
         )
         {
             this.logger = logger;
             this.cache = cache;
             this.assetReferenceRegister = assetReferenceRegister;
+            this.atlas = atlas;
             this.gameObjectRegister = gameObjectRegister;
             this.triggerRegister = triggerRegister;
             this.vfxRegister = vfxRegister;
@@ -66,6 +75,7 @@ namespace TrainworksReloaded.Base.Character
             this.relicRegister = relicRegister;
             this.soundCueRegister = soundCueRegister;
             this.pyreHeartRegister = pyreHeartRegister;
+            this.effectRegister = effectRegister;
             this.dataProvider = dataProvider;
         }
 
@@ -392,11 +402,94 @@ namespace TrainworksReloaded.Base.Character
                 AccessTools.Field(typeof(CharacterData), "pyreHeartData").SetValue(data, null);
             }
 
-            AccessTools.Field(typeof(CharacterData), "bossActionGroups").SetValue(data, copyData.GetBossActionData());
+            List<ActionGroupData> actions = [.. copyData.GetBossActionData()];
+            if (copyData != data)
+                AccessTools.Field(typeof(CharacterData), "bossActionGroups").SetValue(data, actions);
+            var bossActionGroups = configuration.GetSection("boss_action_groups");
+            if (bossActionGroups.Exists())
+            {
+                ParseBossActionGroups(bossActionGroups, key, definition.Id, data, overrideMode);
+            }
 
             AccessTools
                 .Field(typeof(CharacterData), "fallbackData")
                 .SetValue(data, dataProvider.FallbackData);
+        }
+
+        private void ParseBossActionGroups(IConfiguration configuration, string key, string id, CharacterData data, OverrideMode mode)
+        {
+            List<ActionGroupData> actionGroupDatas = data.GetBossActionData();
+            if (mode == OverrideMode.Replace)
+            {
+                actionGroupDatas.Clear();
+            }
+            foreach (var child in configuration.GetChildren())
+            {
+                var action = new ActionGroupData();
+                AccessTools.Field(typeof(ActionGroupData), "_actions").SetValue(action, new List<BossActionData>());
+                var num_repeats = child.GetSection("num_repeats").ParseInt() ?? action.GetNumRepeats();
+                AccessTools.Field(typeof(ActionGroupData), "_numRepeats").SetValue(action, num_repeats);
+                var bossActions = action.GetActions();
+                foreach (var grandChild in child.GetSection("actions").GetChildren())
+                {
+                    bossActions.Add(ParseBossActionData(grandChild, key, id));
+                }
+                actionGroupDatas.Add(action);
+            }
+        }
+
+        private BossActionData? ParseBossActionData(IConfiguration configuration, string key, string id)
+        {
+            BossActionData data = new();
+
+            var bossBehavior = configuration.GetSection("name").ParseReference();
+            if (bossBehavior == null)
+                return null;
+
+            var actionBehaviorName = bossBehavior.id;
+            var modReference = bossBehavior.mod_reference ?? key;
+            var assembly = atlas.PluginDefinitions.GetValueOrDefault(modReference)?.Assembly;
+            if (
+                !actionBehaviorName.GetFullyQualifiedName<IBossActionBehavior>(
+                    assembly,
+                    out string? fullyQualifiedName
+                )
+            )
+            {
+                logger.Log(LogLevel.Error, $"Failed to boss action behavior {actionBehaviorName} in {id} mod {modReference}, Make sure the class exists in {modReference} and that the class implements IBossActionBehavior.");
+                return null;
+            }
+            AccessTools
+                .Field(typeof(BossActionData), "_actionBehaviorName")
+                .SetValue(data, fullyQualifiedName);
+
+            var paramTeam = configuration.GetSection("param_team").ParseTeamType() ?? Team.Type.None;
+            AccessTools.Field(typeof(BossActionData), "_paramTeamType").SetValue(data, paramTeam);
+
+            var effectDatas = new List<CardEffectData>();
+            var effectReferences = configuration
+                .GetSection("effects")
+                .GetChildren()
+                .Select(x => x.ParseReference())
+                .Where(x => x != null)
+                .Cast<ReferencedObject>();
+            foreach (var reference in effectReferences)
+            {
+                if (
+                    effectRegister.TryLookupId(
+                        reference.ToId(key, TemplateConstants.Effect),
+                        out var effect,
+                        out var _,
+                        reference.context
+                    )
+                )
+                {
+                    effectDatas.Add(effect);
+                }
+            }
+            AccessTools.Field(typeof(BossActionData), "_actionEffects").SetValue(data, effectDatas);
+
+            return data;
         }
     }
 }

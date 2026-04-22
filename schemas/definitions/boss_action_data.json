@@ -5,7 +5,8 @@
   "properties": {
     "num_repeats": {
       "type": "integer",
-      "description": "Number of times this action group repeats."
+      "description": "Number of times this action group repeats.",
+      "default": 1
     },
     "actions": {
       "type": "array",
@@ -17,13 +18,10 @@
             "$ref": "../definitions/boss_action_behavior.json",
             "description": "Name of class implementing IBossActionBehaviour specifying which floor the flying boss moves to."
           },
-          "tooltips": {
-            "$ref": "../definitions/parse_term.json",
-            "description": "Localized text describing this action."
-          },
           "param_team": {
             "$ref": "../definitions/team.json",
-            "description": "Which team this action affects."
+            "description": "Which team this action affects.",
+            "default": "none"
           },
           "effects": {
             "type": "array",

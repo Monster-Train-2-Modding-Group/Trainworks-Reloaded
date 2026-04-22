@@ -43,7 +43,7 @@
           },
           "boss_action_groups": {
             "type": "array",
-            "description": "List of action groups for flying boss characters. (Not implemented)",
+            "description": "List of action groups for flying boss characters.",
             "items": {
               "$ref": "../definitions/boss_action_data.json"
             }
