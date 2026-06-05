@@ -34,16 +34,14 @@ namespace TrainworksReloaded.Base.Card
             ClassDraftableCardPools.Add("ClassLunaCoven", VanillaCardPools.GetValueOrDefault("UnitsLunaCovenBannerReplacementMutator"));
             ClassDraftableCardPools.Add("ClassUnderlegion", VanillaCardPools.GetValueOrDefault("UnitsUnderlegionBannerReplacementMutator"));
             ClassDraftableCardPools.Add("ClassLazarusLeague", VanillaCardPools.GetValueOrDefault("UnitsLazarusLeagueBannerReplacementMutator"));
-            
+            ClassDraftableCardPools.Add("ClassRailforged", VanillaCardPools.GetValueOrDefault("UnitsRailforgedBannerReplacementMutator"));
+
             ClassDraftableCardPools.Add("ClassHellhorned", VanillaCardPools.GetValueOrDefault("UnitsHellhornedBannerReplacementMutator"));
             ClassDraftableCardPools.Add("ClassAwoken", VanillaCardPools.GetValueOrDefault("UnitsAwokenBannerReplacementMutator"));
             ClassDraftableCardPools.Add("ClassStygian", VanillaCardPools.GetValueOrDefault("UnitsStygianBannerReplacementMutator"));
             ClassDraftableCardPools.Add("ClassUmbra", VanillaCardPools.GetValueOrDefault("UnitsUmbraBannerReplacementMutator"));
-
-            // TODO Currently there is a bug w/ base game that these card pools don't exist.
-            //ClassDraftableCardPools.Add("ClassRailforged", VanillaCardPools.GetValueOrDefault());
-            //ClassDraftableCardPools.Add("ClassRemnant", VanillaCardPools.GetValueOrDefault());
-            //ClassDraftableCardPools.Add("ClassWurm", VanillaCardPools.GetValueOrDefault());
+            ClassDraftableCardPools.Add("ClassRemnant", VanillaCardPools.GetValueOrDefault("UnitsRemnantBannerReplacementMutator"));
+            ClassDraftableCardPools.Add("ClassWurm", VanillaCardPools.GetValueOrDefault("UnitsWurmBannerReplacementMutator"));
         }
 
         public void Register(string key, CardPool item)
