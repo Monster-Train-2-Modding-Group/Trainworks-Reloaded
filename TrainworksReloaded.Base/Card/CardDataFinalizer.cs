@@ -207,7 +207,7 @@ namespace TrainworksReloaded.Base.Card
                         .SetValue(data, gameObject);
                 }
             }
-            else if (data.IsUnitAbility())
+            else if (data.IsUnitAbility() || data.IsRoomAbility())
             {
                 AccessTools.Field(typeof(CardData), "cardArtPrefabVariantRef").SetValue(data, new AssetReferenceGameObject());
             }
