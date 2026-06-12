@@ -169,8 +169,7 @@ namespace TrainworksReloaded.Plugin.Patches
                     var clanCardPool = cardPoolRegister.GetBannerReplacementPool(clan.name);
                     if (clanCardPool == null)
                     {
-                        logger.Log(LogLevel.Warning, "Clan doesn't have a Banner Replacement Pool registered, this shouldn't happen for modded clans. " +
-                            "Currently there is a bug with Melting Remnant, Railforged, and Wurmkin who don't have these pools.");
+                        logger.Log(LogLevel.Warning, "Clan doesn't have a Banner Replacement Pool registered, this shouldn't happen for modded clans.");
                         continue;
                     }
                     var arrayField = (ReorderableArray<CardData>) AccessTools.Field(typeof(CardPool), "cardDataList").GetValue(clanCardPool);

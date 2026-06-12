@@ -5,10 +5,6 @@ using TrainworksReloaded.Base.Extensions;
 
 namespace TrainworksReloaded.Base.Enums
 {
-    /// <summary>
-    /// Class that extends an enum and adds values to it. 
-    /// TODO make public, but restrict access to enums that are definable in JSON / or referenced directly by other GameObjects.
-    /// </summary>
     internal static class EnumAllocator<TEnum> where TEnum : Enum
     {
         private static IDictionary<string, TEnum> NameToEnum = new Dictionary<string, TEnum>();
@@ -29,10 +25,23 @@ namespace TrainworksReloaded.Base.Enums
             return e;
         }
 
-        public static bool TryGetEnum(string key, string id, out TEnum? val)
+        public static bool TryGetEnum(string key, string id, out TEnum val)
         {
             var name = key.GetId(typeof(TEnum).Name, id);
             return NameToEnum.TryGetValue(name, out val);
         }
+    }
+
+
+    // Public facing EnumAllocator for enums that aren't referenced by any GameData.
+    // Want to keep this locked down only to those enums, everything else should have a Pipeline to create from JSON.
+    // Otherwise the timing with creating enum from code and it being referenced from within JSON could be confusing to modders.
+    public static class EnumAllocator
+    {
+        public static Damage.Type CreateDamageType(string key, string id)
+            => EnumAllocator<Damage.Type>.CreateEnum(key, id);
+
+        public static bool TryGetDamageType(string key, string id, out Damage.Type val)
+            => EnumAllocator<Damage.Type>.TryGetEnum(key, id, out val);
     }
 }
