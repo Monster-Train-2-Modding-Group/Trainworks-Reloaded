@@ -21,7 +21,7 @@
             "description": "Description text for the tooltip."
           },
           "status": {
-            "$ref": "../definitions/status_effect.json",
+            "$ref": "../definitions/status.json",
             "description": "Status effect reference for status tooltips."
           },
           "id": {
