@@ -124,6 +124,15 @@ namespace TrainworksReloaded.Base.Enums
                 cardTriggers.Add(trigger);
             }
 
+            var disableWhenPurified = configuration.GetSection("disallow_when_purified").ParseBool() ?? true;
+            if (disableWhenPurified)
+            {
+                var balanceData = SaveManager.Value.GetAllGameData().GetBalanceData();
+                var cardTriggers = (List<CharacterTriggerData.Trigger>)AccessTools
+                    .Field(typeof(BalanceData), "disallowedPurifyCharacterTriggers").GetValue(balanceData);
+                cardTriggers.Add(trigger);
+            }
+
             // TODO CharacterTrigger => CardTrigger association.
         }
     }

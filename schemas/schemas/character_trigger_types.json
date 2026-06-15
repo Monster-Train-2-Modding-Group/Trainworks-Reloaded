@@ -14,7 +14,13 @@
           },
           "disallow_in_deployment": {
             "type": "boolean",
-            "description": "Disallows the CharacterTrigger from firing during the Deployment phase."
+            "description": "Disallows the CharacterTrigger from firing during the Deployment phase.",
+            "default": false
+          },
+          "disallow_when_purified": {
+            "type": "boolean",
+            "description": "Disallows the CharacterTrigger when firing when the character is purified (note this refers to the Purified status effect, not the Purifying Flame event).",
+            "default": true
           },
           "hidden": {
             "type": "boolean",
