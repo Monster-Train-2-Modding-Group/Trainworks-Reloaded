@@ -1,4 +1,6 @@
 ﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Interfaces;
@@ -16,6 +18,9 @@ namespace TrainworksReloaded.Base.StatusEffects
         private readonly IRegister<Sprite> spriteRegister;
         private readonly IRegister<StatusEffectData.TriggerStage> triggerStageRegister;
         private readonly IRegister<SoundCueDefinition> soundCueRegister;
+        private readonly Lazy<List<StatusEffectStackData>> NonStackableStatusEffects;
+
+        private readonly string DoubleStackNonStackableFilter = "ExcludeNonstackableStatusEffects";
 
         public StatusEffectDataFinalizer(
             IModLogger<StatusEffectDataFinalizer> logger,
@@ -23,7 +28,8 @@ namespace TrainworksReloaded.Base.StatusEffects
             IRegister<VfxAtLoc> vfxRegister,
             IRegister<Sprite> spriteRegister,
             IRegister<StatusEffectData.TriggerStage> triggerStageRegister,
-            IRegister<SoundCueDefinition> soundCueRegister)
+            IRegister<SoundCueDefinition> soundCueRegister,
+            IRegister<CardUpgradeMaskData> upgradeMaskRegister)
         {
             this.logger = logger;
             this.cache = cache;
@@ -31,6 +37,13 @@ namespace TrainworksReloaded.Base.StatusEffects
             this.spriteRegister = spriteRegister;
             this.triggerStageRegister = triggerStageRegister;
             this.soundCueRegister = soundCueRegister;
+            NonStackableStatusEffects = new Lazy<List<StatusEffectStackData>>(() =>
+                {
+                    upgradeMaskRegister.TryLookupName(DoubleStackNonStackableFilter, out var filter, out var _);
+                    var list = AccessTools.Field(typeof(CardUpgradeMaskData), "excludedStatusEffects").GetValue(filter) as List<StatusEffectStackData>;
+                    return list ?? [];
+                }
+            );
         }
 
         public void FinalizeData()
@@ -198,6 +211,24 @@ namespace TrainworksReloaded.Base.StatusEffects
                 triggeredSFXName = sound?.Name ?? string.Empty;
             }
             AccessTools.Field(typeof(StatusEffectData), "triggeredSFXName").SetValue(data, triggeredSFXName);
+
+            // If the status effect is not stackable add it to the DoubleStackExclusionsList
+            if (!data.IsStackable())
+            {
+                if (NonStackableStatusEffects.Value.IsNullOrEmpty())
+                {
+                    logger.Log(LogLevel.Warning, "Could not find " + DoubleStackNonStackableFilter + " or get its excludedStatusEffects. Nonstackable status effects will not be placed here");
+                }
+                else
+                {
+                    NonStackableStatusEffects.Value.Add(new StatusEffectStackData
+                    {
+                        statusId = data.GetStatusId(),
+                        count = 1
+                    });
+                }
+            }
+
         }
     }
 }

@@ -86,7 +86,7 @@
           },
           "is_stackable": {
             "type": "boolean",
-            "description": "Whether the status effect can stack.",
+            "description": "Whether the status effect can stack when applied multiple times. If set to false, the status effect will automatically be excluded from XStack keywords (Doublestack,Triplestack,etc).",
             "default": true
           },
           "more_added_vfx": {
