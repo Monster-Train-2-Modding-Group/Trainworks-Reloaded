@@ -1,5 +1,6 @@
 ﻿using BepInEx.Logging;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
 
 namespace TrainworksReloaded.Base.Extensions
 {
@@ -24,6 +25,11 @@ namespace TrainworksReloaded.Base.Extensions
         public static string GetPath(this IConfiguration configuration)
         {
             return (configuration as IConfigurationSection)?.Path ?? "";
+        }
+
+        public static IConfiguration GetExtension(this IConfiguration configuration, string name)
+        {
+            return configuration.GetSection("extensions").GetChildren().Where(xs => xs.GetSection(name).Exists()).Select(xs => xs.GetSection(name)).FirstOrDefault() as IConfiguration;
         }
     }
 }

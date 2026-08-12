@@ -50,12 +50,7 @@ namespace TrainworksReloaded.Base.Reward
             if (data1 is not CardPoolRewardData data)
                 return;
 
-            var configuration = configuration1
-                .GetSection("extensions")
-                .GetChildren()
-                .Where(xs => xs.GetSection("card_pool").Exists())
-                .Select(xs => xs.GetSection("card_pool"))
-                .First() as IConfiguration;
+            var configuration = configuration1.GetExtension("card_pool");
             if (configuration == null)
                 return;
 
