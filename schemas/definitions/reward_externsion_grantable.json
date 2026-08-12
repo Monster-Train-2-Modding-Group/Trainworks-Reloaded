@@ -1,0 +1,42 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/reward_extension_grantable.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "type": {
+      "enum": [
+        "grantable"
+      ]
+    },
+    "extensions": {
+      "type": "array",
+      "description": "Extensions for grantable rewards (Rewards that can appear in a shop or as a trial reward).",
+      "items": {
+        "properties": {
+          "grantable": {
+            "type": "object",
+            "properties": {
+              "is_service_merchant_reward": {
+                "type": "boolean",
+                "description": "Whether this is a service merchant reward.",
+                "default": false
+              },
+              "merchant_service_index": {
+                "type": "integer",
+                "description": "Applicable if is_service_merchant_reward is true, Index of the merchant service for this reward.",
+                "minimum": 0,
+                "maximum": 3,
+                "default": 0
+              },
+              "apply_trial_data_modifiers": {
+                "type": "boolean",
+                "description": "Applicable to gold rewards, Whether to apply trial data modifiers to this reward.",
+                "default": false
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/reward_extension_purge.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "type": {
+      "enum": [
+        "purge"
+      ]
+    },
+    "extensions": {
+      "type": "array",
+      "description": "Extensions for purge rewards.",
+      "items": {
+        "properties": {
+          "purge": {
+            "type": "object",
+            "description": "Purge reward specific properties.",
+            "properties": {
+              "is_compulsory": {
+                "type": "boolean",
+                "description": "Makes this reward require cards to be purged."
+              },
+              "purge_random_card": {
+                "type": "boolean",
+                "description": "Makes this reward purge random card(s)."
+              },
+              "allow_purge_champion": {
+                "type": "boolean",
+                "description": "Allows this reward to purge a champion."
+              },
+              "num_purges": {
+                "type": "integer",
+                "description": "Number of cards to purge."
+              },
+              "upgrade_mask": {
+                "$ref": "../definitions/card_upgrade_mask.json"
+              },
+              "secondary_costs": {
+                "type": "array",
+                "description": "List of secondary costs. Not necessary as only a RelicEffect can switch the costs of the item to these costs.",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

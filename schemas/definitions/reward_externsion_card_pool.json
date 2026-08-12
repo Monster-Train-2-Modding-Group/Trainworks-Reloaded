@@ -1,0 +1,50 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/reward_extension_card_pool.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "type": {
+      "enum": [
+        "card_pool"
+      ]
+    },
+    "extensions": {
+      "type": "array",
+      "description": "Extensions for card pool rewards.",
+      "items": {
+        "properties": {
+          "card_pool": {
+            "type": "object",
+            "description": "Card pool reward specific properties.",
+            "properties": {
+              "card_pool": {
+                "$ref": "../definitions/card_pool.json",
+                "description": "Reference to the card pool to offer."
+              },
+              "cost_overrides": {
+                "type": "array",
+                "description": "List of cost overrides for different rarities.",
+                "items": {
+                  "properties": {
+                    "rarity": {
+                      "$ref": "../definitions/rarity.json",
+                      "description": "Rarity to override costs for."
+                    },
+                    "costs": {
+                      "type": "array",
+                      "description": "List of costs for this rarity.",
+                      "items": {
+                        "type": "integer",
+                        "description": "Cost amount"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

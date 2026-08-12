@@ -1,0 +1,51 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/reward_extension_relic_draft.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "type": {
+      "enum": [
+        "relic_draft"
+      ]
+    },
+    "extensions": {
+      "type": "array",
+      "description": "Extensions for relic draft rewards.",
+      "items": {
+        "properties": {
+          "relic_draft": {
+            "type": "object",
+            "description": "Relic Draft reward specific properties.",
+            "properties": {
+              "draft_pool": {
+                "$ref": "../definitions/relic_pool.json",
+                "description": "Reference to the Relic Pool to draft from."
+              },
+              "randomize_order": {
+                "type": "boolean",
+                "description": "Randomizer order of relics chosen from the pool.",
+                "default": true
+              },
+              "draft_options_count": {
+                "type": "integer",
+                "description": "Number of draft options to show.",
+                "minimum": 1,
+                "maximum": 3,
+                "default": 3
+              },
+              "ignore_class_filter": {
+                "type": "boolean",
+                "description": "Ignore the class filtering."
+              },
+              "class_type": {
+                "$ref": "../definitions/class_type.json",
+                "description": "The type of clan (primary, allied, clanless) for this draft reward. This is an enum flag if you want to specify primary and allied used the value \"main|subclass\".",
+                "default": "none"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

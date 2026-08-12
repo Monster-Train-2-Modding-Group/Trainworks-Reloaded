@@ -1,0 +1,34 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/reward_extension_card.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "type": {
+      "enum": [
+        "card"
+      ]
+    },
+    "extensions": {
+      "type": "array",
+      "description": "Extensions for card rewards.",
+      "items": {
+        "properties": {
+          "card": {
+            "type": "object",
+            "description": "Card reward specific properties.",
+            "properties": {
+              "card": {
+                "$ref": "../definitions/card.json",
+                "description": "Reference to the card to offer."
+              },
+              "num_copies": {
+                "type": "integer",
+                "description": "Number of copies of the card to give."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
