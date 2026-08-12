@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TrainworksReloaded.Base.Extensions
 {
@@ -32,6 +34,11 @@ namespace TrainworksReloaded.Base.Extensions
             if (id.IsNullOrEmpty() || id == "null")
                 return null;
             return new ReferencedObject(id!, mod_reference, section);
+        }
+
+        public static IEnumerable<ReferencedObject?> ParseReferences(this IConfigurationSection section)
+        {
+            return section.GetChildren().Select(x => x.ParseReference()).Where(x => x != null).Cast<ReferencedObject>();
         }
 
         public static ReferencedObject? ParseAssetReference(this IConfigurationSection section)
