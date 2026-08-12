@@ -15,6 +15,7 @@ namespace TrainworksReloaded.Base.Card
         private readonly Lazy<SaveManager> SaveManager;
         private readonly IModLogger<CardDataRegister> logger;
 
+        private static readonly System.Reflection.FieldInfo CardDatasField = AccessTools.Field(typeof(AllGameData), "cardDatas");
         public CardPool CustomCardPool;
         public ReorderableArray<CardData> CardPoolBacking;
 
@@ -44,9 +45,10 @@ namespace TrainworksReloaded.Base.Card
             logger.Log(LogLevel.Info, $"Register Card {key}... ");
             CardPoolBacking.Add(item);
             var gamedata = SaveManager.Value.GetAllGameData();
+            
             var CardDatas =
                 (List<CardData>)
-                    AccessTools.Field(typeof(AllGameData), "cardDatas").GetValue(gamedata);
+                    CardDatasField.GetValue(gamedata);
             CardDatas.Add(item);
             Add(key, item);
         }
