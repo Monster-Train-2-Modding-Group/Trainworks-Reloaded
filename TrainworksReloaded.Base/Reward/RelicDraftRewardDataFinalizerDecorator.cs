@@ -46,7 +46,7 @@ namespace TrainworksReloaded.Base.Reward
             if (data1 is not RelicDraftRewardData data)
                 return;
 
-            var configuration = configuration1.GetExtension("relic_pool");
+            var configuration = configuration1.GetExtension("relic_draft");
 
             if (configuration == null)
                 return;
