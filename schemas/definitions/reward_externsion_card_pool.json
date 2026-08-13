@@ -32,7 +32,7 @@
                     },
                     "costs": {
                       "type": "array",
-                      "description": "List of costs for this rarity.",
+                      "description": "List of successive costs for this rarity if sold by a Merchant.",
                       "items": {
                         "type": "integer",
                         "description": "Cost amount"
