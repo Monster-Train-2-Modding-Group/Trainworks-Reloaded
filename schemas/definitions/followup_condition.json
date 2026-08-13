@@ -23,7 +23,8 @@
         {
           "$ref": "../definitions/reference.json"
         }
-      ]
+      ],
+      "description": "Name of a class implementing IFollowupCondition"
     },
     "param_int": {
       "type": "integer"
