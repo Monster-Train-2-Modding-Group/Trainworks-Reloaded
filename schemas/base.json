@@ -107,6 +107,9 @@
     "status_effects": {
       "$ref": "schemas/status_effects.json#/properties/status_effects"
     },
+    "events": {
+      "$ref": "schemas/events.json#/properties/events"
+    },
     "subtypes": {
       "$ref": "schemas/subtypes.json#/properties/subtypes"
     },

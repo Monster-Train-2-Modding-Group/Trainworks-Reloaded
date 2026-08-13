@@ -1,0 +1,198 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/events.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "events": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "A collection of story events for alcoves.",
+      "items": {
+        "type": "object",
+        "required": [ "id", "knot_name", "code", "choice_texts", "texts" ],
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique identifier for this StoryEvent. This also becomes the storyId."
+          },
+          "knot_name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "KnotName corresponding for this story event. This should be the knot defined in your .ink.json file."
+          },
+          "story_data": {
+            "type": "string",
+            "description": "Path to the .ink.json file containing the actual story data. You get this from the inklecate compiler or Inky (Version 0.8.0)."
+          },
+          "texts": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/parse_term.json"
+            },
+            "description": "Translations for each line of the given ink script. The english translation must match exactly with with the ink script, that is, if you edit the english translation be sure to edit the .ink.json data or regenerate this using stub_event.py (see tutorial)."
+          },
+          "choice_texts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "choice": {
+                  "type": "string",
+                  "description": "Choice string from the ink script, must match exactly. The actual choice text is determined by texts. You need not specify this if the choice is Leave as this has a default text for it."
+                },
+                "texts": {
+                  "$ref": "../definitions/parse_term.json",
+                  "descriptions": "Translations for the choice and the actual text displayed in the event."
+                },
+                "preview_obtain_texts": {
+                  "$ref": "../definitions/parse_term.json",
+                  "description": "This is a optional format string to specify the results of choosing this choice, and also provides a preview of the rewards and whether to open the deck screen to accept the reward."
+                },
+                "preview_infos": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "preview_type": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "card",
+                          "relic",
+                          "enhancer",
+                          "reward",
+                          "coin",
+                          "deck_reward",
+                          "delayed_enhance_reward",
+                          "relic_name",
+                          "deck_rewards"
+                        ],
+                        "description": "What type of object is associated with the preview."
+                      },
+                      "references": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "../definitions/reference.json"
+                        },
+                        "descriptions": "References to objects specified by 'preview_type` (cards, collectable_relics, enhancers, or rewards)"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "prefab": {
+            "$ref": "../definitions/reference.json",
+            "description": "A reference to a GameObject of type story_art defining the foreground of the event."
+          },
+          "soul_savior_prefab": {
+            "$ref": "../definitions/reference.json",
+            "description": "A reference to a GameObject of type story_art defining the foreground of the event in Soul Savior."
+          },
+          "num_runs_completed_to_see": {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 10,
+            "description": "Number of runs completed minimum to see this event"
+          },
+          "priority_ticket_count": {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 100,
+            "description": "The weightage of tickets this event gets to be picked."
+          },
+          "num_classes_needed_to_show": {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 6,
+            "description": "Number of unlocked classes to see the event."
+          },
+          "covenant_level_required": {
+            "type": "integer",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 10,
+            "description": "Covenent level requirement."
+          },
+          "main_clan_level_required": {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 10,
+            "description": "Primary Clan Level Requirement."
+          },
+          "allied_clan_level_required": {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 10,
+            "description": "Allied Clan Level Requirement."
+          },
+          "all_classes_needed_to_show": {
+            "type": "boolean"
+          },
+          "min_distance_allowed": {
+            "type": "integer"
+          },
+          "max_distance_allowed": {
+            "type": "integer"
+          },
+          "excluded_mutator": {
+            "$ref": "../definitions/mutators.json"
+          },
+          "associated_dlc": {
+            "$ref": "../definitions/dlc.json"
+          },
+          "require_dlc_mode_active": {
+            "type": "boolean"
+          },
+          "excluding_events": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/reference.json"
+            }
+          },
+          "possible_rewards": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/reward.json"
+            }
+          },
+          "predetermine_random_relics_to_remove": {
+            "type": "boolean"
+          },
+          "pin_choice_buttons": {
+            "type": "boolean"
+          },
+          "design_contributor": {
+            "type": "string"
+          },
+          "followup_events": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/followup_event.json"
+            }
+          },
+          "is_followup_event": {
+            "type": "boolean",
+            "description": "If false, adds the event to appear in a Celestial Alcove"
+          },
+          "pools": {
+            "type": "array",
+            "description": "Do not use unless you are making a fork of the Celestial Alcove with a different set of events that can run (otherwise Use \"is_followup_event\": false instead).",
+            "items": {
+              "type": "string",
+              "enum": [
+                "StoryEventPoolData"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
