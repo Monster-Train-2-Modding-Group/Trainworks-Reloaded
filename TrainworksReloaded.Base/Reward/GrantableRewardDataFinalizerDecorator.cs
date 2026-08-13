@@ -47,12 +47,8 @@ namespace TrainworksReloaded.Base.Reward
             if (data is not GrantableRewardData draftData)
                 return;
 
-            var draftConfiguration = configuration
-                .GetSection("extensions")
-                .GetChildren()
-                .Where(xs => xs.GetSection("grantable").Exists())
-                .Select(xs => xs.GetSection("grantable"))
-                .FirstOrDefault();
+            var draftConfiguration = configuration.GetExtension("grantable");
+
             if (draftConfiguration == null)
                 return;
 

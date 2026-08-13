@@ -1,4 +1,8 @@
 ﻿using HarmonyLib;
+using MonoMod.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
@@ -14,6 +18,7 @@ namespace TrainworksReloaded.Base.Reward
         private readonly IRegister<Sprite> spriteRegister;
         private readonly IRegister<RelicData> relicRegister;
         private readonly IRegister<SoundCueDefinition> soundCueRegister;
+        private readonly Dictionary<string, RewardDataList> VanillaRewardLists = [];
 
         public RewardDataFinalizer(
             IModLogger<RewardDataFinalizer> logger,
@@ -28,6 +33,7 @@ namespace TrainworksReloaded.Base.Reward
             this.spriteRegister = spriteRegister;
             this.relicRegister = relicRegister;
             this.soundCueRegister = soundCueRegister;
+            VanillaRewardLists.AddRange(Resources.FindObjectsOfTypeAll<RewardDataList>().ToDictionary(x => x.name, x => x));
         }
 
         public void FinalizeData()
@@ -87,6 +93,12 @@ namespace TrainworksReloaded.Base.Reward
                     sfxCue = sound.Name;
             }
             AccessTools.Field(typeof(RewardData), "_collectSFXCueName").SetValue(data, sfxCue);
+
+            var storyReward = configuration.GetSection("is_story_reward").ParseBool() ?? false;
+            if (storyReward)
+            {
+                VanillaRewardLists["AllStoryRewardsData"].Rewards.Add(data);
+            }
         }
     }
 }
