@@ -68,7 +68,6 @@ namespace TrainworksReloaded.Base.Events
             AccessTools.Field(typeof(StoryEventData), "storyId").SetValue(data, id);
             AccessTools.Field(typeof(StoryEventData), "knotName").SetValue(data, knot_name);
 
-
             AccessTools
                 .Field(typeof(StoryEventData), "numRunsCompletedToSee")
                 .SetValue(data, configuration.GetSection("num_runs_completed_to_see").ParseInt() ?? 1);

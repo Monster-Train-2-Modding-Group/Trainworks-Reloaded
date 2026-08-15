@@ -38,13 +38,13 @@ namespace TrainworksReloaded.Base.Events
         private readonly IRegister<AssetReferenceGameObject> assetReferenceRegister;
         private readonly IRegister<StoryEventPoolData> poolRegister;
         private readonly IRegister<LocalizationTerm> termRegister;
-        
+
         private readonly FieldInfo StoryEventDataEventPrefabField = AccessTools.Field(typeof(StoryEventData), "eventPrefab");
         private readonly FieldInfo StoryEventPoolStoryListField = AccessTools.Field(typeof(StoryEventPoolData), "storyEvents");
         private readonly AssetReferenceGameObject? DefaultEventPrefab;
 
         private readonly IDictionary<string, JArray> knotsToAdd = new Dictionary<string, JArray>();
-        
+
         public StoryEventFinalizer(
             PluginAtlas atlas,
             IModLogger<StoryEventFinalizer> logger,
@@ -157,7 +157,6 @@ namespace TrainworksReloaded.Base.Events
                 }
             }
             AccessTools.Field(typeof(StoryEventData), "possibleRewards").SetValue(data, possibleRewards);
-
 
             ParseFollowupEvents(key, configuration.GetSection("followup_events"), data);
 
@@ -562,6 +561,7 @@ namespace TrainworksReloaded.Base.Events
                 }
             }
         }
+
         private string? InjectIntoMasterStoryFile()
         {
             if (knotsToAdd.IsNullOrEmpty()) return null;
