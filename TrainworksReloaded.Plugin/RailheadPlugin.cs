@@ -14,6 +14,7 @@ using TrainworksReloaded.Base.Character;
 using TrainworksReloaded.Base.Class;
 using TrainworksReloaded.Base.Effect;
 using TrainworksReloaded.Base.Enums;
+using TrainworksReloaded.Base.Events;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Base.Map;
@@ -134,6 +135,7 @@ namespace TrainworksReloaded.Plugin
                         typeof(SoundCueFinalizer),
                         typeof(PyreHeartDataFinalizer),
                         typeof(ChallengeDataFinalizer),
+                        typeof(StoryEventFinalizer),
                         // These two have to run last. Sounds are added to the GameObjects which isn't available until GameObject finalizers has ran..
                         typeof(CharacterDataFinalizer),
                         typeof(CardDataFinalizer),
@@ -255,6 +257,9 @@ namespace TrainworksReloaded.Plugin
                 RegisterPipeline<CardTriggerEffectData, CardTriggerEffectRegister, CardTriggerEffectPipeline>(c);
                 RegisterPipeline<CharacterTriggerData, CharacterTriggerRegister, CharacterTriggerPipeline>(c);
                 RegisterPipeline<CharacterChatterData, CharacterChatterRegister, CharacterChatterPipeline>(c);
+                RegisterPipeline<StoryEventData, StoryEventRegister, StoryEventPipeline>(c);
+                c.RegisterSingleton<IRegister<StoryEventPoolData>, StoryEventPoolRegister>();
+                c.RegisterSingleton<StoryEventPoolRegister, StoryEventPoolRegister>();
 
                 c.RegisterSingleton<ClassAssetsDelegator, ClassAssetsDelegator>();
                 RegisterPipeline<ClassData, ClassDataRegister, ClassDataPipeline>(c);
@@ -286,7 +291,17 @@ namespace TrainworksReloaded.Plugin
                 RegisterPipeline<RewardData, RewardDataRegister, RewardDataPipeline>(c);
 
                 c.Collection.Register<IFactory<RewardData>>(
-                    [typeof(CardPoolRewardDataFactory), typeof(DraftRewardDataFactory)],
+                    [
+                        typeof(CardRewardDataFactory),
+                        typeof(CardPoolRewardDataFactory),
+                        typeof(DraftRewardDataFactory),
+                        typeof(EnhancerRewardDataFactory),
+                        typeof(GoldRewardDataFactory),
+                        typeof(HealthRewardDataFactory),
+                        typeof(PurgeRewardDataFactory),
+                        typeof(RelicDraftRewardDataFactory),
+                        typeof(RelicRewardDataFactory),
+                    ],
                     Lifestyle.Singleton
                 );
                 c.RegisterDecorator(
@@ -296,12 +311,47 @@ namespace TrainworksReloaded.Plugin
                 );
                 c.RegisterDecorator(
                     typeof(IDataFinalizer),
+                    typeof(CardRewardDataFinalizerDecorator),
+                    xs => xs.ImplementationType == typeof(RewardDataFinalizer)
+                );
+                c.RegisterDecorator(
+                    typeof(IDataFinalizer),
                     typeof(DraftRewardDataFinalizerDecorator),
                     xs => xs.ImplementationType == typeof(RewardDataFinalizer)
                 );
                 c.RegisterDecorator(
                     typeof(IDataFinalizer),
+                    typeof(EnhancerRewardDataFinalizerDecorator),
+                    xs => xs.ImplementationType == typeof(RewardDataFinalizer)
+                );
+                c.RegisterDecorator(
+                    typeof(IDataFinalizer),
+                    typeof(GoldRewardDataFinalizerDecorator),
+                    xs => xs.ImplementationType == typeof(RewardDataFinalizer)
+                );
+                c.RegisterDecorator(
+                    typeof(IDataFinalizer),
                     typeof(GrantableRewardDataFinalizerDecorator),
+                    xs => xs.ImplementationType == typeof(RewardDataFinalizer)
+                );
+                c.RegisterDecorator(
+                    typeof(IDataFinalizer),
+                    typeof(HealthRewardDataFinalizerDecorator),
+                    xs => xs.ImplementationType == typeof(RewardDataFinalizer)
+                );
+                c.RegisterDecorator(
+                    typeof(IDataFinalizer),
+                    typeof(PurgeRewardDataFinalizerDecorator),
+                    xs => xs.ImplementationType == typeof(RewardDataFinalizer)
+                );
+                c.RegisterDecorator(
+                    typeof(IDataFinalizer),
+                    typeof(RelicDraftRewardDataFinalizerDecorator),
+                    xs => xs.ImplementationType == typeof(RewardDataFinalizer)
+                );
+                c.RegisterDecorator(
+                    typeof(IDataFinalizer),
+                    typeof(RelicRewardDataFinalizerDecorator),
                     xs => xs.ImplementationType == typeof(RewardDataFinalizer)
                 );
 
@@ -396,10 +446,13 @@ namespace TrainworksReloaded.Plugin
             where Register : class, IRegister<DataType>
             where Pipeline : class, IDataPipeline<IRegister<DataType>, DataType>
         {
-            c.RegisterSingleton<IRegister<DataType>, Register>();
-            c.RegisterSingleton<Register, Register>();
-            c.Register<IDataPipeline<IRegister<DataType>, DataType>, Pipeline>(); 
-            c.RegisterInitializer<IRegister<DataType>>(x =>
+            var registration = Lifestyle.Singleton.CreateRegistration<Register>(c);
+            c.AddRegistration(typeof(Register), registration);
+            c.AddRegistration(typeof(IRegister<DataType>), registration);
+
+            c.Register<IDataPipeline<IRegister<DataType>, DataType>, Pipeline>();
+
+            c.RegisterInitializer<Register>(x =>
             {
                 var pipeline = c.GetInstance<IDataPipeline<IRegister<DataType>, DataType>>();
                 pipeline.Run(x);

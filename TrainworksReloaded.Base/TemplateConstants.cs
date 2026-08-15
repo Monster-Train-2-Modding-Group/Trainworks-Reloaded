@@ -44,5 +44,7 @@
         public const string PyreHeart = "PyreHeart";
         public const string SoulPool = "SoulPool";
         public const string Challenge = "Challenge";
+        public const string StoryEvent = "StoryEvent";
+        public const string StoryEventPool = "StoryEventPool";
     }
 }
