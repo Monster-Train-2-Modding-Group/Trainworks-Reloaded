@@ -15,7 +15,6 @@ namespace TrainworksReloaded.Base.Events
 
         public StoryEventPoolRegister()
         {
-            this.logger = logger;
             VanillaPools.AddRange(Resources.FindObjectsOfTypeAll<StoryEventPoolData>().ToDictionary(x => x.name, x => x));
             this.AddRange(VanillaPools);
         }
