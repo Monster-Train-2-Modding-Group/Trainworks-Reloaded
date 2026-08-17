@@ -1,4 +1,5 @@
-﻿using System;
+﻿using I2.Loc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +8,7 @@ namespace TrainworksReloaded.Base.Localization
     public class LocalizationTerm
     {
         public string Key { get; set; } = "";
-        public string Type { get; set; } = "";
+        public eTermType Type { get; set; } = eTermType.Text;
         public string Desc { get; set; } = "";
         public string Group { get; set; } = "";
         public string Descriptions { get; set; } = "";

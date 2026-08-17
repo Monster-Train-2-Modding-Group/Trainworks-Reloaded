@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using I2.Loc;
 using Microsoft.Extensions.Configuration;
 using ShinyShoe;
 using System;
@@ -254,6 +255,11 @@ namespace TrainworksReloaded.Base.Extensions
             // think it could be a null value even if defined as a string explicitly.
             string def = english ?? "";
 
+            if (!Enum.TryParse(type, true, out eTermType parsedType))
+            {
+                parsedType = eTermType.Text;
+            }
+
             var other_languages = section.GetSection("other_languages").GetChildren()
                 .Where(x => x.GetSection("language").Value != null)
                 .ToDictionary(
@@ -263,7 +269,7 @@ namespace TrainworksReloaded.Base.Extensions
             return new LocalizationTerm()
             {
                 Key = key ?? "",
-                Type = type ?? "Text",
+                Type = parsedType,
                 Desc = description ?? "",
                 Group = group ?? "",
                 Descriptions = speaker_descriptions ?? "",
