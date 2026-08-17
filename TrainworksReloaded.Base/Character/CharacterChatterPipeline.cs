@@ -89,7 +89,7 @@ namespace TrainworksReloaded.Base.Character
                 if (term != null)
                 {
                     term.Key = $"CharacterChatterData_addedExpressions{i}-{name}";
-                    termRegister.Add(term.Key, term);
+                    termRegister.Register(term.Key, term);
                     addedExpressions.Add(new ChatterExpressionData
                     {
                         locKey = term.Key,
@@ -107,7 +107,7 @@ namespace TrainworksReloaded.Base.Character
                 if (term != null)
                 {
                     term.Key = $"CharacterChatterData_attackingExpressions{i}-{name}";
-                    termRegister.Add(term.Key, term);
+                    termRegister.Register(term.Key, term);
                     attackingExpressions.Add(new ChatterExpressionData
                     {
                         locKey = term.Key,
@@ -125,7 +125,7 @@ namespace TrainworksReloaded.Base.Character
                 if (term != null)
                 {
                     term.Key = $"CharacterChatterData_idleExpressions{i}-{name}";
-                    termRegister.Add(term.Key, term);
+                    termRegister.Register(term.Key, term);
                     idleExpressions.Add(new ChatterExpressionData
                     {
                         locKey = term.Key,
@@ -143,7 +143,7 @@ namespace TrainworksReloaded.Base.Character
                 if (term != null)
                 {
                     term.Key = $"CharacterChatterData_slayedExpressions{i}-{name}";
-                    termRegister.Add(term.Key, term);
+                    termRegister.Register(term.Key, term);
                     slayedExpressions.Add(new ChatterExpressionData
                     {
                         locKey = term.Key,

@@ -184,7 +184,7 @@ namespace TrainworksReloaded.Plugin.Patches
             var languageSource = container.GetInstance<LanguageSourceRegister>();
             languageSource.LoadData();
             var localization = container.GetInstance<CustomLocalizationTermRegistry>();
-            localization.LoadData(languageSource.Keys.ToList());
+            localization.LoadData();
             logger.Log(LogLevel.Info, "Localization data loaded");
 
             //Add replacement strings

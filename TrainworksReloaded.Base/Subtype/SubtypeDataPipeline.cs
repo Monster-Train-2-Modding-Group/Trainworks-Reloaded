@@ -45,7 +45,7 @@ namespace TrainworksReloaded.Base.Subtype
                     var subtypeData = new SubtypeData();
 
                     text.Key = nameKey;
-                    termRegister.Add(nameKey, text);
+                    termRegister.Register(nameKey, text);
 
                     AccessTools.Field(typeof(SubtypeData), "_subtype").SetValue(subtypeData, nameKey);
 

@@ -34,6 +34,7 @@ namespace TrainworksReloaded.Base.Localization
 
         private void LoadTranslations(int source_index)
         {
+            /// TODO Optimize this section, Don't build a CSV file we can merge the terms directly.
             var builder = new StringBuilder();
             builder.AppendLine(
                 $"Key,Type,Desc,Group,Descriptions,{String.Join(',', this.Keys)}"

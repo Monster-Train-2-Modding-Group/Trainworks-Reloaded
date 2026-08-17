@@ -73,7 +73,7 @@ namespace TrainworksReloaded.Base.Character
                 if (term != null)
                 {
                     term.Key = $"CharacterChatterData_triggerExpressions{i}-{name}";
-                    termRegister.Add(term.Key, term);
+                    termRegister.Register(term.Key, term);
                     triggerExpressions.Add(new TriggerChatterExpressionData
                     {
                         trigger = trigger,

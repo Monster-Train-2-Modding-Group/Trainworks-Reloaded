@@ -36,7 +36,7 @@ namespace TrainworksReloaded.Base.Localization
                     }
 
                     text.Key = key;
-                    service.Add(key, text);
+                    service.Register(key, text);
                 }
             }
             return processList;
