@@ -1,0 +1,3416 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/traits.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "traits": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "A collection of all card traits in the game, defining their properties and behaviors.",
+      "items": {
+        "description": "A trait definition that specifies the properties and behaviors of a trait that can be applied to cards.",
+        "oneOf": [
+          {
+            "title": "CardTraitAddCardUpgradeOnMoonPhase",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitAddCardUpgradeOnMoonPhase"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Active Moon Phases^ Phases when upgrade is applied.\n\nUpgrade will be automatically removed (including any upgrade Traits) when Out-of-Phase.",
+                "oneOf": [
+                  {
+                    "const": 1,
+                    "title": "New"
+                  },
+                  {
+                    "const": 2,
+                    "title": "Full"
+                  },
+                  {
+                    "const": 4,
+                    "title": "None"
+                  }
+                ]
+              },
+              "param_int_2": {
+                "type": "integer",
+                "description": "Moon Phase Modifier Mode^ How Moon Phase Modifiers for rooms impact when upgrade is applied.\n\nAdditive - Global Phase and Modifiers are valid.\nExclusive - Modifiers override Global Phase\nIgnore - Modifiers always ignored",
+                "oneOf": [
+                  {
+                    "const": 0,
+                    "title": "Additive"
+                  },
+                  {
+                    "const": 1,
+                    "title": "Exclusive"
+                  },
+                  {
+                    "const": 2,
+                    "title": "Ignore"
+                  }
+                ]
+              },
+              "param_upgrade": {
+                "$ref": "../definitions/card_upgrade.json",
+                "description": "Upgrade to Apply^ Automatically removed (including any upgrade Traits) when Out-of-Phase"
+              },
+              "param_bool": {
+                "type": "boolean",
+                "description": "Highlight Card"
+              },
+              "param_description": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Description"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitAddDamagePerStatusEffect",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitAddDamagePerStatusEffect"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Damage Per Status Stack"
+              },
+              "param_bool": {
+                "type": "boolean",
+                "description": "Count Attacker Status Stacks^ TRUE - Stacks on Attacker\n\nFALSE - Stacks on Target"
+              },
+              "param_int_2": {
+                "type": "integer",
+                "description": "Allowed Status Types",
+                "oneOf": [
+                  {
+                    "const": 0,
+                    "title": "UseList"
+                  },
+                  {
+                    "const": 1,
+                    "title": "All"
+                  },
+                  {
+                    "const": 2,
+                    "title": "AllDebuffs"
+                  },
+                  {
+                    "const": 3,
+                    "title": "AllBuffs"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitAddMagicPowerToAttackDamage",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitAddMagicPowerToAttackDamage"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitAllowUpgradeOnCardType",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitAllowUpgradeOnCardType"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Prevent Card Type"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitCopyOnPlay",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitCopyOnPlay"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Num Copies"
+              },
+              "param_upgrade": {
+                "$ref": "../definitions/card_upgrade.json",
+                "description": "Card Upgrade"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitCorruptRestricted",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitCorruptRestricted"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Corruption Amount Required In Room^ Cards with Corrupt Restricted may only be played in a room that has some amount of Corruption."
+              },
+              "param_bool": {
+                "type": "boolean",
+                "description": "Check corruption amount from character room^ The corruption amount will be checked from the room the character is in (not from the destination)."
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitCostReduceCharactersInTowerState",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitCostReduceCharactersInTowerState"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Character Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Cost Multiplier"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitDamageOverflow",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitDamageOverflow"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Overflow targets",
+                "oneOf": [
+                  {
+                    "const": 0,
+                    "title": "FriendlyTeam"
+                  },
+                  {
+                    "const": 1,
+                    "title": "OpposingTeam"
+                  },
+                  {
+                    "const": 2,
+                    "title": "HeroTeam"
+                  },
+                  {
+                    "const": 3,
+                    "title": "MonsterTeam"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitDrawOnPlay",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitDrawOnPlay"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Num Drawn"
+              },
+              "param_upgrade": {
+                "$ref": "../definitions/card_upgrade.json",
+                "description": "Card Upgrade"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitIncreaseCostOfCardsInHand",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitIncreaseCostOfCardsInHand"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Energy Increase"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type^ Apply to this type of card in hand."
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitLevelMonsterState",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitLevelMonsterState"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_card": {
+                "$ref": "../definitions/card.json",
+                "description": "The card."
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitModifyCardTriggerSlayFireCount",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitModifyCardTriggerSlayFireCount"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Bonus Fire Count"
+              },
+              "param_bool": {
+                "type": "boolean",
+                "description": "Suppress Firing Trigger^ If TRUE, 'Bonus Fire Count' param is ignored"
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitModifyDragonsHoardCap",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitModifyDragonsHoardCap"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Adjust Dragons Hoard Cap"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitMultiplyDamagePerStatusEffect",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitMultiplyDamagePerStatusEffect"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_float": {
+                "type": "number",
+                "description": "Damage Multiplier",
+                "default": 1.0
+              },
+              "param_bool": {
+                "type": "boolean",
+                "description": "Also Multiply by Stack Count?"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitRefine",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitRefine"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Refine Bonus^ Additional forge/ember gained when this card is Smelted."
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingAddCards",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingAddCards"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Num Cards Multiplier"
+              },
+              "param_bool": {
+                "type": "boolean",
+                "description": "Disable Further Deck Pile Draws This Turn^ No more card draws from subsequent effects allowed this turn"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingAddCardUpgradeAtDragonsHoardThreshold",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingAddCardUpgradeAtDragonsHoardThreshold"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Dragons Hoard Threshold"
+              },
+              "param_upgrade": {
+                "$ref": "../definitions/card_upgrade.json",
+                "description": "Upgrade at Threshold"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingAddDamage",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingAddDamage"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Damage Per Stat"
+              },
+              "param_float": {
+                "type": "number",
+                "description": "Damage Multiplier",
+                "default": 1.0
+              },
+              "param_bool": {
+                "type": "boolean",
+                "description": "Trait Damage adds to other Effect Damage^ TRUE - All Accumulated Damage is Applied\n\nFALSE - Only Damage from this Trait is Applied"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingAddDamagePerCard",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingAddDamagePerCard"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Damage Per Stat"
+              },
+              "param_card": {
+                "$ref": "../definitions/card.json",
+                "description": "Scaling Card Data"
+              },
+              "param_float": {
+                "type": "number",
+                "description": "Damage Multiplier",
+                "default": 1.0
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingAddEffectApplications",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingAddEffectApplications"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Applications Per Stat"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingAddEnergy",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingAddEnergy"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Energy Per Stat"
+              },
+              "param_bool": {
+                "type": "boolean",
+                "description": "Next Turn"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingAddForged",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingAddForged"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Forged Count Per Stat"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingAddMagicPower",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingAddMagicPower"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Magic Power Per Stat"
+              },
+              "param_float": {
+                "type": "number",
+                "description": "Magic Power Multiplier",
+                "default": 1.0
+              },
+              "param_description": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Additional Card Text Suffix"
+              },
+              "param_bool": {
+                "type": "boolean",
+                "description": "Trait Magic Power adds to other Effect Damage/Healing^ TRUE - All Accumulated Damage/Healing is Applied\n\nFALSE - Only Magic Power from this Trait is Applied"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingAddStatusEffect",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingAddStatusEffect"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Stacks Per Stat"
+              },
+              "param_int_2": {
+                "type": "integer",
+                "description": "Status Effect Filter^ Which Status Effects can be affected",
+                "oneOf": [
+                  {
+                    "const": 0,
+                    "title": "AnyInStatusEffectParamList"
+                  },
+                  {
+                    "const": 1,
+                    "title": "AnyFlaggedIsPropagatable"
+                  },
+                  {
+                    "const": 2,
+                    "title": "HordeOnly"
+                  }
+                ]
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_bool": {
+                "type": "boolean",
+                "description": "Only Apply if Source Stacks 0^ Only applies the scaling if the incoming status effect stacks are 0."
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingAdjustCapacity",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingAdjustCapacity"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Amount per Stat"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingAdvanceMoonPhase",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingAdvanceMoonPhase"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_float": {
+                "type": "number",
+                "description": "Moon Phase Advance Per Stack",
+                "default": 1.0
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingBuffDamage",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingBuffDamage"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Stacks Per Stat"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingByConsumedTempCardUpgradeToCard",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingByConsumedTempCardUpgradeToCard"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Amount Per Stat"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingCardDrawCountPerPile",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingCardDrawCountPerPile"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Modifier Amount"
+              },
+              "param_int_2": {
+                "type": "integer",
+                "description": "Target Card Pile^ Pile to Count cards from",
+                "oneOf": [
+                  {
+                    "const": 0,
+                    "title": "DeckPile"
+                  },
+                  {
+                    "const": 1,
+                    "title": "DiscardPile"
+                  },
+                  {
+                    "const": 2,
+                    "title": "ExhaustedPile"
+                  },
+                  {
+                    "const": 3,
+                    "title": "HandPile"
+                  },
+                  {
+                    "const": 4,
+                    "title": "KeepInStandBy"
+                  },
+                  {
+                    "const": 5,
+                    "title": "DeckPileTop"
+                  },
+                  {
+                    "const": 6,
+                    "title": "None"
+                  },
+                  {
+                    "const": 7,
+                    "title": "DeckPileRandom"
+                  },
+                  {
+                    "const": 8,
+                    "title": "EatenPile"
+                  }
+                ]
+              },
+              "param_int_3": {
+                "type": "integer",
+                "description": "Pile Count Threshold^ There must be at least this many cards in the target pile in order to add the modifier"
+              },
+              "param_bool": {
+                "type": "boolean",
+                "description": "Apply Modifier Per Threshold^ Scale bonus each succesive time it hits the Pile Count Threshold"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingDrawAdditionalNextTurn",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingDrawAdditionalNextTurn"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Num Cards Multiplier"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingFeederRules",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingFeederRules"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Energy Per Stat"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingHeal",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingHeal"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Healing Per Stat"
+              },
+              "param_float": {
+                "type": "number",
+                "description": "Multiplier",
+                "default": 1.0
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingHealTrain",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingHealTrain"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Healing Per Stat"
+              },
+              "param_float": {
+                "type": "number",
+                "description": "Multiplier",
+                "default": 1.0
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingMagicPowerOnMoonPhase",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingMagicPowerOnMoonPhase"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Active Moon Phases^ Phases when Magic Power is boosted.",
+                "oneOf": [
+                  {
+                    "const": 1,
+                    "title": "New"
+                  },
+                  {
+                    "const": 2,
+                    "title": "Full"
+                  },
+                  {
+                    "const": 4,
+                    "title": "None"
+                  }
+                ]
+              },
+              "param_float": {
+                "type": "number",
+                "description": "Scaling Multiplier^ Result will be rounded to the nearest Int",
+                "default": 1.0
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingReduceCost",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingReduceCost"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Energy Reduction Per Stat"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingRemoveStatusEffect",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingRemoveStatusEffect"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Stacks Per Stat"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingReturnConsumedCards",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingReturnConsumedCards"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Cards Per Stat"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingRewardGold",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingRewardGold"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Coins Per Stat"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingStatusEffectPerPile",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingStatusEffectPerPile"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Modifier Amount"
+              },
+              "param_int_2": {
+                "type": "integer",
+                "description": "Target Card Pile^ Pile to Count cards from",
+                "oneOf": [
+                  {
+                    "const": 0,
+                    "title": "DeckPile"
+                  },
+                  {
+                    "const": 1,
+                    "title": "DiscardPile"
+                  },
+                  {
+                    "const": 2,
+                    "title": "ExhaustedPile"
+                  },
+                  {
+                    "const": 3,
+                    "title": "HandPile"
+                  },
+                  {
+                    "const": 4,
+                    "title": "KeepInStandBy"
+                  },
+                  {
+                    "const": 5,
+                    "title": "DeckPileTop"
+                  },
+                  {
+                    "const": 6,
+                    "title": "None"
+                  },
+                  {
+                    "const": 7,
+                    "title": "DeckPileRandom"
+                  },
+                  {
+                    "const": 8,
+                    "title": "EatenPile"
+                  }
+                ]
+              },
+              "param_int_3": {
+                "type": "integer",
+                "description": "Pile Count Threshold^ There must be at least this many cards in the target pile in order to add the modifier"
+              },
+              "param_bool": {
+                "type": "boolean",
+                "description": "Apply Modifier Per Threshold^ Scale bonus each succesive time it hits the Pile Count Threshold"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects^ Status Effects that will be modified by this CardTrait",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingTempCardUpgradeToCard",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingTempCardUpgradeToCard"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Amount Per Stat"
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingUpgradeUnitAttack",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingUpgradeUnitAttack"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Stacks Per Stat"
+              },
+              "param_int_3": {
+                "type": "integer",
+                "description": "Upgrade Scaling Restriction^ Restrictions on when to apply scaling",
+                "oneOf": [
+                  {
+                    "const": 0,
+                    "title": "None"
+                  },
+                  {
+                    "const": 1,
+                    "title": "ApplyScalingOnSpawnOnly"
+                  }
+                ]
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status Effects",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingUpgradeUnitHealth",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingUpgradeUnitHealth"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Stacks Per Stat"
+              },
+              "param_int_3": {
+                "type": "integer",
+                "description": "Upgrade Scaling Restriction^ Restrictions on when to apply scaling",
+                "oneOf": [
+                  {
+                    "const": 0,
+                    "title": "None"
+                  },
+                  {
+                    "const": 1,
+                    "title": "ApplyScalingOnSpawnOnly"
+                  }
+                ]
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingUpgradeUnitSize",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingUpgradeUnitSize"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Stacks Per Stat"
+              },
+              "param_int_3": {
+                "type": "integer",
+                "description": "Upgrade Scaling Restriction^ Restrictions on when to apply scaling",
+                "oneOf": [
+                  {
+                    "const": 0,
+                    "title": "None"
+                  },
+                  {
+                    "const": 1,
+                    "title": "ApplyScalingOnSpawnOnly"
+                  }
+                ]
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "CardTraitScalingUpgradeUnitStatusEffect",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "const": "CardTraitScalingUpgradeUnitStatusEffect"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              },
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Stacks Per Stat"
+              },
+              "param_int_3": {
+                "type": "integer",
+                "description": "Upgrade Scaling Restriction^ Restrictions on when to apply scaling",
+                "oneOf": [
+                  {
+                    "const": 0,
+                    "title": "None"
+                  },
+                  {
+                    "const": 1,
+                    "title": "ApplyScalingOnSpawnOnly"
+                  }
+                ]
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "Tracked Value",
+                "default": "subtype_in_deck"
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Entry Duration"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card Type"
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype",
+                "default": "SubtypesData_None"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "title": "Generic fallback",
+            "type": "object",
+            "properties": {
+              "draw_in_deployment_phase": {
+                "type": "boolean",
+                "description": "Enables the card to be drawn during the deployment phase"
+              },
+              "effect_text_suppressed": {
+                "type": "boolean",
+                "description": "Supresses effect text"
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Unique identifier for this trait."
+              },
+              "name": {
+                "description": "The TraitStateName, this should be the name of a Class inheriting from CardTraitBase. This can be a class from the base game, a class from your Plugin (preceded by an @), or an object with id and mod_reference to refer to a class in someone else's mod.",
+                "$ref": "../definitions/reference.json",
+                "not": {
+                  "enum": [
+                    "CardTraitAddCardUpgradeOnMoonPhase",
+                    "CardTraitAddDamagePerStatusEffect",
+                    "CardTraitAddMagicPowerToAttackDamage",
+                    "CardTraitAllowUpgradeOnCardType",
+                    "CardTraitCopyOnPlay",
+                    "CardTraitCorruptRestricted",
+                    "CardTraitCostReduceCharactersInTowerState",
+                    "CardTraitDamageOverflow",
+                    "CardTraitDrawOnPlay",
+                    "CardTraitIncreaseCostOfCardsInHand",
+                    "CardTraitLevelMonsterState",
+                    "CardTraitModifyCardTriggerSlayFireCount",
+                    "CardTraitModifyDragonsHoardCap",
+                    "CardTraitMultiplyDamagePerStatusEffect",
+                    "CardTraitRefine",
+                    "CardTraitScalingAddCards",
+                    "CardTraitScalingAddCardUpgradeAtDragonsHoardThreshold",
+                    "CardTraitScalingAddDamage",
+                    "CardTraitScalingAddDamagePerCard",
+                    "CardTraitScalingAddEffectApplications",
+                    "CardTraitScalingAddEnergy",
+                    "CardTraitScalingAddForged",
+                    "CardTraitScalingAddMagicPower",
+                    "CardTraitScalingAddStatusEffect",
+                    "CardTraitScalingAdjustCapacity",
+                    "CardTraitScalingAdvanceMoonPhase",
+                    "CardTraitScalingBuffDamage",
+                    "CardTraitScalingByConsumedTempCardUpgradeToCard",
+                    "CardTraitScalingCardDrawCountPerPile",
+                    "CardTraitScalingDrawAdditionalNextTurn",
+                    "CardTraitScalingFeederRules",
+                    "CardTraitScalingHeal",
+                    "CardTraitScalingHealTrain",
+                    "CardTraitScalingMagicPowerOnMoonPhase",
+                    "CardTraitScalingReduceCost",
+                    "CardTraitScalingRemoveStatusEffect",
+                    "CardTraitScalingReturnConsumedCards",
+                    "CardTraitScalingRewardGold",
+                    "CardTraitScalingStatusEffectPerPile",
+                    "CardTraitScalingTempCardUpgradeToCard",
+                    "CardTraitScalingUpgradeUnitAttack",
+                    "CardTraitScalingUpgradeUnitHealth",
+                    "CardTraitScalingUpgradeUnitSize",
+                    "CardTraitScalingUpgradeUnitStatusEffect"
+                  ]
+                }
+              },
+              "param_bool": {
+                "type": "boolean",
+                "description": "Boolean parameter for the trait."
+              },
+              "param_card": {
+                "$ref": "../definitions/card.json",
+                "description": "Reference to an id for a card for a parameter"
+              },
+              "param_card_type": {
+                "$ref": "../definitions/card_type_target.json",
+                "description": "Card type target parameter for reading TrackedValue statistics."
+              },
+              "param_description": {
+                "$ref": "../definitions/parse_term.json",
+                "description": "Localized text for a description parameter."
+              },
+              "param_entry_duration": {
+                "$ref": "../definitions/entry_duration.json",
+                "description": "Duration of the tracked value statistic to fetch"
+              },
+              "param_float": {
+                "type": "number",
+                "description": "Float parameter for the trait.",
+                "default": 1.0
+              },
+              "param_int": {
+                "type": "integer",
+                "description": "Integer parameter for the trait."
+              },
+              "param_int_2": {
+                "type": "integer",
+                "description": "Integer parameter for the trait."
+              },
+              "param_int_3": {
+                "type": "integer",
+                "description": "Integer parameter for the trait."
+              },
+              "param_status_effects": {
+                "type": "array",
+                "description": "Status effect parameter.",
+                "items": {
+                  "$ref": "../definitions/status_effect.json"
+                }
+              },
+              "param_str": {
+                "type": "string",
+                "description": "String parameter. Note this isn't a localized string."
+              },
+              "param_subtype": {
+                "$ref": "../definitions/subtype.json",
+                "description": "Subtype parameter.",
+                "default": "SubtypesData_None"
+              },
+              "param_team": {
+                "$ref": "../definitions/team.json",
+                "description": "Team type parameter."
+              },
+              "param_tracked_value": {
+                "$ref": "../definitions/tracked_value_type.json",
+                "description": "The tracked variable statistic to get for the trait. Usually used for scaling card traits.",
+                "default": "subtype_in_deck"
+              },
+              "param_upgrade": {
+                "$ref": "../definitions/card_upgrade.json",
+                "description": "Reference to a CardUpgrade."
+              },
+              "param_use_scaling_params": {
+                "type": "boolean",
+                "description": "A boolean, for use scaling params. It is unused"
+              },
+              "stack_mode": {
+                "$ref": "../definitions/stack_mode.json",
+                "description": "Card trait stack mode. Controls the behaviour when the trait is applied to a card multiple times. This only applies when the trait is added via an upgrade. Traits that are initially present on a card, with card text will not have the text updated.",
+                "default": "none"
+              },
+              "status_effect_tooltips_suppressed": {
+                "type": "boolean",
+                "description": "Supresses status effect tooltips"
+              },
+              "tooltip_suppressed": {
+                "type": "boolean",
+                "description": "Supresses all tooltips"
+              },
+              "trait_is_removable": {
+                "type": "boolean",
+                "description": "Determines if the trait can be removed via a CardUpgrade (remove_trait_upgrades).",
+                "default": true
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  }
+}

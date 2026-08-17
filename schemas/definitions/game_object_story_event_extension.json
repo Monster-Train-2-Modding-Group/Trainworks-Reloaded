@@ -1,0 +1,87 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/game_object_map_node_extension.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "type": {
+      "enum": [
+        "story_event"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Extensions for story event game objects.",
+      "properties": {
+        "map_node_icon": {
+          "type": "object",
+          "properties": {
+            "tile_01_sprite": {
+              "$ref": "../definitions/reference.json"
+            },
+            "tile_02_sprite": {
+              "$ref": "../definitions/reference.json"
+            },
+            "shader": {
+              "type": "string",
+              "description": "Which shader to use, this is an advanced property only set if you know what you are doing. Ignored if base_layer/layers is not set.",
+              "enum": [ "Shiny Shoe/CardEffects", "Shiny Shoe/CardEffects Non-Additive" ],
+              "default": "Shiny Shoe/CardEffects"
+            },
+            "base_layer": {
+              "$ref": "../definitions/effect_layer.json",
+              "description": "Base layer for the events background, should be of type texture."
+            },
+            "layers": {
+              "type": "array",
+              "description": "Configures a layered effect.",
+              "items": {
+                "$ref": "../definitions/effect_layer.json"
+              },
+              "maxItems": 8
+            },
+            "transforms": {
+              "type": "array",
+              "description": "CardEffectTransform configurations. Modifies the position, rotation, scale of a particular layer(s). The base layer does not have an associated transform.",
+              "items": {
+                "$ref": "../definitions/effect_transform.json"
+              },
+              "maxItems": 8
+            },
+            "story_character": {
+              "type": "object",
+              "properties": {
+                "spine_animation": {
+                  "$ref": "../definitions/reference.json"
+                },
+                "transform": {
+                  "type": "object",
+                  "description": "Transform properties for positioning and scaling the character.",
+                  "properties": {
+                    "position": {
+                      "$ref": "../definitions/vec3.json",
+                      "description": "Local position of the character",
+                      "default": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                      }
+                    },
+                    "scale": {
+                      "$ref": "../definitions/vec3.json",
+                      "description": "Local scale of the character",
+                      "default": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

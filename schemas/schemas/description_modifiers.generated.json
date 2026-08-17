@@ -1,0 +1,219 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/description_modifiers.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "oneOf": [
+    {
+      "title": "ArtifactCountScalingModifier",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "DescriptionModifier class name, This should be a class inheriting from DescriptionModifier.",
+          "const": "ArtifactCountScalingModifier"
+        },
+        "text_formats": {
+          "$ref": "../definitions/parse_term.json",
+          "description": "Localizated text for the format key which gets appended to the Collectable Relics description."
+        },
+        "param_int": {
+          "type": "integer",
+          "description": "Multiplier"
+        },
+        "param_bool": {
+          "type": "boolean",
+          "description": "Don't count boss relics"
+        },
+        "param_bool_2": {
+          "type": "boolean",
+          "description": "Don't count starter artifacts"
+        }
+      },
+      "required": [
+        "name",
+        "text_formats"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "title": "CardCountDescriptionModifier",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "DescriptionModifier class name, This should be a class inheriting from DescriptionModifier.",
+          "const": "CardCountDescriptionModifier"
+        },
+        "text_formats": {
+          "$ref": "../definitions/parse_term.json",
+          "description": "Localizated text for the format key which gets appended to the Collectable Relics description."
+        },
+        "param_subtype": {
+          "$ref": "../definitions/subtype.json",
+          "description": "Subtype filter",
+          "default": "SubtypesData_None"
+        },
+        "param_card_type": {
+          "$ref": "../definitions/card_type.json",
+          "description": "Card type filter",
+          "default": "invalid"
+        },
+        "param_int": {
+          "type": "integer",
+          "description": "Divisor, ignored if <= 0"
+        }
+      },
+      "required": [
+        "name",
+        "text_formats"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "title": "CardPoolCountDescriptionModifier",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "DescriptionModifier class name, This should be a class inheriting from DescriptionModifier.",
+          "const": "CardPoolCountDescriptionModifier"
+        },
+        "text_formats": {
+          "$ref": "../definitions/parse_term.json",
+          "description": "Localizated text for the format key which gets appended to the Collectable Relics description."
+        },
+        "param_card_pool": {
+          "$ref": "../definitions/card_pool.json",
+          "description": "Card pool to count cards from"
+        },
+        "param_int": {
+          "type": "integer",
+          "description": "Divisor, ignored if <= 0"
+        }
+      },
+      "required": [
+        "name",
+        "text_formats"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "title": "HistoriansRazorDescriptionModifier",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "DescriptionModifier class name, This should be a class inheriting from DescriptionModifier.",
+          "const": "HistoriansRazorDescriptionModifier"
+        },
+        "text_formats": {
+          "$ref": "../definitions/parse_term.json",
+          "description": "Localizated text for the format key which gets appended to the Collectable Relics description."
+        },
+        "param_int": {
+          "type": "integer",
+          "description": "Base amount (should be 10) the number of valid artifacts is subtracted from this value."
+        }
+      },
+      "required": [
+        "name",
+        "text_formats"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "title": "RelicCountDescriptionModifier",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "DescriptionModifier class name, This should be a class inheriting from DescriptionModifier.",
+          "const": "RelicCountDescriptionModifier"
+        },
+        "text_formats": {
+          "$ref": "../definitions/parse_term.json",
+          "description": "Localizated text for the format key which gets appended to the Collectable Relics description."
+        },
+        "param_bool": {
+          "type": "boolean",
+          "description": "Don't include boss relics in count."
+        },
+        "param_bool_2": {
+          "type": "boolean",
+          "description": "Don't include starter relics in count."
+        }
+      },
+      "required": [
+        "name",
+        "text_formats"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "title": "Generic fallback",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "DescriptionModifier class name, This should be a class inheriting from DescriptionModifier.",
+          "$ref": "../definitions/reference.json",
+          "not": {
+            "enum": [
+              "ArtifactCountScalingModifier",
+              "CardCountDescriptionModifier",
+              "CardPoolCountDescriptionModifier",
+              "HistoriansRazorDescriptionModifier",
+              "RelicCountDescriptionModifier"
+            ]
+          }
+        },
+        "param_bool": {
+          "type": "boolean",
+          "description": "Boolean parameter."
+        },
+        "param_bool_2": {
+          "type": "boolean",
+          "description": "Boolean parameter."
+        },
+        "param_card_pool": {
+          "$ref": "../definitions/card_pool.json",
+          "description": "Reference to CardPool."
+        },
+        "param_card_rarity_type": {
+          "$ref": "../definitions/rarity.json",
+          "description": "Card Rarity Type parameter."
+        },
+        "param_card_type": {
+          "$ref": "../definitions/card_type.json",
+          "description": "Card type parameter.",
+          "default": "invalid"
+        },
+        "param_subtype": {
+          "$ref": "../definitions/subtype.json",
+          "description": "Reference to Character subtype.",
+          "default": "SubtypesData_None"
+        },
+        "param_float": {
+          "type": "number",
+          "description": "Float parameter."
+        },
+        "param_int": {
+          "type": "integer",
+          "description": "Integer parameter."
+        },
+        "param_string": {
+          "type": "string",
+          "description": "String parameter.",
+          "default": ""
+        },
+        "text_formats": {
+          "$ref": "../definitions/parse_term.json",
+          "description": "Localizated text for the format key which gets appended to the Collectable Relics description."
+        }
+      },
+      "required": [
+        "name",
+        "text_formats"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

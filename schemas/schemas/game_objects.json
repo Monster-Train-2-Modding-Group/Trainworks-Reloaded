@@ -22,7 +22,8 @@
               "battle_node_icon",
               "card_art",
               "character_art",
-              "map_node_icon"
+              "map_node_icon",
+              "story_event"
             ],
             "description": "Type of game object."
           }
@@ -41,6 +42,9 @@
               },
               {
                 "$ref": "../definitions/game_object_battle_node_extension.json"
+              },
+              {
+                "$ref": "../definitions/game_object_story_event_extension.json"
               }
             ]
           }

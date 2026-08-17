@@ -1,0 +1,373 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/relics.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "relics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "clone_id": {
+            "type": "string",
+            "description": "Vanilla relic data asset name to clone. Cloning defaults all fields to the same value as the clone. If set override_mode should also be set, by default overriding a property will replace it."
+          },
+          "descriptions": {
+            "$ref": "../definitions/parse_term.json",
+            "description": "Localization data for the relic's description"
+          },
+          "disallow_in_deployment": {
+            "type": "boolean",
+            "description": "Whether the relic is not allowed to activate during deployment phase"
+          },
+          "icon": {
+            "$ref": "../definitions/reference.json",
+            "description": "Sprite identifier for the relic's main icon"
+          },
+          "icon_small": {
+            "$ref": "../definitions/reference.json",
+            "description": "Sprite identifier for the relic's small icon (used when activated)."
+          },
+          "id": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique identifier for the relic"
+          },
+          "is_hidden": {
+            "type": "boolean",
+            "description": "Makes this relic data hidden. Mainly used by Soul Savior region effects."
+          },
+          "lore_style": {
+            "$ref": "../definitions/lore_tooltip_style.json",
+            "description": "Style of the relic's lore tooltip"
+          },
+          "lore_tooltips": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/parse_term.json"
+            },
+            "description": "Array of localization data for the relic's lore tooltips"
+          },
+          "names": {
+            "$ref": "../definitions/parse_term.json",
+            "description": "Localization data for the relic's name"
+          },
+          "override": {
+            "$ref": "../definitions/override_mode.json",
+            "description": "Whether this relic overrides an existing character with the same ID (requires the Unity Asset Name)."
+          },
+          "relic_activated_texts": {
+            "$ref": "../definitions/parse_term.json",
+            "description": "Localization data for the relic's activation message"
+          },
+          "relic_effects": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions/reference.json"
+            },
+            "description": "Array of relic effects associated with this relic"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "collectable",
+              "enhancer",
+              "sin",
+              "mutator",
+              "endless_mutator",
+              "pyre_artifact",
+              "soul",
+              null
+            ],
+            "description": "Type of relic."
+          }
+        },
+        "dependencies": {
+          "type": {
+            "oneOf": [
+              {
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "collectable"
+                    ]
+                  },
+                  "extensions": {
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "collectable": {
+                          "type": "object",
+                          "description": "Configuration specific to collectable relics",
+                          "properties": {
+                            "class": {
+                              "$ref": "../definitions/classes.json",
+                              "description": "ID of the class this relic is associated with, leave unset for clanless."
+                            },
+                            "description_modifiers": {
+                              "type": "array",
+                              "items": {
+                                "$ref": "../schemas/description_modifiers.generated.json"
+                              },
+                              "description": "Set of description modifiers. These do things like show the (X Subtype) on artifacts that only affect a subset of cards in the deck."
+                            },
+                            "deprioritize_in_ftue_drafts": {
+                              "type": "boolean",
+                              "description": "Whether this relic should be deprioritized in FTUE (first time user experience) drafts",
+                              "default": false
+                            },
+                            "force_update_count_label": {
+                              "type": "boolean",
+                              "description": "Whether to force update the count label for this relic",
+                              "default": false
+                            },
+                            "from_story_event": {
+                              "type": "boolean",
+                              "description": "Whether this relic is obtained from a story event",
+                              "default": false
+                            },
+                            "ignore_for_no_relic_achievement": {
+                              "type": "boolean",
+                              "description": "Whether this relic should be ignored for the no relic achievement",
+                              "default": false
+                            },
+                            "is_boss_given": {
+                              "type": "boolean",
+                              "description": "Whether this relic is given by a boss",
+                              "default": false
+                            },
+                            "is_dragons_hoard": {
+                              "type": "boolean",
+                              "description": "Whether this relic is part of the dragon's hoard",
+                              "default": false
+                            },
+                            "pools": {
+                              "type": "array",
+                              "description": "Pools to add this relic to. Not override-able or replaceable. To change pools of an existing collectable relic you must edit the RelicPool it belongs to in code.",
+                              "items": {
+                                "$ref": "../definitions/relic_pool.json"
+                              }
+                            },
+                            "rarity": {
+                              "$ref": "../definitions/rarity.json",
+                              "description": "Rarity of the collectable relic",
+                              "default": "common"
+                            },
+                            "required_dlc": {
+                              "$ref": "../definitions/dlc.json",
+                              "description": "DLC required to see the relic",
+                              "default": "none"
+                            },
+                            "unlock_level": {
+                              "type": "integer",
+                              "description": "Level required to unlock this relic. 0 or 1 will always be unlocked, 2 will unlock at level 2, etc.",
+                              "minimum": 0,
+                              "default": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "enhancer"
+                    ]
+                  },
+                  "extensions": {
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "enhancer": {
+                          "type": "object",
+                          "description": "Configuration specific to enhancers",
+                          "properties": {
+                            "class": {
+                              "type": "string",
+                              "description": "ID of the class this enhancer is associated with"
+                            },
+                            "num_cards_to_show_in_upgrade_screen": {
+                              "type": "integer",
+                              "description": "Number of cards to show in the upgrade screen. The default is -1 for all cards.",
+                              "default": -1
+                            },
+                            "pools": {
+                              "type": "array",
+                              "description": "Pools to add this enhancer to. Not override-able or replaceable. To change pools of an existing enhancer you must edit the EnhancerPool it belongs to in code.",
+                              "items": {
+                                "$ref": "../definitions/enhancer_pool.json"
+                              }
+                            },
+                            "rarity": {
+                              "$ref": "../definitions/rarity.json",
+                              "description": "Rarity of the collectable relic",
+                              "default": "common"
+                            },
+                            "unlock_level": {
+                              "type": "integer",
+                              "description": "Level required to unlock this relic. 0 or 1 will always be unlocked, 2 will unlock at level 2, etc.",
+                              "minimum": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "sin"
+                    ]
+                  },
+                  "extensions": {
+                    "type": "array"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "soul"
+                    ]
+                  },
+                  "extensions": {
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "soul": {
+                          "type": "object",
+                          "properties": {
+                            "tier_level": {
+                              "type": "integer",
+                              "description": "Tier level of the soul"
+                            },
+                            "next_tier": {
+                              "$ref": "../definitions/reference.json",
+                              "description": "Reference to relic of type soul for the SoulData of the next tier."
+                            },
+                            "class": {
+                              "$ref": "../definitions/classes.json"
+                            },
+                            "icon": {
+                              "$ref": "../definitions/reference.json",
+                              "description": "(Optional) Reference to the icon for the soul for use in the SoulHUD. If unset it will use the RelicData's icon."
+                            },
+                            "unlock_level": {
+                              "type": "integer",
+                              "description": "Clan unlock level (unused?)"
+                            },
+                            "unlock_data": {
+                              "type": "object",
+                              "description": "Data defining how this soul is unlocked.",
+                              "properties": {
+                                "descriptions": {
+                                  "$ref": "../definitions/parse_term.json",
+                                  "description": "Localized text describing the unlock requirements."
+                                },
+                                "tracked_value": {
+                                  "$ref": "../definitions/tracked_value.json",
+                                  "description": "Value that needs to be tracked for unlocking."
+                                },
+                                "param_int": {
+                                  "type": "integer",
+                                  "description": "Numerical parameter for the unlock requirement."
+                                }
+                              }
+                            },
+                            "required_dlc": {
+                              "$ref": "../definitions/dlc.json"
+                            },
+                            "draft_min_distance_allowed": {
+                              "type": "integer",
+                              "description": "Min distance required to draft this soul."
+                            },
+                            "draft_max_distance_allowed": {
+                              "type": "integer",
+                              "description": "Max distance required to draft this soul."
+                            },
+                            "draft_min_battles_completed": {
+                              "type": "integer",
+                              "description": "Min battles completed to draft this soul."
+                            },
+                            "draft_max_battles_completed": {
+                              "type": "integer",
+                              "description": "Max battles completed to draft this soul."
+                            },
+                            "pools": {
+                              "$ref": "../definitions/soul_pool.json",
+                              "description": "Soul pools to add this soul to. Only necessary for T1 souls."
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "mutator"
+                    ]
+                  },
+                  "extensions": {
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "mutator": {
+                          "type": "object",
+                          "description": "Properties specific to mutators.",
+                          "properties": {
+                            "boon_value": {
+                              "type": "integer",
+                              "description": "The boon value, which defines how good or bad the mutator is. Negative mutators have a negative boon_value and vice versa. Controls what mutators are picked when they are randomized. This is generally a value between -15 and 12.",
+                              "default": 0
+                            },
+                            "disable_in_daily_challenges": {
+                              "type": "boolean",
+                              "default": false,
+                              "description": "Not useful, the game controls which mutators can appear in daily challenges with this. Custom mutators can't appear in daily challenges."
+                            },
+                            "is_soul_savior_mode_only": {
+                              "type": "boolean",
+                              "description": "Is this a Soul Savior Mutator?"
+                            },
+                            "required_dlc": {
+                              "type": "string",
+                              "description": "Not useful currently, tie a mutator to an official DLC with this."
+                            },
+                            "tags": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "description": "Tags associated with the mutator, controls which mutators are picked when randomized, mutators selected can not share any tag."
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "description": "Array of relic definitions"
+    }
+  }
+}
