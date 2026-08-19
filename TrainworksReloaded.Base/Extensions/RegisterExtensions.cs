@@ -18,23 +18,80 @@ namespace TrainworksReloaded.Base.Extensions
         /// <param name="name">The name of the item to lookup</param>
         /// <param name="lookup">The item if found</param>
         /// <param name="IsModded">Whether the item is modded</param>
+        public static bool TryLookupName<T>(
+            this IRegister<T> register,
+            string name,
+            [NotNullWhen(true)] out T? lookup,
+            [NotNullWhen(true)] out bool? IsModded
+        )
+        {
+            return register.TryLookupName(name, out lookup, out IsModded, null, false);
+        }
+
+        /// <summary>
+        /// Try to lookup an item by name
+        /// A Name is a human readable identifier for an item
+        /// </summary>
+        /// <param name="name">The name of the item to lookup</param>
+        /// <param name="lookup">The item if found</param>
+        /// <param name="IsModded">Whether the item is modded</param>
         /// <param name="context">The context in which the name is looked up (will be the IConfiguration Path) </param>
         public static bool TryLookupName<T>(
             this IRegister<T> register,
             string name,
             [NotNullWhen(true)] out T? lookup,
             [NotNullWhen(true)] out bool? IsModded,
-            IConfigurationSection? context = null
+            IConfigurationSection? context
+        )
+        {
+            return register.TryLookupName(name, out lookup, out IsModded, context, false);
+        }
+
+        /// <summary>
+        /// Try to lookup an item by name
+        /// A Name is a human readable identifier for an item
+        /// </summary>
+        /// <param name="name">The name of the item to lookup</param>
+        /// <param name="lookup">The item if found</param>
+        /// <param name="IsModded">Whether the item is modded</param>
+        /// <param name="context">The context in which the name is looked up (will be the IConfiguration Path) </param>
+        /// <param name="quiet">Suppress warning message.</param>
+        public static bool TryLookupName<T>(
+            this IRegister<T> register,
+            string name,
+            [NotNullWhen(true)] out T? lookup,
+            [NotNullWhen(true)] out bool? IsModded,
+            IConfigurationSection? context = null,
+            bool quiet = false
         )
         {
             bool ret = register.TryLookupIdentifier(name, RegisterIdentifierType.ReadableID, out lookup, out IsModded);
-            if (!ret)
+            if (!ret && !quiet)
             {
                 Logger.LogWarning($"Could not find identifier of type {typeof(T).Name} with id (name) {name}. Configuration Path: {context?.Path}");
                 Logger.LogDebug($"{Environment.StackTrace}");
             }
             return ret;
         }
+
+        /// <summary>
+        /// Try to lookup an item by id
+        /// An Id is a unique identifier for an item that is not guaranteed to be human readable. 
+        /// </summary>
+        /// <param name="id">The id of the item to lookup</param>
+        /// <param name="lookup">The item if found</param>
+        /// <param name="IsModded">Whether the item is modded</param>
+        public static bool TryLookupId<T>(
+            this IRegister<T> register,
+            string id,
+            [NotNullWhen(true)] out T? lookup,
+            [NotNullWhen(true)] out bool? IsModded
+        )
+        {
+            return register.TryLookupId(id, out lookup, out IsModded, null, false);
+        }
+
+
         /// <summary>
         /// Try to lookup an item by id
         /// An Id is a unique identifier for an item that is not guaranteed to be human readable. 
@@ -48,11 +105,32 @@ namespace TrainworksReloaded.Base.Extensions
             string id,
             [NotNullWhen(true)] out T? lookup,
             [NotNullWhen(true)] out bool? IsModded,
-            IConfigurationSection? context = null
+            IConfigurationSection? context
+        )
+        {
+            return register.TryLookupId(id, out lookup, out IsModded, context, false);
+        }
+
+        /// <summary>
+        /// Try to lookup an item by id
+        /// An Id is a unique identifier for an item that is not guaranteed to be human readable. 
+        /// </summary>
+        /// <param name="id">The id of the item to lookup</param>
+        /// <param name="lookup">The item if found</param>
+        /// <param name="IsModded">Whether the item is modded</param>
+        /// <param name="context">The context in which the name is looked up (will be the IConfiguration Path) </param>
+        /// <param name="quiet">Suppress warning message.</param>
+        public static bool TryLookupId<T>(
+            this IRegister<T> register,
+            string id,
+            [NotNullWhen(true)] out T? lookup,
+            [NotNullWhen(true)] out bool? IsModded,
+            IConfigurationSection? context = null,
+            bool quiet = false
         )
         {
             bool ret = register.TryLookupIdentifier(id, RegisterIdentifierType.GUID, out lookup, out IsModded);
-            if (!ret)
+            if (!ret && !quiet)
             {
                 Logger.LogWarning($"Could not find identifier of type {typeof(T).Name} with id (guid) {id}. Configuration Path: {context?.Path}");
                 Logger.LogDebug($"{Environment.StackTrace}");
