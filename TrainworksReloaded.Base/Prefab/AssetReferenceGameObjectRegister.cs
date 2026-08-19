@@ -26,7 +26,6 @@ namespace TrainworksReloaded.Base.Prefab
 
         public void Register(string key, AssetReferenceGameObject item)
         {
-            //
         }
 
         public bool TryLookupIdentifier(string identifier, RegisterIdentifierType identifierType, [NotNullWhen(true)] out AssetReferenceGameObject? lookup, [NotNullWhen(true)] out bool? IsModded)
@@ -36,7 +35,7 @@ namespace TrainworksReloaded.Base.Prefab
             switch (identifierType)
             {
                 case RegisterIdentifierType.ReadableID:
-                    if (objectRegister.TryLookupName(identifier, out GameObject? readableGameObject, out bool? readableModded))
+                    if (objectRegister.TryLookupName(identifier, out GameObject? readableGameObject, out bool? readableModded, null, true))
                     {
                         lookup = new AssetReferenceGameObject();
                         IsModded = readableModded;
@@ -48,7 +47,7 @@ namespace TrainworksReloaded.Base.Prefab
                     lookup.SetId(identifier);
                     return true;
                 case RegisterIdentifierType.GUID:
-                    if (objectRegister.TryLookupId(identifier, out GameObject? guidGameObject, out bool? guidModded))
+                    if (objectRegister.TryLookupId(identifier, out GameObject? guidGameObject, out bool? guidModded, null, true))
                     {
                         lookup = new AssetReferenceGameObject();
                         IsModded = guidModded;
