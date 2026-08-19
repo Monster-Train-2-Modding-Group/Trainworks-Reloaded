@@ -53,7 +53,8 @@ namespace TrainworksReloaded.Base.Localization
             string termName = $"Default\\{item.Key}";
             LanguageSourceData source = item.SourceIndex == 0 ? source0 : source1;
             SourceIndices indices = item.SourceIndex == 0 ? indices0 : indices1;
-            RequiresInkReload = item.SourceIndex == 1;
+            if (item.SourceIndex == 1)
+                RequiresInkReload = true;
 
             TermData termData = source.AddTerm(termName, eTermType.Text, false);
 
@@ -144,9 +145,6 @@ namespace TrainworksReloaded.Base.Localization
             if (RequiresInkReload)
             {
                 source1.UpdateDictionary(true);
-                AccessTools.Field(typeof(LocalizationUtil), "_inkHelper").SetValue(null, null);
-                // Neccessary to pull in the ink keys to the dictionary.
-                LocalizationUtil.InitInkHelper();
                 RequiresInkReload = false;
             }
         }

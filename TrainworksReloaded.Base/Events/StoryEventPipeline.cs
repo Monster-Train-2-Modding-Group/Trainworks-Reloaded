@@ -17,14 +17,21 @@ namespace TrainworksReloaded.Base.Events
         private readonly PluginAtlas atlas;
         private readonly IGuidProvider guidProvider;
         private readonly IRegister<LocalizationTerm> termRegister;
+        private readonly IModLogger<StoryEventPipeline> logger;
+        private readonly InkLocalizationHelper inkHelper;
+        private readonly Dictionary<string, string> englishToKeyDict;
 
         public StoryEventPipeline(PluginAtlas atlas,
             IGuidProvider guidProvider,
-            IRegister<LocalizationTerm> termRegister)
+            IRegister<LocalizationTerm> termRegister,
+            IModLogger<StoryEventPipeline> logger)
         {
             this.atlas = atlas;
             this.guidProvider = guidProvider;
             this.termRegister = termRegister;
+            this.logger = logger;
+            inkHelper = (AccessTools.Field(typeof(LocalizationUtil), "_inkHelper").GetValue(null) as InkLocalizationHelper)!;
+            englishToKeyDict = (AccessTools.Field(typeof(InkLocalizationHelper), "_englishToKeyDict").GetValue(inkHelper) as Dictionary<string, string>)!;
         }
 
         public List<IDefinition<StoryEventData>> Run(IRegister<StoryEventData> service)
@@ -129,8 +136,16 @@ namespace TrainworksReloaded.Base.Events
             int i = 0;
             foreach (var term in terms)
             {
+                if (inkHelper.GetInkKey(term.English) != null)
+                {
+                    logger.Log(LogLevel.Warning, $"Dropping line {term.English}. If this is a line from the vanilla game, it is safe to drop the line from the json definition. " +
+                        $"Lines in ink scripts must be unique across all mods and base game.");
+                    /// TODO possible merge of localization term if more translations are provided.
+                    continue;
+                }
                 term.SourceIndex = 1;
                 term.Key = $"InkLoc-{knot_name}{i}";
+                englishToKeyDict.Add(term.English, term.Key);
                 termRegister.Register(term.Key, term);
                 i++;
             }

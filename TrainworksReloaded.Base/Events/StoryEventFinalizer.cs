@@ -502,8 +502,8 @@ namespace TrainworksReloaded.Base.Events
         }
 
         // Matches lines starting with >>> and captures the ID following the '@'
-        // Pattern: Starts with '>>>', followed by anything up to '@', then captures word/id chars after '@'
-        private static readonly Regex MacroRegex = new(@"^>>>(.*)?(@[A-Za-z0-9_]+)", RegexOptions.Compiled);
+        // Pattern: Starts with '>>>', followed by anything up to a possible '@', then captures word/id chars after '@'
+        private static readonly Regex MacroRegex = new(@"^>>>\s*([A-Za-z0-9_]+)(?::\s*(@?[A-Za-z0-9_]+))?", RegexOptions.Compiled);
 
         /// <summary>
         /// Scans a knot JArray for '>>>' lines with '@' references, resolves them via .ToId(), 
@@ -536,11 +536,8 @@ namespace TrainworksReloaded.Base.Events
                         };
 
                         string expandedId = rewardId.ToId(key, template);
-
+                        ValidateCommand(command, expandedId);
                         string updatedText = cleanText.Replace(rewardId, expandedId);
-
-                        logger.Log(LogLevel.Error, $"{command} {rewardId} -> {expandedId} = {updatedText}");
-
                         // Preserve the '^' prefix required by the Ink Virtual Machine
                         value.Value = "^" + updatedText;
                     }
@@ -559,6 +556,33 @@ namespace TrainworksReloaded.Base.Events
                 {
                     ProcessMacroTokens(property.Value, key);
                 }
+            }
+        }
+
+        private void ValidateCommand(string command, string expandedId)
+        {
+            switch(command)
+            {
+                case "GIVE_REWARD":
+                    if (!rewardRegister.TryLookupName(expandedId, out var _, out var _, quiet: true))
+                    {
+                        logger.Log(LogLevel.Warning, $"RewardData {expandedId} not found, if this is a modded reward be sure it is preceded with an @ in the ink script. You can modify the ink.json data file to add the @ in this case.");
+                    }
+                    break;
+                case "REMOVE_CARD":
+                    if (!cardRegister.TryLookupName(expandedId, out var _, out var _, quiet: true))
+                    {
+                        logger.Log(LogLevel.Warning, $"CardData {expandedId} not found, if this is a modded card be sure it is preceded with an @ in the ink script. You can modify the ink.json data file to add the @ in this case.");
+                    }
+                    break;
+                case "REMOVE_RELIC":
+                    if (!relicRegister.TryLookupName(expandedId, out var _, out var _, quiet: true))
+                    {
+                        logger.Log(LogLevel.Warning, $"RelicData {expandedId} not found, if this is a modded relic be sure it is preceded with an @ in the ink script. You can modify the ink.json data file to add the @ in this case.");
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
