@@ -205,11 +205,6 @@ namespace TrainworksReloaded.Base.Extensions
             {
                 return null;
             }
-            // Quote string if it contains quotes otherwise it will break when sending to I2.Loc
-            if (str.Contains(','))
-            {
-                str = string.Format("\"{0}\"", str);
-            }
             return str;
         }
 
