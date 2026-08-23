@@ -25,7 +25,7 @@
           },
           "data_path": {
             "$ref": "../definitions/file_path.json",
-            "description": "The path to the skeleton data file. This can be a file or an AssetBundle reference. If an AssetBundle this must point to a SkeletonDataAsset. If a file path then the file should have the extension .json or .skel."
+            "description": "The path to the skeleton data file. This can be a file or an AssetBundle reference. If an AssetBundle this must point to a SkeletonDataAsset (asset_path should end with _SkeletonData.asset). If a file path then the file should have the extension .json or .skel."
           },
           "texture_paths": {
             "type": "array",

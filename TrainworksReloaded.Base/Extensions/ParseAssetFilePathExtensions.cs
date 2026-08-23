@@ -55,7 +55,7 @@ namespace TrainworksReloaded.Base.Extensions
 
             public override string ToString()
             {
-                return bundleReference == null ? path : $"bundle: ({bundleReference.id} mod: {bundleReference.mod_reference})";
+                return bundleReference == null ? path : $"asset_path: {path} bundle: ({bundleReference.id} mod: {bundleReference.mod_reference})";
             }
         }
 
