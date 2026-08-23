@@ -22,6 +22,11 @@ namespace TrainworksReloaded.Base.Extensions
             }
         }
 
+        /// <summary>
+        /// Gets the Configuration Path within the JSON configuration
+        /// </summary>
+        /// <param name="configuration">Configuration object</param>
+        /// <returns>The path within the configuration.</returns>
         public static string GetPath(this IConfiguration configuration)
         {
             return (configuration as IConfigurationSection)?.Path ?? "";

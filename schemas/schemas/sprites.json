@@ -32,7 +32,7 @@
             "description": "Sprite mesh type."
           },
           "path": {
-            "type": "string",
+            "$ref": "../definitions/file_path.json",
             "description": "Path to the sprite image file. The path should be relative to the mod's assets directory."
           },
           "pivot": {

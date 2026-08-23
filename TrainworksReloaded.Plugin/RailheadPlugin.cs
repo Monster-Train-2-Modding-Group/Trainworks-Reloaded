@@ -232,6 +232,7 @@ namespace TrainworksReloaded.Plugin
                 c.RegisterSingleton<GlobalSoundCueDelegator, GlobalSoundCueDelegator>();
                 RegisterPipeline<SoundCueDefinition, SoundCueRegister, SoundCuePipeline>(c);
 
+                RegisterPipeline<AssetBundle, AssetBundleRegister, AssetBundlePipeline>(c);
                 RegisterPipeline<Sprite, SpriteRegister, SpritePipeline>(c);
                 RegisterPipeline<Texture2D, TextureRegister, AtlasIconPipeline>(c);
                 RegisterPipeline<SkeletonDataAsset, SkeletonDataRegister, SkeletonDataPipeline>(c);

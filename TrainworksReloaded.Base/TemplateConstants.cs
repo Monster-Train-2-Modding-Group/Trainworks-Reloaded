@@ -46,5 +46,6 @@
         public const string Challenge = "Challenge";
         public const string StoryEvent = "StoryEvent";
         public const string StoryEventPool = "StoryEventPool";
+        public const string AssetBundle = "AssetBundle";
     }
 }

@@ -6,7 +6,7 @@
       "type": "array",
       "description": "List of Skeleton Data Assets",
       "items": {
-        "required": ["id"],
+        "required": ["id", "data_path"],
         "properties": {
           "id": {
             "minLength": 1,
@@ -15,7 +15,7 @@
           },
           "atlas_path": {
             "type": "string",
-            "description": "The path to the altas. This file should have the extension .atlas or .atlas.txt."
+            "description": "If not loading from an AssetBundle, the relative file path to the atlas. This file should have the extension .atlas or .atlas.txt."
           },
           "shader": {
             "type": "string",
@@ -24,8 +24,8 @@
             "default": "Shader Graphs/CharacterShader2.0 Graph"
           },
           "data_path": {
-            "type": "string",
-            "description": "The path to the skeleton data file. This file should have the extension .json or .skel."
+            "$ref": "../definitions/file_path.json",
+            "description": "The path to the skeleton data file. This can be a file or an AssetBundle reference. If an AssetBundle this must point to a SkeletonDataAsset. If a file path then the file should have the extension .json or .skel."
           },
           "texture_paths": {
             "type": "array",
@@ -33,7 +33,7 @@
             "items": {
               "type": "string"
             },
-            "description": "The path to each texture specified in the atlas file."
+            "description": "If not loading from an AssetBundle, the relative file path to each texture specified in the atlas file."
           }
         }
       }

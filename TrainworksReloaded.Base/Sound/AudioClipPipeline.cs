@@ -1,10 +1,10 @@
-﻿using NVorbis;
+﻿using Microsoft.Extensions.Configuration;
+using NVorbis;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using TrainworksReloaded.Base.Extensions;
-using TrainworksReloaded.Base.Prefab;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
 using UnityEngine;
@@ -14,12 +14,14 @@ namespace TrainworksReloaded.Base.Sound
     public class AudioClipPipeline : IDataPipeline<IRegister<AudioClip>, AudioClip>
     {
         private readonly PluginAtlas atlas;
+        private readonly IRegister<AssetBundle> assetBundleRegister;
         private readonly IModLogger<AudioClipPipeline> logger;
 
-        public AudioClipPipeline(PluginAtlas atlas, IModLogger<AudioClipPipeline> logger)
+        public AudioClipPipeline(PluginAtlas atlas, IRegister<AssetBundle> assetBundleRegister, IModLogger<AudioClipPipeline> logger)
         {
             this.atlas = atlas;
             this.logger = logger;
+            this.assetBundleRegister = assetBundleRegister;
         }
 
         public List<IDefinition<AudioClip>> Run(IRegister<AudioClip> service)
@@ -30,45 +32,63 @@ namespace TrainworksReloaded.Base.Sound
                 var key = config.Key;
                 foreach (var soundConfig in config.Value.Configuration.GetSection("audio_clips").GetChildren())
                 {
-                    var id = soundConfig.GetSection("id").Value;
-                    var path = soundConfig.GetSection("path").Value;
-                    if (path == null || id == null)
-                    {
-                        continue;
-                    }
-
-                    if (!path.EndsWith(".wav") && !path.EndsWith(".ogg"))
-                    {
-                        continue;
-                    }
-
-                    var name = key.GetId(TemplateConstants.AudioClip, id);
-
-                    foreach (var directory in config.Value.AssetDirectories)
-                    {
-                        var fullpath = Path.Combine(directory, path);
-                        if (!File.Exists(fullpath))
-                        {
-                            logger.Log(LogLevel.Warning, $"Could not find asset at path: {fullpath}. Sprite will not exist.");
-                            continue;
-                        }
-
-                        AudioClip? clip;
-                        if (path.EndsWith(".wav"))
-                            clip = LoadWavFile(fullpath);
-                        else 
-                            clip = LoadOggFile(fullpath);
-
-                        if (clip == null)
-                            continue;
-
-                        clip.name = name;
-                        service.Register(name, clip);
-                        break;
-                    }
+                    var assetDirectory = config.Value.GetAssetDirectory();
+                    LoadAudioClip(service, assetDirectory, key, soundConfig);
                 }
             }
             return definitions;
+        }
+
+        private void LoadAudioClip(IRegister<AudioClip> service, string? assetDirectory, string key, IConfiguration configuration)
+        {
+            var id = configuration.GetSection("id").Value;
+            var path = configuration.GetSection("path").ParseAssetFilePath(assetDirectory);
+            if (path == null || id == null)
+            {
+                return;
+            }
+
+            var name = key.GetId(TemplateConstants.AudioClip, id);
+
+            AudioClip? clip;
+            
+            if (path.IsFilePath())
+            {
+                var filename = path.GetFilename()!;
+                if (!File.Exists(filename))
+                {
+                    logger.Log(LogLevel.Warning, $"Could not find asset at path: {filename}. AudioClip will not exist.");
+                    return;
+                }
+
+                if (!filename.EndsWith(".wav") && !filename.EndsWith(".ogg"))
+                {
+                    logger.Log(LogLevel.Warning, $"Could not load asset at path: {filename}. Only .ogg or .wav files are supported. AudioClip will not exist.");
+                    return;
+                }
+
+                if (filename.EndsWith(".wav"))
+                    clip = LoadWavFile(filename);
+                else
+                    clip = LoadOggFile(filename);
+            }
+            else if (assetBundleRegister.TryLookupName(path.bundleReference!.ToId(key, TemplateConstants.AssetBundle), out var bundle, out var _))
+            {
+                clip = bundle.LoadAsset<AudioClip>(path.path);
+            }
+            else
+            {
+                return;
+            }
+
+            if (clip == null)
+            {
+                logger.Log(LogLevel.Warning, $"Could not load asset at path: {path}. AudioClip will not exist.");
+                return;
+            }
+
+            clip.name = name;
+            service.Register(name, clip);
         }
 
         private AudioClip? LoadWavFile(string path)

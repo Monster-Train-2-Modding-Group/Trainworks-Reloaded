@@ -17,7 +17,7 @@
             "description": "Unique identifier for this sound. This ID is used to reference the sound throughout the game."
           },
           "path": {
-            "type": "string",
+            "$ref": "../definitions/file_path.json",
             "description": "Path to the sound file. The path should be relative to the mod's assets directory. Only wav (PCM only) and ogg (Vorbis only) are supported."
           }
         }

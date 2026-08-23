@@ -24,6 +24,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "schemas", "schemas", "{7F34227B-9306-44A2-9242-AD2B3573E8A2}"
 	ProjectSection(SolutionItems) = preProject
 		schemas\schemas\additional_tooltips.json = schemas\schemas\additional_tooltips.json
+		schemas\schemas\asset_bundles.json = schemas\schemas\asset_bundles.json
 		schemas\schemas\atlas_icons.json = schemas\schemas\atlas_icons.json
 		schemas\schemas\audio_clips.json = schemas\schemas\audio_clips.json
 		schemas\schemas\cards.json = schemas\schemas\cards.json
@@ -111,6 +112,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "definitions", "definitions"
 		schemas\definitions\enhancers.json = schemas\definitions\enhancers.json
 		schemas\definitions\enhancer_pool.json = schemas\definitions\enhancer_pool.json
 		schemas\definitions\entry_duration.json = schemas\definitions\entry_duration.json
+		schemas\definitions\file_path.json = schemas\definitions\file_path.json
 		schemas\definitions\followup_condition.json = schemas\definitions\followup_condition.json
 		schemas\definitions\followup_event.json = schemas\definitions\followup_event.json
 		schemas\definitions\game_object_battle_node_extension.json = schemas\definitions\game_object_battle_node_extension.json

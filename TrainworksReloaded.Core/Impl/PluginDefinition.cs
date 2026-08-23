@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Reflection;
+using UnityEngine;
 
 namespace TrainworksReloaded.Core.Impl
 {
@@ -12,6 +13,11 @@ namespace TrainworksReloaded.Core.Impl
         public PluginDefinition(IConfiguration configuration)
         {
             Configuration = configuration;
+        }
+
+        public string? GetAssetDirectory()
+        {
+            return AssetDirectories.Count == 0 ? null : AssetDirectories[0];
         }
     }
 }
