@@ -29,7 +29,7 @@
           },
           "preset_path": {
             "$ref": "../definitions/file_path.json",
-            "description": "AssetBundle only, loads a game object from the asset bundle and use the GameObject loaded as the base over creating a new empty GameObject."
+            "description": "(Not Implemented) AssetBundle only, loads a game object from the asset bundle and use the GameObject loaded as the base over creating a new empty GameObject."
           }
         },
         "dependencies": {
