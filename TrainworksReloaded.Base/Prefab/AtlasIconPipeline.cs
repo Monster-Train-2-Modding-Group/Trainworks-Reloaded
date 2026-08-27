@@ -10,10 +10,10 @@ namespace TrainworksReloaded.Base.Prefab
     public class AtlasIconPipeline : IDataPipeline<IRegister<Texture2D>, Texture2D>
     {
         private readonly PluginAtlas atlas;
-        private readonly IModLogger<SpritePipeline> logger;
+        private readonly IModLogger<AtlasIconPipeline> logger;
         private readonly IRegister<AssetBundle> assetBundleRegister;
 
-        public AtlasIconPipeline(PluginAtlas atlas, IModLogger<SpritePipeline> logger, IRegister<AssetBundle> assetBundleRegister)
+        public AtlasIconPipeline(PluginAtlas atlas, IModLogger<AtlasIconPipeline> logger, IRegister<AssetBundle> assetBundleRegister)
         {
             this.atlas = atlas;
             this.logger = logger;
