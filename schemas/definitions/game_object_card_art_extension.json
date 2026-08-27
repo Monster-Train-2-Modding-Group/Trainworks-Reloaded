@@ -13,11 +13,11 @@
           "properties": {
             "sprite": {
               "$ref": "../definitions/reference.json",
-              "description": "Reference to the card art sprite and forms the base sprite of the card optimally sized ~210x210. Unused for animated card art. Use base_layer+layers instead."
+              "description": "Reference to the card art sprite and forms the base sprite of the card optimally sized ~210x210. Unused for Layered card art which should use base_layer+layers fields instead."
             },
             "shader": {
               "type": "string",
-              "description": "Which shader to use, this is an advanced property only set if you know what you are doing. Ignored if base_layer/layers is not set.",
+              "description": "Which shader to use, this is an advanced property only set if you know what you are doing. Only used for Layered (base_layers/layers set) card art. Ignored otherwise.",
               "enum": [ "Shiny Shoe/CardEffects", "Shiny Shoe/CardEffects Non-Additive" ],
               "default": "Shiny Shoe/CardEffects"
             },
@@ -40,6 +40,10 @@
                 "$ref": "../definitions/effect_transform.json"
               },
               "maxItems": 8
+            },
+            "animation_clip": {
+              "$ref": "../definitions/animation_clip.json",
+              "description": "Animation clip data describing how the card is animated Layered (base_layer/layers set) card art should use curves. Standard sprite card art should use frames."
             }
           }
         }
