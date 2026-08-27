@@ -73,6 +73,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "definitions", "definitions", "{19B13F81-0D53-4CD7-A8BC-F82DAE202770}"
 	ProjectSection(SolutionItems) = preProject
 		schemas\definitions\anim.json = schemas\definitions\anim.json
+		schemas\definitions\animation_clip.json = schemas\definitions\animation_clip.json
 		schemas\definitions\asset_reference.json = schemas\definitions\asset_reference.json
 		schemas\definitions\attack_phase.json = schemas\definitions\attack_phase.json
 		schemas\definitions\background.json = schemas\definitions\background.json
