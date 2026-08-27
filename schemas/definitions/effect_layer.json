@@ -67,7 +67,7 @@
     },
     "animated": {
       "type": "boolean",
-      "description": "Enable animating this layer (must set animation_clip in the GameObject)",
+      "description": "Enable animating this layer via an animation_clip (must set animation_clip w/ curves set in the GameObject)",
       "default": false
     }
   }
