@@ -8,7 +8,7 @@
       "description": "A collection of story events for alcoves.",
       "items": {
         "type": "object",
-        "required": [ "id", "knot_name", "code", "choice_texts", "texts" ],
+        "required": [ "id", "knot_name", "story_data", "choice_texts", "texts" ],
         "properties": {
           "id": {
             "minLength": 1,
@@ -83,11 +83,11 @@
             }
           },
           "prefab": {
-            "$ref": "../definitions/reference.json",
+            "$ref": "../definitions/asset_reference.json",
             "description": "A reference to a GameObject of type story_art defining the foreground of the event."
           },
           "soul_savior_prefab": {
-            "$ref": "../definitions/reference.json",
+            "$ref": "../definitions/asset_reference.json",
             "description": "A reference to a GameObject of type story_art defining the foreground of the event in Soul Savior."
           },
           "num_runs_completed_to_see": {
