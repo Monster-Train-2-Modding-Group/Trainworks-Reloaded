@@ -68,6 +68,7 @@ namespace TrainworksReloaded.Base.Prefab
             hiddenRoot = new GameObject { name = "Prefabs" };
             GameObject.DontDestroyOnLoad(hiddenRoot);
             hiddenRoot.AddComponent<TransformOnStart>();
+            hiddenRoot.SetActive(false);
             // hiddenRoot.transform.localScale = new Vector3(0.000001f, 0.000001f, 0.000001f);
             this.logger = logger;
         }
