@@ -1,0 +1,123 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/animation_clip.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "curves"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "minLength": 1,
+        "description": "The name identifier of the animation clip."
+      },
+      "sample_rate": {
+        "type": "number",
+        "minimum": 1,
+        "default": 60,
+        "description": "The frame rate / sample rate of the animation clip (maps to clip.frameRate)."
+      },
+      "loop_time": {
+        "type": "string",
+        "enum": [ "loop", "once" ],
+        "default": "loop",
+        "description": "Loop behavior."
+      },
+      "curves": {
+        "type": "array",
+        "description": "(Advanced) Array of animated property tracks targeting specific hierarchy paths and components.",
+        "items": {
+          "$ref": "#/definitions/CurveTrack"
+        },
+      "frames": {
+        "type": "array",
+        "items": {
+          "$ref": "../definitions/reference.json"
+        },
+        "description": "Array of sprite frames (Only for non layered card art)."
+      }
+      }
+    }
+  },
+  "definitions": {
+    "CurveTrack": {
+      "type": "object",
+      "required": [
+        "path",
+        "type",
+        "attribute",
+        "keyframes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Relative hierarchy path to the target GameObject (e.g., 'CardEffectTransforms/Spike', 'CardSprite')."
+        },
+        "type": {
+          "type": "string",
+          "description": "The component type hosting the property being animated."
+        },
+        "attribute": {
+          "type": "string",
+          "description": "The property name on the Component type to animate (e.g., 'position.x', 'scale.x', 'layer4.enabled')."
+        },
+        "keyframes": {
+          "type": "array",
+          "minItems": 1,
+          "description": "(Advanced) List of keyframe points defining the curve.",
+          "items": {
+            "$ref": "#/definitions/Keyframe"
+          }
+        }
+      }
+    },
+    "Keyframe": {
+      "type": "object",
+      "required": [
+        "time",
+        "value",
+        "in_slope",
+        "out_slope"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "time": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Timestamp in seconds along the animation timeline."
+        },
+        "value": {
+          "type": "number",
+          "description": "Evaluated float value at this timestamp."
+        },
+        "in_slope": {
+          "$ref": "#/definitions/SlopeValue",
+          "description": "Incoming tangent slope (numeric float or string representation for Infinity/-Infinity)."
+        },
+        "out_slope": {
+          "$ref": "#/definitions/SlopeValue",
+          "description": "Outgoing tangent slope (numeric float or string representation for Infinity/-Infinity)."
+        }
+      }
+    },
+    "SlopeValue": {
+      "oneOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "Infinity",
+            "+Infinity",
+            "-Infinity"
+          ]
+        }
+      ]
+    }
+  }
+}
