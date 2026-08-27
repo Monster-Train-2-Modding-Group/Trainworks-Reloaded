@@ -23,11 +23,13 @@ namespace TrainworksReloaded.Plugin.Patches
     {
         public static void Postfix(AssetLoadingData ____assetLoadingData)
         {
+            var timestamp = DateTime.UtcNow.ToString("HH:mm:ss.ffffff");
+            Plugin.Logger.LogInfo($"[{timestamp}] [InitializationPatch] Starting TrainworksReloaded initialization...");
+
             var container = Railend.GetContainer();
             InitializePatches(container);
 
             var logger = container.GetInstance<IModLogger<InitializationPatch>>();
-            logger.Log(LogLevel.Info, "Starting TrainworksReloaded initialization...");
 
             //we add custom card pool so that the modded card data is loaded.
             var moddedPool = container.GetInstance<CardDataRegister>().CustomCardPool;
