@@ -19,6 +19,7 @@ namespace TrainworksReloaded.Base.Prefab
         public bool stretch = true;
         public bool additive = true;
         public bool enabled = true;
+        public bool animated = false;
 
         public EffectLayer()
         {
@@ -28,7 +29,7 @@ namespace TrainworksReloaded.Base.Prefab
     public struct EffectTransform
     {
         public string name = string.Empty;
-        public int[] layers = Array.Empty<int>();
+        public int[] layers = [];
         public Vector3 position = Vector3.zero;
         public Vector3 rotation = Vector3.zero;
         public Vector3 scale = Vector3.one;
