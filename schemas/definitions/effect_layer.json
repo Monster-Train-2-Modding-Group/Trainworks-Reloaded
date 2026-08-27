@@ -64,6 +64,11 @@
       "type": "boolean",
       "description": "Enable layer",
       "default": true
+    },
+    "animated": {
+      "type": "boolean",
+      "description": "Enable animating this layer (must set animation_clip in the GameObject)",
+      "default": false
     }
   }
 }
