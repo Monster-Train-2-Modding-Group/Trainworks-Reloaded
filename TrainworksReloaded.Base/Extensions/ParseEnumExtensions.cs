@@ -756,41 +756,6 @@ namespace TrainworksReloaded.Base.Extensions
             };
         }
 
-        public static TooltipDesignType? ParseTooltipDesignType(this IConfigurationSection section)
-        {
-            var val = section.Value;
-            if (string.IsNullOrEmpty(val))
-            {
-                return null;
-            }
-
-            val = val.ToLower();
-
-            return val switch
-            {
-                "default" => TooltipDesignType.Default,
-                "lore_herzal" => TooltipDesignType.LoreHerzal,
-                "boss" => TooltipDesignType.Boss,
-                "default_wide" => TooltipDesignType.DefaultWide,
-                "positive" => TooltipDesignType.Positive,
-                "negative" => TooltipDesignType.Negative,
-                "persistent" => TooltipDesignType.Persistent,
-                "trigger" => TooltipDesignType.Trigger,
-                "keyword" => TooltipDesignType.Keyword,
-                "lore_malicka" => TooltipDesignType.LoreMalicka,
-                "lore_heph" => TooltipDesignType.LoreHeph,
-                "default_mega_wide" => TooltipDesignType.DefaultMegaWide,
-                "state_modifier" => TooltipDesignType.StateModifier,
-                "title" => TooltipDesignType.Title,
-                "equipment" => TooltipDesignType.Equipment,
-                "ability" => TooltipDesignType.Ability,
-                "tip" => TooltipDesignType.Tip,
-                "boss_title" => TooltipDesignType.BossTitle,
-                "relic_title" => TooltipDesignType.RelicTitle,
-                _ => null,
-            };
-        }
-
         public static StatusEffectData.DisplayCategory? ParseDisplayCategory(this IConfigurationSection section)
         {
             var val = section.Value;
@@ -1075,6 +1040,13 @@ namespace TrainworksReloaded.Base.Extensions
             var xVal = section.GetSection("x").ParseFloat() ?? x;
             var yVal = section.GetSection("y").ParseFloat() ?? y;
             return new Vector2(xVal, yVal);
+        }
+
+        public static Vector2Int ParseVec2Int(this IConfigurationSection section, int x = 0, int y = 0)
+        {
+            var xVal = section.GetSection("x").ParseInt() ?? x;
+            var yVal = section.GetSection("y").ParseInt() ?? y;
+            return new Vector2Int(xVal, yVal);
         }
 
         public static Vector3 ParseVec3(this IConfigurationSection section, float x = 0, float y = 0, float z = 0)

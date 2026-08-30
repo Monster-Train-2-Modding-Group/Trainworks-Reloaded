@@ -116,6 +116,9 @@
     "target_modes": {
       "$ref": "schemas/target_modes.json#/properties/target_modes"
     },
+    "tooltip_design_types": {
+      "$ref": "schemas/tooltip_design_types.json#/properties/tooltip_design_types"
+    },
     "tracked_value_types": {
       "$ref": "schemas/tracked_value_types.json#/properties/tracked_value_types"
     },

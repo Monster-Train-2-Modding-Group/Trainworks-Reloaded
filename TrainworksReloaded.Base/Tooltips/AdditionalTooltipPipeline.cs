@@ -69,9 +69,6 @@ namespace TrainworksReloaded.Base.Tooltips
                     termRegister.Register(descriptionTKeyTerm.Key, descriptionTKeyTerm);
             }
 
-            // data.trigger is processed in the finalizer
-            // data.status_id is processed in the finalizer
-            data.style = configuration.GetSection("style").ParseTooltipDesignType() ?? TooltipDesigner.TooltipDesignType.Keyword;
             data.allowSecondaryPlacement = configuration.GetSection("allow_secondary_placement").ParseBool() ?? false;
             data.hideInTrainRoomUI = configuration.GetSection("hide_in_train_room_ui").ParseBool() ?? false;
 

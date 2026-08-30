@@ -9,18 +9,21 @@ namespace TrainworksReloaded.Base.Prefab
         private readonly ICache<IDefinition<AdditionalTooltipData>> cache;
         private readonly IRegister<StatusEffectData> statusRegister;
         private readonly IRegister<CharacterTriggerData.Trigger> triggerEnumRegister;
+        private readonly IRegister<TooltipDesigner.TooltipDesignType> tooltipDesignTypeRegister;
 
         public AdditionalTooltipFinalizer(
             IModLogger<AdditionalTooltipFinalizer> logger,
             ICache<IDefinition<AdditionalTooltipData>> cache,
             IRegister<StatusEffectData> statusRegister,
-            IRegister<CharacterTriggerData.Trigger> triggerEnumRegister
+            IRegister<CharacterTriggerData.Trigger> triggerEnumRegister,
+            IRegister<TooltipDesigner.TooltipDesignType> tooltipDesignTypeRegister
         )
         {
             this.logger = logger;
             this.cache = cache;
             this.statusRegister = statusRegister;
             this.triggerEnumRegister = triggerEnumRegister;
+            this.tooltipDesignTypeRegister = tooltipDesignTypeRegister;
         }
 
         public void FinalizeData()
@@ -64,6 +67,16 @@ namespace TrainworksReloaded.Base.Prefab
                 }
             }
 
+            data.style = TooltipDesigner.TooltipDesignType.Keyword;
+            var tooltipReference = configuration.GetSection("style").ParseReference();
+            if (tooltipReference != null)
+            {
+                var tooltipId = tooltipReference.ToId(key, TemplateConstants.TooltipDesignTypeEnum);
+                if (tooltipDesignTypeRegister.TryLookupId(tooltipId, out var lookup, out var _, tooltipReference.context))
+                {
+                    data.style = lookup;
+                }
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ using TrainworksReloaded.Base.Prefab;
 using TrainworksReloaded.Base.Relic;
 using TrainworksReloaded.Base.Scenarios;
 using TrainworksReloaded.Base.Sound;
+using TrainworksReloaded.Base.Tooltips;
 using TrainworksReloaded.Core;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
@@ -202,6 +203,7 @@ namespace TrainworksReloaded.Plugin.Patches
         {
             RunSetupScreenPatches.container = container;
             ClassCardStylePatch.delegator = container.GetInstance<ClassCardStyleDelegator>();
+            TooltipDesignerPatch.delegator = container.GetInstance<TooltipDesignDataDelegator>();
         }
     }
 }

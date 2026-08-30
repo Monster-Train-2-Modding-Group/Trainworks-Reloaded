@@ -1,0 +1,69 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/schemas/tooltip_design_types.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "tooltip_design_types": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "A collection of TooltipDesigner.TooltipDesignType declarations for Tooltips.",
+      "items": {
+        "required": [ "id", "background" ],
+        "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique identifier for this TooltipDesignType."
+          },
+          "background": {
+            "$ref": "../definitions/reference.json",
+            "description": "A 256x60 image to use for the background of this tooltiup type."
+          },
+          "font_styles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "normal",
+                "bold",
+                "italic",
+                "underline",
+                "lowercase",
+                "uppercase",
+                "smallcaps",
+                "strikethrough",
+                "superscript",
+                "subscript",
+                "highlight"
+              ]
+            },
+            "default": [ "normal" ]
+          },
+          "font_color": {
+            "$ref": "../definitions/color.json"
+          },
+          "additional_text_relative_size": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 100
+          },
+          "tooltip_width": {
+            "type": "string",
+            "enum": [
+              "default",
+              "wide",
+              "megawide",
+              "card_details"
+            ],
+            "default": "default",
+            "description": "Tooltip width type."
+          },
+          "padding": {
+            "$ref": "../definitions/vec2.json",
+            "description": "Tooltip content padding."
+          }
+        }
+      }
+    }
+  }
+}

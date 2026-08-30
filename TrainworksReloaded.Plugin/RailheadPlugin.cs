@@ -105,6 +105,7 @@ namespace TrainworksReloaded.Plugin
                 c.Collection.Register<IDataFinalizer>(
                     [
                         typeof(AdditionalTooltipFinalizer),
+                        typeof(TooltipDesignTypeFinalizer),
                         typeof(CardEffectFinalizer),
                         typeof(CardTraitDataFinalizer),
                         typeof(CardUpgradeFinalizer),
@@ -241,6 +242,8 @@ namespace TrainworksReloaded.Plugin
                 RegisterPipeline<TargetMode, TargetModeRegister, TargetModePipeline>(c);
                 RegisterPipeline<StatusEffectData.TriggerStage, StatusEffectTriggerStageRegister, StatusEffectTriggerStagePipeline>(c);
                 RegisterPipeline<CardStatistics.TrackedValueType, TrackedValueTypeRegister, TrackedValueTypePipeline>(c);
+                RegisterPipeline<TooltipDesigner.TooltipDesignType, TooltipDesignTypeRegister, TooltipDesignTypePipeline>(c);
+                c.RegisterSingleton<TooltipDesignDataDelegator, TooltipDesignDataDelegator>();
 
                 c.RegisterSingleton<ClassCardStyleDelegator, ClassCardStyleDelegator>();
                 RegisterPipeline<ClassCardStyle, ClassCardStyleRegister, ClassCardStylePipeline>(c);

@@ -47,5 +47,6 @@
         public const string StoryEvent = "StoryEvent";
         public const string StoryEventPool = "StoryEventPool";
         public const string AssetBundle = "AssetBundle";
+        public const string TooltipDesignTypeEnum = "TooltipDesignTypeEnum";
     }
 }
