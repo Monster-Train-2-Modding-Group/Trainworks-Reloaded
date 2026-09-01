@@ -11,6 +11,7 @@
     "health",
     "purge",
     "relic_draft",
-    "relic"
+    "relic",
+    "custom_class"
   ]
 }

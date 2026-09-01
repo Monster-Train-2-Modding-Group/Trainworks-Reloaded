@@ -8,6 +8,7 @@ using TrainworksReloaded.Base.Localization;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
+using UnityEngine;
 
 namespace TrainworksReloaded.Base.Reward
 {
@@ -17,18 +18,21 @@ namespace TrainworksReloaded.Base.Reward
         private readonly IRegister<LocalizationTerm> termRegister;
         private readonly IGuidProvider guidProvider;
         private readonly Dictionary<String, IFactory<RewardData>> generators;
+        private readonly IModLogger<RewardDataPipeline> logger;
 
         public RewardDataPipeline(
             PluginAtlas atlas,
             IEnumerable<IFactory<RewardData>> generators,
             IGuidProvider guidProvider,
-            IRegister<LocalizationTerm> termRegister
+            IRegister<LocalizationTerm> termRegister,
+            IModLogger<RewardDataPipeline> logger
         )
         {
             this.atlas = atlas;
             this.termRegister = termRegister;
             this.guidProvider = guidProvider;
             this.generators = generators.ToDictionary(xs => xs.FactoryKey);
+            this.logger = logger;
         }
 
         public List<IDefinition<RewardData>> Run(IRegister<RewardData> service)
@@ -70,12 +74,41 @@ namespace TrainworksReloaded.Base.Reward
             {
                 return null;
             }
+            RewardData? data = null;
             var type = configuration.GetSection("type").ParseString();
-            if (type == null || !generators.TryGetValue(type, out var factory))
-            {
+            if (type == null)
                 return null;
+            if (type != "custom_class")
+            {
+                if (!generators.TryGetValue(type, out var factory))
+                {
+                    return null;
+                }
+                data = factory.GetValue();
             }
-            var data = factory.GetValue();
+            else
+            {
+                var classReference = configuration.GetSection("custom_class").ParseReference();
+                if (classReference == null)
+                {
+                    logger.Log(LogLevel.Error, $"Custom class type specified for {id} but no custom_class specified. path: {configuration.GetPath()}");
+                    return null;
+                }
+                var rewardClassName = classReference.id;
+                var modReference = classReference.mod_reference ?? key;
+                var assembly = atlas.PluginDefinitions.GetValueOrDefault(modReference)?.Assembly;
+                if (
+                    !rewardClassName.GetFullyQualifiedName<RewardData>(
+                        assembly,
+                        out string? fullyQualifiedName
+                    )
+                )
+                {
+                    logger.Log(LogLevel.Error, $"Failed to load reward class {rewardClassName} in {id} mod {modReference}, Make sure the class exists in {modReference} and that the class inherits from RewardData.");
+                    return null;
+                }
+                data = ScriptableObject.CreateInstance(fullyQualifiedName) as RewardData;
+            }
             if (data == null)
                 return null;
 

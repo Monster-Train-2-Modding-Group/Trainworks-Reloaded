@@ -23,6 +23,10 @@
               "description": "Cost amount"
             }
           },
+          "custom_class": {
+            "$ref": "../definitions/reference.json",
+            "description": "Only used when type is custom_class. A class inheriting from RewardData (or GrantableRewardData) to instantiate."
+          },
           "descriptions": {
             "$ref": "../definitions/parse_term.json",
             "description": "Localized text describing this reward."
