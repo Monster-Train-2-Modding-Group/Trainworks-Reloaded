@@ -1,9 +1,7 @@
-﻿using HarmonyLib;
-using I2.Loc;
+﻿using I2.Loc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using TrainworksReloaded.Core.Enum;
 using TrainworksReloaded.Core.Interfaces;
 
@@ -50,13 +48,16 @@ namespace TrainworksReloaded.Base.Localization
 
         public new void Add(string key, LocalizationTerm item)
         {
-            string termName = $"Default\\{item.Key}";
+            string termName = $"Default/{item.Key}";
             LanguageSourceData source = item.SourceIndex == 0 ? source0 : source1;
             SourceIndices indices = item.SourceIndex == 0 ? indices0 : indices1;
             if (item.SourceIndex == 1)
                 RequiresInkReload = true;
 
             TermData termData = source.AddTerm(termName, eTermType.Text, false);
+            // Because AddTerm doesn't actually create the data needed to house translations due to a bug
+            // this line of code kicks it into creating said data.
+            termData.Group = "";
 
             SetLanguage(termData, indices.English, item.English);
             SetLanguage(termData, indices.French, item.French);
@@ -153,7 +154,7 @@ namespace TrainworksReloaded.Base.Localization
         {
             if (index >= 0 && index < termData.Languages.Length)
             {
-                termData.Languages[index] = value ?? string.Empty;
+                termData.SetTranslation(index, value ?? string.Empty);
             }
         }
 
