@@ -77,8 +77,8 @@
       "required": [
         "time",
         "value",
-        "in_slope",
-        "out_slope"
+        "in_tangent",
+        "out_tangent"
       ],
       "additionalProperties": false,
       "properties": {
@@ -91,11 +91,11 @@
           "type": "number",
           "description": "Evaluated float value at this timestamp."
         },
-        "in_slope": {
+        "in_tangent": {
           "$ref": "#/definitions/SlopeValue",
           "description": "Incoming tangent slope (numeric float or string representation for Infinity/-Infinity)."
         },
-        "out_slope": {
+        "out_tangent": {
           "$ref": "#/definitions/SlopeValue",
           "description": "Outgoing tangent slope (numeric float or string representation for Infinity/-Infinity)."
         }
