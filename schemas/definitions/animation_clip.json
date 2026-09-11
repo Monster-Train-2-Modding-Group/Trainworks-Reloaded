@@ -1,44 +1,41 @@
 {
   "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/animation_clip.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "array",
-  "items": {
-    "type": "object",
-    "required": [
-      "id",
-      "curves"
-    ],
-    "properties": {
-      "id": {
-        "type": "string",
-        "minLength": 1,
-        "description": "The name identifier of the animation clip."
+  "type": "object",
+  "required": [
+    "id",
+    "curves"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The name identifier of the animation clip."
+    },
+    "sample_rate": {
+      "type": "number",
+      "minimum": 1,
+      "default": 60,
+      "description": "The frame rate / sample rate of the animation clip (maps to clip.frameRate)."
+    },
+    "loop_time": {
+      "type": "string",
+      "enum": [ "loop", "once" ],
+      "default": "loop",
+      "description": "Loop behavior."
+    },
+    "curves": {
+      "type": "array",
+      "description": "(Advanced) Array of animated property tracks targeting specific hierarchy paths and components.",
+      "items": {
+        "$ref": "#/definitions/CurveTrack"
       },
-      "sample_rate": {
-        "type": "number",
-        "minimum": 1,
-        "default": 60,
-        "description": "The frame rate / sample rate of the animation clip (maps to clip.frameRate)."
-      },
-      "loop_time": {
-        "type": "string",
-        "enum": [ "loop", "once" ],
-        "default": "loop",
-        "description": "Loop behavior."
-      },
-      "curves": {
-        "type": "array",
-        "description": "(Advanced) Array of animated property tracks targeting specific hierarchy paths and components.",
-        "items": {
-          "$ref": "#/definitions/CurveTrack"
-        },
       "frames": {
         "type": "array",
         "items": {
           "$ref": "../definitions/reference.json"
         },
         "description": "Array of sprite frames (Only for non layered card art)."
-      }
       }
     }
   },

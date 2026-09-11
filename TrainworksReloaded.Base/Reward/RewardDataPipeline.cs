@@ -98,16 +98,16 @@ namespace TrainworksReloaded.Base.Reward
                 var modReference = classReference.mod_reference ?? key;
                 var assembly = atlas.PluginDefinitions.GetValueOrDefault(modReference)?.Assembly;
                 if (
-                    !rewardClassName.GetFullyQualifiedName<RewardData>(
+                    !rewardClassName.FindTypeFromClassName<RewardData>(
                         assembly,
-                        out string? fullyQualifiedName
+                        out Type? foundType
                     )
                 )
                 {
                     logger.Log(LogLevel.Error, $"Failed to load reward class {rewardClassName} in {id} mod {modReference}, Make sure the class exists in {modReference} and that the class inherits from RewardData.");
                     return null;
                 }
-                data = ScriptableObject.CreateInstance(fullyQualifiedName) as RewardData;
+                data = ScriptableObject.CreateInstance(foundType) as RewardData;
             }
             if (data == null)
                 return null;

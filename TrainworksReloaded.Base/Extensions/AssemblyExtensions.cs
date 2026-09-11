@@ -42,5 +42,28 @@ namespace TrainworksReloaded.Base.Extensions
             }
             return false;
         }
+
+        public static bool FindTypeFromClassName<T>(
+            this string className,
+            Assembly? assembly,
+            [NotNullWhen(true)] out Type? foundType
+        )
+        {
+            className = className.Replace("@", "");
+            foundType = null;
+            if (assembly != null)
+            {
+                foundType = assembly.FindTypeByClassName(className);
+            }
+            if (foundType == null)
+            {
+                foundType = MT2Assembly.FindTypeByClassName(className);
+            }
+            if (foundType != null && typeof(T).IsAssignableFrom(foundType))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
