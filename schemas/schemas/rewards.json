@@ -109,6 +109,19 @@
               },
               {
                 "$ref": "../definitions/reward_extension_relic_draft.json"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "custom_class"
+                    ]
+                  },
+                  "custom_class": {
+                    "$ref": "../definitions/reference.json"
+                  }
+                }
               }
             ]
           }
