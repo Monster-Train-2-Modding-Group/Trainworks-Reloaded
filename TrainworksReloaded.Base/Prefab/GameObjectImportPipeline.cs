@@ -31,7 +31,19 @@ namespace TrainworksReloaded.Base.Prefab
                     {
                         continue;
                     }
-                    var name = key.GetId(TemplateConstants.GameObject, id);
+                    var type = gameObjectConfig.GetSection("type").Value;
+
+                    var subtype = type switch
+                    {
+                        "battle_node_icon" => TemplateConstants.SubtemplateGameObjectMapNodeIcon,
+                        "card_art" => TemplateConstants.SubtemplateGameObjectCardArt,
+                        "character_art" => TemplateConstants.SubtemplateGameObjectCharacterArt,
+                        "map_node_icon" => TemplateConstants.SubtemplateGameObjectMapNodeIcon,
+                        "story_event" => TemplateConstants.SubtemplateGameObjectStoryArt,
+                        _ => ""
+                    };
+
+                    var name = key.GetId(TemplateConstants.GameObject, subtype, id);
 
                     GameObject? gameObject = null;
 

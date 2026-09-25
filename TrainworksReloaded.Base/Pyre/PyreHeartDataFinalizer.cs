@@ -83,13 +83,13 @@ namespace TrainworksReloaded.Base.Pyre
             }
 
             var vfxPopupReference = configuration.GetSection("vfx_activated_popup").ParseReference();
-            if (vfxPopupReference != null && gameObjectRegister.TryLookupName(vfxPopupReference.ToId(key, TemplateConstants.GameObject), out var vfxPopup, out var _, vfxPopupReference.context))
+            if (vfxPopupReference != null && gameObjectRegister.TryLookupName(vfxPopupReference.ToId(key, TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectVfx), out var vfxPopup, out var _, vfxPopupReference.context))
             {
                 AccessTools.Field(typeof(PyreHeartData), "vfxActivatedPopupPrefab").SetValue(data, vfxPopup);
             }
 
             var vfxHudReference = configuration.GetSection("vfx_activated_hud").ParseReference();
-            if (vfxHudReference != null && gameObjectRegister.TryLookupName(vfxHudReference.ToId(key, TemplateConstants.GameObject), out var vfxHud, out var _, vfxHudReference.context))
+            if (vfxHudReference != null && gameObjectRegister.TryLookupName(vfxHudReference.ToId(key, TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectVfx), out var vfxHud, out var _, vfxHudReference.context))
             {
                 AccessTools.Field(typeof(PyreHeartData), "vfxActivatedHudPrefab").SetValue(data, vfxHud);
             }

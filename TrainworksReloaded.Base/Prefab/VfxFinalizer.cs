@@ -38,7 +38,7 @@ namespace TrainworksReloaded.Base.Prefab
             if (
                 vfxLeft != null
                 && assetReferenceRegister.TryLookupId(
-                    vfxLeft.ToId(key,  TemplateConstants.GameObject),
+                    vfxLeft.ToId(key,  TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectVfx),
                     out var vfxLeftData,
                     out var _,
                     vfxLeft.context
@@ -52,7 +52,7 @@ namespace TrainworksReloaded.Base.Prefab
             if (
                 vfxRight != null
                 && assetReferenceRegister.TryLookupId(
-                    vfxRight.ToId(key, TemplateConstants.GameObject),
+                    vfxRight.ToId(key, TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectVfx),
                     out var vfxRightData,
                     out var _,
                     vfxRight.context

@@ -21,8 +21,13 @@ namespace TrainworksReloaded.Base.Extensions
 
             public string ToId(string defaultKey, string template)
             {
+                return ToId(defaultKey, template, "");
+            }
+
+            public string ToId(string defaultKey, string template, string subtemplate)
+            {
                 var key = mod_reference ?? defaultKey;
-                return id.ToId(key, template);
+                return id.ToId(key, template, subtemplate);
             }
         }
 

@@ -1,4 +1,6 @@
-﻿namespace TrainworksReloaded.Base
+﻿using static RimLight;
+
+namespace TrainworksReloaded.Base
 {
     public static class TemplateConstants
     {
@@ -48,5 +50,13 @@
         public const string StoryEventPool = "StoryEventPool";
         public const string AssetBundle = "AssetBundle";
         public const string TooltipDesignTypeEnum = "TooltipDesignTypeEnum";
+
+        // Subtemplates
+        // GameObject
+        public const string SubtemplateGameObjectCharacterArt = "CharacterArt";
+        public const string SubtemplateGameObjectCardArt = "CardArt";
+        public const string SubtemplateGameObjectStoryArt = "StoryArt";
+        public const string SubtemplateGameObjectMapNodeIcon = "MapNodeIcon";
+        public const string SubtemplateGameObjectVfx = "VFX";
     }
 }

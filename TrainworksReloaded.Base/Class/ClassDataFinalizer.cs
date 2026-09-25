@@ -214,7 +214,7 @@ namespace TrainworksReloaded.Base.Class
                 .Cast<ReferencedObject>();
             foreach (var reference in characterDisplayReferences)
             {
-                var id = reference.ToId(key, TemplateConstants.GameObject);
+                var id = reference.ToId(key, TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectCharacterArt);
                 if (gameObjectRegister.TryLookupId(id, out var gameObject, out var _, reference.context))
                 {
                     characterDisplays.Add(gameObject);

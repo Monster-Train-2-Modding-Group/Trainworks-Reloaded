@@ -106,7 +106,7 @@ namespace TrainworksReloaded.Base.Character
             {
                 if (
                     assetReferenceRegister.TryLookupId(
-                        characterArtReference.ToId(key, TemplateConstants.GameObject),
+                        characterArtReference.ToId(key, TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectCharacterArt),
                         out var gameObject,
                         out var _,
                         characterArtReference.context
@@ -121,7 +121,7 @@ namespace TrainworksReloaded.Base.Character
             var soundEffects = configuration.GetSection("sound_effects").GetChildren().Select(x => x.ParseReference()).Where(x => x != null).Cast<ReferencedObject>();
             if (soundEffects.Any() && characterArtReference != null)
             {
-                if (gameObjectRegister.TryLookupName(characterArtReference.ToId(key, TemplateConstants.GameObject), out var gameObject, out var _, characterArtReference.context))
+                if (gameObjectRegister.TryLookupName(characterArtReference.ToId(key, TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectCharacterArt), out var gameObject, out var _, characterArtReference.context))
                 {
                     var holder = gameObject.AddComponent<CoreSoundEffectHolder>();
                     holder.SoundEffectData = ScriptableObject.CreateInstance<CoreSoundEffectData>();

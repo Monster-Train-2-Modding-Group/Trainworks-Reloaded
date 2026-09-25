@@ -223,7 +223,7 @@ namespace TrainworksReloaded.Base.Scenarios
             AccessTools.Field(typeof(ScenarioData), "mapNodePrefab").SetValue(data, copyData.GetMapNodePrefab());
             if (gameObjectReference != null)
             {
-                var id = gameObjectReference.ToId(key, TemplateConstants.GameObject);
+                var id = gameObjectReference.ToId(key, TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectMapNodeIcon);
                 gameObjectRegister.TryLookupId(id, out var objectLookup, out var _, gameObjectReference.context);
                 AccessTools.Field(typeof(ScenarioData), "mapNodePrefab").SetValue(data, objectLookup);
             }

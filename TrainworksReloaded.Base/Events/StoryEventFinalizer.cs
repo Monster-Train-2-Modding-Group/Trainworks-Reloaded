@@ -165,7 +165,7 @@ namespace TrainworksReloaded.Base.Events
             if (prefabReference != null)
             {
                 if (assetReferenceRegister.TryLookupId(
-                        prefabReference.ToId(key, TemplateConstants.GameObject),
+                        prefabReference.ToId(key, TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectStoryArt),
                         out var gameObject,
                         out var _,
                         prefabReference.context))
@@ -180,7 +180,7 @@ namespace TrainworksReloaded.Base.Events
             {
                 if (
                     assetReferenceRegister.TryLookupId(
-                        prefabReference2.ToId(key, TemplateConstants.GameObject),
+                        prefabReference2.ToId(key, TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectStoryArt),
                         out var gameObject,
                         out var _,
                         prefabReference2.context

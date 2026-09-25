@@ -90,7 +90,7 @@ namespace TrainworksReloaded.Base.Map
             if (
                 gameobject != null
                 && gameObjectRegister.TryLookupId(
-                    gameobject.ToId(key, TemplateConstants.GameObject),
+                    gameobject.ToId(key, TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectMapNodeIcon),
                     out var objectLookup,
                     out var _,
                     gameobject.context

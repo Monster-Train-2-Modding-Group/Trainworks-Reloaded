@@ -195,7 +195,7 @@ namespace TrainworksReloaded.Base.Card
             {
                 if (
                     assetReferenceRegister.TryLookupId(
-                        cardArtReference.ToId(key, TemplateConstants.GameObject),
+                        cardArtReference.ToId(key, TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectCardArt),
                         out var gameObject,
                         out var _,
                         cardArtReference.context
@@ -213,7 +213,12 @@ namespace TrainworksReloaded.Base.Card
             }
             else if (overrideMode.IsNewContent())
             {
-                logger.Log(LogLevel.Warning, $"Card {key} {definition.Id} is missing card_art. This is required for non ability cards.");
+                logger.Log(LogLevel.Warning, $"Card {key} {definition.Id} is missing card_art. Generating a GameObject for it.");
+                var fake = GameObject.Instantiate(fallbackDataProvider.FallbackData.GetDefaultCardPrefab(), null);
+                fake.name = key.GetId(TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectCardArt, definition.Id);
+                gameObjectRegister.Register(definition.Key, fake);
+                assetReferenceRegister.TryLookupId(fake.name, out var assetReference, out var _);
+                AccessTools.Field(typeof(CardData), "cardArtPrefabVariantRef").SetValue(data, assetReference);
             }
 
             var soundEffects = configuration.GetSection("sound_effects").GetChildren().Select(x => x.ParseReference()).Where(x => x != null).Cast<ReferencedObject>();
