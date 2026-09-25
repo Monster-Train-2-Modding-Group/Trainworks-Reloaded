@@ -20,6 +20,42 @@
               "description": "Controls which layer a non-spine animated character game object is on. Normally characters are on layer 10, but static image characters are much darker due to the shader and lighting in scene. Layer 20 is the default and is a modded layer with full brightness so that images show up properly.",
               "default": 20
             },
+            "bottom_padding": {
+              "type": "number",
+              "description": "(Only for Animated Sprites) Distance (in pixels) from the bottom of the image to lowest point in the sprite (that is the padding of transparent pixels at the bottom)."
+            },
+            "visual_dimensions": {
+              "$ref": "../definitions/vec2.json",
+              "description": "(Only for Animated Sprites) Visual width/height (in pixels) of this animation in case the frames have extra padding to keep it in alignment. This is required to keep the VfxAnchors aligned correctly."
+            },
+            "animations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [ "animation", "frames" ],
+                "uniqueItems": true,
+                "properties": {
+                  "animation": {
+                    "$ref": "../definitions/anim.json",
+                    "description": "Animation associated with the skeleton data. Attack animation must not exceed 0.5s, Death animation must not excced 0.7s"
+                  },
+                  "frames": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "../definitions/reference.json"
+                    }
+                  },
+                  "framerate": {
+                    "type": "number",
+                    "default": 12.0
+                  },
+                  "adjustment": {
+                    "$ref": "../definitions/vec2.json",
+                    "description": "(x, y) adjustment for this animation to keep it in alignment. Note that height alignment happens automatically if the height is different to the sprite."
+                  }
+                }
+              }
+            },
             "skeleton_animations": {
               "type": "array",
               "items": {
@@ -76,7 +112,16 @@
               "properties": {
                 "position": {
                   "$ref": "../definitions/vec3.json",
-                  "description": "Local position of the character",
+                  "description": "Sets the position of the character. Note for the character to align with the ground use this formula (0.7 * sprite_height / 200) higher Y values above this value will make the character float above ground. The default is (0, 0.7*sprite_height/200, 0).",
+                  "default": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                  }
+                },
+                "offset_position": {
+                  "$ref": "../definitions/vec3.json",
+                  "description": "This is an adjustment to the position to move the character from its position.",
                   "default": {
                     "x": 0.0,
                     "y": 0.0,
