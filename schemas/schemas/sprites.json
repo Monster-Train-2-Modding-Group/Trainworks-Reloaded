@@ -45,7 +45,7 @@
           },
           "pixels_per_unit": {
             "type": "number",
-            "description": "Pixels per unit.",
+            "description": "Pixels per unit. Recommended not to modify this unless you know what this is for.",
             "default": 100.0
           },
           "wrap_mode": {
