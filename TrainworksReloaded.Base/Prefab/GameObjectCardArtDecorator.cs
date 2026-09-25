@@ -411,6 +411,12 @@ namespace TrainworksReloaded.Base.Prefab
             if (!spriteRegister.TryLookupId(id, out var sprite, out _, spriteVal.context))
                 return;
 
+            if (sprite.texture.width > 512 || sprite.texture.height > 512)
+            {
+                logger.Log(LogLevel.Warning, $"CardArt Sprite dimensions for {definition.Key} {definition.Id} are too big. Please resize {spriteVal.id} to 260x260-468x468."+
+                    " Using large images slows down mod load time with no benefit as the game will resize the image down (and may make it look worse).");
+            }
+
             var gameObject = definition.Data;
             gameObject.layer = 5;
             gameObject.AddComponent<AddressableAssetPrefab>();
