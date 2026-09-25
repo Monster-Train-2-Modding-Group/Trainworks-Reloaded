@@ -19,12 +19,14 @@ namespace TrainworksReloaded.Base.Class
         private readonly IRegister<LocalizationTerm> termRegister;
         private readonly IGuidProvider guidProvider;
         private readonly CardPoolRegister cardPoolRegister;
+        private readonly ClassAssetsDelegator classAssetsDelegator;
 
         public ClassDataPipeline(
             PluginAtlas atlas,
             IModLogger<ClassDataPipeline> logger,
             IRegister<LocalizationTerm> termRegister,
             CardPoolRegister cardPoolRegister,
+            ClassAssetsDelegator classAssetsDelegator,
             IGuidProvider guidProvider
         )
         {
@@ -32,6 +34,7 @@ namespace TrainworksReloaded.Base.Class
             this.logger = logger;
             this.termRegister = termRegister;
             this.cardPoolRegister = cardPoolRegister;
+            this.classAssetsDelegator = classAssetsDelegator;
             this.guidProvider = guidProvider;
         }
 
@@ -85,6 +88,7 @@ namespace TrainworksReloaded.Base.Class
 
             var name = key.GetId("Class", id);
             var titleKey = $"ClassData_titleKey-{name}";
+            var eventTitleKey = $"ClassData_eventTitleKey-{name}";
             var descriptionKey = $"ClassData_descriptionKey-{name}";
             var subclassDescriptionKey = $"ClassData_subclassDescriptionKey-{name}";
             var overrideMode = configuration.GetSection("override").ParseOverrideMode();
@@ -115,6 +119,21 @@ namespace TrainworksReloaded.Base.Class
                 AccessTools.Field(typeof(ClassData), "titleLoc").SetValue(data, titleKey);
                 localizationTitleTerm.Key = titleKey;
                 termRegister.Register(titleKey, localizationTitleTerm);
+            }
+
+            var eventTitleTerm = configuration.GetSection("event_titles").ParseLocalizationTerm();
+            if (eventTitleTerm != null)
+            {
+                eventTitleTerm.Key = eventTitleKey;
+                termRegister.Register(eventTitleKey, eventTitleTerm);
+                classAssetsDelegator.AddEventTitle(data.name, eventTitleKey);
+            }
+            else if (localizationTitleTerm != null)
+            {
+                eventTitleTerm = localizationTitleTerm.FormatNewTerm("<wonderous>{0}</wonderous>");
+                eventTitleTerm.Key = eventTitleKey;
+                termRegister.Register(eventTitleKey, eventTitleTerm);
+                classAssetsDelegator.AddEventTitle(data.name, eventTitleKey);
             }
 
             //handle desc

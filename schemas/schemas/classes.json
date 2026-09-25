@@ -169,6 +169,11 @@
             "$ref": "../definitions/parse_term.json",
             "description": "Localized text for this class's title."
           },
+          "event_titles": {
+            "$ref": "../definitions/parse_term.json",
+            "description": "Optional text to use for this clan's name during events.",
+            "default": "The value of titles enclosed in <wonderous></wonderous>"
+          },
           "ui_color": {
             "$ref": "../definitions/color.json",
             "description": "Primary color used in the UI for this class.",
