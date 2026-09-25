@@ -11,7 +11,9 @@ class AnimationType(str, Enum):
     IDLE = "idle"
     ATTACK = "attack"
     HIT_REACT = "hit_react"
+    HIT_REACT2 = "hitreact"
     IDLE_RELENTLESS = "idle_relentless"
+    IDLE_RELENTLESS2 = "idlerelentless"
     SPELL = "spell"
     DEATH = "death"
     TALK = "talk"
@@ -34,10 +36,19 @@ def natural_sort_key(file_path: Path):
     ]
 
 
+def get_animation_type(name):
+    if name == "hitreact":
+        return "hit_react"
+    elif name == "idlerelentless":
+        return "idle_relentless"
+    return name
+
+
 def scan_sprite_directory(
     root_dir: Path,
     framerate_overrides: Optional[Dict[str, float]] = None,
     default_framerate: float = 12.0,
+    default_mesh_type: str = 'full_rect'
 ) -> dict:
     """
     Scans subfolders in root_dir matching AnimationType names and builds the JSON structure.
@@ -61,6 +72,7 @@ def scan_sprite_directory(
         folder_name = folder.name.lower().strip()
         if folder_name not in valid_animation_names:
             continue
+        animation = get_animation_type(folder_name)
 
         # Gather and sort frames
         image_files = [
@@ -79,16 +91,19 @@ def scan_sprite_directory(
 
             # Store unique sprite definition with relative path
             if sprite_id not in seen_sprite_ids:
-                sprites_output.append({
+                sprite_config = {
                     "id": sprite_id,
-                    "path": img.relative_to(root).as_posix()
-                })
+                    "path": img.relative_to(root).as_posix(),
+                }
+                if default_mesh_type == 'tight':
+                    sprite_config['mesh_type'] = 'tight'
+                sprites_output.append(sprite_config)
                 seen_sprite_ids.add(sprite_id)
 
         framerate = overrides.get(folder_name, default_framerate)
 
         animations_output.append({
-            "animation": folder_name,
+            "animation": animation,
             "frames": frame_ids,
             "framerate": float(framerate)
         })
@@ -133,6 +148,12 @@ if __name__ == "__main__":
         default=12.0,
         help="Default framerate for animations without explicit overrides"
     )
+    parser.add_argument(
+        "--mesh_type",
+        type=str,
+        default="full_rect",
+        help="Default SpriteMeshType (tight or full_rect)."
+    )
 
     args = parser.parse_args()
     target_path = Path(args.directory)
@@ -140,7 +161,8 @@ if __name__ == "__main__":
     data = scan_sprite_directory(
         root_dir=target_path,
         framerate_overrides=DEFAULT_FRAMERATE_OVERRIDES,
-        default_framerate=args.fps
+        default_framerate=args.fps,
+        default_mesh_type=args.mesh_type.lower().strip()
     )
 
     out_file = target_path / args.output if not Path(args.output).is_absolute() else Path(args.output)
