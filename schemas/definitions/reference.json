@@ -15,6 +15,11 @@
         "mod_reference": {
           "type": "string",
           "description": "Optional mod guid to reference the id from. If omitted then your plugin's guid is referenced."
+        },
+        "quiet": {
+          "type": "boolean",
+          "description": "Suppresses warning message if the item is not found, useful for connecting with other mods that are optionally installed and not a hard dependency.",
+          "default": false
         }
       }
     },

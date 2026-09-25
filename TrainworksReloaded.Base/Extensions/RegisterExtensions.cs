@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using TrainworksReloaded.Core.Enum;
+using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Interfaces;
 
 namespace TrainworksReloaded.Base.Extensions
@@ -68,6 +69,8 @@ namespace TrainworksReloaded.Base.Extensions
             bool ret = register.TryLookupIdentifier(name, RegisterIdentifierType.ReadableID, out lookup, out IsModded);
             if (!ret && !quiet)
             {
+                var suppress = context?.GetSection("quiet").ParseBool() ?? false;
+                if (suppress) return ret;
                 Logger.LogWarning($"Could not find identifier of type {typeof(T).Name} with id (name) {name}. Configuration Path: {context?.Path}");
                 Logger.LogDebug($"{Environment.StackTrace}");
             }
@@ -132,6 +135,8 @@ namespace TrainworksReloaded.Base.Extensions
             bool ret = register.TryLookupIdentifier(id, RegisterIdentifierType.GUID, out lookup, out IsModded);
             if (!ret && !quiet)
             {
+                var suppress = context?.GetSection("quiet").ParseBool() ?? false;
+                if (suppress) return ret;
                 Logger.LogWarning($"Could not find identifier of type {typeof(T).Name} with id (guid) {id}. Configuration Path: {context?.Path}");
                 Logger.LogDebug($"{Environment.StackTrace}");
             }
