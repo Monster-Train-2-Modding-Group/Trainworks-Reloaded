@@ -13,7 +13,7 @@
           "properties": {
             "sprite": {
               "$ref": "../definitions/reference.json",
-              "description": "Reference to the card art sprite and forms the base sprite of the card optimally sized ~210x210. Unused for Layered card art which should use base_layer+layers fields instead."
+              "description": "Reference to the card art sprite and forms the base sprite of the card optimally sized ~260x260 with a maximum of 468x468 (for zoomed in card view). Unused for Layered card art which should use base_layer+layers fields instead."
             },
             "shader": {
               "type": "string",
@@ -23,7 +23,7 @@
             },
             "base_layer": {
               "$ref": "../definitions/effect_layer.json",
-              "description": "Base layer, should be of type texture with the texture being optimally sized ~210x210."
+              "description": "Base layer, should be of type texture with the texture being optimally sized ~260x260 with a maximum of 468x468."
             },
             "layers": {
               "type": "array",
