@@ -30,6 +30,10 @@ namespace TrainworksReloaded.Base.Localization
             return !(English == "" && French == "" && German == "" && Russian == "" && Portuguese == "" && Chinese == "" && Spanish == "" && ChineseTraditional == "" && Korean == "" && Japanese == "" && OtherLanguages.Count == 0);
         }
 
+        /// <summary>
+        /// Treats the localization term as a format string and calls string.Format(translation, objects) and replaces each translation with the result.
+        /// </summary>
+        /// <param name="objects">Format parameters pass to string.Format</param>
         public void Format(IEnumerable<string> objects)
         {
             object[] args = objects?.Cast<object>().ToArray() ?? [];
@@ -49,6 +53,35 @@ namespace TrainworksReloaded.Base.Localization
             {
                 OtherLanguages[key] = string.Format(OtherLanguages[key], args);
             }
+        }
+
+        /// <summary>
+        /// Given a format string, calls string.Format(formatString, translation) and returns a new LocalizationTerm with the result.
+        /// </summary>
+        /// <param name="formatString"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public LocalizationTerm FormatNewTerm(string formatString)
+        {
+            LocalizationTerm result = new()
+            {
+                English = string.Format(formatString, English),
+                French = string.Format(formatString, French),
+                German = string.Format(formatString, German),
+                Russian = string.Format(formatString, Russian),
+                Portuguese = string.Format(formatString, Portuguese),
+                Chinese = string.Format(formatString, Chinese),
+                Spanish = string.Format(formatString, Spanish),
+                ChineseTraditional = string.Format(formatString, ChineseTraditional),
+                Korean = string.Format(formatString, Korean),
+                Japanese = string.Format(formatString, Japanese)
+            };
+
+            foreach (var key in OtherLanguages.Keys.ToList())
+            {
+                result.OtherLanguages[key] = string.Format(formatString, OtherLanguages[key]);
+            }
+            return result;
         }
     }
 }
