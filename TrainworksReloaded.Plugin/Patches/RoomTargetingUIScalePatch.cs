@@ -41,7 +41,7 @@ namespace TrainworksReloaded.Plugin.Patches
 
             if (matcher.IsInvalid)
             {
-                Debug.LogError("[Transpiler] Failed to match GetComponentInChildren call.");
+                Plugin.Logger.LogError("[Transpiler] Failed to match GetComponentInChildren call.");
                 return matcher.InstructionEnumeration();
             }
 
@@ -56,7 +56,7 @@ namespace TrainworksReloaded.Plugin.Patches
 
             if (matcher.IsInvalid)
             {
-                Debug.LogError("[Transpiler] Failed to match Transform.position setter.");
+                Plugin.Logger.LogError("[Transpiler] Failed to match Transform.position setter.");
                 return matcher.InstructionEnumeration();
             }
 
