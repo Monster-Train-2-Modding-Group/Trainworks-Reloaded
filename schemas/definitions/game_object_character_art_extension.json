@@ -46,7 +46,7 @@
               "type": "array",
               "uniqueItems": true,
               "items": {
-                "$ref": "../definitions/character_animation_frame.json"
+                "$ref": "../definitions/character_animation_sprite.json"
               }
             },
             "skeleton_animations": {
