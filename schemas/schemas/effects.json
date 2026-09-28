@@ -21,7 +21,7 @@
           },
           "anim_to_play": {
             "$ref": "../definitions/anim.json",
-            "description": "Animation to play when this effect is triggered.",
+            "description": "Animation to play when this effect is triggered. This is only for an effect within a CharacterTrigger.",
             "default": "none"
           },
           "applied_to_self_vfx": {
