@@ -1,0 +1,26 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/character_animation_sprite.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [ "animation", "frames" ],
+  "properties": {
+    "animation": {
+      "$ref": "../definitions/anim.json",
+      "description": "Animation type. The Attack animation must not exceed 0.5s and Death animation must not excced 0.7s"
+    },
+    "frames": {
+      "type": "array",
+      "items": {
+        "$ref": "../definitions/reference.json"
+      }
+    },
+    "framerate": {
+      "type": "number",
+      "default": 12.0
+    },
+    "adjustment": {
+      "$ref": "../definitions/vec2.json",
+      "description": "(x, y) adjustment for this animation to keep it in alignment. Note that height alignment happens automatically if the height is different to the sprite."
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/model_variation.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [ "animation", "skeleton" ],
+  "properties": {
+    "animation": {
+      "$ref": "../definitions/anim.json",
+      "description": "Animation type."
+    },
+    "skeleton": {
+      "$ref": "../definitions/reference.json",
+      "description": "Reference to a skeleton."
+    }
+  }
+}

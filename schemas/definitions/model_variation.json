@@ -1,0 +1,76 @@
+{
+  "$id": "https://raw.githubusercontent.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded/refs/heads/main/schemas/definitions/model_variation.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "oneOf": [
+    {
+      "required": [ "model_id", "name", "animations" ],
+      "not": { "required": [ "skeleton_animations" ] }
+    },
+    {
+      "required": [ "model_id", "name", "skeleton_animations" ],
+      "not": { "required": [ "animations" ] }
+    }
+  ],
+  "properties": {
+    "model_id": {
+      "type": "integer",
+      "description": "The model ID, which can be used to trigger this model from the game.",
+      "minimum": 1
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of this animation model. Forms the GameObject name for Spine Animations."
+    },
+    "animations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "../definitions/character_animation_sprite.json"
+          },
+          {
+            "type": "object",
+            "required": [ "animation", "reuse_base" ],
+            "properties": {
+              "animation": {
+                "$ref": "../definitions/anim.json",
+                "description": "Animation type."
+              },
+              "reuse_base": {
+                "type": "boolean",
+                "description": "Reuse the base model's animation for this animation type."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "skeleton_animations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "../definitions/character_animation_skeleton.json"
+          },
+          {
+            "type": "object",
+            "required": [ "animation", "reuse_base" ],
+            "properties": {
+              "animation": {
+                "$ref": "../definitions/anim.json",
+                "description": "Animation type."
+              },
+              "reuse_base": {
+                "type": "boolean",
+                "description": "Reuse the base model's animation for this animation type."
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

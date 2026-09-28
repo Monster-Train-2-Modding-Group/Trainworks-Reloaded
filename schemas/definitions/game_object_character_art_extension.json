@@ -6,6 +6,20 @@
     "extensions": {
       "type": "object",
       "description": "Extensions for character art game objects.",
+      "oneOf": [
+        {
+          "required": [ "sprite", "animations" ],
+          "not": { "required": [ "skeleton_animations" ] }
+        },
+        {
+          "required": [ "sprite", "skeleton_animations" ],
+          "not": { "required": [ "animations" ] }
+        },
+        {
+          "required": [ "sprite" ],
+          "not": { "required": [ "animations", "skeleton_animations", "model_variations" ] }
+        }
+      ],
       "properties": {
         "character_art": {
           "type": "object",
@@ -30,49 +44,24 @@
             },
             "animations": {
               "type": "array",
+              "uniqueItems": true,
               "items": {
-                "type": "object",
-                "required": [ "animation", "frames" ],
-                "uniqueItems": true,
-                "properties": {
-                  "animation": {
-                    "$ref": "../definitions/anim.json",
-                    "description": "Animation associated with the skeleton data. Attack animation must not exceed 0.5s, Death animation must not excced 0.7s"
-                  },
-                  "frames": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "../definitions/reference.json"
-                    }
-                  },
-                  "framerate": {
-                    "type": "number",
-                    "default": 12.0
-                  },
-                  "adjustment": {
-                    "$ref": "../definitions/vec2.json",
-                    "description": "(x, y) adjustment for this animation to keep it in alignment. Note that height alignment happens automatically if the height is different to the sprite."
-                  }
-                }
+                "$ref": "../definitions/character_animation_frame.json"
               }
             },
             "skeleton_animations": {
               "type": "array",
+              "uniqueItems": true,
               "items": {
-                "type": "object",
-                "required": [ "animation", "skeleton" ],
-                "uniqueItems": true,
-                "properties": {
-                  "animation": {
-                    "$ref": "../definitions/anim.json",
-                    "description": "Animation associated with the skeleton data"
-                  },
-                  "skeleton": {
-                    "$ref": "../definitions/reference.json",
-                    "description": "Reference to a skeleton."
-                  }
-                }
+                "$ref": "../definitions/character_animation_skeleton.json"
               }
+            },
+            "model_variations": {
+              "type": "array",
+              "items": {
+                "$ref": "../definitions/model_variation.json"
+              },
+              "description": "Adds a set of animations to this character that can be switched to (like FunGuy). Only for Animated Sprites currently."
             },
             "shader": {
               "type": "object",
