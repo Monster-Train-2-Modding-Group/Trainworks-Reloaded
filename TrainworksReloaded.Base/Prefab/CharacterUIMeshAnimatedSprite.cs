@@ -22,25 +22,21 @@ namespace TrainworksReloaded.Base.Prefab
         public float frameRate = 12f;
         [SerializeField]
         public Vector2 adjustment = Vector2.zero;
-        public SpriteAnimationClip()
-        {
-
-        }
+        public SpriteAnimationClip() {}
 
         public float FrameDuration => frameRate > 0f ? 1f / frameRate : 0.1f;
         public float TotalDuration => frames.Count * FrameDuration;
     }
 
     [Serializable]
-    public class AnimatedSpriteContainer : ScriptableObject
+    public class AnimatedSpriteModel : ScriptableObject
     {
+        [SerializeField]
+        public int modelId;
         [SerializeField]
         private readonly List<SpriteAnimationClip> clips = [];
 
-        public AnimatedSpriteContainer()
-        {
-
-        }
+        public AnimatedSpriteModel() { }
 
         public void AddClip(SpriteAnimationClip clip)
         {
@@ -55,6 +51,45 @@ namespace TrainworksReloaded.Base.Prefab
         public bool HasAnim(CharacterUI.Anim animType) => clips.Exists(c => c.animType == animType);
 
         public int AnimCount() => clips.Count;
+    }
+
+    [Serializable]
+    public class AnimatedSpriteContainer : ScriptableObject
+    {
+        [SerializeField]
+        private readonly List<AnimatedSpriteModel> models = [];
+
+        public AnimatedSpriteContainer() {}
+
+        public void AddModel(AnimatedSpriteModel model)
+        {
+            models.Add(model);
+        }
+
+        private AnimatedSpriteModel? FindModel(int modelIndex)
+        {
+            return models.Find(c => c.modelId == modelIndex);
+        }
+
+        public bool HasModel(int modelIndex)
+        {
+            return models.Exists(c => c.modelId == modelIndex);
+        }
+
+        public SpriteAnimationClip? GetClip(int modelIndex, CharacterUI.Anim animType)
+        {
+            return FindModel(modelIndex)?.GetClip(animType);
+        }
+
+        public bool HasAnim(int modelIndex, CharacterUI.Anim animType)
+        {
+            return FindModel(modelIndex)?.HasAnim(animType) ?? false;
+        }
+
+        public int AnimCount(int modelIndex)
+        {
+            return FindModel(modelIndex)?.AnimCount() ?? 0;
+        }
     }
 
     [RequireComponent(typeof(MeshRenderer))]
@@ -91,6 +126,7 @@ namespace TrainworksReloaded.Base.Prefab
         private int _currentFrameIndex;
         private float _frameTimer;
         private bool _isPlaying;
+        private bool _overrideLooping;
         private float _baseHeight = 1f;
         private Vector2 _currentClipOffset = Vector2.zero;
         private CharacterUI.Anim _currentAnimType = CharacterUI.Anim.None;
@@ -99,6 +135,8 @@ namespace TrainworksReloaded.Base.Prefab
         // Sorting & Multi-model Variations
         private int _sortingOrder;
         private SortingLayers _sortingLayer;
+        private int _curModelIndex;
+        [SerializeField]
         private List<CharacterUIMeshSpine.ModelEntry> _emptyModelVariations = [];
 
         public MeshRenderer meshRenderer
@@ -191,8 +229,8 @@ namespace TrainworksReloaded.Base.Prefab
             }
             else
             {
-                var idleClip = _animContainer!.GetClip(CharacterUI.Anim.Idle);
-                _baseHeight = idleClip.frames[0].bounds.size.y;
+                var idleClip = _animContainer!.GetClip(0, CharacterUI.Anim.Idle);
+                _baseHeight = idleClip?.frames[0].bounds.size.y ?? 1.5f;
             }
 
             // Initialize default shader values for CharacterShader2.0 Graph
@@ -275,7 +313,7 @@ namespace TrainworksReloaded.Base.Prefab
 
                 if (_currentFrameIndex >= _currentClip.frames.Count)
                 {
-                    if (_currentClip.isLooping)
+                    if (_overrideLooping || _currentClip.isLooping)
                     {
                         _currentFrameIndex = 0;
                         ApplyCurrentFrame();
@@ -336,26 +374,50 @@ namespace TrainworksReloaded.Base.Prefab
 
         public override bool HasAnim(CharacterUI.Anim animType)
         {
-            return _animContainer != null && _animContainer.HasAnim(animType);
+            return HasAnim(_curModelIndex, animType);
+        }
+
+        private bool HasAnim(int modelIndex, CharacterUI.Anim animType)
+        {
+            return _animContainer != null && _animContainer.HasAnim(modelIndex, animType);
         }
 
         public override float GetAnimDuration(CharacterUI.Anim animType)
         {
-            return _animContainer?.GetClip(animType)?.TotalDuration ?? 0f;
+            return GetAnimDuration(_curModelIndex, animType);
+        }
+
+        private float GetAnimDuration(int modelIndex, CharacterUI.Anim animType)
+        {
+            return _animContainer?.GetClip(modelIndex, animType)?.TotalDuration ?? 0f;
         }
 
         public override void PlayAnim(CharacterUI.Anim animType, float duration, float startTime, Action<CharacterUI.AnimNote> animCallback)
         {
-            PlayAnimInternal(animType, loop: false, startTime, animCallback);
+            PlayAnimInternal(_curModelIndex, animType, loop: false, startTime, animCallback);
+        }
+
+        public void PlayAnim(CharacterUI.Anim animType, float duration, float startTime)
+        {
+            PlayAnimInternal(_curModelIndex, animType, loop: false, startTime, null);
         }
 
         public override void PlayAnimLoop(CharacterUI.Anim animType, float startTime, Action<CharacterUI.AnimNote>? animCallback = null)
         {
-            PlayAnimInternal(animType, loop: true, startTime, animCallback);
+            PlayAnimInternal(_curModelIndex, animType, loop: true, startTime, animCallback);
         }
 
-        private void PlayAnimInternal(CharacterUI.Anim animType, bool loop, float startTime, Action<CharacterUI.AnimNote>? animCallback)
+        public void PlayAnimLoop(CharacterUI.Anim animType, float startTime)
         {
+            PlayAnimInternal(_curModelIndex, animType, loop: true, startTime, null);
+        }
+
+        private void PlayAnimInternal(int modelIndex, CharacterUI.Anim animType, bool loop, float startTime, Action<CharacterUI.AnimNote>? animCallback)
+        {
+            if (_animContainer == null || !_animContainer.HasModel(modelIndex) || !HasAnim(modelIndex, animType))
+            {
+                return;
+            }
 
             // Never allow HitReact or Idle to interrupt an active Death animation
             if (_currentAnimType == CharacterUI.Anim.Death && animType != CharacterUI.Anim.Death)
@@ -363,16 +425,16 @@ namespace TrainworksReloaded.Base.Prefab
                 return;
             }
 
-            if (_animContainer == null) return;
-
-            SpriteAnimationClip clip = _animContainer.GetClip(animType);
-            if (clip == null || clip.frames == null || clip.frames.Count == 0) return;
+            SpriteAnimationClip? clip = _animContainer.GetClip(modelIndex, animType);
+            if (clip == null || clip.frames == null || clip.frames.Count == 0)
+                return;
 
             _currentClip = clip;
-            _currentClip.isLooping = loop;
             _currentAnimType = animType;
             _animCallback = animCallback;
+            _overrideLooping = loop;
             _isPlaying = true;
+            _curModelIndex = modelIndex;
 
             int startFrame = Mathf.FloorToInt(startTime / clip.FrameDuration);
             _currentFrameIndex = Mathf.Clamp(startFrame, 0, clip.frames.Count - 1);
@@ -516,7 +578,14 @@ namespace TrainworksReloaded.Base.Prefab
         public override void SpawnPersistentVFX(List<GameObject> vfxSpawned, VfxAtLoc vfxAtLoc) => vfxSpawned.Clear();
         public override void SetRimLight(RimLight rimLight) { }
         public override IReadOnlyList<CharacterUIMeshSpine.ModelEntry> GetModelVariations() => _emptyModelVariations;
-        public override void UpdateModelVariation(int modelIndex) { }
+        public override void UpdateModelVariation(int modelIndex) 
+        {
+            if (modelIndex != _curModelIndex && _animContainer != null && _animContainer.HasModel(modelIndex))
+            {
+                PlayAnimInternal(modelIndex, _currentAnimType, _overrideLooping, 0f, _animCallback);
+            }
+        }
+
         public override void SetDestroyedState(CharacterState.DestroyedState destroyedState) { }
         public override void SetAllowDestroyedAccess(bool allow) { }
         public override void AssertNotDestroyed(CharacterState.DestroyedState destroyedStateNotAllowed = CharacterState.DestroyedState.InRemoveList) { }
