@@ -1,11 +1,13 @@
-﻿using HarmonyLib;
-using UnityEngine;
-using SimpleInjector;
-using TrainworksReloaded.Base.Class;
-using System.Reflection;
-using TrainworksReloaded.Base.Prefab;
-using System.Reflection.Emit;
+﻿using DG.Tweening;
+using HarmonyLib;
 using ShinyShoe;
+using SimpleInjector;
+using System.Reflection;
+using System.Reflection.Emit;
+using TrainworksReloaded.Base.Class;
+using TrainworksReloaded.Base.Prefab;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace TrainworksReloaded.Plugin.Patches
 {
@@ -65,7 +67,10 @@ namespace TrainworksReloaded.Plugin.Patches
 
                     // Quad Default displays a square here.
                     var quadDefault = clone.transform.Find("CharacterScale/CharacterUI/Quad_Default");
-                    quadDefault?.gameObject.SetActive(false);
+                    var animatedSpriteMesh = quadDefault?.GetComponent<CharacterUIMeshAnimatedSprite>() as CharacterUIMeshBase;
+                    var quadDefaultScale = quadDefault?.localScale ?? Vector3.one;
+                    if (animatedSpriteMesh == null)
+                        quadDefault?.gameObject.SetActive(false);
                     if (quadDefault != null)
                     {
                         quadDefault.localPosition = localPosition;
@@ -74,20 +79,19 @@ namespace TrainworksReloaded.Plugin.Patches
 
                     var spineMeshes = clone.transform.Find("CharacterScale/CharacterUI/SpineMeshes");
                     var characterMeshSpine = spineMeshes?.GetComponent<CharacterUIMeshSpine>();
-                    // Component is destroyed (and does not exist) in the case of a static image.
-                    if (characterMeshSpine != null)
+                    // If using a static image put the scale on the CharacterUI which will display the sprite.
+                    // Quad_Default doesn't have the correct scaling but the GameObject placed under it at construction does.
+                    if (characterMeshSpine == null && animatedSpriteMesh == null)
                     {
-                        // Reset local scale, it gets set on the CharacterMeshBase component
-                        characterUITransform.localScale = Vector3.one;
-                        spineMeshes!.localPosition = localPosition;
-                        spineMeshes!.localScale = localScale;
+                        var scaleFix = quadDefault?.Find("ScaleFixer")?.localScale ?? Vector3.one;
+                        characterUI.transform.localScale = scaleFix;
                     }
 
                     var characterState = clone.transform.GetComponentInChildren<CharacterState>();
                     var characterMesh = clone.transform.GetComponentInChildren<CharacterUIMesh>(includeInactive: true);
                     // Can't do a child search because Red Crown has a CharacterUIMeshSpine component.
-                    
-                    AccessTools.Field(typeof(CharacterUI), "_characterMesh").SetValue(characterUI, (CharacterUIMeshBase?)characterMeshSpine ?? characterMesh);
+                    // Fix the CharacterMesh and CharacterState fields just in case. Otherwise a NRE happens.
+                    AccessTools.Field(typeof(CharacterUI), "_characterMesh").SetValue(characterUI, (CharacterUIMeshBase?)(characterMeshSpine ?? characterMesh ?? animatedSpriteMesh));
                     AccessTools.Field(typeof(CharacterUI), "_characterState").SetValue(characterUI, characterState);
 
                     characters.Add(characterState);
