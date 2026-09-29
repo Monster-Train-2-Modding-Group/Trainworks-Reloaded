@@ -222,7 +222,9 @@ namespace TrainworksReloaded.Base.Prefab
 
         private void SetupAnimation(IDefinition<GameObject> definition, IConfiguration config, GameObject gameObject)
         {
-            var cardArt = gameObject.transform.Find("CardSprite").gameObject;
+            var cardArt = gameObject.transform.Find("CardSprite")?.gameObject;
+            if (cardArt == null)
+                return;
             var image = cardArt.GetComponent<Image>();
 
             (AnimationClip? animationClip, List<Sprite>? sprites) = ParseAnimationClip(config.GetSection("animation_clip"), definition.Key);
