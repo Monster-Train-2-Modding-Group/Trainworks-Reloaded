@@ -12,6 +12,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
+using static MultiplayerEmoteDefinitionData;
 using static TrainworksReloaded.Base.Extensions.ParseReferenceExtensions;
 
 namespace TrainworksReloaded.Base.Prefab
@@ -292,6 +293,11 @@ namespace TrainworksReloaded.Base.Prefab
             {
                 if (spriteRegister.TryLookupName(reference!.ToId(key, TemplateConstants.Sprite), out var sprite, out var _, reference.context))
                 {
+                    if (sprite.texture.width > 468 || sprite.texture.height > 468)
+                    {
+                        logger.Log(LogLevel.Warning, $"CardArt Sprite dimensions for {key} {reference.id} are too big. Please resize {reference.id} to 260x260-468x468." +
+                            " Using large images slows down mod load time with no benefit as the game will resize the image down (and may make it look worse).");
+                    }
                     sprites.Add(sprite);
                 }
             }
@@ -411,7 +417,7 @@ namespace TrainworksReloaded.Base.Prefab
             if (!spriteRegister.TryLookupId(id, out var sprite, out _, spriteVal.context))
                 return;
 
-            if (sprite.texture.width > 512 || sprite.texture.height > 512)
+            if (sprite.texture.width > 468 || sprite.texture.height > 468)
             {
                 logger.Log(LogLevel.Warning, $"CardArt Sprite dimensions for {definition.Key} {definition.Id} are too big. Please resize {spriteVal.id} to 260x260-468x468."+
                     " Using large images slows down mod load time with no benefit as the game will resize the image down (and may make it look worse).");
