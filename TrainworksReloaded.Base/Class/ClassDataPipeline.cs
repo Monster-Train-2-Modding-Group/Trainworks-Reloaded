@@ -86,7 +86,7 @@ namespace TrainworksReloaded.Base.Class
                 return null;
             }
 
-            var name = key.GetId("Class", id);
+            var name = key.GetId(TemplateConstants.Class, id);
             var titleKey = $"ClassData_titleKey-{name}";
             var eventTitleKey = $"ClassData_eventTitleKey-{name}";
             var descriptionKey = $"ClassData_descriptionKey-{name}";
