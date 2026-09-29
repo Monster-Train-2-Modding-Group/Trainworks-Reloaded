@@ -713,7 +713,6 @@ namespace TrainworksReloaded.Base.Prefab
                 characterUITransform.transform.localPosition = new Vector3(0f, floorOffsetY, 0f);
             }
 
-
             // Absolute positioning if requested.
             var positionConfig = transformConfig.GetSection("position");
             if (positionConfig.Exists())
