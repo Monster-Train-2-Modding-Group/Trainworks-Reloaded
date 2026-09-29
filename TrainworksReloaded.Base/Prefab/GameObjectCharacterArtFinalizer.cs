@@ -708,8 +708,7 @@ namespace TrainworksReloaded.Base.Prefab
             }
             else
             {
-                float actualScale = quadDefaultTransform.localScale.y;
-                float floorOffsetY = sprite.bounds.extents.y * GroundHeightMultiplier * actualScale;
+                float floorOffsetY = sprite.bounds.extents.y * GroundHeightMultiplier * scale.y;
                 // Elevate CharacterUI so the bottom edge sits on the floor
                 characterUITransform.transform.localPosition = new Vector3(0f, floorOffsetY, 0f);
             }
