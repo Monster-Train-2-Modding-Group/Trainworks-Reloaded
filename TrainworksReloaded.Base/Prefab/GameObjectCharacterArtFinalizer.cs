@@ -723,11 +723,8 @@ namespace TrainworksReloaded.Base.Prefab
             }
 
             // Position adjustment
-            var offsetPositionConfig = transformConfig.GetSection("offset_position");
-            if (offsetPositionConfig.Exists())
-            {
-                characterUITransform.localPosition += offsetPositionConfig.ParseVec3();
-            }
+            var offsetPosition = transformConfig.GetSection("offset").ParseVec3();
+            characterUITransform.localPosition += offsetPosition;
 
             if (!usingSpineAnimations)
             {

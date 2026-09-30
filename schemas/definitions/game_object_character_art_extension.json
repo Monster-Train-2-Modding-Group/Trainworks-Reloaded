@@ -108,9 +108,9 @@
                     "z": 0.0
                   }
                 },
-                "offset_position": {
+                "offset": {
                   "$ref": "../definitions/vec3.json",
-                  "description": "This is an adjustment to the position to move the character from its position.",
+                  "description": "This is an adjustment to the position to move the character from its defined position (i.e if you want the character to float in the air).",
                   "default": {
                     "x": 0.0,
                     "y": 0.0,
