@@ -6,24 +6,24 @@
     "extensions": {
       "type": "object",
       "description": "Extensions for character art game objects.",
-      "oneOf": [
-        {
-          "required": [ "sprite", "animations" ],
-          "not": { "required": [ "skeleton_animations" ] }
-        },
-        {
-          "required": [ "sprite", "skeleton_animations" ],
-          "not": { "required": [ "animations" ] }
-        },
-        {
-          "required": [ "sprite" ],
-          "not": { "required": [ "animations", "skeleton_animations", "model_variations" ] }
-        }
-      ],
       "properties": {
         "character_art": {
           "type": "object",
           "description": "Character art specific properties.",
+          "oneOf": [
+            {
+              "required": [ "sprite", "animations" ],
+              "not": { "required": [ "skeleton_animations" ] }
+            },
+            {
+              "required": [ "sprite", "skeleton_animations" ],
+              "not": { "required": [ "animations" ] }
+            },
+            {
+              "required": [ "sprite" ],
+              "not": { "required": [ "animations", "skeleton_animations", "model_variations" ] }
+            }
+          ],
           "properties": {
             "sprite": {
               "$ref": "../definitions/reference.json",
