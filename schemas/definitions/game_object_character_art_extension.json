@@ -21,7 +21,13 @@
             },
             {
               "required": [ "sprite" ],
-              "not": { "required": [ "animations", "skeleton_animations", "model_variations" ] }
+              "not": {
+                "anyOf": [
+                  { "required": [ "animations" ] },
+                  { "required": [ "skeleton_animations" ] },
+                  { "required": [ "model_variations" ] }
+                ]
+              }
             }
           ],
           "properties": {
