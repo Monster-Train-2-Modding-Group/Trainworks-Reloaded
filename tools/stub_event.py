@@ -1,61 +1,89 @@
-"""
-Python script to generate a story event data definition from a compiled ink script (.ink.json)
-"Usage: python stub_event.py <path_to_ink_json>"
-"""
 import json
 import os
 import sys
 import re
 
 def extract_ink_assets(root_element):
-    """Recursively scans the Ink JSON structure for raw text and choices."""
+    """Recursively scans the Ink JSON structure for raw text, choices, and reward IDs,
+    handling arbitrary chained conditions (+ {c1} {c2} [Choice]) and ignoring
+    string parameters inside evaluation blocks ("ev" ... "/ev").
+    """
     text_lines = []
     choice_lines = []
     reward_lines = []
-
     if isinstance(root_element, list):
-        # Scan for legacy flat choice sequence format (ev -> str -> ^Text -> /str -> /ev -> choiceObj)
-        i = 0
-        while i < len(root_element):
-            if (i + 5 < len(root_element) and 
-                root_element[i] == "ev" and 
-                root_element[i+1] == "str" and 
-                isinstance(root_element[i+2], str) and root_element[i+2].startswith("^") and
-                root_element[i+3] == "/str" and 
-                root_element[i+4] == "/ev" and 
-                isinstance(root_element[i+5], dict) and "*" in root_element[i+5]):
-                
-                raw_choice = root_element[i+2][1:].strip()
-                if raw_choice and raw_choice != "\n" and raw_choice != "Leave":
-                    choice_lines.append(raw_choice)
-                i += 6
+        choice_string_indices = set()
+
+        # Pass 1: Identify choice labels and track their token indices
+        for i, item in enumerate(root_element):
+            # Detect choice descriptor: {"*": "...", "flg": ...}
+            if isinstance(item, dict) and "*" in item and "flg" in item:
+                # Scan backwards from the choice descriptor to find the immediate
+                # "str" -> "^..." -> "/str" block that supplies the choice label.
+                j = i - 1
+                while j >= 2:
+                    if (root_element[j] == "/ev" or root_element[j] == "/str") and j > 0:
+                        # Check if we hit the closing /str of the choice label
+                        str_end = j if root_element[j] == "/str" else (j - 1 if root_element[j - 1] == "/str" else None)
+                        if str_end and str_end >= 2:
+                            text_candidate = root_element[str_end - 1]
+                            str_start = root_element[str_end - 2]
+
+                            if (str_start == "str" and 
+                                isinstance(text_candidate, str) and 
+                                text_candidate.startswith("^")):
+                                
+                                clean_choice = text_candidate[1:].strip()
+                                if clean_choice and clean_choice != "\n":
+                                    if clean_choice != "Leave":
+                                        choice_lines.append(clean_choice)
+                                    choice_string_indices.add(str_end - 1)
+                                break
+                    j -= 1
+
+        # Pass 2: Collect standard dialogue text and rewards, skipping eval blocks
+        in_eval_mode = False
+        for i, item in enumerate(root_element):
+            if item == "ev":
+                in_eval_mode = True
                 continue
-            
-            item = root_element[i]
+            elif item == "/ev":
+                in_eval_mode = False
+                continue
+
+            # Skip choice label strings already processed
+            if i in choice_string_indices:
+                continue
+
             if isinstance(item, str) and item.startswith("^"):
                 clean_text = item[1:].strip()
-                if clean_text and clean_text != "\n" and ">>>" not in clean_text:
+                if not clean_text or clean_text == "\n":
+                    continue
+
+                if ">>>" in clean_text:
+                    match = re.search(r">>>(.+?):\s*(.+)", clean_text)
+                    if match:
+                        reward_lines.append(match.group(2).strip())
+                elif not in_eval_mode:
+                    # String parameters to functions (e.g. ^OnlySpells) appear while
+                    # in_eval_mode is True and will be excluded here.
                     text_lines.append(clean_text)
-                elif clean_text and clean_text != "\n" and ">>>" in clean_text:
-                    match =re.search(">>>(.+):\s(.+)", clean_text)
-                    reward_lines.append(match[2])
+
             elif isinstance(item, (list, dict)):
                 nested_text, nested_choice, nested_rewards = extract_ink_assets(item)
                 text_lines.extend(nested_text)
                 choice_lines.extend(nested_choice)
                 reward_lines.extend(nested_rewards)
-            i += 1
 
     elif isinstance(root_element, dict):
-        # Scan modern choice array wrappers if they slip in
+        # Modern choice format container: {"s": ["^ChoiceText", ...]}
         if "s" in root_element and isinstance(root_element["s"], list):
             for s_item in root_element["s"]:
                 if isinstance(s_item, str) and s_item.startswith("^"):
                     clean_choice = s_item[1:].strip()
                     if clean_choice and clean_choice != "\n" and clean_choice != "Leave":
                         choice_lines.append(clean_choice)
-        
-        # Scan all other dictionary attributes
+
         for key, value in root_element.items():
             if key != "s":
                 nested_text, nested_choice, nested_rewards = extract_ink_assets(value)
@@ -64,6 +92,7 @@ def extract_ink_assets(root_element):
                 reward_lines.extend(nested_rewards)
 
     return text_lines, choice_lines, reward_lines
+    
 
 def generate_story_event_stub(json_file_path):
     if not os.path.exists(json_file_path):
@@ -102,10 +131,11 @@ def generate_story_event_stub(json_file_path):
     # Extract clean text and choice entries
     texts, choices, rewards = extract_ink_assets(knot_bytecode)
     
-    texts = list(set(texts))
+    texts = sorted(list(set(texts)))
+    choices = sorted(list(set(choices)))
     
     if not choices:
-        print("Error: No choices found. Make sure the choice uses the \"+ [SingleWord]\" syntax.")
+        print("Error: No choices found. Make sure the choice uses the \"[SingleWord]\" syntax.")
         return
 
     # Reconstruct inside your exact template layout schema
@@ -120,7 +150,7 @@ def generate_story_event_stub(json_file_path):
                 "num_classes_needed_to_show": 1,
                 "min_distance_allowed": 3,
                 "max_distance_allowed": 8,
-                "story_data": filename,
+                "story_data": "data/"+filename,
                 "is_followup_event": False,
                 "texts": [{"english": line} for line in texts],
                 "choice_texts": [
@@ -172,7 +202,9 @@ def generate_story_event_stub(json_file_path):
     with open(output_filename, 'w', encoding='utf-8') as f:
         json.dump(template, f, indent=4, ensure_ascii=False)
         
-    print(f"Successfully generated stub file: {output_filename}")
+    print(f"Successfully generated stub file: {output_filename}.\n" +
+    "Add this file to your project and add the relative path to it in the AddMergedJsonFile call in your Plugin.cs Awake function.\n" + 
+    "Do not add {filename} to the AddMergedJsonFile call, it is referenced by the generated file, add this file your project in the data/ directory.")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
