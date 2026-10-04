@@ -99,6 +99,7 @@ namespace TrainworksReloaded.Core.Configuration
                 {
                     LoadNode(property.Value, data, CombinePath(path, property.Name));
                 }
+                MarkIfEmpty(obj.Count == 0, data, path);
             }
             else if (node is JArray array)
             {
@@ -106,10 +107,26 @@ namespace TrainworksReloaded.Core.Configuration
                 {
                     LoadNode(array[i], data, $"{path}:{i}");
                 }
+                MarkIfEmpty(array.Count == 0, data, path);
             }
             else if (node is JValue value)
             {
                 data[path] = value.ToString()!;
+            }
+        }
+
+        /// <summary>
+        /// An empty array or object produces no child keys, so without a marker the section
+        /// would be indistinguishable from an omitted one: IConfigurationSection.Exists() would
+        /// return false and "override": "replace" with an empty list would keep the vanilla list.
+        /// Storing an empty string makes Exists() return true while GetChildren() stays empty.
+        /// The root has no path, so it is never marked.
+        /// </summary>
+        private static void MarkIfEmpty(bool isEmpty, IDictionary<string, string?> data, string path)
+        {
+            if (isEmpty && !string.IsNullOrEmpty(path))
+            {
+                data[path] = "";
             }
         }
         private string CombinePath(string path, string key) => string.IsNullOrEmpty(path) ? key : $"{path}:{key}";
