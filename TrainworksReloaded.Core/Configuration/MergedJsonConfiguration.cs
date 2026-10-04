@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using BepInEx.Logging;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -38,14 +39,15 @@ namespace TrainworksReloaded.Core.Configuration
 
     public class MergedJsonConfigurationProvider : ConfigurationProvider
     {
+        private ManualLogSource logger = Logger.CreateLogSource("MergedJsonConfigurationProvider");
 
         public MergedJsonConfigurationSource Source { get; }
 
         public MergedJsonConfigurationProvider(MergedJsonConfigurationSource source)
         {
-
             Source = source;
         }
+
         public override void Load()
         {
             JObject? mergedJson = null;
@@ -69,6 +71,10 @@ namespace TrainworksReloaded.Core.Configuration
                         {
                             mergedJson.Merge(currentJson);
                         }
+                    }
+                    else
+                    {
+                        logger.LogError($"Could not find file {path} it does not exist. If this messsage is displayed in a released mod, please contact the author. The path to this file does not exist or the thunderstore package is incorrect.");
                     }
                 }
                 catch (JsonReaderException e)
