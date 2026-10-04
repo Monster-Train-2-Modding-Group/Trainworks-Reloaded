@@ -107,22 +107,25 @@ namespace TrainworksReloaded.Base.Trigger
                 triggerData.cardTriggerEffect = fullyQualifiedName;
 
                 effectStateReference = child.GetSection("buff_effect").ParseReference();
-                if (effectStateReference == null)
+                if (effectStateReference != null)
                 {
-                    continue;
-                }
-                var effectStateName = effectStateReference.id;
-                modReference = effectStateReference.mod_reference ?? key;
-                assembly = atlas.PluginDefinitions.GetValueOrDefault(modReference)?.Assembly;
-                if (
-                    !triggerEffectName.GetFullyQualifiedName<CardEffectBase>(
-                        assembly,
-                        out fullyQualifiedName
+                    var effectStateName = effectStateReference.id;
+                    modReference = effectStateReference.mod_reference ?? key;
+                    assembly = atlas.PluginDefinitions.GetValueOrDefault(modReference)?.Assembly;
+                    if (
+                        !triggerEffectName.GetFullyQualifiedName<CardEffectBase>(
+                            assembly,
+                            out fullyQualifiedName
+                        )
                     )
-                )
+                    {
+                        logger.Log(LogLevel.Error, $"Failed to load effect state name {effectStateName} in {definition.Id} with mod reference {modReference}. Make sure the class inherits from CardEffectBase.");
+                        continue;
+                    }
+                }
+                else
                 {
-                    logger.Log(LogLevel.Error, $"Failed to load effect state name {effectStateName} in {definition.Id} with mod reference {modReference}. Make sure the class inherits from CardEffectBase.");
-                    continue;
+                    fullyQualifiedName = "None";
                 }
                 triggerData.buffEffectType = fullyQualifiedName;
 
