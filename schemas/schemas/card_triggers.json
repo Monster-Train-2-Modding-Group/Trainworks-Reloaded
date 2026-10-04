@@ -56,7 +56,7 @@
               "trigger_effect"
             ],
             "type": "array",
-            "description": "List of effects that occur when this trigger is activated."
+            "description": "List of effects that occur when this trigger is activated. TriggerEffects are obsolete and shouldn't be used by new mods, they are generally bugged and all of the properties don't work as you'd expect, The Base Game Card Effects handle everything that TriggerEffects was supposed to handle. See: https://github.com/brandonandzeus/Trainworks2/wiki/Base-Game-CardTriggerEffects."
           }
         },
         "trigger_keyword_tooltip_suppressed": {
