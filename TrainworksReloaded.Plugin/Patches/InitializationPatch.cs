@@ -196,6 +196,12 @@ namespace TrainworksReloaded.Plugin.Patches
             replacementStringRegistry.LoadData();
             logger.Log(LogLevel.Info, "Replacement strings loaded");
 
+            logger.Log(LogLevel.Info, "Ready! Now running post finalizers!");
+            foreach (var action in Railend.GetPostFinalizerActions())
+            {
+                action(container);
+            }
+
             logger.Log(LogLevel.Info, "TrainworksReloaded initialization complete!");
         }
 

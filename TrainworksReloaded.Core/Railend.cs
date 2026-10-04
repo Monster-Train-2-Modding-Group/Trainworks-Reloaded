@@ -10,6 +10,7 @@ namespace TrainworksReloaded.Core
     {
         private static readonly List<Action<Container>> PreContainerActions = [];
         private static readonly List<Action<Container>> PostContainerActions = [];
+        private static readonly List<Action<Container>> PostFinalizerActions = [];
         private static readonly ManualLogSource logger = Logger.CreateLogSource("Railend");
         private static readonly Lazy<Container> container = new(() =>
         {
@@ -57,9 +58,26 @@ namespace TrainworksReloaded.Core
             PreContainerActions.Add(action);
         }
 
+        /// <summary>
+        /// Registers an Action that runs on the container the configuration is built.
+        /// Note that GameData has not been finalized at this point so fields that reference
+        /// other GameData types will not be populated at this point and localizations will not
+        /// be uploaded to I2.Loc.
+        /// </summary>
+        /// <param name="action"></param>
         public static void ConfigurePostAction(Action<Container> action)
         {
             PostContainerActions.Add(action);
+        }
+
+        /// <summary>
+        /// Registers an action that runs on the container when all of the data is setup
+        /// and wired.
+        /// </summary>
+        /// <param name="action"></param>
+        public static void ConfigurePostFinalizerAction(Action<Container> action)
+        {
+            PostFinalizerActions.Add(action);
         }
 
         /// <summary>
@@ -70,10 +88,14 @@ namespace TrainworksReloaded.Core
         /// If you need the container instance. Use Railend.ConfigurePostAction
         /// and you will get passed the container instance which you can save at that point.
         /// </summary>
-        /// <returns></returns>
         public static Container GetContainer()
         {
             return container.Value;
+        }
+
+        public static IReadOnlyList<Action<Container>> GetPostFinalizerActions()
+        {
+            return PostFinalizerActions;
         }
     }
 }
