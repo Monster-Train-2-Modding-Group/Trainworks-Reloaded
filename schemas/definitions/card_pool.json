@@ -122,6 +122,12 @@
       ]
     },
     {
+      "type": "string",
+      "enum": [
+        "CardsThatResolveSimultaneouslyOnUnplayed"
+      ]
+    },
+    {
       "$ref": "../definitions/reference.json"
     }
   ],

@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using TrainworksReloaded.Base.Extensions;
 using TrainworksReloaded.Base.Localization;
+using TrainworksReloaded.Base.Reward;
 using TrainworksReloaded.Core.Extensions;
 using TrainworksReloaded.Core.Impl;
 using TrainworksReloaded.Core.Interfaces;
+using UnityEngine;
 
 namespace TrainworksReloaded.Base.Map
 {
@@ -17,18 +19,21 @@ namespace TrainworksReloaded.Base.Map
         private readonly IRegister<LocalizationTerm> termRegister;
         private readonly Dictionary<String, IFactory<MapNodeData>> generators;
         private readonly IGuidProvider guidProvider;
+        private readonly IModLogger<RewardDataPipeline> logger;
 
         public MapNodePipeline(
             PluginAtlas atlas,
             IEnumerable<IFactory<MapNodeData>> generators,
             IRegister<LocalizationTerm> termRegister,
-            IGuidProvider guidProvider
+            IGuidProvider guidProvider,
+            IModLogger<RewardDataPipeline> logger
         )
         {
             this.atlas = atlas;
             this.termRegister = termRegister;
             this.generators = generators.ToDictionary(xs => xs.FactoryKey);
             this.guidProvider = guidProvider;
+            this.logger = logger;
         }
 
         public List<IDefinition<MapNodeData>> Run(IRegister<MapNodeData> service)
@@ -70,12 +75,39 @@ namespace TrainworksReloaded.Base.Map
             {
                 return null;
             }
+
+            MapNodeData? data;
             var type = configuration.GetSection("type").ParseString();
-            if (type == null || !generators.TryGetValue(type, out var factory))
+            if (type == "custom_class")
             {
-                return null;
+                var classReference = configuration.GetSection("custom_class").ParseReference();
+                if (classReference == null)
+                {
+                    logger.Log(LogLevel.Error, $"Custom class type specified for {id} but no custom_class specified. path: {configuration.GetPath()}");
+                    return null;
+                }
+                var mapNodeClassName = classReference.id;
+                var modReference = classReference.mod_reference ?? key;
+                var assembly = atlas.PluginDefinitions.GetValueOrDefault(modReference)?.Assembly;
+                if (
+                    !mapNodeClassName.FindTypeFromClassName<MapNodeData>(
+                        assembly,
+                        out Type? foundType
+                    )
+                )
+                {
+                    logger.Log(LogLevel.Error, $"Failed to load map node class {mapNodeClassName} in {id} mod {modReference}, Make sure the class exists in {modReference} and that the class inherits from MapNodeData.");
+                    return null;
+                }
+                data = ScriptableObject.CreateInstance(foundType) as MapNodeData;
             }
-            var data = factory.GetValue();
+            else 
+            {
+                if (type == null || !generators.TryGetValue(type, out var factory))
+                    return null;
+                data = factory.GetValue();
+            }
+
             if (data == null)
                 return null;
 

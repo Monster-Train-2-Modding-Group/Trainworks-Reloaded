@@ -181,6 +181,13 @@ namespace TrainworksReloaded.Plugin.Patches
                 }
             }
 
+            // Setup Cards that resolve simulataneously on unplayed.
+            var cardsThatResolveSimultaneouslyOnUnplayed = cardPoolRegister.GetValueOrDefault("CardsThatResolveSimultaneouslyOnUnplayed");
+            var balanceData = ____assetLoadingData.BalanceData;
+            var resolveCards = AccessTools.Field(typeof(BalanceData), "cardsThatResolveSimultaneouslyOnUnplayed").GetValue(balanceData) as List<CardData>;
+            var set = new HashSet<CardData>();
+            cardsThatResolveSimultaneouslyOnUnplayed!.CollectAllCards(set);
+            resolveCards!.AddRange(set);
 
             //Load localization at this time
             logger.Log(LogLevel.Info, "Loading localization data...");

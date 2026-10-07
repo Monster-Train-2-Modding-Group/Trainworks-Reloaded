@@ -28,6 +28,10 @@
               }
             }
           },
+          "custom_class": {
+            "$ref": "../definitions/reference.json",
+            "description": "Only for type: custom_class. The class name which is a subclass of MapNodeData to use. You are responsible for setting fields on your subclass."
+          },
           "descriptions": {
             "$ref": "../definitions/parse_term.json",
             "description": "Localized text describing this map node."
@@ -151,6 +155,15 @@
                   "type": {
                     "enum": [
                       "random"
+                    ]
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "custom_class"
                     ]
                   }
                 }
