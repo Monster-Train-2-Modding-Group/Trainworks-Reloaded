@@ -365,24 +365,18 @@ namespace TrainworksReloaded.Base.Card
                 AccessTools.Field(typeof(CardData), "specialEdgeVFX").SetValue(data, specialEdgeVfx);
             }
 
-            var poolReferences = configuration.GetSection("pools")
-                .GetChildren()
-                .Select(x => x.ParseReference())
-                .Where(x => x != null)
-                .Cast<ReferencedObject>();
-            foreach (var poolReference in poolReferences)
+            var poolReferences = configuration.GetSection("pools").ParseReferencesWithCounts();
+            foreach (var (reference, count) in poolReferences)
             {
-                var id = poolReference.ToId(key, TemplateConstants.CardPool);
-                if (cardPoolRegister.TryLookupId(id, out var pool, out var _, poolReference.context))
+                var id = reference.ToId(key, TemplateConstants.CardPool);
+                if (cardPoolRegister.TryLookupId(id, out var pool, out var _, reference.context))
                 {
                     var cardDataList = CardPoolCardDataListField.GetValue(pool) as ReorderableArray<CardData>;
-                    cardDataList?.Add(data);
+                    cardDataList?.AddRange(Enumerable.Repeat(data, count));
                 }
             }
 
-            AccessTools
-                .Field(typeof(CardData), "fallbackData")
-                .SetValue(data, fallbackDataProvider.FallbackData);
+            AccessTools.Field(typeof(CardData), "fallbackData").SetValue(data, fallbackDataProvider.FallbackData);
         }
     }
 }

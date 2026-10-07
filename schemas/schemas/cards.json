@@ -135,7 +135,25 @@
             "type": "array",
             "description": "List of card pools this card can appear in. Optimally, for efficiency, you should only list Vanilla Card Pools here rather than your Custom Card Pools. This field can't be overriden or replaced, instead you must modify the CardPool manually via code.",
             "items": {
-              "$ref": "../definitions/card_pool.json"
+              "oneOf": [
+                {
+                  "$ref": "../definitions/card_pool.json"
+                },
+                {
+                  "type": "object",
+                  "required": [ "item", "count" ],
+                  "properties": {
+                    "item": {
+                      "$ref": "../definitions/card_pool.json"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "Number of times to add to the pool.",
+                      "minimum": 1
+                    }
+                  }
+                }
+              ] 
             }
           },
           "rarity": {

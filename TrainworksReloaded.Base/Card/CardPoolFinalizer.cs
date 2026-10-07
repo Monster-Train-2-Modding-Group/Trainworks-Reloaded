@@ -44,17 +44,13 @@ namespace TrainworksReloaded.Base.Card
 
             //handle cards
             var cardDatas = new List<CardData>();
-            var cardReferences = configuration.GetSection("cards")
-                .GetChildren()
-                .Select(x => x.ParseReference())
-                .Where(x => x != null)
-                .Cast<ReferencedObject>();
-            foreach (var reference in cardReferences)
+            var cardReferences = configuration.GetSection("cards").ParseReferencesWithCounts();
+            foreach (var (reference, count) in cardReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.Card);
                 if (cardRegister.TryLookupName(id, out var card, out var _, reference.context))
                 {
-                    cardDatas.Add(card);
+                    cardDatas.AddRange(Enumerable.Repeat(card, count));
                 }
             }
             if (cardDatas.Count != 0)

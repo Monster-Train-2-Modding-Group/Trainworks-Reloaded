@@ -43,19 +43,15 @@ namespace TrainworksReloaded.Base.Relic
             logger.Log(LogLevel.Info, $"Finalizing Soul Pool {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             var soulDatas = new List<SoulData>();
-            var soulReferences = configuration.GetSection("souls")
-               .GetChildren()
-               .Select(x => x.ParseReference())
-               .Where(x => x != null)
-               .Cast<ReferencedObject>();
-            foreach (var reference in soulReferences)
+            var soulReferences = configuration.GetSection("souls").ParseReferencesWithCounts();
+            foreach (var (reference, count) in soulReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.RelicData);
                 if (relicRegister.TryLookupName(id, out var relic, out var _, reference.context))
                 {
-                    if (relic is SoulData enhancer)
+                    if (relic is SoulData soul)
                     {
-                        soulDatas.Add(enhancer);
+                        soulDatas.AddRange(Enumerable.Repeat(soul, count));
                     }
                     else
                     {

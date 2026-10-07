@@ -15,8 +15,27 @@
           },
           "relics": {
             "items": {
-              "$ref": "../definitions/soul.json",
-              "description": "Reference to an soul's unique identifier that can appear in this pool (must be of type soul)."
+              "oneOf": [
+                {
+                  "$ref": "../definitions/soul.json",
+                  "description": "Reference to an soul's unique identifier that can appear in this pool (must be of type soul)."
+                },
+                {
+                  "type": "object",
+                  "required": [ "item", "count" ],
+                  "properties": {
+                    "item": {
+                      "$ref": "../definitions/soul.json",
+                      "description": "Reference to an soul's unique identifier that can appear in this pool (must be of type soul)."
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "Number of times to insert the card",
+                      "minimum": 1
+                    }
+                  }
+                }
+              ]
             },
             "type": "array",
             "description": "List of soul references that can appear in this pool."

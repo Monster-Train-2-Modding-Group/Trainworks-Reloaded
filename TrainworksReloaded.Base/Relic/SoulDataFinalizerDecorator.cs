@@ -105,19 +105,15 @@ namespace TrainworksReloaded.Base.Relic
             }
             LinkedClassField.SetValue(soul, linkedClass);
 
-            var poolReferences = configuration.GetSection("pools")
-                .GetChildren()
-                .Select(x => x.ParseReference())
-                .Where(x => x != null)
-                .Cast<ReferencedObject>();
-            foreach (var poolReference in poolReferences)
+            var poolReferences = configuration.GetSection("pools").ParseReferencesWithCounts();
+            foreach (var (reference, count) in poolReferences)
             {
-                var id = poolReference.ToId(key, TemplateConstants.SoulPool);
-                if (soulPoolRegister.TryLookupId(id, out var pool, out var _, poolReference.context))
+                var id = reference.ToId(key, TemplateConstants.SoulPool);
+                if (soulPoolRegister.TryLookupId(id, out var pool, out var _, reference.context))
                 {
                     var relicDataList = SoulPoolRelicDataListField.GetValue(pool) as ReorderableArray<SoulData>;
-                    relicDataList?.Add(soul);
-                    logger.Log(LogLevel.Debug, $"Added soul {definition.Id.ToId(key, TemplateConstants.RelicData)} to pool: {pool}");
+                    relicDataList?.AddRange(Enumerable.Repeat(soul, count));
+                    logger.Log(LogLevel.Debug, $"Added soul {definition.Id.ToId(key, TemplateConstants.RelicData)} to pool: {pool} {count} time(s).");
                 }
             }
         }

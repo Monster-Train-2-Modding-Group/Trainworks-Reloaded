@@ -15,8 +15,27 @@
           },
           "relics": {
             "items": {
-              "$ref": "../definitions/collectable_relic.json",
-              "description": "Reference to an relic's unique identifier that can appear in this pool (must be of type collectable)."
+              "oneOf": [
+                {
+                  "$ref": "../definitions/collectable_relic.json",
+                  "description": "Reference to an relic's unique identifier that can appear in this pool (must be of type collectable)."
+                },
+                {
+                  "type": "object",
+                  "required": [ "item", "count" ],
+                  "properties": {
+                    "item": {
+                      "$ref": "../definitions/collectable_relic.json",
+                      "description": "Reference to an relic's unique identifier that can appear in this pool (must be of type collectable)."
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "Number of times to insert the card",
+                      "minimum": 1
+                    }
+                  }
+                }
+              ]
             },
             "type": "array",
             "description": "List of relics references that can appear in this pool."

@@ -15,8 +15,27 @@
           },
           "cards": {
             "items": {
-              "$ref": "../definitions/card.json",
-              "description": "Reference to a card's unique identifier that can appear in this pool."
+              "oneOf": [
+                {
+                  "$ref": "../definitions/card.json",
+                  "description": "Reference to a card's unique identifier that can appear in this pool."
+                },
+                {
+                  "type": "object",
+                  "required": ["item", "count"],
+                  "properties": {
+                    "item": {
+                      "$ref": "../definitions/card.json",
+                      "description": "Reference to a card's unique identifier that can appear in this pool."
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "Number of times to insert the card",
+                      "minimum": 1
+                    }
+                  }
+                }
+              ]
             },
             "type": "array",
             "description": "List of card references that can appear in this pool."

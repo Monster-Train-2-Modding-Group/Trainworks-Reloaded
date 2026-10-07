@@ -43,19 +43,15 @@ namespace TrainworksReloaded.Base.Relic
             logger.Log(LogLevel.Info, $"Finalizing Relic Pool {definition.Key} {definition.Id} path: {configuration.GetPath()}...");
 
             var relicDatas = new List<CollectableRelicData>();
-            var relicReferences = configuration.GetSection("relics")
-               .GetChildren()
-               .Select(x => x.ParseReference())
-               .Where(x => x != null)
-               .Cast<ReferencedObject>();
-            foreach (var reference in relicReferences)
+            var relicReferences = configuration.GetSection("relics").ParseReferencesWithCounts();
+            foreach (var (reference, count) in relicReferences)
             {
                 var id = reference.ToId(key, TemplateConstants.RelicData);
                 if (relicRegister.TryLookupName(id, out var relic, out var _, reference.context))
                 {
                     if (relic is CollectableRelicData collectable)
                     {
-                        relicDatas.Add(collectable);
+                        relicDatas.AddRange(Enumerable.Repeat(collectable, count));
                     }
                     else
                     {

@@ -150,7 +150,25 @@
                               "type": "array",
                               "description": "Pools to add this relic to. Not override-able or replaceable. To change pools of an existing collectable relic you must edit the RelicPool it belongs to in code.",
                               "items": {
-                                "$ref": "../definitions/relic_pool.json"
+                                "oneOf": [
+                                  {
+                                    "$ref": "../definitions/relic_pool.json"
+                                  },
+                                  {
+                                    "type": "object",
+                                    "required": [ "item", "count" ],
+                                    "properties": {
+                                      "item": {
+                                        "$ref": "../definitions/relic_pool.json"
+                                      },
+                                      "count": {
+                                        "type": "integer",
+                                        "description": "Number of times to add to the pool.",
+                                        "minimum": 1
+                                      }
+                                    }
+                                  }
+                                ]
                               }
                             },
                             "rarity": {
@@ -204,7 +222,25 @@
                               "type": "array",
                               "description": "Pools to add this enhancer to. Not override-able or replaceable. To change pools of an existing enhancer you must edit the EnhancerPool it belongs to in code.",
                               "items": {
-                                "$ref": "../definitions/enhancer_pool.json"
+                                "oneOf": [
+                                  {
+                                    "$ref": "../definitions/enhancer_pool.json"
+                                  },
+                                  {
+                                    "type": "object",
+                                    "required": [ "item", "count" ],
+                                    "properties": {
+                                      "item": {
+                                        "$ref": "../definitions/enhancer_pool.json"
+                                      },
+                                      "count": {
+                                        "type": "integer",
+                                        "description": "Number of times to add to the pool.",
+                                        "minimum": 1
+                                      }
+                                    }
+                                  }
+                                ]
                               }
                             },
                             "rarity": {
@@ -331,8 +367,29 @@
                               "description": "Max battles completed to draft this soul."
                             },
                             "pools": {
-                              "$ref": "../definitions/soul_pool.json",
-                              "description": "Soul pools to add this soul to. Only necessary for T1 souls."
+                              "type": "array",
+                              "items": {
+                                "oneOf": [
+                                  {
+                                    "$ref": "../definitions/soul_pool.json"
+                                  },
+                                  {
+                                    "type": "object",
+                                    "required": [ "item", "count" ],
+                                    "properties": {
+                                      "item": {
+                                        "$ref": "../definitions/soul_pool.json"
+                                      },
+                                      "count": {
+                                        "type": "integer",
+                                        "description": "Number of times to add to the pool.",
+                                        "minimum": 1
+                                      }
+                                    }
+                                  }
+                                ]
+                              },
+                              "description": "Soul pools to add this soul to. Only necessary for T1 souls. Not overrideable or replacable"
                             }
                           }
                         }
