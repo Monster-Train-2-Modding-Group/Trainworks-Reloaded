@@ -273,15 +273,13 @@ namespace TrainworksReloaded.Base.Class
             if (modded)
             {
                 service.Register(name, data);
-
                 // Register a CardPool for the Banner-ed Mutator. The cards will be auto-added to this pool later.
+                string cardPoolKey = key.GetId(TemplateConstants.CardPool, $"Units{id}BannerReplacementMutator");
                 CardPool replacementCardPool = ScriptableObject.CreateInstance<CardPool>();
-                replacementCardPool.name = $"Units{id}BannerReplacementMutator";
-                string cardPoolKey = replacementCardPool.name.ToId(key, TemplateConstants.CardPool);
+                replacementCardPool.name = cardPoolKey;
                 cardPoolRegister.Register(cardPoolKey, replacementCardPool);
                 cardPoolRegister.RegisterBannerReplacementPool(name, replacementCardPool);
             }
-                
 
             return new ClassDataDefinition(key, data, configuration, !modded);
         }

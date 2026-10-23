@@ -14,7 +14,7 @@
           },
           "can_ability_target_other_floors": {
             "type": "boolean",
-            "description": "Whether this card's ability can target other floors.",
+            "description": "(Only for unit abilities) Whether this card's ability can target other floors.",
             "default": false
           },
           "card_art": {
