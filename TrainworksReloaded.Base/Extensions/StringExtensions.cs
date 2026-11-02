@@ -100,12 +100,10 @@ namespace TrainworksReloaded.Base.Extensions
         /// <param name="template">TemplateConstant sepcifying the type of GameObject do not hardcode.</param>
         /// <param name="subtemplate">Required if TemplateConstant is GameObject, specify the type of GameObject again do not hardcode.</param>
         /// <returns>The Mod GUID. (In the case of a StatusEffect it will be all lowercase)</returns>
-        public static string ExtractModGuid(this string fullyQualifiedId, string? template, string? subtemplate)
+        public static string ExtractModGuid(this string fullyQualifiedId, string template, string? subtemplate = null)
         {
             if (string.IsNullOrEmpty(fullyQualifiedId))
-            {
                 return string.Empty;
-            }
 
             if (template == TemplateConstants.GameObject)
             {
@@ -121,30 +119,80 @@ namespace TrainworksReloaded.Base.Extensions
 
                 if (prefix != null && fullyQualifiedId.StartsWith(prefix))
                 {
-                    // Remainder is "{key}_{id}"
-                    string remainder = fullyQualifiedId.Substring(prefix.Length);
-                    int underscoreIdx = remainder.IndexOf('_');
-                    return underscoreIdx >= 0 ? remainder.Substring(0, underscoreIdx) : remainder;
+                    return ExtractSegment(fullyQualifiedId.Substring(prefix.Length), '_');
                 }
 
-                // Fallback for null subtemplate / unknown GameObject matches the default: "{key}-{template}-{id}"
-                return ExtractFirstHyphenSegment(fullyQualifiedId);
+                return ExtractSegment(fullyQualifiedId, '-');
             }
-
-            if (template == TemplateConstants.StatusEffect)
+            else if (template == TemplateConstants.StatusEffect)
             {
-                // Format is "{key}_{id}".ToLowerInvariant()
-                int underscoreIdx = fullyQualifiedId.IndexOf('_');
-                return underscoreIdx >= 0 ? fullyQualifiedId.Substring(0, underscoreIdx) : fullyQualifiedId;
+                return ExtractSegment(fullyQualifiedId, '_');
             }
 
-            // Default format: "{key}-{template}-{id}"
-            return ExtractFirstHyphenSegment(fullyQualifiedId);
+            return ExtractSegment(fullyQualifiedId, '-');
         }
-        private static string ExtractFirstHyphenSegment(string input)
+
+        /// <summary>
+        /// Given a fully qualified ID and its mod GUID extracts the ID from the string.
+        /// The fully qualified ID must be from the Mod GUID specified
+        /// </summary>
+        /// <param name="fullyQualifiedId"></param>
+        /// <param name="key">The Mod's GUID</param>
+        /// <param name="template">The TemplateConstant specifying the type. Do not hardcode.</param>
+        /// <param name="subtemplate">Optional For GameObjects the subtype. Do not hardcode.</param>
+        /// <returns>The ID if it is modded content from the mod GUID. Otherwise returns the fullyQualifiedID that called this function.</returns>
+        public static string ExtractId(this string fullyQualifiedId, string key, string template, string? subtemplate = null)
         {
-            int hyphenIdx = input.IndexOf('-');
-            return hyphenIdx >= 0 ? input.Substring(0, hyphenIdx) : input;
+            if (string.IsNullOrEmpty(fullyQualifiedId))
+                return string.Empty;
+
+            if (string.IsNullOrEmpty(key))
+                return fullyQualifiedId;
+
+            if (template == TemplateConstants.GameObject)
+            {
+                string? prefix = subtemplate switch
+                {
+                    TemplateConstants.SubtemplateGameObjectCharacterArt => $"Character_{key}_",
+                    TemplateConstants.SubtemplateGameObjectCardArt => $"CardArt_{key}_",
+                    TemplateConstants.SubtemplateGameObjectStoryArt => $"Event_Background_{key}_",
+                    TemplateConstants.SubtemplateGameObjectMapNodeIcon => $"POIart_Map_{key}_",
+                    TemplateConstants.SubtemplateGameObjectVfx => $"FX_{key}_",
+                    _ => null
+                };
+
+                if (prefix != null)
+                {
+                    return fullyQualifiedId.StartsWith(prefix)
+                        ? fullyQualifiedId.Substring(prefix.Length)
+                        : fullyQualifiedId;
+                }
+            }
+            else if (template == TemplateConstants.StatusEffect)
+            {
+                // StatusEffect lowercases the entire string
+                string statusPrefix = $"{key}_".ToLowerInvariant();
+                return fullyQualifiedId.StartsWith(statusPrefix)
+                    ? fullyQualifiedId.Substring(statusPrefix.Length)
+                    : fullyQualifiedId;
+            }
+
+            // Default modded format: "{key}-{template}-{id}"
+            string defaultPrefix = $"{key}-{template}-";
+            return fullyQualifiedId.StartsWith(defaultPrefix)
+                ? fullyQualifiedId.Substring(defaultPrefix.Length)
+                : fullyQualifiedId;
+        }
+
+        private static string ExtractSegment(string input, char delimiter, bool fromEnd = false)
+        {
+            int index = fromEnd ? input.LastIndexOf(delimiter) : input.IndexOf(delimiter);
+            if (index < 0)
+            {
+                return input;
+            }
+
+            return fromEnd ? input.Substring(index + 1) : input.Substring(0, index);
         }
 
         private static string FormId(string key, string template, string id)
