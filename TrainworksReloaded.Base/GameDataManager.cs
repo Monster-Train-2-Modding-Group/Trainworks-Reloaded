@@ -169,6 +169,21 @@ namespace TrainworksReloaded.Base
         public StoryEventData GetStoryEvent(string id, string? pluginGuid = null) =>
             GetFromRegister<StoryEventData>(TemplateConstants.StoryEvent, id, pluginGuid)!;
 
+        public GameObject GetCardArt(string id, string? pluginGuid = null) =>
+            GetFromRegisterWithSubtype<GameObject>(TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectCardArt, id, pluginGuid)!;
+
+        public GameObject GetCharacterArt(string id, string? pluginGuid = null) =>
+            GetFromRegisterWithSubtype<GameObject>(TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectCharacterArt, id, pluginGuid)!;
+
+        public GameObject GetMapNodeIcon(string id, string? pluginGuid = null) =>
+            GetFromRegisterWithSubtype<GameObject>(TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectMapNodeIcon, id, pluginGuid)!;
+
+        public GameObject GetStoryArt(string id, string? pluginGuid = null) =>
+            GetFromRegisterWithSubtype<GameObject>(TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectStoryArt, id, pluginGuid)!;
+
+        public GameObject GetVfxGameObject(string id, string? pluginGuid = null) =>
+            GetFromRegisterWithSubtype<GameObject>(TemplateConstants.GameObject, TemplateConstants.SubtemplateGameObjectVfx, id, pluginGuid)!;
+
         public SaveManager GetSaveManager()
         {
             // Should always be available, generally.
@@ -180,6 +195,14 @@ namespace TrainworksReloaded.Base
             var register = container.GetInstance<IRegister<T>>();
             var resolvedGuid = pluginGuid ?? defaultPluginGuid;
             var fullId = resolvedGuid.GetId(templateConstant, id);
+            return register.GetValueOrDefault(fullId);
+        }
+
+        private T? GetFromRegisterWithSubtype<T>(string templateConstant, string subtype, string id, string? pluginGuid = null)
+        {
+            var register = container.GetInstance<IRegister<T>>();
+            var resolvedGuid = pluginGuid ?? defaultPluginGuid;
+            var fullId = resolvedGuid.GetId(templateConstant, subtype, id);
             return register.GetValueOrDefault(fullId);
         }
 
