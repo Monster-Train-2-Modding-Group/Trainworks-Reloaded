@@ -1,5 +1,4 @@
 ﻿using BepInEx.Logging;
-using static RimLight;
 
 namespace TrainworksReloaded.Base.Extensions
 {
