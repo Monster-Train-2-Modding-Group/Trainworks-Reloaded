@@ -75,6 +75,7 @@
         "CardTraitScalingCardDrawCountPerPile",
         "CardTraitScalingDrawAdditionalNextTurn",
         "CardTraitScalingFeederRules",
+        "CardTraitScalingGainDevotion",
         "CardTraitScalingHeal",
         "CardTraitScalingHealTrain",
         "CardTraitScalingMagicPowerOnMoonPhase",

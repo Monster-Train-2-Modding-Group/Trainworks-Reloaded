@@ -184,6 +184,9 @@ namespace TrainworksReloaded.Base.CardUpgrade
             var disabledReason = configuration.GetSection("disabled_reason").ParseUpgradeDisabledReason() ?? CardState.UpgradeDisabledReason.NONE;
             AccessTools.Field(typeof(CardUpgradeMaskData), "upgradeDisabledReason").SetValue(data, disabledReason);
 
+            var useBaseCostForCostRange = configuration.GetSection("use_base_cost_for_cost_range").ParseBool () ?? false;
+            AccessTools.Field(typeof(CardUpgradeMaskData), "useBaseCostForCostRange").SetValue(data, useBaseCostForCostRange);
+
             List<string> requiredEffects = [];
             foreach (var child in configuration.GetSection("required_effects").GetChildren())
             {

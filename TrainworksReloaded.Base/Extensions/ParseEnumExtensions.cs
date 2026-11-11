@@ -162,6 +162,7 @@ namespace TrainworksReloaded.Base.Extensions
             {
                 "none" => DLC.None,
                 "railforged" => DLC.Railforged,
+                "punished" => DLC.Punished,
                 _ => null,
             };
         }

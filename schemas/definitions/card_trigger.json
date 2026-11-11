@@ -19,7 +19,9 @@
         "on_feed",
         "on_exhausted",
         "on_unplayed_positive",
-        "on_forge"
+        "on_forge",
+        "on_forsaken",
+        "on_spare"
       ]
     },
     {

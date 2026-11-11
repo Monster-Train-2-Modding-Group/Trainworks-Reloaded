@@ -197,7 +197,11 @@
           },
           "prevent_abilities_from_equipment": {
             "type": "boolean",
-            "description": "Prevents ability from being overwritten by equipment"
+            "description": "Prevents ability from being overwritten by equipment."
+          },
+          "prevents_bumping": {
+            "type": "boolean",
+            "description": "Prevents the player from Ascending/Descending this character."
           },
           "projectile_vfx": {
             "$ref": "../definitions/vfx.json",

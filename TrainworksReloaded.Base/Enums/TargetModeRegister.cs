@@ -44,7 +44,12 @@ namespace TrainworksReloaded.Base.Enums
             ["last_sacrificed_character"] = TargetMode.LastSacrificedCharacter,
             ["dying_character"] = TargetMode.DyingCharacter,
             ["last_spawned_character"] = TargetMode.LastSpawnedCharacter,
-            ["random_from_any_room"] = TargetMode.RandomFromAnyRoom
+            ["random_from_any_room"] = TargetMode.RandomFromAnyRoom,
+            ["in_front_of_self"] = TargetMode.InFrontOfSelf,
+            ["room_except_drop_target"] = TargetMode.RoomExceptDropTarget,
+            ["room_except_self"] = TargetMode.RoomExceptSelf,
+            ["strongest"] = TargetMode.Strongest,
+            ["weakest_except_self"] = TargetMode.WeakestExceptSelf
         };
 
         private readonly IModLogger<TargetModeRegister> logger;

@@ -174,6 +174,11 @@ namespace TrainworksReloaded.Base.Character
                 .Field(typeof(CharacterData), "canAttack")
                 .SetValue(data, configuration.GetSection("can_attack").ParseBool() ?? canAttack);
 
+            var preventsBumping = copyData.GetPreventsBumping();
+            AccessTools
+                .Field(typeof(CharacterData), "preventsBumping")
+                .SetValue(data, configuration.GetSection("prevents_bumping").ParseBool() ?? preventsBumping);
+
             var ascendsTrainAutomatically = copyData.GetAscendsTrainAutomatically();
             AccessTools
                 .Field(typeof(CharacterData), "ascendsTrainAutomatically")

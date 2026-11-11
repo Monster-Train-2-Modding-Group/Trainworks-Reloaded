@@ -247,6 +247,10 @@
           "required_upgrades_operator": {
             "$ref": "../definitions/compare_operator.json",
             "description": "Operator for required upgrades."
+          },
+          "use_base_cost_as_cost_range": {
+            "type": "boolean",
+            "description": "Use the base cost (not the upgraded cost) of the card when filtering."
           }
         },
         "description": "An upgrade mask definition that specifies which cards are eligible for upgrades based on various criteria."

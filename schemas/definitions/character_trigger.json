@@ -71,7 +71,15 @@
         "on_attacking_before_damage",
         "on_silence",
         "on_silence_lost",
-        "on_pre_own_ability_activated"
+        "on_pre_own_ability_activated",
+        "on_bloodshed",
+        "on_exile",
+        "on_exile_lost",
+        "on_punish",
+        "on_round_start",
+        "on_spawn_late",
+        "on_vanguard",
+        "on_vanguard_lost"
       ]
     },
     {

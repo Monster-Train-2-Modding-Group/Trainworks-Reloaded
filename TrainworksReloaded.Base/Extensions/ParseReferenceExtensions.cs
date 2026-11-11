@@ -65,7 +65,7 @@ namespace TrainworksReloaded.Base.Extensions
             return reference == null ? null : (reference, 1);
         }
 
-        public static IEnumerable<ReferencedObject?> ParseReferences(this IConfigurationSection section)
+        public static IEnumerable<ReferencedObject> ParseReferences(this IConfigurationSection section)
         {
             return section.GetChildren().Select(x => x.ParseReference()).Where(x => x != null).Cast<ReferencedObject>();
         }

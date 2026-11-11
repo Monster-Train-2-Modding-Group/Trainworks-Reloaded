@@ -47,6 +47,8 @@ namespace TrainworksReloaded.Base.Enums
             ["on_post_spawn"] = StatusEffectData.TriggerStage.OnPostSpawn,
             ["on_pre_attacked_life_link"] = StatusEffectData.TriggerStage.OnPreAttackedLifeLink,
             ["on_pre_attacked_titan_skin"] = StatusEffectData.TriggerStage.OnPreAttackedTitanSkin,
+            ["on_pre_attacked_tenacious"] = StatusEffectData.TriggerStage.OnPreAttackedTenacious,
+            ["on_monster_team_unit_damaged"] = StatusEffectData.TriggerStage.OnMonsterTeamUnitDamaged
         };
 
         public StatusEffectTriggerStageRegister(IModLogger<StatusEffectTriggerStageRegister> logger)

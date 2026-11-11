@@ -4,6 +4,7 @@
     "type": "string",
     "enum": [
       "none",
-      "railforged"
+      "railforged",
+      "punished"
     ]
 }

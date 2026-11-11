@@ -40,6 +40,14 @@
             "type": "boolean",
             "description": "Disables modification of status effect stacks (Disables modification from Dualism, CardTraits, Relics, etc.)"
           },
+          "devotion_requirement": {
+            "type": "integer",
+            "description": "Punished specific - Devotion requirement."
+          },
+          "devotion_requirement_max": {
+            "type": "integer",
+            "description": "Punished specific - Max Devotion requirement."
+          },
           "filter_based_on_main_sub_class": {
             "type": "boolean",
             "description": "Whether to filter cards from card pool parameter based on the primary or allied clan."
@@ -48,6 +56,10 @@
             "type": "boolean",
             "description": "Whether to hide this card effect's tooltips.",
             "default": false
+          },
+          "hide_description_as_trait": {
+            "type": "boolean",
+            "description": "For Card Effects that automatically add a trait keyword, setting this to true suppresses that. i.e CardEffectSacrifice adds the Sacrifice keyword to the card."
           },
           "id": {
             "type": "string",

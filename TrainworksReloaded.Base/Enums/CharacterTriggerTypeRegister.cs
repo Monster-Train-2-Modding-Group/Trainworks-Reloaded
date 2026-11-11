@@ -82,6 +82,17 @@ namespace TrainworksReloaded.Base.Enums
             ["on_silence"] = CharacterTriggerData.Trigger.OnSilence,
             ["on_silence_lost"] = CharacterTriggerData.Trigger.OnSilenceLost,
             ["on_pre_own_ability_activated"] = CharacterTriggerData.Trigger.OnPreOwnAbilityActivated,
+            ["on_bloodshed"] = CharacterTriggerData.Trigger.OnBloodshed,
+            ["on_exile"] = CharacterTriggerData.Trigger.OnExile,
+            ["on_exile_lost"] = CharacterTriggerData.Trigger.OnExileLost,
+            ["on_punish"] = CharacterTriggerData.Trigger.OnPunish,
+            ["on_round_start"] = CharacterTriggerData.Trigger.OnRoundStart,
+            ["on_spawn_late"] = CharacterTriggerData.Trigger.OnSpawnLate,
+            ["on_vanguard"] = CharacterTriggerData.Trigger.OnVanguard,
+            ["on_vanguard_lost"] = CharacterTriggerData.Trigger.OnVanguardLost,
+
+
+
         };
 
         public CharacterTriggerTypeRegister(IModLogger<CharacterTriggerRegister> logger)

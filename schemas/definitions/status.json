@@ -89,6 +89,12 @@
         "untouchable",
         "valor",
         "witherbloom",
+        "tenacious",
+        "chained",
+        "sineater",
+        "spite",
+        "pain",
+        "zeal",
         null
       ]
     },
@@ -108,7 +114,9 @@
         "splash",
         "steelguard",
         "waningmoon",
-        "waxingmoon"
+        "waxingmoon",
+        "burden",
+        "enmity"
       ]
     },
     {

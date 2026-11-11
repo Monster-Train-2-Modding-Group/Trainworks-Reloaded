@@ -356,6 +356,21 @@ namespace TrainworksReloaded.Base.Effect
                 .Field(typeof(CardEffectData), "paramTimingDelays")
                 .SetValue(data, timingDelays);
 
+            var devotionRequirement = configuration.GetSection("devotion_requirement").ParseInt() ?? data.GetDevotionRequirement();
+            AccessTools
+                .Field(typeof(CardEffectData), "devotionRequirement")
+                .SetValue(data, devotionRequirement);
+
+            var devotionRequirementMax = configuration.GetSection("devotion_requirement_max").ParseInt() ?? data.GetDevotionRequirementMax();
+            AccessTools
+                .Field(typeof(CardEffectData), "devotionRequirementMax")
+                .SetValue(data, devotionRequirementMax);
+
+            var hideDescriptionAsTrait = configuration.GetSection("hide_description_as_trait").ParseBool() ?? data.GetHideDescriptionAsTrait();
+            AccessTools
+                .Field(typeof(CardEffectData), "hideDescriptionAsTrait")
+                .SetValue(data, hideDescriptionAsTrait);
+
             service.Register(name, data);
             return new CardEffectDefinition(key, data, configuration);
         }

@@ -156,6 +156,10 @@
               "$ref": "../definitions/reference.json"
             }
           },
+          "excluded_classes": {
+            "$ref": "../definitions/classes.json",
+            "description": "Excluded clans for this event."
+          },
           "possible_rewards": {
             "type": "array",
             "items": {

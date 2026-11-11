@@ -24,7 +24,12 @@ namespace TrainworksReloaded.Base.Card
             VanillaCardPools.AddRange(Resources.FindObjectsOfTypeAll<CardPool>().ToDictionary(x => x.name, x => x));
             VanillaCardPools.Remove("ModdedPool");
             this.AddRange(VanillaCardPools);
-            Add("CardsThatResolveSimultaneouslyOnUnplayed", ScriptableObject.CreateInstance<CardPool>());
+            var resolveSimultaneouslyCardPool = ScriptableObject.CreateInstance<CardPool>();
+            resolveSimultaneouslyCardPool.name = "CardsThatResolveSimultaneouslyOnUnplayed";
+            Add(resolveSimultaneouslyCardPool.name, resolveSimultaneouslyCardPool);
+            var cardsThatTargetMultipleRooms = ScriptableObject.CreateInstance<CardPool>();
+            cardsThatTargetMultipleRooms.name = "CardsThatTargetMultipleRooms";
+            Add(cardsThatTargetMultipleRooms.name, cardsThatTargetMultipleRooms);
             FormVanillaClassDraftableCardPools();
         }
 

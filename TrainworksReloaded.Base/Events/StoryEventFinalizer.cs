@@ -38,6 +38,7 @@ namespace TrainworksReloaded.Base.Events
         private readonly IRegister<AssetReferenceGameObject> assetReferenceRegister;
         private readonly IRegister<StoryEventPoolData> poolRegister;
         private readonly IRegister<LocalizationTerm> termRegister;
+        private readonly IRegister<ClassData> classRegister;
 
         private readonly FieldInfo StoryEventDataEventPrefabField = AccessTools.Field(typeof(StoryEventData), "eventPrefab");
         private readonly FieldInfo StoryEventPoolStoryListField = AccessTools.Field(typeof(StoryEventPoolData), "storyEvents");
@@ -57,6 +58,7 @@ namespace TrainworksReloaded.Base.Events
             IRegister<CardUpgradeData> upgradeRegister,
             IRegister<StoryEventPoolData> poolRegister,
             IRegister<LocalizationTerm> termRegister,
+            IRegister<ClassData> classRegister,
             IRegister<AssetReferenceGameObject> assetReferenceRegister
         )
         {
@@ -87,6 +89,7 @@ namespace TrainworksReloaded.Base.Events
             this.assetReferenceRegister = assetReferenceRegister;
             this.poolRegister = poolRegister;
             this.termRegister = termRegister;
+            this.classRegister = classRegister;
             DefaultEventPrefab = StoryEventDataEventPrefabField.GetValue(saveManager.GetAllGameData().FindStoryEventDataByName("TextAnimationsTestEvent")) as AssetReferenceGameObject;
         }
 
@@ -157,6 +160,18 @@ namespace TrainworksReloaded.Base.Events
                 }
             }
             AccessTools.Field(typeof(StoryEventData), "possibleRewards").SetValue(data, possibleRewards);
+
+            List<ClassData> excludedClasses = [];
+            var classReferences = configuration.GetSection("excluded_classes").ParseReferences();
+            foreach (var classReference in classReferences)
+            {
+                var id = classReference.ToId(key, TemplateConstants.Class);
+                if (classRegister.TryLookupName(id, out var classData, out var _, classReference.context))
+                {
+                    excludedClasses.Add(classData);
+                }
+            }
+            AccessTools.Field(typeof(StoryEventData), "excludedClasses").SetValue(data, excludedClasses);
 
             ParseFollowupEvents(key, configuration.GetSection("followup_events"), data);
 

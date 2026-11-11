@@ -38,7 +38,12 @@
         "last_sacrificed_character",
         "last_spawned_character",
         "strongest_last_targeted_characters",
-        "strongest_last_targeted_characters_room"
+        "strongest_last_targeted_characters_room",
+        "in_front_of_self",
+        "room_except_drop_target",
+        "room_except_self",
+        "strongest",
+        "weakest_except_self"
       ]
     },
     {

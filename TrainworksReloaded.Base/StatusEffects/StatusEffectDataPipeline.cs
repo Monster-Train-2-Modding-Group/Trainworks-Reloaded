@@ -173,6 +173,11 @@ namespace TrainworksReloaded.Base.StatusEffects
                 .Field(typeof(StatusEffectData), "removeDuringDeployment")
                 .SetValue(data, configuration.GetSection("remove_during_deployment").ParseBool() ?? removeDuringDeployment);
 
+            var removeWhenChangingFloors = false;
+            AccessTools
+                .Field(typeof(StatusEffectData), "removeWhenChangingFloors")
+                .SetValue(data, configuration.GetSection("remove_when_changing_floors").ParseBool() ?? removeWhenChangingFloors);
+
             var removeWhenTriggered = false;
             AccessTools
                 .Field(typeof(StatusEffectData), "removeWhenTriggered")
