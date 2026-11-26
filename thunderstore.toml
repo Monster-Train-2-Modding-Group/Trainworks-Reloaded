@@ -4,13 +4,12 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "MT2"
 name = "Trainworks_Reloaded"
-versionNumber = "0.8.0"
+versionNumber = "0.8.1"
 description = "A Data Loader and Injection Engine for Monster Train 2"
 websiteUrl = "https://github.com/Monster-Train-2-Modding-Group/Trainworks-Reloaded"
 containsNsfwContent = false
 [package.dependencies]
 BepInEx-BepInExPack = "5.4.2100"
-
 
 [build]
 icon = "./icon.png"
@@ -20,7 +19,6 @@ outdir = "./"
 [[build.copy]]
 source = "./plugin_build"
 target = ""
-
 
 [publish]
 repository = "https://thunderstore.io"
