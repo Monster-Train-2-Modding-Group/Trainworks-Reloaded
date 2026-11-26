@@ -23,11 +23,11 @@
             },
             "base_layer": {
               "$ref": "../definitions/effect_layer.json",
-              "description": "Base layer, should be of type texture with the texture being optimally sized ~260x260 with a maximum of 468x468."
+              "description": "Base layer, should be of type texture with the texture being optimally sized ~260x260 with a maximum of 468x468. Should only be set if using Shiny Shoe's layered card art otherwise simply set sprite for a static image."
             },
             "layers": {
               "type": "array",
-              "description": "Configures a layered effect.",
+              "description": "Configures a layered effect. This should only be set if intending to use Shiny Shoe's native animated card art. Otherwise simply set sprite for a simple image for your card_art.",
               "items": {
                 "$ref": "../definitions/effect_layer.json"
               },
