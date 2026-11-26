@@ -6,6 +6,7 @@ using ShinyShoe.Logging;
 using SimpleInjector;
 using Spine;
 using Spine.Unity;
+using System.Reflection;
 using TrainworksReloaded.Base;
 using TrainworksReloaded.Base.Card;
 using TrainworksReloaded.Base.CardUpgrade;
@@ -469,6 +470,28 @@ namespace TrainworksReloaded.Plugin
             var type = typeof(VfxRegister).Assembly.FindTypeByClassName(typeName);
             if (type == null) return null;
             return Container.Value.GetInstance(type);
+        }
+
+        internal static void AuditFrameworkPatches()
+        {
+            List<Assembly> frameworkAssemblies = [typeof(Railhead).Assembly, typeof(Plugin).Assembly, typeof(Roundhouse).Assembly];
+
+            foreach (var method in Harmony.GetAllPatchedMethods())
+            {
+                if (!frameworkAssemblies.Contains(method.DeclaringType.Assembly)) continue;
+
+                var patches = Harmony.GetPatchInfo(method);
+                var patchTargets = string.Join(", ", patches.Prefixes.Concat(patches.Postfixes).Concat(patches.Transpilers)
+                           .Select(p => $"{p.owner} ({p.PatchMethod.DeclaringType?.FullName}.{p.PatchMethod.Name})"));
+
+                Logger.LogWarning(
+                    $"[Trainworks-Reloaded] UNSUPPORTED INTERNAL PATCH DETECTED on '{method.DeclaringType.FullName}.{method.Name}' " +
+                    $"applied by: {patchTargets}. " +
+                    $"Internal framework methods may change without notice and will break your mod. " +
+                    $"ACTION REQUIRED: Remove this HarmonyPatch and use the public API TrainworksReloaded.Base.Roundhouse or TrainworksReloaded.Core.Railend instead. " +
+                    $"If there is a specific use-case for a hook into the framework's initialization or wanted feature missing in the JSON schema please file a feature request in the TrainworksReloaded repo." +
+                    $"Or make a request in the ShinyShoe discord #mt2-modding channel.");
+            }
         }
     }
 }

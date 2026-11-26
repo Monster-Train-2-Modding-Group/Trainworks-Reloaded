@@ -33,7 +33,7 @@
           "properties": {
             "sprite": {
               "$ref": "../definitions/reference.json",
-              "description": "Reference to the character art sprite. This is used in silhouttes and the character if no skeleton animations are provided."
+              "description": "Reference to the character art sprite. This is used in silhouttes and the character if no skeleton animations are provided (Maximum recommended size 500x500)."
             },
             "layer": {
               "type": "integer",

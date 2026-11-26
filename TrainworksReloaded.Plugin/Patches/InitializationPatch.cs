@@ -209,6 +209,8 @@ namespace TrainworksReloaded.Plugin.Patches
                 action(container);
             }
 
+            Plugin.AuditFrameworkPatches();
+
             logger.Log(LogLevel.Info, "TrainworksReloaded initialization complete!");
         }
 

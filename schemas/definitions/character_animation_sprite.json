@@ -6,17 +6,19 @@
   "properties": {
     "animation": {
       "$ref": "../definitions/anim.json",
-      "description": "Animation type. The Attack animation must not exceed 0.5s and Death animation must not excced 0.7s"
+      "description": "Animation type. The Attack animation must not exceed 0.5s and Death animation must not excced 0.7s. (Framerate * number of frames)"
     },
     "frames": {
       "type": "array",
       "items": {
         "$ref": "../definitions/reference.json"
-      }
+      },
+      "description": "Array of references to sprites (maximum size 500x500) representing the frames of the animation."
     },
     "framerate": {
       "type": "number",
-      "default": 12.0
+      "default": 12.0,
+      "description": "Frame rate of the animation."
     },
     "adjustment": {
       "$ref": "../definitions/vec2.json",

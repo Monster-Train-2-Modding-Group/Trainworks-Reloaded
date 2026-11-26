@@ -14,6 +14,7 @@ using UnityEngine.Rendering;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
 using static CharacterUI;
+using static RotaryHeart.Lib.DataBaseExample;
 
 namespace TrainworksReloaded.Base.Prefab
 {
@@ -115,6 +116,13 @@ namespace TrainworksReloaded.Base.Prefab
             {
                 return;
             }
+
+            if (sprite.texture.width > 500 || sprite.texture.height > 500)
+            {
+                logger.Log(LogLevel.Warning, $"CharacterArt Sprite dimensions for {definition.Key} {spriteVal.id} are too big. Please resize {spriteVal.id} to a size upto 500x500." +
+                    " Using large images slows down mod load time with no benefit as the game will resize the image down (and may make it look worse).");
+            }
+
 
             Vector2 visualDimensions = characterConfig.GetSection("visual_dimensions").ParseVec2();
             float bottomPadding = characterConfig.GetSection("bottom_padding").ParseFloat() ?? 0f;
@@ -224,6 +232,11 @@ namespace TrainworksReloaded.Base.Prefab
                 {
                     if (!spriteRegister.TryLookupName(frame!.ToId(definition.Key, TemplateConstants.Sprite), out var lookup, out var _, frame.context))
                         continue;
+                    if (lookup.texture.width > 500 || lookup.texture.height > 500)
+                    {
+                        logger.Log(LogLevel.Warning, $"CharacterArt Sprite dimensions for {definition.Key} {frame.id} are too big. Please resize {frame.id} to a size upto 500x500." +
+                            " Using large images slows down mod load time with no benefit as the game will resize the image down (and may make it look worse).");
+                    }
                     sprites.Add(lookup);
                 }
                 SpriteAnimationClip clip = ScriptableObject.CreateInstance<SpriteAnimationClip>();
